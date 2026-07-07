@@ -1,0 +1,17 @@
+Askerî Terimler Sözlüğü — Bot/404 Temizleme Notu
+
+Bu pakette Netlify istatistiklerinde görünen /.env, /env, /config.env, /api/env, /wp-admin ve benzeri otomatik bot tarama yolları açık biçimde 404'e düşürüldü.
+
+Eklenen/güncellenen dosyalar:
+- _redirects: hassas ve bot kaynaklı yollar 404! kuralına bağlandı; normal sözlük sayfaları korundu.
+- _headers: temel güvenlik başlıkları ve 404 için noindex başlığı eklendi.
+- robots.txt: hassas yolların taranmaması bildirildi.
+- 404.html: robots etiketi noindex, nofollow olarak düzeltildi.
+
+Yükleme sonrası test edilecek adresler:
+- /env
+- /.env
+- /config.env
+- /api/env
+
+Bu adresler ana sayfayı açmamalı; 404 sayfası dönmelidir. Normal adresler /, /terimler/, /kaynakca/, /iletisim/ çalışmaya devam etmelidir.

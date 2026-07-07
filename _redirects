@@ -1,3 +1,32 @@
+# Bot/hassas dosya taramalarını doğrudan 404'e düşürür.
+# Bu kurallar domain yönlendirmesinden ve genel fallback'ten önce kalmalıdır.
+/.env                            /404.html                                      404!
+/.env.*                          /404.html                                      404!
+/.env.local                      /404.html                                      404!
+/.env.production                 /404.html                                      404!
+/.env.prod                       /404.html                                      404!
+/.env.save                       /404.html                                      404!
+/.env.old                        /404.html                                      404!
+/.env.bak                        /404.html                                      404!
+/.env.backup                     /404.html                                      404!
+/config.env                      /404.html                                      404!
+/config/.env                     /404.html                                      404!
+/api/env                         /404.html                                      404!
+/env                             /404.html                                      404!
+/env.local                       /404.html                                      404!
+/env.production                  /404.html                                      404!
+/env.prod                        /404.html                                      404!
+/env.save                        /404.html                                      404!
+/env.old                         /404.html                                      404!
+/env.bak                         /404.html                                      404!
+/env.backup                      /404.html                                      404!
+/.git/*                          /404.html                                      404!
+/.svn/*                          /404.html                                      404!
+/phpinfo.php                     /404.html                                      404!
+/wp-admin/*                      /404.html                                      404!
+/wp-login.php                    /404.html                                      404!
+/xmlrpc.php                      /404.html                                      404!
+
 https://online-askeri-terimler-sozlugu.netlify.app/*  https://askeriterimlersozlugu.com/:splat  301!
 /atif-bilgisi           /kaynakca/                                      301
 /atif-bilgisi/          /kaynakca/                                      301

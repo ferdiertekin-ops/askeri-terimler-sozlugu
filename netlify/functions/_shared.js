@@ -12,7 +12,25 @@ function textHeaders(extra = {}) { return { 'Content-Type':'text/plain; charset=
 function xmlHeaders(extra = {}) { return { 'Content-Type':'application/xml; charset=utf-8', 'Cache-Control':'public, max-age=300, s-maxage=300', ...extra }; }
 function hash(value) { return crypto.createHash('sha256').update(String(value || ''), 'utf8').digest('hex'); }
 function isAuthorized(event) { const h=event.headers||{}; const auth=h.authorization||h.Authorization||''; const bearer=auth.replace(/^Bearer\s+/i,'').trim(); const pass=h['x-editor-password']||h['X-Editor-Password']||bearer; return pass && hash(pass)===EDITOR_HASH; }
-function store() { return getStore({ name: STORE_NAME, consistency: 'strong' }); }
+function store() {
+  const config = { name: STORE_NAME, consistency: 'strong' };
+
+  // Netlify Functions ortamında Blobs normalde otomatik yapılandırılır.
+  // Bazı deploy/plan ortamlarında otomatik bağlanmazsa aşağıdaki çevre değişkenleriyle açıkça bağlanır.
+  const siteID =
+    process.env.NETLIFY_BLOBS_SITE_ID ||
+    process.env.NETLIFY_SITE_ID ||
+    process.env.SITE_ID;
+
+  const token =
+    process.env.NETLIFY_BLOBS_TOKEN ||
+    process.env.NETLIFY_AUTH_TOKEN;
+
+  if (siteID) config.siteID = siteID;
+  if (token) config.token = token;
+
+  return getStore(config);
+}
 
 function deepClone(value) {
   return JSON.parse(JSON.stringify(value));

@@ -1,4 +1,29 @@
 User-agent: *
+Disallow: /.env
+Disallow: /.env.local
+Disallow: /.env.production
+Disallow: /.env.prod
+Disallow: /.env.save
+Disallow: /.env.old
+Disallow: /.env.bak
+Disallow: /.env.backup
+Disallow: /config.env
+Disallow: /config/.env
+Disallow: /api/env
+Disallow: /env
+Disallow: /env.local
+Disallow: /env.production
+Disallow: /env.prod
+Disallow: /env.save
+Disallow: /env.old
+Disallow: /env.bak
+Disallow: /env.backup
+Disallow: /.git/
+Disallow: /.svn/
+Disallow: /wp-admin/
+Disallow: /wp-login.php
+Disallow: /xmlrpc.php
+
 Allow: /
 
 Sitemap: https://askeriterimlersozlugu.com/sitemap.xml
