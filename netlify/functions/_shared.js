@@ -14,6 +14,28 @@ function hash(value) { return crypto.createHash('sha256').update(String(value ||
 function isAuthorized(event) { const h=event.headers||{}; const auth=h.authorization||h.Authorization||''; const bearer=auth.replace(/^Bearer\s+/i,'').trim(); const pass=h['x-editor-password']||h['X-Editor-Password']||bearer; return pass && hash(pass)===EDITOR_HASH; }
 function store() { return getStore({ name: STORE_NAME, consistency: 'strong' }); }
 
+function deepClone(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
+function normalizeLive(live) {
+  const base = deepClone(defaults);
+
+  if (live && typeof live === 'object') {
+    if (Array.isArray(live.data)) base.data = live.data;
+    if (live.pages && typeof live.pages === 'object') base.pages = { ...(base.pages || {}), ...live.pages };
+    if (live.pages_en && typeof live.pages_en === 'object') base.pages_en = { ...(base.pages_en || {}), ...live.pages_en };
+    if (live.meta && typeof live.meta === 'object') base.meta = { ...(base.meta || {}), ...live.meta };
+    if (live.updatedAt) base.updatedAt = live.updatedAt;
+    if (live._writeId) base._writeId = live._writeId;
+  }
+
+  if (!base.updatedAt) base.updatedAt = (base.meta && base.meta.generated_at) || new Date().toISOString();
+  if (!base.meta || typeof base.meta !== 'object') base.meta = {};
+
+  return base;
+}
+
 async function readContent() {
   try {
     const live = await store().get(STORE_KEY, { type: 'json', consistency: 'strong' });

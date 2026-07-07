@@ -6,12 +6,24 @@ exports.handler = async function(event) {
   }
 
   if (event.httpMethod === 'GET') {
-    const content = await readContent();
-    return {
-      statusCode: 200,
-      headers: jsonHeaders(),
-      body: JSON.stringify(content)
-    };
+    try {
+      const content = await readContent();
+      return {
+        statusCode: 200,
+        headers: jsonHeaders(),
+        body: JSON.stringify(content)
+      };
+    } catch (err) {
+      return {
+        statusCode: 500,
+        headers: jsonHeaders(),
+        body: JSON.stringify({
+          ok: false,
+          error: 'read_failed',
+          message: err && err.message ? err.message : String(err)
+        })
+      };
+    }
   }
 
   if (event.httpMethod !== 'POST') {
