@@ -1,3 +1,4 @@
+https://online-askeri-terimler-sozlugu.netlify.app/*  https://askeriterimlersozlugu.com/:splat  301!
 /atif-bilgisi           /kaynakca/                                      301
 /atif-bilgisi/          /kaynakca/                                      301
 /iletisim               /iletisim/                                      301
@@ -17,8 +18,6 @@
 /en/contact             /en/contact/                                    301
 
 /api/content            /.netlify/functions/content                     200
-/robots.txt             /.netlify/functions/robots                      200
-/sitemap.xml            /.netlify/functions/sitemap                     200
 /terimler/              /.netlify/functions/terms                       200
 /terim/*                /.netlify/functions/term?slug=:splat            200
 /yayin-notu/            /.netlify/functions/page?key=yayin-notu         200
