@@ -14,7 +14,7 @@
 <link href="/" hreflang="x-default" rel="alternate"/>
 <link href="/favicon.ico" rel="icon" sizes="any"/>
 <link href="/favicon-96.png" rel="icon" sizes="96x96" type="image/png"/>
-<link href="/apple-touch-icon.png" rel="apple-touch-icon"/><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<link href="/apple-touch-icon.png" rel="apple-touch-icon"/>
 <link href="/site.webmanifest" rel="manifest"/>
 <meta content="website" property="og:type"/>
 <meta content="en_US" property="og:locale"/>
@@ -59,8 +59,8 @@
   --mark:#F5E6AE;
   --radius:8px;
   --radius-sm:6px;
-  --serif-display:"Cormorant Garamond", Cambria, Georgia, serif;
-  --serif-text:"Spectral", Cambria, Georgia, serif;
+  --serif-display:"Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  --serif-text:Cambria, Georgia, serif;
   --shadow-card:0 1px 2px rgba(30,39,50,.05), 0 14px 30px -22px rgba(30,39,50,.38);
   --shadow-float:0 3px 8px rgba(30,39,50,.06), 0 26px 52px -26px rgba(30,39,50,.35);
   --press:cubic-bezier(.2,.7,.3,1);
@@ -329,40 +329,37 @@ button{user-select:none;cursor:pointer}
 .results__head{margin-bottom:12px;padding-bottom:9px}
 .results__head h2{font-size:24px}
 body.search-active .hero{
-  padding-top:18px;
-  padding-bottom:8px;
+  padding-top:10px;
+  padding-bottom:4px;
 }
 body.search-active .eyebrow{
-  margin-bottom:6px;
-  font-size:11px;
-  letter-spacing:.22em;
+  margin-bottom:4px;
+  font-size:10.5px;
+  letter-spacing:.20em;
 }
-body.search-active .hero h1{gap:6px}
-body.search-active .h1-top{
-  font-size:12px;
-  letter-spacing:.28em;
-  text-indent:.28em;
-}
+body.search-active .hero h1{gap:4px}
+body.search-active .h1-top{display:none}
 body.search-active .h1-main{
-  font-size:clamp(34px,4.7vw,56px);
-  line-height:1;
+  font-size:clamp(34px,4.2vw,50px);
+  line-height:.98;
 }
 body.search-active .h1-date{
-  font-size:12.5px;
-  letter-spacing:.24em;
-  text-indent:.24em;
+  font-size:12px;
+  letter-spacing:.22em;
+  text-indent:.22em;
+  margin-top:0;
 }
 body.search-active .h1-date::before,
-body.search-active .h1-date::after{width:42px}
+body.search-active .h1-date::after{width:34px}
 body.search-active .beta-label{
-  margin-top:5px;
+  margin-top:3px;
   font-size:10px;
-  letter-spacing:.14em;
+  letter-spacing:.13em;
 }
 body.search-active .hero-subtitle{display:none}
 body.search-active .search-shell{
   max-width:700px;
-  margin-top:12px;
+  margin-top:8px;
 }
 body.search-active #searchInput{
   font-size:17px;
@@ -371,14 +368,14 @@ body.search-active #searchInput{
 }
 body.search-active .search-icon{width:19px;height:19px;margin-left:16px}
 body.search-active .search-meta{margin-top:6px;font-size:12px}
-body.search-active .toolbar{padding:6px 0 8px}
+body.search-active .toolbar{padding:4px 0 6px}
 body.search-active .pill{min-height:28px;padding:0 14px}
-body.search-active .results{padding-top:8px}
+body.search-active .results{padding-top:4px}
 body.search-active .results__head{
-  margin-bottom:10px;
-  padding-bottom:8px;
+  margin-bottom:8px;
+  padding-bottom:6px;
 }
-body.search-active .results__head h2{font-size:22px}
+body.search-active .results__head h2{font-size:21px}
 body.search-active #resultsSubtitle{font-size:12.5px}
 @media (max-width:760px){
   .toolbar{justify-content:flex-start}
@@ -655,6 +652,19 @@ mark{background:var(--mark);color:var(--ink);border-radius:2px;padding:0 2px;fon
 }
 .noscript-note a{color:var(--brass-deep);font-weight:600;text-decoration:none}
 .noscript-note a:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* final compact search refinement */
+body.search-active .h1-top{display:none!important}
+body.search-active .hero{padding-top:10px!important;padding-bottom:4px!important}
+body.search-active .hero h1{gap:4px!important}
+body.search-active .h1-main{font-size:clamp(34px,4.2vw,50px)!important;line-height:.98!important}
+body.search-active .h1-date{margin-top:0!important;font-size:12px!important;letter-spacing:.22em!important;text-indent:.22em!important}
+body.search-active .h1-date::before,body.search-active .h1-date::after{width:34px!important}
+body.search-active .beta-label{margin-top:3px!important;font-size:10px!important;letter-spacing:.13em!important}
+body.search-active .search-shell{margin-top:8px!important}
+body.search-active .toolbar{padding:4px 0 6px!important}
+body.search-active .results{padding-top:4px!important}
+
 </style>
 <!-- Editör dışa aktarımı: 2026-07-07T18:41:10.858Z -->
 <!-- Son düzenlemeler ve tekilleştirme ChatGPT tarafından kontrol edilip paketlendi: 2026-07-06T19:25:00+03:00 -->
@@ -10566,7 +10576,7 @@ window.DICTIONARY_DATA = [
 
   function staticPageTemplate(title, description, canonicalPath, body, iso) {
     return `<!doctype html>
-<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(title)} · Askerî Terimler Sözlüğü</title><meta name="description" content="${escapeAttr(description)}"><meta name="robots" content="index, follow"><link rel="canonical" href="${escapeAttr(canonicalPath)}"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" href="/favicon-96.png" sizes="96x96"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet"><style>${staticPageCss()}</style></head><body><div class="site"><header class="topbar"><a class="brand" href="/" aria-label="Sözlük ana sayfası"><span class="brand__mark">ATS</span><span class="brand__name">Askerî Terimler Sözlüğü</span></a></header>${navHtml()}<main><h1>${escapeHtml(title)}</h1>${body}<p class="meta">Son teknik güncelleme: ${escapeHtml(formatDateTR(iso))}. Bu sayfa statik olarak yayımlanır ve doğrudan adres girişlerinde 404 hatası vermez.</p></main><footer class="site-footer"><p>© 2026 Ferdi Ertekin · Askerî Terimler Sözlüğü</p></footer></div></body></html>`;
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(title)} · Askerî Terimler Sözlüğü</title><meta name="description" content="${escapeAttr(description)}"><meta name="robots" content="index, follow"><link rel="canonical" href="${escapeAttr(canonicalPath)}"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" href="/favicon-96.png" sizes="96x96"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><style>${staticPageCss()}</style></head><body><div class="site"><header class="topbar"><a class="brand" href="/" aria-label="Sözlük ana sayfası"><span class="brand__mark">ATS</span><span class="brand__name">Askerî Terimler Sözlüğü</span></a></header>${navHtml()}<main><h1>${escapeHtml(title)}</h1>${body}<p class="meta">Son teknik güncelleme: ${escapeHtml(formatDateTR(iso))}. Bu sayfa statik olarak yayımlanır ve doğrudan adres girişlerinde 404 hatası vermez.</p></main><footer class="site-footer"><p>© 2026 Ferdi Ertekin · Askerî Terimler Sözlüğü</p></footer></div></body></html>`;
   }
 
   function build404Html() {
@@ -10655,7 +10665,7 @@ ${urls.map(u => `  <url><loc>BASE_URL${u}</loc></url>`).join("\n")}
   }
 
   function staticPageCss() {
-    return `:root{--bg:#F7F4EC;--card:#ffffff;--ink:#1E2732;--ink-soft:#5D6672;--accent:#2F4E71;--accent-deep:#20395A;--brass:#8F702F;--line:#E2DDCF;--radius:18px}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Spectral",Cambria,Georgia,serif}.site{width:min(1060px,calc(100% - 32px));margin:0 auto;padding:18px 0 42px}.topbar{display:flex;justify-content:center;padding-top:12px}.brand{display:flex;align-items:center;gap:10px;text-decoration:none}.brand__mark{width:42px;height:38px;border-radius:10px;background:linear-gradient(150deg,var(--accent),var(--accent-deep));display:grid;place-items:center;color:#f8f7f4;font-weight:700;font-size:12px}.brand__name{font-weight:600;color:var(--ink-soft);font-size:14.5px}.site-nav{margin:16px 0 0;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.site-nav a{color:var(--brass);background:rgba(255,255,255,.70);border:1px solid var(--line);border-radius:999px;padding:7px 12px;text-decoration:none;font-size:13px;font-weight:600}.site-nav a:hover{border-color:var(--brass);color:var(--brass-deep);background:var(--card)}main{margin:30px auto 0;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:34px;line-height:1.75;box-shadow:0 16px 40px -32px rgba(24,34,45,.35)}h1{font-family:"Cormorant Garamond",Cambria,Georgia,serif;font-size:clamp(28px,4vw,42px);line-height:1.15;margin:0 0 18px;text-align:center}p{font-size:16px;text-align:justify}.lead{font-size:17px;color:var(--ink-soft)}.meta{margin-top:26px;color:var(--ink-soft);font-size:13px}.source-list{padding-left:22px}.source-list li{margin:7px 0}.term-list{columns:3 220px;column-gap:34px;line-height:1.6}.term-list li{break-inside:avoid;margin:0 0 6px}.term-list a{color:var(--brass);text-decoration:none}.term-list a:hover{text-decoration:underline}.site-footer{margin:26px 0 0;text-align:center;color:var(--ink-soft);font-size:13px}.site-footer p{text-align:center}a{color:var(--accent)}`;
+    return `:root{--bg:#F7F4EC;--card:#ffffff;--ink:#1E2732;--ink-soft:#5D6672;--accent:#2F4E71;--accent-deep:#20395A;--brass:#8F702F;--line:#E2DDCF;--radius:18px}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Cambria,Georgia,serif}.site{width:min(1060px,calc(100% - 32px));margin:0 auto;padding:18px 0 42px}.topbar{display:flex;justify-content:center;padding-top:12px}.brand{display:flex;align-items:center;gap:10px;text-decoration:none}.brand__mark{width:42px;height:38px;border-radius:10px;background:linear-gradient(150deg,var(--accent),var(--accent-deep));display:grid;place-items:center;color:#f8f7f4;font-weight:700;font-size:12px}.brand__name{font-weight:600;color:var(--ink-soft);font-size:14.5px}.site-nav{margin:16px 0 0;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.site-nav a{color:var(--brass);background:rgba(255,255,255,.70);border:1px solid var(--line);border-radius:999px;padding:7px 12px;text-decoration:none;font-size:13px;font-weight:600}.site-nav a:hover{border-color:var(--brass);color:var(--brass-deep);background:var(--card)}main{margin:30px auto 0;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:34px;line-height:1.75;box-shadow:0 16px 40px -32px rgba(24,34,45,.35)}h1{font-family:"Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;font-size:clamp(28px,4vw,42px);line-height:1.15;margin:0 0 18px;text-align:center}p{font-size:16px;text-align:justify}.lead{font-size:17px;color:var(--ink-soft)}.meta{margin-top:26px;color:var(--ink-soft);font-size:13px}.source-list{padding-left:22px}.source-list li{margin:7px 0}.term-list{columns:3 220px;column-gap:34px;line-height:1.6}.term-list li{break-inside:avoid;margin:0 0 6px}.term-list a{color:var(--brass);text-decoration:none}.term-list a:hover{text-decoration:underline}.site-footer{margin:26px 0 0;text-align:center;color:var(--ink-soft);font-size:13px}.site-footer p{text-align:center}a{color:var(--accent)}`;
   }
 
   function formatDateTR(iso) {
