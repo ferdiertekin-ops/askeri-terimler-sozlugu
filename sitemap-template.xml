@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- BASE_URL değerini canlı alan adıyla değiştirin. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>BASE_URL/</loc></url>
+  <url><loc>BASE_URL/en/</loc></url>
+  <url><loc>BASE_URL/terimler/</loc></url>
+  <url><loc>BASE_URL/en/terms/</loc></url>
+  <url><loc>BASE_URL/yayin-notu/</loc></url>
+  <url><loc>BASE_URL/en/publication-note/</loc></url>
+  <url><loc>BASE_URL/kaynakca/</loc></url>
+  <url><loc>BASE_URL/en/bibliography/</loc></url>
+  <url><loc>BASE_URL/gizlilik-politikasi/</loc></url>
+  <url><loc>BASE_URL/en/privacy-policy/</loc></url>
+  <url><loc>BASE_URL/cerez-politikasi/</loc></url>
+  <url><loc>BASE_URL/en/cookie-policy/</loc></url>
+  <url><loc>BASE_URL/kullanim-sartlari/</loc></url>
+  <url><loc>BASE_URL/en/terms-of-use/</loc></url>
+  <url><loc>BASE_URL/iletisim/</loc></url>
+  <url><loc>BASE_URL/en/contact/</loc></url>
+</urlset>

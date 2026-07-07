@@ -1,0 +1,15 @@
+Askerî Terimler Sözlüğü — SEO ve Canlı Kayıt Notu
+
+Bu sürümde statik ZIP mantığı korunmakla birlikte canlı düzenleme için Netlify Functions + Netlify Blobs katmanı eklenmiştir.
+
+Google tarafı için önemli teknik noktalar:
+1. /robots.txt dinamik üretilir ve /sitemap.xml adresini gösterir.
+2. /sitemap.xml canlı sözlük maddelerinden üretilir.
+3. /terimler/ canlı terimler dizinidir.
+4. /terim/<slug>/ adresleri tek tek sözlük maddeleri için HTML üretir.
+5. /kaynakca/, /yayin-notu/, /iletisim/, /gizlilik-politikasi/, /cerez-politikasi/, /kullanim-sartlari/ sayfaları canlı sayfa metinlerinden HTML olarak üretilir.
+
+Bu yapı, Google’ın yalnızca JavaScript çalıştırmasına bağlı kalmadan temel içerikleri HTML olarak görmesini sağlar.
+
+Kurulum uyarısı:
+Netlify manuel Drop/drag-drop deploy yöntemi build command çalıştırmadığı için @netlify/blobs bağımlılığı ve functions katmanı için ideal değildir. Bu paket GitHub bağlantılı Netlify deploy veya Netlify CLI ile yayımlanmalıdır.
