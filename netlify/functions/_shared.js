@@ -13,10 +13,50 @@ function xmlHeaders(extra = {}) { return { 'Content-Type':'application/xml; char
 function hash(value) { return crypto.createHash('sha256').update(String(value || ''), 'utf8').digest('hex'); }
 function isAuthorized(event) { const h=event.headers||{}; const auth=h.authorization||h.Authorization||''; const bearer=auth.replace(/^Bearer\s+/i,'').trim(); const pass=h['x-editor-password']||h['X-Editor-Password']||bearer; return pass && hash(pass)===EDITOR_HASH; }
 function store() { return getStore({ name: STORE_NAME, consistency: 'strong' }); }
-function deepClone(v) { return JSON.parse(JSON.stringify(v)); }
-function normalizeLive(live) { const base=deepClone(defaults); if(live&&typeof live==='object'){ if(Array.isArray(live.data)) base.data=live.data; if(live.pages&&typeof live.pages==='object') base.pages={...base.pages,...live.pages}; if(live.pages_en&&typeof live.pages_en==='object') base.pages_en={...(base.pages_en||{}),...live.pages_en}; if(live.meta&&typeof live.meta==='object') base.meta={...base.meta,...live.meta}; if(live.updatedAt) base.updatedAt=live.updatedAt; } if(!base.updatedAt) base.updatedAt=base.meta.generated_at||new Date().toISOString(); return base; }
-async function readContent() { try { const live=await store().get(STORE_KEY,{type:'json',consistency:'strong'}); return normalizeLive(live); } catch(err){ return normalizeLive(null); } }
-async function writeContent(next) { const normalized=normalizeLive(next); normalized.updatedAt=new Date().toISOString(); normalized.meta={...(normalized.meta||{}), live_updated_at:normalized.updatedAt}; await store().set(STORE_KEY, JSON.stringify(normalized), { metadata:{updatedAt:normalized.updatedAt} }); return normalized; }
+
+async function readContent() {
+  try {
+    const live = await store().get(STORE_KEY, { type: 'json', consistency: 'strong' });
+    const normalized = normalizeLive(live);
+    normalized.meta = { ...(normalized.meta || {}), live_source: live ? 'blob' : 'defaults' };
+    return normalized;
+  } catch (err) {
+    const fallback = normalizeLive(null);
+    fallback.meta = {
+      ...(fallback.meta || {}),
+      live_source: 'defaults',
+      live_read_error: err && err.message ? err.message : String(err)
+    };
+    return fallback;
+  }
+}
+
+async function writeContent(next) {
+  const normalized = normalizeLive(next);
+  normalized.updatedAt = new Date().toISOString();
+  normalized.meta = {
+    ...(normalized.meta || {}),
+    live_updated_at: normalized.updatedAt,
+    live_source: 'blob'
+  };
+  normalized._writeId = crypto.randomUUID ? crypto.randomUUID() : crypto.randomBytes(16).toString('hex');
+
+  const blobStore = store();
+
+  // Netlify Blobs için JSON veriyi setJSON ile yazıyoruz; setJSON dönüşü metadata/etag verir.
+  const result = await blobStore.setJSON(STORE_KEY, normalized, {
+    metadata: { updatedAt: normalized.updatedAt, writeId: normalized._writeId }
+  });
+
+  // Yazma işlemini hemen güçlü tutarlılıkla tekrar okuyup doğrula.
+  const verify = await blobStore.get(STORE_KEY, { type: 'json', consistency: 'strong' });
+  if (!verify || verify._writeId !== normalized._writeId) {
+    throw new Error('blob_write_verification_failed');
+  }
+
+  normalized._blobResult = result || {};
+  return normalized;
+}
 function escapeHtml(value){ return String(value==null?'':value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 function escapeAttr(value){ return escapeHtml(value); }
 function stripHtml(value){ return String(value==null?'':value).replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim(); }

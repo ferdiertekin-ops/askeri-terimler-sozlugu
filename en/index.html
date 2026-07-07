@@ -9832,6 +9832,8 @@ window.DICTIONARY_DATA = [
 
   const STORAGE_KEY = "askeri_terimler_profesyonel_v3_20260707184110";
   const PAGE_STORAGE_KEY = STORAGE_KEY + "_page_texts";
+  const PENDING_DATA_KEY = STORAGE_KEY + "_pending_live_data";
+  const PENDING_PAGE_KEY = STORAGE_KEY + "_pending_live_pages";
   const DEFAULT_DATA = clone(window.DICTIONARY_DATA || []);
   const PAGE_DEFS = [
     { key: "sozluk", title: "Dictionary", url: "/en/" },
@@ -10344,7 +10346,7 @@ window.DICTIONARY_DATA = [
     const saved = await saveData(true);
     refreshDependentFilters();
     renderResults();
-    toast(saved ? "Madde kaydedildi ve yayın verisine işlendi." : "Madde yerel olarak kaydedildi; canlı yayına yazılamadı.");
+    toast(saved ? "Madde canlı yayına kaydedildi." : "Madde bu tarayıcıda bekleyen yedek olarak saklandı; canlı kayda yazılamadı.");
     openRecord(`${sheetIndex}:${rowIndex}`);
   }
 
@@ -10437,8 +10439,15 @@ window.DICTIONARY_DATA = [
     try {
       await storageSet(PAGE_STORAGE_KEY, JSON.stringify(pageContent));
       const remoteOk = await publishLiveContent("pages");
-      if (!silent) toast(remoteOk ? "Sayfa metinleri canlı yayına kaydedildi." : "Sayfa metinleri yerel yedeğe kaydedildi; canlı yayına yazılamadı.");
-      return true;
+
+      if (remoteOk) {
+        if (!silent) toast("Sayfa metinleri canlı yayına kaydedildi.");
+        return true;
+      }
+
+      await storageSet(PENDING_PAGE_KEY, JSON.stringify({ savedAt: new Date().toISOString(), pages: pageContent }));
+      if (!silent) toast("Sayfa metinleri canlı yayına yazılamadı; bu tarayıcıda bekleyen yedek olarak saklandı.");
+      return false;
     } catch (err) {
       console.error("savePageContent error:", err);
       toast("Sayfa metni kaydedilemedi. Tarayıcı yerel depolama iznini kontrol edin.");
@@ -10448,8 +10457,16 @@ window.DICTIONARY_DATA = [
 
   async function loadPageContent() {
     try {
+      const pending = await storageGet(PENDING_PAGE_KEY);
+      if (pending) {
+        try {
+          const parsed = JSON.parse(pending);
+          if (parsed && parsed.pages) return { ...clone(DEFAULT_PAGE_CONTENT), ...parsed.pages };
+        } catch (_) {}
+      }
+
       const live = await fetchLiveContent();
-      if (live && live.pages_en) return { ...clone(DEFAULT_PAGE_CONTENT), ...clone(live.pages_en) };
+      if (live && live.pages) return { ...clone(DEFAULT_PAGE_CONTENT), ...clone(live.pages) };
       const saved = await storageGet(PAGE_STORAGE_KEY);
       if (saved) return { ...clone(DEFAULT_PAGE_CONTENT), ...JSON.parse(saved) };
     } catch (err) {
@@ -10808,32 +10825,53 @@ ${urls.map(u => `  <url><loc>BASE_URL${u}</loc></url>`).join("\n")}
     if (!isEditor()) return false;
     const pass = getEditorPasswordForPublish();
     if (!pass) return false;
+
     const payload = {
       kind: kind || "all",
       data: kind === "pages" ? undefined : data,
-      pages: undefined,
-      pages_en: kind === "data" ? undefined : pageContent,
+      pages: kind === "data" ? undefined : pageContent,
       meta: { ...(window.DICTIONARY_META || {}), client_published_at: new Date().toISOString() }
     };
+
     try {
       const res = await fetch(LIVE_API, {
         method: "POST",
         headers: { "Content-Type": "application/json", "X-Editor-Password": pass },
         body: JSON.stringify(payload)
       });
+
+      const saved = await res.json().catch(() => ({}));
+
       if (res.status === 401) {
         sessionStorage.removeItem("sozlukEditorPass");
         toast("Canlı kayıt reddedildi: editör parolası doğrulanamadı.");
         return false;
       }
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      const saved = await res.json().catch(() => ({}));
-      liveContentCache = { data: clone(data), pages: clone(pageContent), meta: payload.meta, updatedAt: saved.updatedAt || new Date().toISOString() };
+
+      if (!res.ok || saved.ok === false) {
+        throw new Error(saved.message || saved.error || ("HTTP " + res.status));
+      }
+
+      // Kaydın gerçekten kalıcı veriden okunabildiğini doğrula.
+      const verify = await fetch(LIVE_API + "?t=" + Date.now(), { cache: "no-store" });
+      if (!verify.ok) throw new Error("Canlı kayıt doğrulama okunamadı: HTTP " + verify.status);
+      const verified = await verify.json();
+      if (!verified || !Array.isArray(verified.data)) throw new Error("Canlı kayıt doğrulama geçersiz.");
+
+      liveContentCache = verified;
       liveContentLoaded = true;
+
+      if (kind === "data" || kind === "all") {
+        try { await storageDelete(PENDING_DATA_KEY); } catch (_) {}
+      }
+      if (kind === "pages" || kind === "all") {
+        try { await storageDelete(PENDING_PAGE_KEY); } catch (_) {}
+      }
+
       return true;
     } catch (err) {
       console.error("publishLiveContent error:", err);
-      toast("Canlı kayıt yapılamadı; düzenleme bu tarayıcıda yedeklendi.");
+      toast("Canlı kayıt başarısız: " + (err.message || err) + ". Düzenleme bu tarayıcıda bekleyen yedek olarak saklandı.");
       return false;
     }
   }
@@ -10851,15 +10889,23 @@ ${urls.map(u => `  <url><loc>BASE_URL${u}</loc></url>`).join("\n")}
   }
 
   async function saveData(silent = false) {
-    setSaveStatus("Saving…");
+    setSaveStatus("Kaydediliyor…");
     try {
       await storageSet(STORAGE_KEY, JSON.stringify(data));
       const remoteOk = await publishLiveContent("data");
-      setSaveStatus(remoteOk ? "Canlı kaydedildi" : "Yerel yedek kaydedildi");
-      if (!silent) toast(remoteOk ? "Kaydedildi ve canlı yayına işlendi." : "Kaydedildi; canlı yayına yazılamadı, yerel yedek saklandı.");
-      return true;
+
+      if (remoteOk) {
+        setSaveStatus("Canlı kaydedildi");
+        if (!silent) toast("Kaydedildi ve canlı yayına işlendi.");
+        return true;
+      }
+
+      await storageSet(PENDING_DATA_KEY, JSON.stringify({ savedAt: new Date().toISOString(), data }));
+      setSaveStatus("Canlı kayıt başarısız · yerel yedek var");
+      if (!silent) toast("Canlı kayıt yapılamadı. Değişiklik bu tarayıcıda bekleyen yedek olarak saklandı.");
+      return false;
     } catch (err) {
-      setSaveStatus("Save error");
+      setSaveStatus("Kayıt hatası");
       toast("Kaydedilemedi. Tarayıcı yerel depolama iznini kontrol edin.");
       console.error("saveData error:", err);
       return false;
@@ -10868,17 +10914,29 @@ ${urls.map(u => `  <url><loc>BASE_URL${u}</loc></url>`).join("\n")}
 
   async function loadData() {
     try {
+      const pending = await storageGet(PENDING_DATA_KEY);
+      if (pending) {
+        try {
+          const parsed = JSON.parse(pending);
+          if (parsed && Array.isArray(parsed.data)) {
+            setSaveStatus("Bekleyen yerel yedek yüklendi");
+            return parsed.data;
+          }
+        } catch (_) {}
+      }
+
       const live = await fetchLiveContent();
       if (live && Array.isArray(live.data)) {
-        setSaveStatus("Live data loaded");
+        setSaveStatus("Canlı kayıt yüklendi");
         return clone(live.data);
       }
+
       const saved = await storageGet(STORAGE_KEY);
       if (saved) {
-        setSaveStatus("Local data loaded");
+        setSaveStatus("Yerel kayıt yüklendi");
         return JSON.parse(saved);
       }
-      setSaveStatus(storageAvailable() ? "Local saving enabled" : "Local saving disabled");
+      setSaveStatus(storageAvailable() ? "Yerel kayıt açık" : "Yerel kayıt kapalı");
     } catch (err) {
       setSaveStatus("Yerel kayıt açık");
       console.warn("loadData fallback:", err);
