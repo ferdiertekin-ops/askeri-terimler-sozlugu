@@ -308,6 +308,87 @@ button{user-select:none;cursor:pointer}
 .search-meta{margin:10px 0 0;font-size:13px;color:var(--ink-soft);letter-spacing:.02em}
 .search-meta strong{color:var(--accent-deep);font-weight:600}
 
+/* ---------- compact search mode: results visible without scrolling ---------- */
+.hero{
+  padding-top:42px;
+  padding-bottom:24px;
+}
+.eyebrow{margin-bottom:12px}
+.hero h1{gap:10px}
+.h1-main{font-size:clamp(44px,6.1vw,78px)}
+.h1-date{margin-top:0}
+.beta-label{margin-top:12px}
+.hero-subtitle{margin-top:14px;line-height:1.6}
+.search-shell{margin-top:22px}
+.toolbar{
+  justify-content:center;
+  padding:8px 0 10px;
+  min-height:0;
+  position:static;
+  background:transparent;
+}
+.view-toggle{margin:0}
+.results{padding-top:12px}
+.results__head{margin-bottom:12px;padding-bottom:9px}
+.results__head h2{font-size:24px}
+body.search-active .hero{
+  padding-top:18px;
+  padding-bottom:8px;
+}
+body.search-active .eyebrow{
+  margin-bottom:6px;
+  font-size:11px;
+  letter-spacing:.22em;
+}
+body.search-active .hero h1{gap:6px}
+body.search-active .h1-top{
+  font-size:12px;
+  letter-spacing:.28em;
+  text-indent:.28em;
+}
+body.search-active .h1-main{
+  font-size:clamp(34px,4.7vw,56px);
+  line-height:1;
+}
+body.search-active .h1-date{
+  font-size:12.5px;
+  letter-spacing:.24em;
+  text-indent:.24em;
+}
+body.search-active .h1-date::before,
+body.search-active .h1-date::after{width:42px}
+body.search-active .beta-label{
+  margin-top:5px;
+  font-size:10px;
+  letter-spacing:.14em;
+}
+body.search-active .hero-subtitle{display:none}
+body.search-active .search-shell{
+  max-width:700px;
+  margin-top:12px;
+}
+body.search-active #searchInput{
+  font-size:17px;
+  padding-top:12px;
+  padding-bottom:12px;
+}
+body.search-active .search-icon{width:19px;height:19px;margin-left:16px}
+body.search-active .search-meta{margin-top:6px;font-size:12px}
+body.search-active .toolbar{padding:6px 0 8px}
+body.search-active .pill{min-height:28px;padding:0 14px}
+body.search-active .results{padding-top:8px}
+body.search-active .results__head{
+  margin-bottom:10px;
+  padding-bottom:8px;
+}
+body.search-active .results__head h2{font-size:22px}
+body.search-active #resultsSubtitle{font-size:12.5px}
+@media (max-width:760px){
+  .toolbar{justify-content:flex-start}
+  body.search-active .hero{padding-top:14px}
+  body.search-active .h1-main{font-size:clamp(30px,9vw,46px);white-space:normal}
+}
+
 /* ---------- toolbar ---------- */
 .toolbar{
   display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;
@@ -783,7 +864,7 @@ window.PAGE_CONTENT_DEFAULTS = {
   "gizlilik-politikasi": "<p class=\"lead\">Bu site, sözlük kullanıcısını kişisel profil çıkarmaya yönelik biçimde izlemek amacıyla tasarlanmamıştır.</p><p>Site statik bir çevrimiçi sözlük olarak çalışır. Arama işlevi kullanıcının tarayıcısında gerçekleşir. Sözlük araması için girilen terimler, bu statik sürümde haricî bir veri tabanına gönderilmez.</p><p>Barındırma hizmeti, güvenlik, performans ve genel trafik ölçümü amacıyla sunucu günlükleri veya toplulaştırılmış web analitiği kayıtları üretebilir. Bu kayıtlar sözlüğün teknik erişilebilirliğini ve kullanım yoğunluğunu görmek için değerlendirilir.</p><p>Editör modu kullanılırsa, sözlükte yapılan yerel düzenlemeler tarayıcının yerel depolama alanında saklanabilir. Bu işlev normal ziyaretçiler için zorunlu değildir.</p>",
   "cerez-politikasi": "<p class=\"lead\">Bu sürümde site, kullanıcıyı reklam veya pazarlama amacıyla takip eden bir çerez sistemi üzerine kurulmamıştır.</p><p>Sözlük araması tarayıcı içinde çalışır. Editör modunda yapılan yerel değişiklikler için tarayıcının yerel depolama alanı kullanılabilir. Yerel depolama, teknik olarak çerez değildir; ancak kullanıcının cihazında veri tutması bakımından burada ayrıca belirtilmiştir.</p><p>Barındırma ve güvenlik hizmetleri, kendi teknik işleyişleri kapsamında zorunlu sunucu kayıtları veya toplulaştırılmış istatistikler oluşturabilir. Bu kayıtlar, siteyi çalışır tutma ve erişim sorunlarını teşhis etme amacıyla sınırlı olarak değerlendirilir.</p>",
   "kullanim-sartlari": "<p class=\"lead\">Askerî Terimler Sözlüğü, akademik araştırma ve belge okuma süreçlerine yardımcı olmak amacıyla hazırlanmış çevrimiçi bir terminoloji aracıdır.</p><p>Sözlükteki karşılıklar, tarihî bağlam ve kaynak dili dikkate alınarak verilmiştir. Bununla birlikte, özellikle bağlama bağlı askerî, idarî ve kurumsal terimlerde tek bir değişmez karşılık varsayılmamalıdır. Kullanıcı, akademik yayınlarda sözlük maddelerini ilgili belge ve literatürle karşılaştırarak kullanmalıdır.</p><p>İçeriklerin izinsiz biçimde toplu kopyalanması, yeniden paketlenmesi veya sözlüğün müstakil bir veri kaynağı olarak ticari amaçla çoğaltılması uygun değildir. Akademik atıf ve sınırlı alıntı yoluyla kullanım mümkündür.</p>",
-  "iletisim": "<p class=\"lead\">Sözlük maddelerine ilişkin düzeltme, ekleme ve kaynak önerileri sistemli biçimde değerlendirilir.</p><p>Bir madde için öneri gönderilirken madde başı, önerilen karşılık, bağlam, kaynak künyesi ve mümkünse sayfa ya da belge referansı birlikte belirtilmelidir. Özellikle kişi, kurum, rütbe, birlik, yer adı ve dönem karşılığı içeren önerilerde kaynak gösterimi zorunludur.</p><p>Yayınlanacak iletişim adresi kesinleştirildiğinde bu sayfaya eklenecektir. Kurumsal veya akademik temaslarda yazarın güncel kurumsal iletişim kanalı esas alınmalıdır.</p>"
+  "iletisim": "<p class=\"lead\">Sözlük maddelerine ilişkin düzeltme, ekleme ve kaynak önerileri sistemli biçimde değerlendirilir.</p><p>Bir madde için öneri gönderilirken madde başı, önerilen karşılık, bağlam, kaynak künyesi ve mümkünse sayfa ya da belge referansı birlikte belirtilmelidir. Özellikle kişi, kurum, rütbe, birlik, yer adı ve dönem karşılığı içeren önerilerde kaynak gösterimi zorunludur.</p><p>İletişim adresi: <a href='mailto:ferdiertekin@gmail.com'>ferdiertekin@gmail.com</a></p>"
 };
 window.PAGE_CONTENT_DEFAULTS_EN = {
   "sozluk": "Additions and corrections to the dictionary are available only through editor access.",
@@ -792,7 +873,7 @@ window.PAGE_CONTENT_DEFAULTS_EN = {
   "gizlilik-politikasi": "<p class=\"lead\">This site is not designed to track dictionary users for personal profiling.<\/p><p>The site functions as an online dictionary. The search function is performed in the user’s browser. In this version, dictionary search terms are not sent to an external database for ordinary search use.<\/p><p>The hosting service may generate server logs or aggregated analytics for security, performance and general traffic measurement. These records are used to assess technical accessibility and usage intensity.<\/p><p>If editor mode is used, local edits may be stored in the browser’s local storage. This function is not required for ordinary visitors.<\/p>",
   "cerez-politikasi": "<p class=\"lead\">This version of the site is not built on a cookie system that tracks users for advertising or marketing purposes.<\/p><p>Dictionary search runs inside the browser. In editor mode, the browser’s local storage may be used for saved changes. Local storage is not technically a cookie; it is nevertheless noted here because it stores data on the user’s device.<\/p><p>Hosting and security services may create mandatory server records or aggregated statistics as part of their technical operation. These records are used only to keep the site functional and to diagnose access problems.<\/p>",
   "kullanim-sartlari": "<p class=\"lead\">The Military Terms Dictionary is an online terminology tool prepared to support academic research and document reading.<\/p><p>Equivalents in the dictionary are given with regard to historical context and source language. Especially in military, administrative and institutional terms that depend on context, no single unchangeable equivalent should be assumed. Users should compare dictionary entries with the relevant document and literature when using them in academic publications.<\/p><p>Bulk copying, repackaging or reproducing the contents as an independent commercial data source is not appropriate. Academic citation and limited quotation are permitted.<\/p>",
-  "iletisim": "<p class=\"lead\">Corrections, additions and source suggestions concerning dictionary entries are evaluated systematically.<\/p><p>When submitting a suggestion for an entry, please include the headword, proposed equivalent, context, source citation and, where possible, a page or document reference. Source indication is required especially for suggestions involving persons, institutions, ranks, units, place names and period equivalents.<\/p><p>The contact address to be published will be added to this page when finalized. For institutional or academic correspondence, the author’s current institutional contact channel should be used.<\/p>"
+  "iletisim": "<p class=\"lead\">Corrections, additions and source suggestions concerning dictionary entries are evaluated systematically.<\/p><p>When submitting a suggestion for an entry, please include the headword, proposed equivalent, context, source citation and, where possible, a page or document reference. Source indication is required especially for suggestions involving persons, institutions, ranks, units, place names and period equivalents.<\/p><p>Contact email: <a href='mailto:ferdiertekin@gmail.com'>ferdiertekin@gmail.com</a><\/p>"
 };
 
 window.DICTIONARY_META = {
@@ -9818,6 +9899,7 @@ window.DICTIONARY_DATA = [
     confidenceFilter: $("#confidenceFilter"),
     pageSizeSelect: $("#pageSizeSelect"),
     resetFiltersBtn: $("#resetFiltersBtn"),
+    resultsSection: $("#resultsSection"),
     resultsTitle: $("#resultsTitle"),
     resultsSubtitle: $("#resultsSubtitle"),
     resultsList: $("#resultsList"),
@@ -9955,6 +10037,7 @@ window.DICTIONARY_DATA = [
         state.query = els.searchInput.value;
         state.page = 1;
         renderResults();
+        scrollResultsIntoView();
       }
     });
     els.clearSearchBtn.addEventListener("click", () => {
@@ -10025,7 +10108,21 @@ window.DICTIONARY_DATA = [
     setOptions(els.confidenceFilter, [["", "Tüm güven durumları"], ...confidences.map(v => [v, v])], state.confidence);
   }
 
+
+
+  function scrollResultsIntoView() {
+    if (!els.resultsSection) return;
+    const top = els.resultsSection.getBoundingClientRect().top + window.scrollY - 14;
+    if (window.scrollY < top - 120) window.scrollTo({ top, behavior: "smooth" });
+  }
+
+  function updateSearchActiveClass() {
+    const active = Boolean((state.query || "").trim());
+    document.body.classList.toggle("search-active", active);
+  }
+
   function renderResults() {
+    updateSearchActiveClass();
     const results = searchRecords();
     const totalPages = Math.max(1, Math.ceil(results.length / state.pageSize));
     if (state.page > totalPages) state.page = totalPages;
