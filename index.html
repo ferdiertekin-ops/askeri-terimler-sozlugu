@@ -527,11 +527,9 @@ mark{background:var(--mark);color:var(--ink);border-radius:2px;padding:0 2px;fon
 .icon-btn:hover{border-color:var(--accent);background:var(--accent-soft)}
 .icon-btn:active{transform:scale(.9)}
 .drawer__content{padding:18px 24px;overflow:auto;display:grid;gap:10px;flex:1}
-.detail-row{border-bottom:1px solid var(--line);padding:12px 0}
-.detail-row:last-child{border-bottom:none}
-.detail-row small{display:block;color:var(--brass-deep);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:4px}
-.detail-row div{line-height:1.6;white-space:pre-wrap;font-size:16px;color:var(--ink)}
-.detail-row:first-child div{font-size:17px;font-weight:500}
+.detail-row{background:var(--card);border:1px solid var(--line-strong);border-radius:10px;padding:10px 13px}
+.detail-row small{display:block;color:var(--brass-deep);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-bottom:2px}
+.detail-row div{line-height:1.45;white-space:pre-wrap;font-size:16px;color:var(--ink);font-weight:600}
 .drawer-empty{color:var(--ink-soft);font-style:italic;padding:8px 0}
 .drawer__actions{display:flex;gap:8px;justify-content:flex-end;padding:14px 24px;border-top:1px solid var(--line);background:var(--card)}
 .edit-form{padding:16px 24px;overflow:auto;display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1}
@@ -10318,7 +10316,8 @@ window.DICTIONARY_DATA = [
     // Gizlenenler: Harf (yalnızca ilk harf), Madde Başı (zaten başlıkta),
     // Güven Durumu (iç editör notu) ve Kaynak Dosyadaki Karşılık (Osmanlıca ile aynı).
     const GIZLI_ALANLAR = new Set([
-      "Harf", "Madde Başı", "Güven Durumu", "Güven", "Kaynak Dosyadaki Karşılık"
+      "Harf", "Madde Başı", "Güven Durumu", "Güven", "Kaynak Dosyadaki Karşılık",
+      "Bağlam / Editör Notu", "Editör Notu"
     ]);
     const gosterilecek = sheet.headers
       .map((h, i) => [h, rec.row[i]])
