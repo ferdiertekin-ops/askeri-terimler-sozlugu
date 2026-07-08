@@ -47,14 +47,14 @@ https://online-askeri-terimler-sozlugu.netlify.app/*  https://askeriterimlersozl
 /en/contact             /en/contact/                                    301
 
 /api/content            /.netlify/functions/content                     200
-/terimler/              /.netlify/functions/terms                       200
-/terim/*                /.netlify/functions/term?slug=:splat            200
-/yayin-notu/            /.netlify/functions/page?key=yayin-notu         200
-/kaynakca/              /.netlify/functions/page?key=kaynakca           200
-/gizlilik-politikasi/   /.netlify/functions/page?key=gizlilik-politikasi 200
-/cerez-politikasi/      /.netlify/functions/page?key=cerez-politikasi   200
-/kullanim-sartlari/     /.netlify/functions/page?key=kullanim-sartlari  200
-/iletisim/              /.netlify/functions/page?key=iletisim           200
+/terimler/              /.netlify/functions/terms                       200!
+/terim/*                /.netlify/functions/term?slug=:splat            200!
+/yayin-notu/            /.netlify/functions/page?key=yayin-notu         200!
+/kaynakca/              /.netlify/functions/page?key=kaynakca           200!
+/gizlilik-politikasi/   /.netlify/functions/page?key=gizlilik-politikasi 200!
+/cerez-politikasi/      /.netlify/functions/page?key=cerez-politikasi   200!
+/kullanim-sartlari/     /.netlify/functions/page?key=kullanim-sartlari  200!
+/iletisim/              /.netlify/functions/page?key=iletisim           200!
 /en/terms/              /.netlify/functions/terms?lang=en               200
 /en/term/*              /.netlify/functions/term?lang=en&slug=:splat    200
 /en/publication-note/   /.netlify/functions/page?lang=en&key=yayin-notu 200
