@@ -526,10 +526,11 @@ mark{background:var(--mark);color:var(--ink);border-radius:2px;padding:0 2px;fon
 }
 .icon-btn:hover{border-color:var(--accent);background:var(--accent-soft)}
 .icon-btn:active{transform:scale(.9)}
-.drawer__content{padding:18px 24px;overflow:auto;display:grid;gap:10px;flex:1}
-.detail-row{border-bottom:1px solid var(--line);padding:10px 0}
-.detail-row small{display:block;color:var(--brass-deep);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:4px}
-.detail-row div{line-height:1.55;white-space:pre-wrap;font-size:14.5px}
+.drawer__content{padding:18px 24px;overflow:auto;display:grid;gap:10px;flex:1;align-content:start}
+.detail-row{background:var(--card);border:1px solid var(--line-strong);border-radius:10px;padding:10px 13px}
+.detail-row small{display:block;color:var(--brass-deep);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-bottom:2px}
+.detail-row div{line-height:1.45;white-space:pre-wrap;font-size:16px;color:var(--ink);font-weight:600}
+.drawer-empty{color:var(--ink-soft);font-style:italic;padding:8px 0}
 .drawer__actions{display:flex;gap:8px;justify-content:flex-end;padding:14px 24px;border-top:1px solid var(--line);background:var(--card)}
 .edit-form{padding:16px 24px;overflow:auto;display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1}
 .edit-form label{display:grid;gap:5px;font-size:11px;color:var(--brass-deep);font-weight:600;text-transform:uppercase;letter-spacing:.08em}
@@ -9916,8 +9917,8 @@ window.DICTIONARY_DATA = [
   init();
 
   /* ---------- editör yetkisi ---------- */
-  // Parolanın kendisi dosyada tutulmaz; yalnızca SHA-256 özeti saklanır.
-  const EDITOR_HASH = "17abd3fcd2227599977de5a6bebf6ed09c513cd40c8c3c4891b1d6f712601ffa";
+  // Parola özeti ARTIK istemcide tutulmaz. Doğrulama sunucuda
+  // (/api/content?check=auth) yapılır; gerçek yetki de yalnızca sunucudadır.
 
   function getInitialQueryFromUrl() {
     try {
@@ -9977,7 +9978,7 @@ window.DICTIONARY_DATA = [
     if (state.selected) openRecord(`${state.selected.sheetIndex}:${state.selected.rowIndex}`);
   }
 
-  function toggleEditor() {
+  async function toggleEditor() {
     if (isEditor()) {
       sessionStorage.removeItem("sozlukEditor");
       sessionStorage.removeItem("sozlukEditorPass");
@@ -9987,12 +9988,24 @@ window.DICTIONARY_DATA = [
     }
     const pass = prompt("Editor password:");
     if (pass == null) return;
-    if (sha256Hex(pass) === EDITOR_HASH) {
-      sessionStorage.setItem("sozlukEditor", "1");
-      sessionStorage.setItem("sozlukEditorPass", pass);
-      toast("Editor login completed; live editing is open.");
-    } else {
-      alert("Incorrect password. The dictionary will remain read-only.");
+    try {
+      const res = await fetch(LIVE_API + "?check=auth", {
+        method: "GET",
+        headers: { "X-Editor-Password": pass }
+      });
+      if (res.status === 429) {
+        alert("Too many failed attempts. Please wait a while and try again.");
+        return;
+      }
+      if (res.ok) {
+        sessionStorage.setItem("sozlukEditor", "1");
+        sessionStorage.setItem("sozlukEditorPass", pass);
+        toast("Editor login completed; live editing is open.");
+      } else {
+        alert("Incorrect password. The dictionary will remain read-only.");
+      }
+    } catch (err) {
+      alert("Could not reach the server; login could not be verified.");
     }
     applyEditorMode();
   }
@@ -10149,11 +10162,7 @@ window.DICTIONARY_DATA = [
           <span class="label">Modern Turkish</span>
           <div class="value">${highlight(modern || "—")}</div>
         </div>
-        <div class="badges">
-          <span class="badge sheet-badge">${escapeHtml(rec.sheet.name)}</span>
-          ${category ? `<span class="badge ${badgeClass(category)}">${escapeHtml(category)}</span>` : ""}
-          ${confidence ? `<span class="badge ${badgeClass(confidence)}">${escapeHtml(confidence)}</span>` : ""}
-        </div>
+        ${category ? `<div class="badges"><span class="badge ${badgeClass(category)}">${escapeHtml(category)}</span></div>` : ""}
       </article>`;
     }).join("");
 
@@ -10278,7 +10287,17 @@ window.DICTIONARY_DATA = [
     const rec = { sheet, sheetIndex, row: sheet.rows[rowIndex], rowIndex };
     els.drawerSheet.textContent = sheet.name;
     els.drawerTitle.textContent = field(rec, ["Madde Başı", "Terim", "İngilizce Terim", "Açılım", "Kısaltma", "İngilizce / Kurum", "Birim", "Başlık"]) || "Entry";
-    els.drawerContent.innerHTML = sheet.headers.map((h, i) => detailRow(h, rec.row[i])).join("");
+    // Sade panel: yalnızca dolu ve anlamlı alanlar gösterilir.
+    const GIZLI_ALANLAR = new Set([
+      "Harf", "Madde Başı", "Güven Durumu", "Güven", "Kaynak Dosyadaki Karşılık",
+      "Bağlam / Editör Notu", "Editör Notu"
+    ]);
+    const gosterilecek = sheet.headers
+      .map((h, i) => [h, rec.row[i]])
+      .filter(([h, v]) => !GIZLI_ALANLAR.has(h) && v != null && String(v).trim() !== "" && String(v).trim() !== "—");
+    els.drawerContent.innerHTML = gosterilecek.length
+      ? gosterilecek.map(([h, v]) => detailRow(h, v)).join("")
+      : `<p class="drawer-empty">No additional equivalents recorded for this entry besides the English headword.</p>`;
     els.editForm.hidden = true;
     els.drawerContent.hidden = false;
     els.editEntryBtn.hidden = !isEditor();
