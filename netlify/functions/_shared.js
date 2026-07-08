@@ -4,14 +4,84 @@ const defaults = require('./default-content.json');
 
 const STORE_NAME = 'ats-live-content';
 const STORE_KEY = 'live';
-const EDITOR_HASH = '17abd3fcd2227599977de5a6bebf6ed09c513cd40c8c3c4891b1d6f712601ffa';
 
-function jsonHeaders(extra = {}) { return { 'Content-Type':'application/json; charset=utf-8', 'Cache-Control':'no-store, max-age=0', 'Access-Control-Allow-Origin':'*', 'Access-Control-Allow-Headers':'Content-Type, Authorization, X-Editor-Password', 'Access-Control-Allow-Methods':'GET, POST, OPTIONS', ...extra }; }
-function htmlHeaders(extra = {}) { return { 'Content-Type':'text/html; charset=utf-8', 'Cache-Control':'public, max-age=60, s-maxage=60', ...extra }; }
-function textHeaders(extra = {}) { return { 'Content-Type':'text/plain; charset=utf-8', 'Cache-Control':'public, max-age=300, s-maxage=300', ...extra }; }
-function xmlHeaders(extra = {}) { return { 'Content-Type':'application/xml; charset=utf-8', 'Cache-Control':'public, max-age=300, s-maxage=300', ...extra }; }
+// Editör parolasının SHA-256 özeti ARTIK KAYNAK KODDA TUTULMAZ.
+// Yalnızca Netlify ortam değişkeninden (EDITOR_PASSWORD_HASH) okunur.
+// Kurulum: Netlify > Site settings > Environment variables > EDITOR_PASSWORD_HASH
+const EDITOR_HASH = (process.env.EDITOR_PASSWORD_HASH || '').trim().toLowerCase();
+
+// İçerik güvenlik politikası: fonksiyonların ürettiği HTML sayfalarında hiç
+// gömülü <script> bulunmadığından script-src 'none' verilir; böylece canlı
+// veriye enjekte edilmiş herhangi bir <script> ziyaretçide ÇALIŞMAZ.
+const PAGE_CSP = "default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data:; style-src 'unsafe-inline'; script-src 'none'; connect-src 'self'";
+const SECURITY_HEADERS = {
+  'X-Frame-Options': 'DENY',
+  'X-Content-Type-Options': 'nosniff',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload'
+};
+
+function jsonHeaders(extra = {}) { return { 'Content-Type':'application/json; charset=utf-8', 'Cache-Control':'no-store, max-age=0', 'X-Content-Type-Options':'nosniff', ...extra }; }
+function htmlHeaders(extra = {}) { return { 'Content-Type':'text/html; charset=utf-8', 'Cache-Control':'public, max-age=60, s-maxage=60', 'Content-Security-Policy': PAGE_CSP, ...SECURITY_HEADERS, ...extra }; }
+function textHeaders(extra = {}) { return { 'Content-Type':'text/plain; charset=utf-8', 'Cache-Control':'public, max-age=300, s-maxage=300', 'X-Content-Type-Options':'nosniff', ...extra }; }
+function xmlHeaders(extra = {}) { return { 'Content-Type':'application/xml; charset=utf-8', 'Cache-Control':'public, max-age=300, s-maxage=300', 'X-Content-Type-Options':'nosniff', ...extra }; }
 function hash(value) { return crypto.createHash('sha256').update(String(value || ''), 'utf8').digest('hex'); }
-function isAuthorized(event) { const h=event.headers||{}; const auth=h.authorization||h.Authorization||''; const bearer=auth.replace(/^Bearer\s+/i,'').trim(); const pass=h['x-editor-password']||h['X-Editor-Password']||bearer; return pass && hash(pass)===EDITOR_HASH; }
+
+// Sabit zamanlı karşılaştırma (timing attack'e karşı).
+function safeEqualHex(a, b) {
+  const ba = Buffer.from(String(a || ''), 'utf8');
+  const bb = Buffer.from(String(b || ''), 'utf8');
+  if (ba.length !== bb.length) return false;
+  try { return crypto.timingSafeEqual(ba, bb); } catch (e) { return false; }
+}
+
+function isAuthorized(event) {
+  // Sunucuda beklenen özet tanımlı değilse yazma tamamen kapalıdır (fail-closed).
+  if (!EDITOR_HASH || EDITOR_HASH.length !== 64) return false;
+  const h = event.headers || {};
+  const auth = h.authorization || h.Authorization || '';
+  const bearer = auth.replace(/^Bearer\s+/i, '').trim();
+  const pass = h['x-editor-password'] || h['X-Editor-Password'] || bearer;
+  if (!pass) return false;
+  return safeEqualHex(hash(pass), EDITOR_HASH);
+}
+
+// İstemci IP'si (Netlify başlıkları). Hız sınırlama için kullanılır.
+function clientIp(event) {
+  const h = event.headers || {};
+  return (h['x-nf-client-connection-ip'] || h['x-forwarded-for'] || h['client-ip'] || 'unknown')
+    .toString().split(',')[0].trim();
+}
+
+// Başarısız parola denemelerini IP başına sınırlar (sabit pencere).
+// Blob store'a küçük bir sayaç yazar. Limiter'ın kendi hatası editörü
+// kilitlemesin diye fail-open davranır; yalnızca yazma denetimini destekler.
+const RL_MAX_FAILS = 8;          // pencere başına izin verilen başarısız deneme
+const RL_WINDOW_MS = 10 * 60 * 1000; // 10 dakika
+
+async function rateLimitState(ip) {
+  try {
+    const s = store();
+    const key = 'rl:' + ip;
+    const rec = await s.get(key, { type: 'json' });
+    const now = Date.now();
+    if (rec && (now - rec.start) < RL_WINDOW_MS) return { s, key, rec, now };
+    return { s, key, rec: { start: now, fails: 0 }, now };
+  } catch (e) { return null; }
+}
+async function isRateLimited(ip) {
+  const st = await rateLimitState(ip);
+  if (!st) return false; // limiter erişilemiyorsa engelleme
+  return st.rec.fails >= RL_MAX_FAILS;
+}
+async function noteAuthFailure(ip) {
+  const st = await rateLimitState(ip);
+  if (!st) return;
+  try { st.rec.fails = (st.rec.fails || 0) + 1; await st.s.setJSON(st.key, st.rec); } catch (e) {}
+}
+async function clearAuthFailures(ip) {
+  try { await store().delete('rl:' + ip); } catch (e) {}
+}
 function store() {
   const config = { name: STORE_NAME, consistency: 'strong' };
 
@@ -117,4 +187,4 @@ function descriptionFor(key,content,lang='tr'){ const pages=lang==='en'?(content
 function altForPath(canonical,lang){ try{ const u=new URL(canonical); let p=u.pathname; const pairs=[['/','/en/'],['/terimler/','/en/terms/'],['/yayin-notu/','/en/publication-note/'],['/kaynakca/','/en/bibliography/'],['/gizlilik-politikasi/','/en/privacy-policy/'],['/cerez-politikasi/','/en/cookie-policy/'],['/kullanim-sartlari/','/en/terms-of-use/'],['/iletisim/','/en/contact/']]; for(const [tr,en] of pairs){ if(p===tr) return {tr:u.origin+tr,en:u.origin+en}; if(p===en) return {tr:u.origin+tr,en:u.origin+en}; } return {tr:u.origin+'/',en:u.origin+'/en/'}; }catch(e){ return {tr:'/',en:'/en/'}; } }
 function pageShell({ title, description, canonical, body, lang='tr' }){ const s=siteName(lang); const home=lang==='en'?'/en/':'/'; const alt=altForPath(canonical,lang); return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(title)} · ${escapeHtml(s)}</title><meta name="description" content="${escapeAttr(description)}"><meta name="robots" content="index, follow"><link rel="canonical" href="${escapeAttr(canonical)}"><link rel="alternate" hreflang="tr" href="${escapeAttr(alt.tr)}"><link rel="alternate" hreflang="en" href="${escapeAttr(alt.en)}"><link rel="alternate" hreflang="x-default" href="${escapeAttr(alt.tr)}"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" href="/favicon-96.png" sizes="96x96"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><style>${css()}</style></head><body><div class="site"><header class="topbar"><a class="brand" href="${home}" aria-label="${escapeAttr(s)}"><img class="brand__logo" src="/ats-logo.png" alt="ATS"><span class="brand__name">${escapeHtml(s)}</span></a>${langSwitch(lang)}</header>${navHtml(lang)}<main><h1>${escapeHtml(title)}</h1>${body}</main><footer class="site-footer"><p>© 2026 Ferdi Ertekin · ${escapeHtml(s)}</p></footer></div></body></html>`; }
 function xmlEscape(value){ return String(value==null?'':value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;'); }
-module.exports={ defaults,jsonHeaders,htmlHeaders,textHeaders,xmlHeaders,isAuthorized,readContent,writeContent,escapeHtml,escapeAttr,stripHtml,slugify,allRecords,field,termTitle,termSlug,canonicalBase,langFromEvent,siteName,pageTitleFor,descriptionFor,pageShell,xmlEscape };
+module.exports={ defaults,jsonHeaders,htmlHeaders,textHeaders,xmlHeaders,isAuthorized,readContent,writeContent,escapeHtml,escapeAttr,stripHtml,slugify,allRecords,field,termTitle,termSlug,canonicalBase,langFromEvent,siteName,pageTitleFor,descriptionFor,pageShell,xmlEscape,clientIp,isRateLimited,noteAuthFailure,clearAuthFailures };
