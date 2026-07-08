@@ -527,9 +527,12 @@ mark{background:var(--mark);color:var(--ink);border-radius:2px;padding:0 2px;fon
 .icon-btn:hover{border-color:var(--accent);background:var(--accent-soft)}
 .icon-btn:active{transform:scale(.9)}
 .drawer__content{padding:18px 24px;overflow:auto;display:grid;gap:10px;flex:1}
-.detail-row{border-bottom:1px solid var(--line);padding:10px 0}
+.detail-row{border-bottom:1px solid var(--line);padding:12px 0}
+.detail-row:last-child{border-bottom:none}
 .detail-row small{display:block;color:var(--brass-deep);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:4px}
-.detail-row div{line-height:1.55;white-space:pre-wrap;font-size:14.5px}
+.detail-row div{line-height:1.6;white-space:pre-wrap;font-size:16px;color:var(--ink)}
+.detail-row:first-child div{font-size:17px;font-weight:500}
+.drawer-empty{color:var(--ink-soft);font-style:italic;padding:8px 0}
 .drawer__actions{display:flex;gap:8px;justify-content:flex-end;padding:14px 24px;border-top:1px solid var(--line);background:var(--card)}
 .edit-form{padding:16px 24px;overflow:auto;display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1}
 .edit-form label{display:grid;gap:5px;font-size:11px;color:var(--brass-deep);font-weight:600;text-transform:uppercase;letter-spacing:.08em}
@@ -10186,11 +10189,7 @@ window.DICTIONARY_DATA = [
           <span class="label">Günümüz Türkçesi</span>
           <div class="value">${highlight(modern || "—")}</div>
         </div>
-        <div class="badges">
-          <span class="badge sheet-badge">${escapeHtml(rec.sheet.name)}</span>
-          ${category ? `<span class="badge ${badgeClass(category)}">${escapeHtml(category)}</span>` : ""}
-          ${confidence ? `<span class="badge ${badgeClass(confidence)}">${escapeHtml(confidence)}</span>` : ""}
-        </div>
+        ${category ? `<div class="badges"><span class="badge ${badgeClass(category)}">${escapeHtml(category)}</span></div>` : ""}
       </article>`;
     }).join("");
 
@@ -10315,7 +10314,18 @@ window.DICTIONARY_DATA = [
     const rec = { sheet, sheetIndex, row: sheet.rows[rowIndex], rowIndex };
     els.drawerSheet.textContent = sheet.name;
     els.drawerTitle.textContent = field(rec, ["Madde Başı", "Terim", "İngilizce Terim", "Açılım", "Kısaltma", "İngilizce / Kurum", "Birim", "Başlık"]) || "Madde";
-    els.drawerContent.innerHTML = sheet.headers.map((h, i) => detailRow(h, rec.row[i])).join("");
+    // Sade panel: yalnızca dolu ve anlamlı alanlar gösterilir.
+    // Gizlenenler: Harf (yalnızca ilk harf), Madde Başı (zaten başlıkta),
+    // Güven Durumu (iç editör notu) ve Kaynak Dosyadaki Karşılık (Osmanlıca ile aynı).
+    const GIZLI_ALANLAR = new Set([
+      "Harf", "Madde Başı", "Güven Durumu", "Güven", "Kaynak Dosyadaki Karşılık"
+    ]);
+    const gosterilecek = sheet.headers
+      .map((h, i) => [h, rec.row[i]])
+      .filter(([h, v]) => !GIZLI_ALANLAR.has(h) && v != null && String(v).trim() !== "" && String(v).trim() !== "—");
+    els.drawerContent.innerHTML = gosterilecek.length
+      ? gosterilecek.map(([h, v]) => detailRow(h, v)).join("")
+      : `<p class="drawer-empty">Bu madde için İngilizce başlık dışında ek karşılık kaydı bulunmuyor.</p>`;
     els.editForm.hidden = true;
     els.drawerContent.hidden = false;
     els.editEntryBtn.hidden = !isEditor();
