@@ -9941,8 +9941,8 @@ window.DICTIONARY_DATA = [
   init();
 
   /* ---------- editör yetkisi ---------- */
-  // Parolanın kendisi dosyada tutulmaz; yalnızca SHA-256 özeti saklanır.
-  const EDITOR_HASH = "17abd3fcd2227599977de5a6bebf6ed09c513cd40c8c3c4891b1d6f712601ffa";
+  // Parola özeti ARTIK istemcide tutulmaz. Doğrulama sunucuda
+  // (/api/content?check=auth) yapılır; gerçek yetki de yalnızca sunucudadır.
 
   function getInitialQueryFromUrl() {
     try {
@@ -10002,7 +10002,7 @@ window.DICTIONARY_DATA = [
     if (state.selected) openRecord(`${state.selected.sheetIndex}:${state.selected.rowIndex}`);
   }
 
-  function toggleEditor() {
+  async function toggleEditor() {
     if (isEditor()) {
       sessionStorage.removeItem("sozlukEditor");
       sessionStorage.removeItem("sozlukEditorPass");
@@ -10012,12 +10012,24 @@ window.DICTIONARY_DATA = [
     }
     const pass = prompt("Editör parolası:");
     if (pass == null) return;
-    if (sha256Hex(pass) === EDITOR_HASH) {
-      sessionStorage.setItem("sozlukEditor", "1");
-      sessionStorage.setItem("sozlukEditorPass", pass);
-      toast("Editör girişi yapıldı; canlı düzenleme açık.");
-    } else {
-      alert("Parola hatalı. Sözlük salt okunur durumda kalacaktır.");
+    try {
+      const res = await fetch(LIVE_API + "?check=auth", {
+        method: "GET",
+        headers: { "X-Editor-Password": pass }
+      });
+      if (res.status === 429) {
+        alert("Çok fazla hatalı deneme yapıldı. Lütfen bir süre bekleyip yeniden deneyin.");
+        return;
+      }
+      if (res.ok) {
+        sessionStorage.setItem("sozlukEditor", "1");
+        sessionStorage.setItem("sozlukEditorPass", pass);
+        toast("Editör girişi yapıldı; canlı düzenleme açık.");
+      } else {
+        alert("Parola hatalı. Sözlük salt okunur durumda kalacaktır.");
+      }
+    } catch (err) {
+      alert("Sunucuya ulaşılamadı; giriş doğrulanamadı.");
     }
     applyEditorMode();
   }
