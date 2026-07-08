@@ -667,7 +667,7 @@ body.search-active .toolbar{padding:4px 0 6px!important}
 body.search-active .results{padding-top:4px!important}
 
 </style>
-<!-- Editör dışa aktarımı: 2026-07-07T18:41:10.858Z -->
+<!-- Editör dışa aktarımı: 2026-07-08T20:07:33.835Z -->
 <!-- Son düzenlemeler ve tekilleştirme ChatGPT tarafından kontrol edilip paketlendi: 2026-07-06T19:25:00+03:00 -->
 <!-- SEO ve teknik erişim dosyaları eklendi: 2026-07-07T18:46:25+00:00 -->
 </head>
@@ -685,7 +685,7 @@ body.search-active .results{padding-top:4px!important}
         <button id="downloadPublishBtn" class="btn" hidden="">⬇ Yedek yayın paketini indir</button>
       </div>
     </header>
-    <nav class="site-nav" aria-label="Site bağlantıları">
+    <nav id="siteNav" class="site-nav" aria-label="Site bağlantıları">
       <a href="/">Sözlük</a>
       <a href="/terimler/">Terimler Dizini</a>
       <a href="/yayin-notu/">Yayın Notu</a>
@@ -783,7 +783,7 @@ body.search-active .results{padding-top:4px!important}
       <div class="page-editor__head">
         <div>
           <h2>Sayfa Metinleri</h2>
-          <p>Sözlük, yayın notu, kaynakça, gizlilik, çerez, kullanım şartları ve iletişim metinleri editör girişiyle düzenlenebilir. Kaydet butonu değişiklikleri canlı yayın verisine işler; yedek ZIP yalnızca arşiv amaçlıdır.</p>
+          <p>Sözlük, yayın notu, kaynakça, gizlilik, çerez, kullanım şartları ve iletişim metinleri editör girişiyle düzenlenebilir. "Menü / Alt Bağlantılar" seçeneğinde her satır <code>Ad | /adres/</code> biçiminde yazılır (üst menü ve alttaki bağlantılar bu listeden üretilir). Kaydet butonu değişiklikleri canlı yayın verisine işler; yedek ZIP yalnızca arşiv amaçlıdır.</p>
         </div>
       </div>
       <div class="page-editor__controls">
@@ -837,7 +837,7 @@ body.search-active .results{padding-top:4px!important}
 
     <footer class="site-footer" aria-label="Alt bağlantılar">
       <p>© 2026 Ferdi Ertekin · Çevrimiçi Askerî Terimler Sözlüğü (1880–1918)</p>
-      <p><a href="/">Sözlük</a> · <a href="/terimler/">Terimler Dizini</a> · <a href="/yayin-notu/">Yayın Notu</a> · <a href="/kaynakca/">Kaynakça</a> · <a href="/gizlilik-politikasi/">Gizlilik</a> · <a href="/cerez-politikasi/">Çerezler</a> · <a href="/kullanim-sartlari/">Kullanım Şartları</a> · <a href="/iletisim/">İletişim</a></p>
+      <p id="siteFooterLinks"><a href="/">Sözlük</a> · <a href="/terimler/">Terimler Dizini</a> · <a href="/yayin-notu/">Yayın Notu</a> · <a href="/kaynakca/">Kaynakça</a> · <a href="/gizlilik-politikasi/">Gizlilik</a> · <a href="/cerez-politikasi/">Çerezler</a> · <a href="/kullanim-sartlari/">Kullanım Şartları</a> · <a href="/iletisim/">İletişim</a></p>
     </footer>
   </div>
 
@@ -867,30 +867,20 @@ body.search-active .results{padding-top:4px!important}
 <script>
 window.PAGE_CONTENT_DEFAULTS = {
   "sozluk": "Sözlükte yapılan ekleme ve düzeltmeler yalnızca editör girişiyle mümkündür.",
-  "yayin-notu": "<p class=\"lead\">Askerî Terimler Sözlüğü, 1880–1918 aralığındaki askerî tarih, teşkilat, rütbe, idarî yapı ve belge terminolojisine odaklanan çevrimiçi bir başvuru aracıdır.</p><p>Bu sözlük, İngiliz askerî istihbarat raporları üzerine yürütülen arşiv çalışmaları sırasında derlenmiştir. Maddelerde İngilizce terim, Osmanlıca veya dönem karşılığı, günümüz Türkçesi ve editör notu birlikte gösterilmeye çalışılmıştır. Amaç, tek kelimelik mekanik karşılıklar üretmek değil, terimlerin tarihî bağlamdaki kullanımını denetlenebilir biçimde görünür kılmaktır.</p><p>Site beta sürümdedir. Bu nedenle bazı maddelerde “kontrol”, “askıda” veya bağlama bağlılık notları bulunabilir. Kesinliği şüpheli karşılıklar, kaynak ve bağlam denetimi tamamlanmadan mutlak hüküm olarak değerlendirilmemelidir.</p>",
-  "kaynakca": "<p class=\"lead\">Bu bölüm, sözlüğün hazırlanmasında ve terim karşılıklarının denetlenmesinde kullanılan başlıca arşiv koleksiyonlarını gösterir. Liste, mükerrer kurum başlıkları birleştirilerek düzenlenmiştir.</p>\n<h2>The National Archives (TNA)</h2>\n<h3>Foreign Office (FO)</h3>\n<p><strong>FO 195/2346:</strong> No. 1, No. 3, No. 4, No. 5, No. 6, No. 7, No. 8, No. 11, No. 12, No. 13, No. 15, No. 16, No. 17, No. 19, No. 20, No. 21, No. 23, No. 24, No. 25, No. 26, No. 27, No. 28, No. 30, No. 31, No. 32, No. 33, No. 34, No. 35, No. 36, No. 37, No. 38, No. 39, No. 40, No. 42, No. 44, No. 45, No. 48, No. 51, No. 52, No. 54, No. 55, No. 56, No. 58, No. 59, No. 60, No. 61, No. 63, No. 65, No. 66, No. 67, No. 68, No. 69, No. 70, No. 71, No. 72, No. 76, Kahire (Ek).</p>\n<p>FO 195/1664, FO 195/1718, FO 195/1759, FO 195/1794, FO 195/1837, FO 195/1880, FO 195/1929, FO 195/1974, FO 195/2016, FO 195/2053, FO 195/2107, FO 195/2128, FO 195/2150, FO 195/2176, FO 195/2200, FO 195/2226, FO 195/2290.</p>\n<h3>Record of the Security Service (KV)</h3>\n<p>KV 1/4.</p>\n<h3>War Office (WO)</h3>\n<p>WO 106/42, WO 106/6285.</p>\n<h3>Cabinet Office Files (CAB)</h3>\n<p>CAB 24/6/26, CAB 37/61, CAB 37/74/16, CAB 37/75/45, CAB 37/18, CAB 37/37, CAB 37/38, CAB 37/43/59, CAB 37/47/35, CAB 37/86/10, CAB 38/2, CAB 38/3, CAB 37/92/61, CAB 37/95/135, CAB 37/95/134, CAB 37/95/137.</p>\n<h2>The British Library</h2>\n<h3>India Office Records and Private Papers</h3>\n<p>IOR/L/MIL/17/15/21.</p>\n<h2>Kullanım notu</h2>\n<p>Bu kaynakça, sözlüğün arşiv temelli karakterini göstermek amacıyla yayımlanmıştır. Tekil sözlük maddelerinde geçen karşılıklar, ilgili belge bağlamı ve dönem literatürüyle birlikte değerlendirilmelidir.</p>",
-  "gizlilik-politikasi": "<p class=\"lead\">Bu site, sözlük kullanıcısını kişisel profil çıkarmaya yönelik biçimde izlemek amacıyla tasarlanmamıştır.</p><p>Site statik bir çevrimiçi sözlük olarak çalışır. Arama işlevi kullanıcının tarayıcısında gerçekleşir. Sözlük araması için girilen terimler, bu statik sürümde haricî bir veri tabanına gönderilmez.</p><p>Barındırma hizmeti, güvenlik, performans ve genel trafik ölçümü amacıyla sunucu günlükleri veya toplulaştırılmış web analitiği kayıtları üretebilir. Bu kayıtlar sözlüğün teknik erişilebilirliğini ve kullanım yoğunluğunu görmek için değerlendirilir.</p><p>Editör modu kullanılırsa, sözlükte yapılan yerel düzenlemeler tarayıcının yerel depolama alanında saklanabilir. Bu işlev normal ziyaretçiler için zorunlu değildir.</p>",
-  "cerez-politikasi": "<p class=\"lead\">Bu sürümde site, kullanıcıyı reklam veya pazarlama amacıyla takip eden bir çerez sistemi üzerine kurulmamıştır.</p><p>Sözlük araması tarayıcı içinde çalışır. Editör modunda yapılan yerel değişiklikler için tarayıcının yerel depolama alanı kullanılabilir. Yerel depolama, teknik olarak çerez değildir; ancak kullanıcının cihazında veri tutması bakımından burada ayrıca belirtilmiştir.</p><p>Barındırma ve güvenlik hizmetleri, kendi teknik işleyişleri kapsamında zorunlu sunucu kayıtları veya toplulaştırılmış istatistikler oluşturabilir. Bu kayıtlar, siteyi çalışır tutma ve erişim sorunlarını teşhis etme amacıyla sınırlı olarak değerlendirilir.</p>",
-  "kullanim-sartlari": "<p class=\"lead\">Askerî Terimler Sözlüğü, akademik araştırma ve belge okuma süreçlerine yardımcı olmak amacıyla hazırlanmış çevrimiçi bir terminoloji aracıdır.</p><p>Sözlükteki karşılıklar, tarihî bağlam ve kaynak dili dikkate alınarak verilmiştir. Bununla birlikte, özellikle bağlama bağlı askerî, idarî ve kurumsal terimlerde tek bir değişmez karşılık varsayılmamalıdır. Kullanıcı, akademik yayınlarda sözlük maddelerini ilgili belge ve literatürle karşılaştırarak kullanmalıdır.</p><p>İçeriklerin izinsiz biçimde toplu kopyalanması, yeniden paketlenmesi veya sözlüğün müstakil bir veri kaynağı olarak ticari amaçla çoğaltılması uygun değildir. Akademik atıf ve sınırlı alıntı yoluyla kullanım mümkündür.</p>",
-  "iletisim": "<p class=\"lead\">Sözlük maddelerine ilişkin düzeltme, ekleme ve kaynak önerileri sistemli biçimde değerlendirilir.</p><p>Bir madde için öneri gönderilirken madde başı, önerilen karşılık, bağlam, kaynak künyesi ve mümkünse sayfa ya da belge referansı birlikte belirtilmelidir. Özellikle kişi, kurum, rütbe, birlik, yer adı ve dönem karşılığı içeren önerilerde kaynak gösterimi zorunludur.</p><p>İletişim adresi: <a href='mailto:ferdiertekin@gmail.com'>ferdiertekin@gmail.com</a></p>"
+  "yayin-notu": "<p class=\"lead\">Askerî Terimler Sözlüğü, 1880–1918 aralığındaki askerî tarih, teşkilat, rütbe, idarî yapı ve belge terminolojisine odaklanan çevrimiçi bir başvuru aracıdır.<\/p><p>Bu sözlük, İngiliz askerî istihbarat raporları üzerine yürütülen arşiv çalışmaları sırasında derlenmiştir. Maddelerde İngilizce terim, Osmanlıca veya dönem karşılığı, günümüz Türkçesi ve editör notu birlikte gösterilmeye çalışılmıştır. Amaç, tek kelimelik mekanik karşılıklar üretmek değil, terimlerin tarihî bağlamdaki kullanımını denetlenebilir biçimde görünür kılmaktır.<\/p><p>Site beta sürümdedir. Bu nedenle bazı maddelerde “kontrol”, “askıda” veya bağlama bağlılık notları bulunabilir. Kesinliği şüpheli karşılıklar, kaynak ve bağlam denetimi tamamlanmadan mutlak hüküm olarak değerlendirilmemelidir.<\/p>",
+  "kaynakca": "<p class=\"lead\">Bu bölüm, sözlüğün hazırlanmasında ve terim karşılıklarının denetlenmesinde kullanılan başlıca arşiv koleksiyonlarını göstermekter. <\/p>\nKAYNAKÇA\nHandbook of the Turkish Army. Eighth Provisional Edition. Cairo: Intelligence Section, February 1916.\n<h2>The National Archives (TNA)<\/h2>\n<h3>Foreign Office (FO)<\/h3>\n<p><strong>FO 195/2346:<\/strong> No. 1, No. 3, No. 4, No. 5, No. 6, No. 7, No. 8, No. 11, No. 12, No. 13, No. 15, No. 16, No. 17, No. 19, No. 20, No. 21, No. 23, No. 24, No. 25, No. 26, No. 27, No. 28, No. 30, No. 31, No. 32, No. 33, No. 34, No. 35, No. 36, No. 37, No. 38, No. 39, No. 40, No. 42, No. 44, No. 45, No. 48, No. 51, No. 52, No. 54, No. 55, No. 56, No. 58, No. 59, No. 60, No. 61, No. 63, No. 65, No. 66, No. 67, No. 68, No. 69, No. 70, No. 71, No. 72, No. 76, Kahire (Ek).<\/p>\n<p>FO 195/1664, FO 195/1718, FO 195/1759, FO 195/1794, FO 195/1837, FO 195/1880, FO 195/1929, FO 195/1974, FO 195/2016, FO 195/2053, FO 195/2107, FO 195/2128, FO 195/2150, FO 195/2176, FO 195/2200, FO 195/2226, FO 195/2290.<\/p>\n<h3>Record of the Security Service (KV)<\/h3>\n<p>KV 1/4.<\/p>\n<h3>War Office (WO)<\/h3>\n<p>WO 106/42, WO 106/6285.<\/p>\n<h3>Cabinet Office Files (CAB)<\/h3>\n<p>CAB 24/6/26, CAB 37/61, CAB 37/74/16, CAB 37/75/45, CAB 37/18, CAB 37/37, CAB 37/38, CAB 37/43/59, CAB 37/47/35, CAB 37/86/10, CAB 38/2, CAB 38/3, CAB 37/92/61, CAB 37/95/135, CAB 37/95/134, CAB 37/95/137.<\/p>\n<h2>The British Library<\/h2>\n<h3>India Office Records and Private Papers<\/h3>\n<p>IOR/L/MIL/17/15/21.<\/p>\n<h2>Kullanım notu<\/h2>\n<p>Bu kaynakça, sözlüğün arşiv temelli karakterini göstermek amacıyla yayımlanmıştır. Tekil sözlük maddelerinde geçen karşılıklar, ilgili belge bağlamı ve dönem literatürüyle birlikte değerlendirilmelidir.<\/p>",
+  "gizlilik-politikasi": "<p class=\"lead\">Bu site, sözlük kullanıcısını kişisel profil çıkarmaya yönelik biçimde izlemek amacıyla tasarlanmamıştır.<\/p><p>Site statik bir çevrimiçi sözlük olarak çalışır. Arama işlevi kullanıcının tarayıcısında gerçekleşir. Sözlük araması için girilen terimler, bu statik sürümde haricî bir veri tabanına gönderilmez.<\/p><p>Barındırma hizmeti, güvenlik, performans ve genel trafik ölçümü amacıyla sunucu günlükleri veya toplulaştırılmış web analitiği kayıtları üretebilir. Bu kayıtlar sözlüğün teknik erişilebilirliğini ve kullanım yoğunluğunu görmek için değerlendirilir.<\/p><p>Editör modu kullanılırsa, sözlükte yapılan yerel düzenlemeler tarayıcının yerel depolama alanında saklanabilir. Bu işlev normal ziyaretçiler için zorunlu değildir.<\/p>",
+  "cerez-politikasi": "<p class=\"lead\">Bu sürümde site, kullanıcıyı reklam veya pazarlama amacıyla takip eden bir çerez sistemi üzerine kurulmamıştır.<\/p><p>Sözlük araması tarayıcı içinde çalışır. Editör modunda yapılan yerel değişiklikler için tarayıcının yerel depolama alanı kullanılabilir. Yerel depolama, teknik olarak çerez değildir; ancak kullanıcının cihazında veri tutması bakımından burada ayrıca belirtilmiştir.<\/p><p>Barındırma ve güvenlik hizmetleri, kendi teknik işleyişleri kapsamında zorunlu sunucu kayıtları veya toplulaştırılmış istatistikler oluşturabilir. Bu kayıtlar, siteyi çalışır tutma ve erişim sorunlarını teşhis etme amacıyla sınırlı olarak değerlendirilir.<\/p>",
+  "kullanim-sartlari": "<p class=\"lead\">Askerî Terimler Sözlüğü, akademik araştırma ve belge okuma süreçlerine yardımcı olmak amacıyla hazırlanmış çevrimiçi bir terminoloji aracıdır.<\/p><p>Sözlükteki karşılıklar, tarihî bağlam ve kaynak dili dikkate alınarak verilmiştir. Bununla birlikte, özellikle bağlama bağlı askerî, idarî ve kurumsal terimlerde tek bir değişmez karşılık varsayılmamalıdır. Kullanıcı, akademik yayınlarda sözlük maddelerini ilgili belge ve literatürle karşılaştırarak kullanmalıdır.<\/p><p>İçeriklerin izinsiz biçimde toplu kopyalanması, yeniden paketlenmesi veya sözlüğün müstakil bir veri kaynağı olarak ticari amaçla çoğaltılması uygun değildir. Akademik atıf ve sınırlı alıntı yoluyla kullanım mümkündür.<\/p>",
+  "iletisim": "<p class=\"lead\">Sözlük maddelerine ilişkin düzeltme, ekleme ve kaynak önerileri sistemli biçimde değerlendirilir.<\/p><p>Bir madde için öneri gönderilirken madde başı, önerilen karşılık, bağlam, kaynak künyesi ve mümkünse sayfa ya da belge referansı birlikte belirtilmelidir. Özellikle kişi, kurum, rütbe, birlik, yer adı ve dönem karşılığı içeren önerilerde kaynak gösterimi zorunludur.<\/p><p>İletişim adresi: <a href='mailto:ferdiertekin@gmail.com'>ferdiertekin@gmail.com<\/a><\/p>"
 };
-window.PAGE_CONTENT_DEFAULTS_EN = {
-  "sozluk": "Additions and corrections to the dictionary are available only through editor access.",
-  "yayin-notu": "<p class=\"lead\">The Military Terms Dictionary is an online reference tool focused on military history, organization, ranks, administrative structures and document terminology for the period 1880–1918.<\/p><p>The dictionary was compiled during archival work on British military intelligence reports. Entries aim to display the English term, Ottoman or period equivalent, modern Turkish rendering and editorial note together where possible. The purpose is not to produce mechanical one-word equivalents, but to make the historical use of terms visible in a verifiable manner.<\/p><p>The site is currently in beta. Some entries may therefore contain “to be checked”, “pending” or context-dependent notes. Equivalents whose certainty remains doubtful should not be treated as definitive before source and context verification is complete.<\/p>",
-  "kaynakca": "<p class=\"lead\">This section lists the principal archival collections used in preparing the dictionary and checking term equivalents. Duplicate institutional headings have been consolidated.<\/p>\n<h2>The National Archives (TNA)<\/h2>\n<h3>Foreign Office (FO)<\/h3>\n<p><strong>FO 195/2346:<\/strong> No. 1, No. 3, No. 4, No. 5, No. 6, No. 7, No. 8, No. 11, No. 12, No. 13, No. 15, No. 16, No. 17, No. 19, No. 20, No. 21, No. 23, No. 24, No. 25, No. 26, No. 27, No. 28, No. 30, No. 31, No. 32, No. 33, No. 34, No. 35, No. 36, No. 37, No. 38, No. 39, No. 40, No. 42, No. 44, No. 45, No. 48, No. 51, No. 52, No. 54, No. 55, No. 56, No. 58, No. 59, No. 60, No. 61, No. 63, No. 65, No. 66, No. 67, No. 68, No. 69, No. 70, No. 71, No. 72, No. 76, Kahire (Ek).<\/p>\n<p>FO 195/1664, FO 195/1718, FO 195/1759, FO 195/1794, FO 195/1837, FO 195/1880, FO 195/1929, FO 195/1974, FO 195/2016, FO 195/2053, FO 195/2107, FO 195/2128, FO 195/2150, FO 195/2176, FO 195/2200, FO 195/2226, FO 195/2290.<\/p>\n<h3>Record of the Security Service (KV)<\/h3>\n<p>KV 1/4.<\/p>\n<h3>War Office (WO)<\/h3>\n<p>WO 106/42, WO 106/6285.<\/p>\n<h3>Cabinet Office Files (CAB)<\/h3>\n<p>CAB 24/6/26, CAB 37/61, CAB 37/74/16, CAB 37/75/45, CAB 37/18, CAB 37/37, CAB 37/38, CAB 37/43/59, CAB 37/47/35, CAB 37/86/10, CAB 38/2, CAB 38/3, CAB 37/92/61, CAB 37/95/135, CAB 37/95/134, CAB 37/95/137.<\/p>\n<h2>The British Library<\/h2>\n<h3>India Office Records and Private Papers<\/h3>\n<p>IOR/L/MIL/17/15/21.<\/p>\n<h2>Usage note<\/h2>\n<p>This bibliography is published to indicate the archive-based character of the dictionary. Equivalents appearing in individual dictionary entries should be assessed together with the relevant document context and period literature.<\/p>",
-  "gizlilik-politikasi": "<p class=\"lead\">This site is not designed to track dictionary users for personal profiling.<\/p><p>The site functions as an online dictionary. The search function is performed in the user’s browser. In this version, dictionary search terms are not sent to an external database for ordinary search use.<\/p><p>The hosting service may generate server logs or aggregated analytics for security, performance and general traffic measurement. These records are used to assess technical accessibility and usage intensity.<\/p><p>If editor mode is used, local edits may be stored in the browser’s local storage. This function is not required for ordinary visitors.<\/p>",
-  "cerez-politikasi": "<p class=\"lead\">This version of the site is not built on a cookie system that tracks users for advertising or marketing purposes.<\/p><p>Dictionary search runs inside the browser. In editor mode, the browser’s local storage may be used for saved changes. Local storage is not technically a cookie; it is nevertheless noted here because it stores data on the user’s device.<\/p><p>Hosting and security services may create mandatory server records or aggregated statistics as part of their technical operation. These records are used only to keep the site functional and to diagnose access problems.<\/p>",
-  "kullanim-sartlari": "<p class=\"lead\">The Military Terms Dictionary is an online terminology tool prepared to support academic research and document reading.<\/p><p>Equivalents in the dictionary are given with regard to historical context and source language. Especially in military, administrative and institutional terms that depend on context, no single unchangeable equivalent should be assumed. Users should compare dictionary entries with the relevant document and literature when using them in academic publications.<\/p><p>Bulk copying, repackaging or reproducing the contents as an independent commercial data source is not appropriate. Academic citation and limited quotation are permitted.<\/p>",
-  "iletisim": "<p class=\"lead\">Corrections, additions and source suggestions concerning dictionary entries are evaluated systematically.<\/p><p>When submitting a suggestion for an entry, please include the headword, proposed equivalent, context, source citation and, where possible, a page or document reference. Source indication is required especially for suggestions involving persons, institutions, ranks, units, place names and period equivalents.<\/p><p>Contact email: <a href='mailto:ferdiertekin@gmail.com'>ferdiertekin@gmail.com</a><\/p>"
-};
-
 window.DICTIONARY_META = {
   "title": "Çevrimiçi Askerî Terimler Sözlüğü (1880–1918)",
   "subtitle": "İngilizce-Türkçe ve Türkçe-İngilizce arama yapılabilen açıklamalı online askerî terimler sözlüğü.",
-  "generated_at": "2026-07-07T18:41:10.858Z",
+  "generated_at": "2026-07-08T20:07:33.835Z",
   "institution_translation_principle": "İngiliz/Britanya kurumları modern Türkçe kurum diliyle çevrilir: War Office = Savaş Bakanlığı. Osmanlı kurumları dönem adıyla verilir: Harbiye Nezareti.",
   "source": "nihai_aranabilir_askeri_terimler_sozlugu.xlsx",
-  "editor_exported_at": "2026-07-07T18:41:10.858Z",
+  "editor_exported_at": "2026-07-08T20:07:33.835Z",
   "editor_export_note": "Bu dosya editör modunda yapılan son yerel düzenlemeler gömülerek oluşturulmuştur."
 };
 window.DICTIONARY_DATA = [
@@ -908,6 +898,919 @@ window.DICTIONARY_DATA = [
       "Kaynak Dosyadaki Karşılık"
     ],
     "rows": [
+      [
+        "G",
+        "General Staff College",
+        "",
+        "Erkân-ı Harbiye Mektebi",
+        "",
+        "",
+        "",
+        "Handbook of the Turkish Army",
+        ""
+      ],
+      [
+        "D",
+        "Doctor",
+        "",
+        "Tabib, hekim",
+        "",
+        "",
+        "",
+        "Handbook of the Turkish Army",
+        ""
+      ],
+      [
+        "M",
+        "Military doctor",
+        "",
+        "Askerî tabib",
+        "",
+        "",
+        "",
+        "Handbook of the Turkish Army",
+        ""
+      ],
+      [
+        "A",
+        "Apothecary",
+        "",
+        "Eczacı",
+        "",
+        "",
+        "",
+        "Handbook of the Turkish Army",
+        ""
+      ],
+      [
+        "O",
+        "Officer substitute",
+        "",
+        "Zabit vekili",
+        "",
+        "",
+        "",
+        "Handbook of the Turkish Army",
+        ""
+      ],
+      [
+        "",
+        "Composite company",
+        "",
+        "Müretteb bölük",
+        "",
+        "",
+        "",
+        "Handbook of the Turkish Army",
+        ""
+      ],
+      [
+        "S",
+        "Section Leader (Scout)",
+        "",
+        "Oymak Beyi",
+        "",
+        "",
+        "",
+        "Handbook of the Turkish Army",
+        ""
+      ],
+      [
+        "C",
+        "Chief scout",
+        "",
+        "Başbuğ",
+        "",
+        "",
+        "",
+        "Handbook of the Turkish Army",
+        ""
+      ],
+      [
+        "C",
+        "Court of revision",
+        "",
+        "Temyiz",
+        "",
+        "",
+        "",
+        "Handbook of the Turkish Army",
+        ""
+      ],
+      [
+        "",
+        "Special court martial",
+        "",
+        "Dîvân-ı Harb-i Örfî",
+        "",
+        "",
+        "",
+        "Handbook of the Turkish Army",
+        ""
+      ],
+      [
+        "D",
+        "Divisional medical officer",
+        "",
+        "Fırka Tabibi",
+        "",
+        "",
+        "",
+        "Handbook of the Turkish Army",
+        ""
+      ],
+      [
+        "B",
+        "Brigade medical officer",
+        "",
+        "Liva/Tugay Tabibi",
+        "",
+        "",
+        "",
+        "Handbook of the Turkish Army",
+        ""
+      ],
+      [
+        "R",
+        "Regimental medical officer",
+        "",
+        "Alay Tabibi",
+        "",
+        "",
+        "",
+        "Handbook of the Turkish Army",
+        ""
+      ],
+      [
+        "A",
+        "Assistant sergeant-major",
+        "",
+        "Başçavuş muavini",
+        "",
+        "",
+        "",
+        "Handbook of the Turkish Army",
+        ""
+      ],
+      [
+        "D",
+        "District governor",
+        "",
+        "Mutasarrıf",
+        "",
+        "İdari",
+        "",
+        "Handbook of the Turkish Army",
+        ""
+      ],
+      [
+        "C",
+        "Caliph",
+        "",
+        "Halife",
+        "",
+        "",
+        "",
+        "Handbook of the Turkish Army",
+        ""
+      ],
+      [
+        "G",
+        "Grand Vizier",
+        "",
+        "Sadrazam, Vezîriazâm",
+        "",
+        "",
+        "",
+        "Handbook of the Turkish Army",
+        ""
+      ],
+      [
+        "P",
+        "Parish",
+        "",
+        "Nahiye",
+        "",
+        "İdari",
+        "",
+        "Handbook of the Turkish Army",
+        ""
+      ],
+      [
+        "Yeni",
+        "Yeni madde",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "Yeni / kontrol",
+        ""
+      ],
+      [
+        "A",
+        "Active Army",
+        "",
+        "Nizam",
+        "",
+        "",
+        "Handbook of the Turkish Army",
+        "",
+        ""
+      ],
+      [
+        "M",
+        "Military band",
+        "",
+        "Muzika-i Hümâyun",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "W",
+        "Whip",
+        "",
+        "Kırbaç",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "P",
+        "Pack-saddle",
+        "",
+        "Semer",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "A",
+        "Assistance",
+        "",
+        "İmdat, yardım",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "B",
+        "Blockade",
+        "",
+        "Muhasara-yı bahriye, Abluka",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "D",
+        "Dardanelles",
+        "",
+        "Çanakkale",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "S",
+        "Small shot",
+        "",
+        "Saçma",
+        "",
+        "Silah/mühimmat",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "M",
+        "Musket",
+        "",
+        "Tüfenk, tüfek",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "R",
+        "Recruit",
+        "",
+        "Acemi asker, silah altına almak",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "S",
+        "Standard-bearer",
+        "",
+        "Sancaktar, bayraktar",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "C",
+        "Chart",
+        "",
+        "Harita",
+        "",
+        "Denizcilik",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "R",
+        "Rudder",
+        "",
+        "Dümen",
+        "",
+        "Denizcilik",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "F",
+        "Flagstaff",
+        "",
+        "Sancak direği, sancak gönderi",
+        "",
+        "Denizcilik",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "A",
+        "Anchor",
+        "",
+        "Demir atmak, demirlemek",
+        "",
+        "Denizcilik",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "H",
+        "Hawser",
+        "",
+        "Palamar",
+        "",
+        "Denizcilik",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "P",
+        "Prow",
+        "",
+        "Pruva",
+        "Geminin önü, pruva",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "S",
+        "Stern",
+        "",
+        "Kıç (gemi)",
+        "",
+        "Denizcilik",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "M",
+        "Main-yard",
+        "",
+        "Mayistra sereni",
+        "Ana seren",
+        "Denizcilik",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "M",
+        "Main-sail",
+        "",
+        "Mayistra yelkeni",
+        "Ana yelken",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "Y",
+        "Yard",
+        "",
+        "Seren",
+        "",
+        "Denizcilik, Donanma",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "I",
+        "Imperial standard",
+        "",
+        "Sancak-ı Hümâyun",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "S",
+        "Standard",
+        "",
+        "Sancak, alem: To unfurl the standard=Sancak açmak. To plant the standard= Sancak dikmek",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "T",
+        "To set sail",
+        "",
+        "Yelken açmak",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "F",
+        "Flag",
+        "",
+        "Sancak, bayrak, bandıra",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "S",
+        "Sailing coaster",
+        "",
+        "Kırlangıç sefinesi",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "G",
+        "Galley",
+        "",
+        "Kadırga",
+        "",
+        "Denizcilik",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "B",
+        "Boat",
+        "",
+        "Kayık, tekne",
+        "Kayık, tekne, vapur, gemi",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "T",
+        "Top gallant mast",
+        "",
+        "Babafingo çubuğu",
+        "Üst seren direği",
+        "Denizcilik",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "M",
+        "Mast",
+        "",
+        "Direk (gemi)",
+        "",
+        "Denizcilik",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "P",
+        "Private/Privateer",
+        "",
+        "Korsan",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "S",
+        "Schooner",
+        "",
+        "Uskuna, gulet",
+        "",
+        "Donanma",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "B",
+        "Brig",
+        "",
+        "Brik; iki direkli yelkenli gemi",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "C",
+        "Corvette",
+        "",
+        "Korvet",
+        "Hafif savaş gemisi",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "F",
+        "Frigate",
+        "",
+        "Fırkateyn",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "T",
+        "Three-masted ship",
+        "",
+        "Üç direkli gemi",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "P",
+        "Paddle-steamer",
+        "",
+        "Çarklı vapur, çark gemisi",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "M",
+        "Merchant ship",
+        "",
+        "Tüccar gemisi",
+        "Ticaret gemisi",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "S",
+        "Steamboat",
+        "",
+        "Vapur, buharlı gemi, istimbot",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "S",
+        "Steamer",
+        "",
+        "Vapur, buharlı gemi",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "pS",
+        "Sailing ship",
+        "",
+        "Yelken gemisi, yelkenli gemi",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "S",
+        "Ship",
+        "",
+        "Gemi, tekne, sefine",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "Yeni",
+        "Yeni madde",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "Yeni / kontrol",
+        ""
+      ],
+      [
+        "M",
+        "Man-of-war",
+        "",
+        "Harp Gemisi",
+        "Savaş Gemisi",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "S",
+        "Sailor",
+        "",
+        "Keştibân",
+        "Denizci, gemici",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "V",
+        "Vice-admiral",
+        "",
+        "Patrona Paşa",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "V",
+        "Vice-admiral of the fleet",
+        "",
+        "Bahriye Feriki",
+        "Koramiral düzeyinde bahriye feriki",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "A",
+        "Admiral",
+        "",
+        "Bahriye Paşası",
+        "Amiral",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "F",
+        "Fleet",
+        "",
+        "Donanma, filo",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "S",
+        "Sea",
+        "",
+        "Derya, deniz",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "P",
+        "Port",
+        "",
+        "Liman",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "R",
+        "Rear-admiral",
+        "",
+        "Riyâle/Riyala Paşa",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "A",
+        "Admiral Superintendant",
+        "",
+        "Liman Reisi",
+        "",
+        "",
+        "",
+        "Kaynak korundu",
+        ""
+      ],
+      [
+        "F",
+        "Flagship",
+        "",
+        "Sancak gemisi",
+        "",
+        "",
+        "",
+        "Kaynak korundu.",
+        ""
+      ],
+      [
+        "L",
+        "Lord High Admiral",
+        "",
+        "Kaptanı Deryâ, Kapudan Paşa",
+        "Kaptan Paşa",
+        "",
+        "",
+        "Kaynak Korundu",
+        ""
+      ],
+      [
+        "S",
+        "Sea-affairs",
+        "",
+        "Umûr-ı bahriye",
+        "",
+        "",
+        "",
+        "Yeni / kontrol",
+        ""
+      ],
+      [
+        "C",
+        "Clip",
+        "",
+        "Şarjör",
+        "Şarjör klipsi",
+        "",
+        "",
+        "Kaynak Korundu",
+        ""
+      ],
+      [
+        "E",
+        "Engineers (civil)",
+        "",
+        "İstihkâm mühendisi",
+        "",
+        "",
+        "",
+        "Yeni / kontrol",
+        ""
+      ],
+      [
+        "E",
+        "Engineers (mechanical)",
+        "",
+        "İstihkâm Çarkçısı",
+        "Makinist",
+        "",
+        "",
+        "Yeni / kontrol",
+        ""
+      ],
+      [
+        "G",
+        "Gun-cotton",
+        "",
+        "Pamuk Barutu",
+        "",
+        "Silah",
+        "",
+        "Yeni / kontrol",
+        ""
+      ],
+      [
+        "H",
+        "Hospital",
+        "",
+        "Şifahane, hastane",
+        "Hastane",
+        "",
+        "",
+        "Yeni / kontrol",
+        ""
+      ],
+      [
+        "Yeni",
+        "Yeni madde",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "Yeni / kontrol",
+        ""
+      ],
+      [
+        "L",
+        "Limber (wagon)",
+        "",
+        "Cebhane Arabası, Mühimmat Arabası",
+        "",
+        "Lojistik",
+        "",
+        "Yeni / kontrol",
+        ""
+      ],
+      [
+        "M",
+        "Map",
+        "",
+        "Harita",
+        "",
+        "",
+        "",
+        "Yeni / kontrol",
+        ""
+      ],
       [
         "H",
         "Halt",
@@ -1032,9 +1935,9 @@ window.DICTIONARY_DATA = [
       [
         "A",
         "Active Reserve",
-        null,
+        "",
         "İhtiyat",
-        null,
+        "",
         "Genel",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
         "Kaynak korundu",
@@ -1097,13 +2000,13 @@ window.DICTIONARY_DATA = [
       ],
       [
         "A",
-        "Adjutant Major",
+        "Adjutant Major/Senior Captain",
         "",
         "Kolağası",
         "Kıdemli Yüzbaşı",
         "Rütbe",
         "1880–1914 Osmanlı rütbe sistemi için özgün ve güçlü karşılıktır.",
-        "Kesin",
+        "Handbook of the Turkish Army",
         "Kolağası [Bu karşılık özgündür; literatüre kazandırılması önemlidir. 1880–1914 dönemi İngiliz askerî raporlarında “Adjutant Major” terimi doğrudan Kolağası rütbesini karşılar; bk. Chermside 1882, s. 14–16.]"
       ],
       [
@@ -1165,10 +2068,10 @@ window.DICTIONARY_DATA = [
         "A",
         "Advanced Guard",
         "",
-        "Pîşdâr/Pîşdâr Müfrezesi, Taliâ",
-        "Öncü/Öncü Kıtası, Keşif Kolu, İleri Karakol",
+        "Pîşdâr/Pîşdâr, Taliâ",
+        "Öncü/Öncü Kıta, Keşif Kolu, İleri Karakol",
         "Birlik/Taktik",
-        "Vanguard maddesiyle tutarlı olmalıdır.",
+        "",
         "Kesin",
         "Pîşdâr, öncü, ileri karakol"
       ],
@@ -1362,9 +2265,9 @@ window.DICTIONARY_DATA = [
       [
         "A",
         "Army Corps",
-        null,
+        "",
+        "Kolordu; bağlama göre Ordu (Bölgesel)",
         "Kolordu",
-        null,
         "Birlik/Sınıf",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
         "Kaynak korundu",
@@ -1374,12 +2277,12 @@ window.DICTIONARY_DATA = [
         "A",
         "Army Council",
         "",
-        "Meclis-i Askerî; Şûrâ-yı Askerî",
-        "Askerî Şûra/Kurul",
+        "Şûrâ-yı Askerî",
+        "Askerî Şûra",
         "Kurum/Teşkilat",
         "İngiliz Army Council ise Britanya kurumu olarak ayrıca etiketlenmelidir; Osmanlı muadili bağlama bağlıdır.",
         "Bağlamlı",
-        "Şûrâ-yı Askerî, Askerî Şûrâ [İngiliz kullanımında “Army Council” (1904 sonrası) Büyük Britanya’ya mahsustur; Osmanlıdaki muadili Meclis-i Askerî / Şûrâ-yı Askerî’dir.]"
+        "Şûrâ-yı Askerî, Askerî Şûrâ [İngiliz kullanımında “Army Council” Büyük Britanya’ya mahsustur; Osmanlıdaki muadili Şûrâ-yı Askerî’dir."
       ],
       [
         "A",
@@ -1430,7 +2333,7 @@ window.DICTIONARY_DATA = [
         "Army School",
         "",
         "Mekteb-i Harbiye-i Şâhâne; Harbiye",
-        "Askerî okul / Harp Okulu",
+        "Harp Okulu",
         "Eğitim/Kurum",
         "Kara Harp Okulu modern açıklamadır; 1880–1914 ana dönem karşılığı yapılmamalıdır.",
         "Düzeltilmiş",
@@ -1472,9 +2375,9 @@ window.DICTIONARY_DATA = [
       [
         "A",
         "Arsenal",
-        null,
-        "Tophâne",
-        null,
+        "",
+        "Tophâne, Tophâne-i Âmire",
+        "",
         "Silah",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
         "Kaynak korundu",
@@ -1616,12 +2519,12 @@ window.DICTIONARY_DATA = [
         "A",
         "Assistant Regimental Surgeon",
         "",
-        "Alay Tabîp Muavini/Vekili",
+        "Alay  Cerrah/Tabîb/Hekim Muavini",
         "",
         "Birlik/Sınıf",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Kaynak dosyadaki karşılık korunmuştur",
         "Kaynak korundu",
-        "Alay Tabîbi Muavini, Alay Tabib Vekili"
+        "-"
       ],
       [
         "A",
@@ -1694,9 +2597,9 @@ window.DICTIONARY_DATA = [
         "Barrack",
         "",
         "Kışla",
-        "Kışla",
+        "",
         "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Kaynak dosyadaki karşılık korunmuştur",
         "Kaynak korundu",
         "Kışla"
       ],
@@ -1801,17 +2704,6 @@ window.DICTIONARY_DATA = [
       ],
       [
         "B",
-        "Battalion Staff Officer",
-        "",
-        "Erkân-ı Harp Zâbiti",
-        "Tabur Kurmay Subayı",
-        "Kurum/Teşkilat",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir. Yabancı kurum adlarında modern Türkçe kurum dili kullanılmalı; Osmanlı kurumları için nezaret/dâire/mekteb gibi dönem adları ayrılmalıdır.",
-        "Kurum Adı",
-        "Erkân-ı Harp Zâbiti / Subayı (Tabur Kurmayı)"
-      ],
-      [
-        "B",
         "Battalions of Construction",
         null,
         "İstihkâm Taburları",
@@ -1823,12 +2715,12 @@ window.DICTIONARY_DATA = [
       ],
       [
         "B",
-        "Battery (Field)",
-        null,
+        "Battery",
+        "",
         "Batarya",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
+        "",
+        "Kaynak dosyadaki karşılık korunmuştur",
         "Kaynak korundu",
         "Batarya"
       ],
@@ -1847,19 +2739,19 @@ window.DICTIONARY_DATA = [
         "B",
         "Battle",
         "",
-        "Muharebe",
+        "Muharebe, kavga",
         "",
         "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Kişiler arasındaysa \"kavga\", düzenli ya da düzensiz geniş çaplı birlikler/ordular arasındaysa \"muharebe\".",
         "Kaynak korundu",
         "Muharebe, kavga"
       ],
       [
         "B",
         "Battle Formation",
-        null,
-        "Harp nizamı",
-        null,
+        "",
+        "Muharebe/Harp Nizamı/Tertibi",
+        "",
         "Genel",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
         "Kaynak korundu",
@@ -1992,8 +2884,8 @@ window.DICTIONARY_DATA = [
         "",
         "Liva",
         "Tugay",
-        "Rütbe",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Birlik",
+        "Kaynak dosyadaki karşılık korunmuştur",
         "Kaynak korundu",
         "Liva, Tugay (komutanı: Mirliva / Tuğgeneral)"
       ],
@@ -2032,23 +2924,23 @@ window.DICTIONARY_DATA = [
       ],
       [
         "B",
-        "Bugler",
+        "Bugle/Bugler",
         "",
         "Boru-zen",
         "Borazancı",
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Boruzan, borazancı"
+        "",
+        "",
+        "",
+        ""
       ],
       [
         "B",
         "Bullet",
-        null,
+        "",
         "Kurşun",
-        null,
+        "Mermi, kurşun",
         "Mühimmat",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Kaynak dosyadaki karşılık korunmuştur.",
         "Kaynak korundu",
         "Kurşun"
       ],
@@ -2112,7 +3004,7 @@ window.DICTIONARY_DATA = [
         "Camp",
         "",
         "Ordugâh",
-        "",
+        "Çadır Yeri",
         "Genel",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
         "Kaynak korundu",
@@ -2132,13 +3024,13 @@ window.DICTIONARY_DATA = [
       [
         "C",
         "Cannon",
-        null,
-        "Top",
-        null,
+        "",
+        "Top; A cannon ball= Top güllesi",
+        "",
         "Silah",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
-        "Top"
+        ""
       ],
       [
         "C",
@@ -2199,8 +3091,8 @@ window.DICTIONARY_DATA = [
         "C",
         "Captain",
         "",
-        "Yüzbaşı",
-        "Yüzbaşı",
+        "Yüzbaşı, Kapudan/Kaptan",
+        "Yüzbaşı (Kara), Kaptan (Deniz)",
         "Rütbe",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
         "Kaynak korundu",
@@ -2231,11 +3123,11 @@ window.DICTIONARY_DATA = [
       [
         "C",
         "Cartridge",
-        null,
+        "",
         "Fişek",
-        null,
+        "Fişek, kutu, kartuş",
         "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Kaynak dosyadaki karşılık korunmuştur.",
         "Kaynak korundu",
         "Fişek"
       ],
@@ -2253,13 +3145,13 @@ window.DICTIONARY_DATA = [
       [
         "C",
         "Cavalry (Cavalryman)",
-        null,
-        "Süvari, süvari neferi, süvari askeri",
-        null,
+        "",
+        "Süvari, süvari neferi/askeri, atlı asker",
+        "",
         "Birlik/Sınıf",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Kaynak dosyadaki karşılık korunmuştur",
         "Kaynak korundu",
-        "Süvari, süvari neferi, süvari askeri"
+        ""
       ],
       [
         "C",
@@ -2628,7 +3520,7 @@ window.DICTIONARY_DATA = [
         "C",
         "Column",
         "",
-        "Kol\nMarching Column=Yürüyüş kolu; Attack/Assault Column= Hücum kolu, Column of Battalions= Tabur Kolu",
+        "Kol.\nMarching Column=Yürüyüş Kolu\nAttack/Assault Column= Hücum Kolu Column of Battalions= Tabur Kolu",
         "Kol",
         "Birlik/Sınıf",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
@@ -2726,13 +3618,13 @@ window.DICTIONARY_DATA = [
       [
         "C",
         "Commissariat",
-        null,
-        "Erzak Dâiresi, Levâzım Sınıfı",
-        null,
+        "",
+        "Erzak, iaşe, Levâzımat Şubesi/Dairesi",
+        "",
         "Kurum/Teşkilat",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
         "Kaynak korundu",
-        "Erzak Dâiresi, Levâzım Sınıfı"
+        ""
       ],
       [
         "C",
@@ -2869,12 +3761,12 @@ window.DICTIONARY_DATA = [
       [
         "C",
         "Corporal",
-        null,
+        "",
         "Onbaşı",
-        null,
+        "",
         "Rütbe",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
+        "",
+        "Handbook of the Turkish Army",
         "Onbaşı"
       ],
       [
@@ -2946,24 +3838,24 @@ window.DICTIONARY_DATA = [
       [
         "C",
         "Corps of Page",
-        null,
-        "Peyk Teşkilâtı (1914’te yerini Scout / İzciler almıştır)",
-        null,
+        "",
+        "Peyk Teşkilâtı",
+        "",
         "Birlik/Sınıf",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Peyk Teşkilâtı (1914’te yerini Scout / İzciler almıştır)"
+        "",
+        "",
+        ""
       ],
       [
         "C",
         "Corps of Scouts",
         "",
-        "Kâşif/İzci Teşkilâtı, Keşif Birliği",
+        "İzci Teşkilâtı, Keşif Birliği",
         "",
         "Birlik/Sınıf",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Kâşif / İzci / Gözcü Teşkilâtı, Keşif Birliği"
+        "",
+        "",
+        ""
       ],
       [
         "C",
@@ -3210,9 +4102,9 @@ window.DICTIONARY_DATA = [
       [
         "D",
         "Delay Fuze",
-        null,
-        null,
+        "",
         "Gecikmeli tapa",
+        "",
         "Mühimmat",
         "İhtiraklı tapa doğrulanmadan ana dönem karşılığı yapılmamalıdır.",
         "Askıda",
@@ -3518,11 +4410,11 @@ window.DICTIONARY_DATA = [
       [
         "D",
         "Divisional General",
-        null,
+        "",
         "Ferik",
-        null,
+        "Fırka/Tümen Komutanı",
         "Rütbe",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Kaynak dosyadaki karşılık korunmuştur",
         "Kaynak korundu",
         "Ferik"
       ],
@@ -3573,11 +4465,11 @@ window.DICTIONARY_DATA = [
       [
         "D",
         "Dragoon",
-        null,
+        "",
         "Dragon",
-        null,
+        "Kılıçlı atlı asker",
         "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Kaynak dosyadaki karşılık korunmuştur",
         "Kaynak korundu",
         "Dragon"
       ],
@@ -3616,14 +4508,14 @@ window.DICTIONARY_DATA = [
       ],
       [
         "D",
-        "Drum",
+        "Drum (Big) Drum (Small)",
         "",
-        "Trampet, Davul",
+        "Davul, Trampet",
         "",
         "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Trampet, davul"
+        "",
+        "",
+        ""
       ],
       [
         "D",
@@ -3639,13 +4531,13 @@ window.DICTIONARY_DATA = [
       [
         "E",
         "Earthwork",
-        null,
-        "Toprak tabya, istihkâm, siper",
-        null,
+        "",
+        "İstihkâm",
+        "",
         "Silah",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
-        "Toprak tabya, istihkâm, siper"
+        ""
       ],
       [
         "E",
@@ -3695,12 +4587,12 @@ window.DICTIONARY_DATA = [
         "E",
         "Encounter",
         "",
-        "Müsâdeme, Çarpışma, Muhârebe",
+        "Müsâdeme, Çarpışma",
         "",
         "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
-        "Müsâdeme, çarpışma, muhârebe"
+        "Müsâdeme, çarpışma"
       ],
       [
         "E",
@@ -3727,13 +4619,13 @@ window.DICTIONARY_DATA = [
       [
         "E",
         "Engineers",
-        null,
-        "İstihkâm, İstihkâm Alayı",
-        null,
+        "",
+        "İstihkâm, İstihkâmcı, İstihkâm birliği",
+        "Mühendis (Askerî)",
         "Birlik/Sınıf",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
-        "İstihkâm, İstihkâm Alayı"
+        "İstihkâm"
       ],
       [
         "E",
@@ -3760,13 +4652,13 @@ window.DICTIONARY_DATA = [
       [
         "E",
         "Entrenchment",
-        null,
-        "Metris, siper, tahkimât, geçici tabya",
-        null,
+        "",
+        "Metris, siper, tahkimât",
+        "",
         "Tahkimat/İstihkâm",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
-        "Metris, siper, tahkimât, geçici tabya"
+        "Metris, siper, tahkimât"
       ],
       [
         "E",
@@ -3837,13 +4729,13 @@ window.DICTIONARY_DATA = [
       [
         "F",
         "Field Artillery",
-        null,
-        "Seyyar topçu, Sahra topçusu",
-        null,
+        "",
+        "Seyyar top/topçu, Sahra topu/topçusu",
+        "",
         "Silah",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Kaynak dosyadaki karşılık korunmuştur",
         "Kaynak korundu",
-        "Seyyar topçu, Sahra topçusu"
+        ""
       ],
       [
         "F",
@@ -3870,11 +4762,11 @@ window.DICTIONARY_DATA = [
       [
         "F",
         "Field Gun",
-        null,
-        "Sahra topu, seyyâr top",
-        null,
+        "",
+        "Seyyar Top, Sahra topu",
+        "",
         "Silah",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "Sahra topu, seyyâr top"
       ],
@@ -3903,12 +4795,12 @@ window.DICTIONARY_DATA = [
       [
         "F",
         "Field-Marshal",
-        null,
-        "Müşir",
+        "",
+        "Müşir; bağlama göre Serasker, Paşa, Serdar",
         "Mareşal",
         "Rütbe",
-        "Osmanlı karşılığı müşir; modern karşılık mareşal.",
-        "Kesin",
+        "",
+        "",
         "Müşir, Mareşal"
       ],
       [
@@ -3946,14 +4838,14 @@ window.DICTIONARY_DATA = [
       ],
       [
         "F",
-        "Fire-fighting Brigades",
-        null,
-        "İtfaiye Taburu, İtfaiye Teşkilâtı",
-        null,
+        "Fire Fighting Brigades",
+        "",
+        "İtfaiye Tugayı/Birliği",
+        "",
         "Birlik/Sınıf",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
         "Kaynak korundu",
-        "İtfaiye Taburu, İtfaiye Teşkilâtı"
+        "İtfaiye Tugayı"
       ],
       [
         "F",
@@ -4057,11 +4949,11 @@ window.DICTIONARY_DATA = [
       [
         "F",
         "Fodder",
-        null,
-        "Yem",
-        null,
+        "",
+        "Yem, saman",
+        "",
         "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "Yem"
       ],
@@ -4178,13 +5070,13 @@ window.DICTIONARY_DATA = [
       [
         "F",
         "Fortification",
-        null,
+        "",
         "İstihkâm, tahkîm, tahkimât",
-        null,
+        "",
         "Tahkimat/İstihkâm",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
-        "İstihkâm, tahkîm, tahkimât"
+        ""
       ],
       [
         "F",
@@ -4267,10 +5159,10 @@ window.DICTIONARY_DATA = [
         "F",
         "Fuze (Time)",
         "",
-        "Sâniye tapası, zaman ayarlı tapa",
+        "Sâniyeli tapa, zaman ayarlı tapa",
         "",
         "Mühimmat",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Mühimmatlarda veya patlayıcılarda belirli bir süre sonra patlamayı tetikleyen mekanizmadır.",
         "Kaynak korundu",
         "Sâniye tapası, zamanlı tapa"
       ],
@@ -4354,13 +5246,13 @@ window.DICTIONARY_DATA = [
       [
         "G",
         "General Staff Officer (GSO)",
-        null,
-        "Erkân-ı Harp zâbiti",
+        "",
+        "Erkân-ı Harp Zâbiti",
         "Kurmay subay",
         "Görev/Rütbe",
-        "General Officer ile karıştırılmamalıdır.",
-        "Kesin",
-        "Erkân-ı Harp Zâbiti/Subayı, Kurmay Subay"
+        "",
+        "",
+        ""
       ],
       [
         "G",
@@ -4705,17 +5597,6 @@ window.DICTIONARY_DATA = [
       ],
       [
         "H",
-        "Handgunner",
-        null,
-        "El topçusu",
-        null,
-        "Silah",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "El topçusu"
-      ],
-      [
-        "H",
         "Harquebusier (Carabineer)",
         null,
         "Karabinacı",
@@ -4750,9 +5631,9 @@ window.DICTIONARY_DATA = [
       [
         "H",
         "Headquarters",
-        null,
-        "Merkez, karargâh, merkez karargâhı",
-        null,
+        "",
+        "Merkez, karargâh, merkezî karargâh, merkez karargâhı",
+        "",
         "Genel",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
         "Kaynak korundu",
@@ -5026,12 +5907,12 @@ window.DICTIONARY_DATA = [
         "I",
         "Intelligence Division",
         "",
-        "İstihbarat Şubesi; bağlama göre İstihbarat Dairesi",
+        "İstihbarat Dairesi/Şubesi",
         "",
         "Kurum/İstihbarat",
         "Division kurum hiyerarşisine göre şube veya daire olabilir.",
         "Bağlamlı",
-        "İstihbarat Şubesi"
+        ""
       ],
       [
         "I",
@@ -5124,9 +6005,9 @@ window.DICTIONARY_DATA = [
       [
         "K",
         "Knapsack",
-        null,
-        "Sırt çantası, çanta",
-        null,
+        "",
+        "Sırt Çantası, çanta",
+        "",
         "Genel",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
         "Kaynak korundu",
@@ -5146,13 +6027,13 @@ window.DICTIONARY_DATA = [
       [
         "L",
         "Lance",
-        null,
-        "Mızrak, kargı, gönder",
-        null,
+        "",
+        "Mızrak, Kargı",
+        "",
         "Silah",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
         "Kaynak korundu",
-        "Mızrak, kargı, gönder"
+        "Mızrak, kargı"
       ],
       [
         "L",
@@ -5179,13 +6060,13 @@ window.DICTIONARY_DATA = [
       [
         "L",
         "Lancer",
-        null,
-        "Mızraklı (süvari)",
-        null,
+        "",
+        "Mızraklı",
+        "",
         "Silah",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
         "Kaynak korundu",
-        "Mızraklı (süvari)"
+        "Mızraklı"
       ],
       [
         "L",
@@ -5279,7 +6160,7 @@ window.DICTIONARY_DATA = [
         "L",
         "Light Cavalry Brigade",
         "",
-        "Hafif Süvari Tugayı",
+        "Hafif Süvari Tugayı/Livası",
         "",
         "Birlik/Sınıf",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
@@ -5334,7 +6215,7 @@ window.DICTIONARY_DATA = [
         "L",
         "Lint",
         "",
-        "Sargı bezi",
+        "Yara Bezi, Sargı Bezi",
         "",
         "Genel",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
@@ -5344,10 +6225,10 @@ window.DICTIONARY_DATA = [
       [
         "L",
         "Load",
-        null,
+        "",
         "Yük",
-        null,
-        "Genel",
+        "",
+        "Lojistik",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
         "Kaynak korundu",
         "Yük"
@@ -5432,9 +6313,9 @@ window.DICTIONARY_DATA = [
       [
         "M",
         "Machine-gun",
-        null,
-        "Mitralyöz; makineli tüfek",
-        "Makineli tüfek",
+        "",
+        "Mitralyöz, Makineli tüfek",
+        "",
         "Silah",
         "Dönem metinlerinde mitralyöz güçlü karşılıktır.",
         "Kesin",
@@ -5487,13 +6368,13 @@ window.DICTIONARY_DATA = [
       [
         "M",
         "Major General",
-        null,
+        "",
         "Mirliva",
-        "Tümgeneral/tuğgeneral düzeyinde general",
+        "",
         "Rütbe",
-        "Ferik değil; 1880–1914 Osmanlı karşılığı Mirliva olmalıdır.",
-        "Düzeltilmiş",
-        "Tümgeneral, Ferik, Mirliva (?)"
+        "",
+        "",
+        ""
       ],
       [
         "M",
@@ -5950,7 +6831,7 @@ window.DICTIONARY_DATA = [
         "M",
         "Mobilization Division",
         "",
-        "Seferberlik Dâiresi",
+        "Seferberlik Dâiresi/Şubesi",
         "",
         "Kurum/Teşkilat",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
@@ -6147,13 +7028,13 @@ window.DICTIONARY_DATA = [
       [
         "N",
         "Naval",
-        null,
-        "Bahriye, donanma",
-        null,
+        "",
+        "Bahriye, bahrî",
+        "",
         "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Kaynak dosyadaki karşılık korunmuştur.",
         "Kaynak korundu",
-        "Bahriye, donanma"
+        ""
       ],
       [
         "N",
@@ -6257,13 +7138,13 @@ window.DICTIONARY_DATA = [
       [
         "O",
         "Order of Battle",
-        null,
-        "Muharebe Düzeni, Harb Nizamı, Tertîb-i Harb",
-        null,
+        "",
+        "Muharebe/Harb Nizamı, Tertîb-i Harb",
+        "Muharebe Düzeni",
         "Genel",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
         "Kaynak korundu",
-        "Muharebe Düzeni, Harb Nizamı, Tertîb-i Harb"
+        ""
       ],
       [
         "O",
@@ -6400,13 +7281,13 @@ window.DICTIONARY_DATA = [
       [
         "P",
         "Paymaster",
-        null,
-        "Alay Emini",
-        null,
+        "",
+        "Hazinedar",
+        "",
         "Birlik/Sınıf",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
-        "Alay Emini"
+        ""
       ],
       [
         "P",
@@ -6440,17 +7321,6 @@ window.DICTIONARY_DATA = [
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
         "Kaynak korundu",
         "Kapsüllü tüfek"
-      ],
-      [
-        "P",
-        "Parish",
-        null,
-        "Nâhiye, karye",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Nâhiye, karye"
       ],
       [
         "P",
@@ -6586,7 +7456,7 @@ window.DICTIONARY_DATA = [
       ],
       [
         "P",
-        "Police-station",
+        "Police Station",
         "",
         "Karakolhâne",
         "Polis Merkezi, Karakol",
@@ -6631,13 +7501,13 @@ window.DICTIONARY_DATA = [
       [
         "P",
         "Pontoon",
-        null,
-        "Tombaz (köprü kurmak için)",
-        null,
+        "",
+        "Tombaz",
+        "",
         "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Kaynak dosyadaki karşılık korunmuştur",
         "Kaynak korundu",
-        "Tombaz (köprü kurmak için)"
+        ""
       ],
       [
         "P",
@@ -6884,24 +7754,24 @@ window.DICTIONARY_DATA = [
       [
         "R",
         "Rank",
-        null,
-        "Rütbe",
-        null,
+        "",
+        "Rütbe, saf, sıra",
+        "",
         "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Kaynak dosyadaki karşılık korunmuştur",
         "Kaynak korundu",
-        "Rütbe"
+        ""
       ],
       [
         "R",
         "Rank and File",
-        null,
-        "Erât; çavuş, onbaşı ve neferât",
-        null,
+        "",
+        "Neferât, Erât",
+        "",
         "Rütbe",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
-        "Erât; çavuş, onbaşı ve neferât"
+        ""
       ],
       [
         "R",
@@ -6984,12 +7854,12 @@ window.DICTIONARY_DATA = [
         "R",
         "Redoubt",
         "",
-        "Tabya",
+        "Tabya, palanka",
         "",
         "Tahkimat/İstihkâm",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
-        "Redut, tabya"
+        ""
       ],
       [
         "R",
@@ -7071,24 +7941,13 @@ window.DICTIONARY_DATA = [
       [
         "R",
         "Regiment of Engineers of the Imperial Ordnance",
-        null,
+        "",
         "Tophâne-i Âmire İstihkâm Alayı",
-        null,
+        "",
         "Silah",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
         "Kaynak korundu",
         "Tophâne-i Âmire İstihkâm Alayı"
-      ],
-      [
-        "R",
-        "Regimental Adjutant (and Paymaster)",
-        null,
-        "Alay Emini",
-        null,
-        "Birlik/Sınıf",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Alay Emini"
       ],
       [
         "R",
@@ -7125,12 +7984,12 @@ window.DICTIONARY_DATA = [
       ],
       [
         "R",
-        "Regimental Quartermasters",
-        null,
+        "Regimental Adjutant/Quartermasters",
+        "",
         "Alay Emini",
-        null,
+        "",
         "Birlik/Sınıf",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Kaynak dosyadaki karşılık korunmuştur",
         "Kaynak korundu",
         "Alay Emini"
       ],
@@ -7148,13 +8007,13 @@ window.DICTIONARY_DATA = [
       [
         "R",
         "Regimental Surgeon",
-        null,
-        "Alay Tabîbi",
-        null,
+        "",
+        "Alay  Cerrahı/Tabîbi/Hekimi",
+        "",
         "Birlik/Sınıf",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Kaynak dosyadaki karşılık korunmuştur",
         "Kaynak korundu",
-        "Alay Tabîbi"
+        ""
       ],
       [
         "R",
@@ -7401,13 +8260,13 @@ window.DICTIONARY_DATA = [
       [
         "R",
         "Royal Engineers",
-        null,
-        "Kraliyet İstihkâm Birlikleri",
-        null,
+        "",
+        "Kraliyet İstihkâm Birliği",
+        "",
         "Genel",
         "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Kraliyet İstihkâm Birlikleri"
+        "",
+        ""
       ],
       [
         "R",
@@ -7477,13 +8336,13 @@ window.DICTIONARY_DATA = [
       ],
       [
         "S",
-        "Saddle",
-        null,
+        "Saddle (Riding-saddle)",
+        "",
         "Eyer",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
+        "",
+        "",
+        "",
+        "",
         "Eyer"
       ],
       [
@@ -7586,37 +8445,26 @@ window.DICTIONARY_DATA = [
         "İzci, keşif eri"
       ],
       [
-        "S",
-        "Scout Section Leader",
+        "T",
+        "Troop Leader (Scout)",
         "",
-        "Oymak Beyi",
-        "",
-        "Kurum/Teşkilat",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Bağlamlı",
-        "Oymak Beyi [Osmanlı izcilik teşkilâtının (kuruluş 1914) kendine has terminolojisinde kullanılır. “Oymak” burada scout section (küçük izci grubu); “Oymak Beyi” bu grubun önderidir. Literatürde pek geçmez.]"
-      ],
-      [
-        "S",
-        "Scout Troops Leader",
-        "",
-        "Orta Beyi [Osmanlı izcilik teşkilâtında “orta” birden fazla oymaktan oluşan üst birim (scout troop), “Orta Beyi” bu birimin komutanıdır. Terim, yeniçeri teşkilâtının “orta” kavramından uyarlanmıştır.]",
+        "Orta Beyi",
         "",
         "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Bağlamlı",
-        "Orta Beyi [Osmanlı izcilik teşkilâtında “orta” birden fazla oymaktan oluşan üst birim (scout troop), “Orta Beyi” bu birimin komutanıdır. Terim, yeniçeri teşkilâtının “orta” kavramından uyarlanmıştır.]"
+        "",
+        "Handbook of the Turkish Army",
+        ""
       ],
       [
         "S",
         "Scoutmaster General",
-        null,
-        "İzcibaşı, Baş Kâşif",
-        null,
+        "",
+        "İzcibaşı",
+        "",
         "Rütbe",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "İzcibaşı, Baş Kâşif"
+        "",
+        "",
+        ""
       ],
       [
         "S",
@@ -7830,23 +8678,23 @@ window.DICTIONARY_DATA = [
       [
         "S",
         "Sergeant",
-        null,
+        "",
         "Çavuş",
-        null,
+        "",
         "Rütbe",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
+        "",
+        "Handbook of the Turkish Army",
         "Çavuş"
       ],
       [
         "S",
-        "Sergeant Major",
-        null,
+        "Sergeant-major",
+        "",
         "Başçavuş",
-        null,
-        "Rütbe",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
+        "",
+        "",
+        "",
+        "Handbook of the Turkish Army",
         "Başçavuş"
       ],
       [
@@ -7919,12 +8767,12 @@ window.DICTIONARY_DATA = [
         "S",
         "Shell",
         "",
-        "Mermi, top mermisi, gülle",
+        "Mermi, top mermisi, gülle, humbara",
         "",
         "Silah",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
-        "Humbara; mermi, top mermisi"
+        ""
       ],
       [
         "S",
@@ -8566,17 +9414,6 @@ window.DICTIONARY_DATA = [
       ],
       [
         "T",
-        "Tear Shield",
-        null,
-        "Damla kalkan",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Damla kalkan"
-      ],
-      [
-        "T",
         "Tenaille",
         "",
         "Tenay; kıskaç biçimli dış istihkâm; müstahkem siper",
@@ -8953,12 +9790,12 @@ window.DICTIONARY_DATA = [
         "V",
         "Victory",
         "",
-        "Galebe, Galibiyet, Zafer, Fetih",
+        "Galebe, Galibiyet, Zafer",
         "",
         "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
-        "Galibiyet, zafer, feth"
+        ""
       ],
       [
         "V",
@@ -9256,22 +10093,22 @@ window.DICTIONARY_DATA = [
         "Engineer",
         "",
         "İstihkamcı",
-        "",
+        "Mühendis",
         "Teknik Sınıf",
-        "İstihkâm çarkı karşılığı düzeltilmiştir.",
-        "Düzeltilmiş",
-        "İstihkâm Çarkı (Sanayi zabiti)"
+        "",
+        "",
+        ""
       ],
       [
         "G",
         "General",
         "",
-        "Paşa; Bağlama göre Mirliva/Ferik/Birinci Ferik/Müşir",
+        "Paşa; Bağlama göre Ferik/Ferik-i Evvel/Birinci Ferik/Müşir",
         "General",
         "Rütbe",
-        "General = orgeneral yapılmamalıdır; Osmanlı bağlamında tek rütbeye sabitlenmez.",
+        "General",
         "Bağlamlı",
-        "Orgeneral (modern); Serasker / Birinci Ferik (Osmanlı 1880–1914)"
+        ""
       ],
       [
         "H",
@@ -9856,7 +10693,7 @@ window.DICTIONARY_DATA = [
 (() => {
   "use strict";
 
-  const STORAGE_KEY = "askeri_terimler_profesyonel_v3_20260707184110";
+  const STORAGE_KEY = "askeri_terimler_profesyonel_v3_20260708200733";
   const PAGE_STORAGE_KEY = STORAGE_KEY + "_page_texts";
   const PENDING_DATA_KEY = STORAGE_KEY + "_pending_live_data";
   const PENDING_PAGE_KEY = STORAGE_KEY + "_pending_live_pages";
@@ -9872,6 +10709,56 @@ window.DICTIONARY_DATA = [
   ];
   const DEFAULT_PAGE_CONTENT = clone(window.PAGE_CONTENT_DEFAULTS || {});
   let pageContent = clone(DEFAULT_PAGE_CONTENT);
+
+  /* ---------- düzenlenebilir menü / alt bağlantılar ---------- */
+  const DEFAULT_NAV = [
+    ["Sözlük", "/"],
+    ["Terimler Dizini", "/terimler/"],
+    ["Yayın Notu", "/yayin-notu/"],
+    ["Kaynakça", "/kaynakca/"],
+    ["Gizlilik", "/gizlilik-politikasi/"],
+    ["Çerezler", "/cerez-politikasi/"],
+    ["Kullanım Şartları", "/kullanim-sartlari/"],
+    ["İletişim", "/iletisim/"]
+  ];
+  PAGE_DEFS.push({ key: "__nav__", title: "Menü / Alt Bağlantılar", url: "" });
+
+  function parseNavText(text) {
+    return String(text || "")
+      .split(/\r?\n/)
+      .map(line => line.trim())
+      .filter(Boolean)
+      .map(line => {
+        const i = line.lastIndexOf("|");
+        if (i < 0) return null;
+        const label = line.slice(0, i).trim();
+        const url = line.slice(i + 1).trim();
+        return (label && url) ? [label, url] : null;
+      })
+      .filter(Boolean);
+  }
+  function navTextFromPairs(pairs) {
+    return pairs.map(([l, u]) => `${l} | ${u}`).join("\n");
+  }
+  function resolveNavPairs() {
+    const raw = pageContent && pageContent["__nav__"];
+    const parsed = raw ? parseNavText(raw) : [];
+    return parsed.length ? parsed : DEFAULT_NAV;
+  }
+  function renderNav() {
+    const pairs = resolveNavPairs();
+    if (els.siteNav) {
+      els.siteNav.innerHTML = pairs
+        .map(([l, u]) => `<a href="${escapeAttr(u)}">${escapeHtml(l)}</a>`)
+        .join("");
+    }
+    if (els.siteFooterLinks) {
+      els.siteFooterLinks.innerHTML = pairs
+        .map(([l, u]) => `<a href="${escapeAttr(u)}">${escapeHtml(l)}</a>`)
+        .join(" · ");
+    }
+  }
+
   const INITIAL_QUERY = getInitialQueryFromUrl();
   const INITIAL_HTML_SOURCE = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
   let data = clone(DEFAULT_DATA);
@@ -9936,6 +10823,8 @@ window.DICTIONARY_DATA = [
     pageEditorTextarea: $("#pageEditorTextarea"),
     savePageContentBtn: $("#savePageContentBtn"),
     editableHomeNotice: $("#editableHomeNotice"),
+    siteNav: $("#siteNav"),
+    siteFooterLinks: $("#siteFooterLinks"),
     toast: $("#toast")
   };
 
@@ -10462,6 +11351,11 @@ window.DICTIONARY_DATA = [
   function renderPageEditorText() {
     if (!els.pageEditorSelect || !els.pageEditorTextarea) return;
     const key = els.pageEditorSelect.value || PAGE_DEFS[0].key;
+    if (key === "__nav__") {
+      const raw = pageContent["__nav__"];
+      els.pageEditorTextarea.value = (raw && raw.trim()) ? raw : navTextFromPairs(DEFAULT_NAV);
+      return;
+    }
     els.pageEditorTextarea.value = pageContent[key] || "";
   }
 
@@ -10469,6 +11363,7 @@ window.DICTIONARY_DATA = [
     if (els.editableHomeNotice && typeof pageContent.sozluk === "string") {
       els.editableHomeNotice.textContent = stripHtml(pageContent.sozluk).trim() || DEFAULT_PAGE_CONTENT.sozluk || "";
     }
+    renderNav();
   }
 
   async function savePageContentFromEditor() {
@@ -10724,7 +11619,10 @@ ${urls.map(u => `  <url><loc>BASE_URL${u}</loc></url>`).join("\n")}
   }
 
   function navHtml() {
-    return `<nav class="site-nav" aria-label="Site bağlantıları"><a href="/">Sözlük</a><a href="/terimler/">Terimler Dizini</a><a href="/yayin-notu/">Yayın Notu</a><a href="/kaynakca/">Kaynakça</a><a href="/gizlilik-politikasi/">Gizlilik</a><a href="/cerez-politikasi/">Çerezler</a><a href="/kullanim-sartlari/">Kullanım Şartları</a><a href="/iletisim/">İletişim</a></nav>`;
+    const pairs = resolveNavPairs();
+    return `<nav class="site-nav" aria-label="Site bağlantıları">` +
+      pairs.map(([l, u]) => `<a href="${escapeAttr(u)}">${escapeHtml(l)}</a>`).join("") +
+      `</nav>`;
   }
 
   function staticPageCss() {
