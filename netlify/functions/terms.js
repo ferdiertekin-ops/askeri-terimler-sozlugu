@@ -12,5 +12,5 @@ exports.handler = async function(event) {
   const canonical = canonicalBase(event) + (lang === 'en' ? '/en/terms/' : '/terimler/');
   const meta = lang === 'en' ? `Live content last updated: ${escapeHtml(content.updatedAt || '')}. Total entries: ${items.length}.` : `Canlı içerik son güncelleme: ${escapeHtml(content.updatedAt || '')}. Toplam madde: ${items.length}.`;
   const list = `<p class="lead">${lead}</p><ul class="term-list">${items.map(t=>`<li><a href="${base}${encodeURIComponent(t.slug)}/">${escapeHtml(t.title)}</a></li>`).join('')}</ul><p class="meta">${meta}</p>`;
-  return { statusCode:200, headers:htmlHeaders(), body:pageShell({ title, description:desc, canonical, body:list, lang }) };
+  return { statusCode:200, headers:htmlHeaders(), body:pageShell({ title, description:desc, canonical, body:list, lang, content }) };
 };

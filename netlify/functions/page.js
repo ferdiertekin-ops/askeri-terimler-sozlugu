@@ -7,7 +7,7 @@ exports.handler = async function(event) {
   if (!allowed.has(key)) {
     const title = lang === 'en' ? 'Page not found' : 'Sayfa bulunamadı';
     const body = `<p class="lead">${lang === 'en' ? 'The requested page was not found.' : 'Aradığınız sayfa bulunamadı.'}</p>`;
-    return { statusCode:404, headers:htmlHeaders(), body:pageShell({ title, description:title, canonical:canonicalBase(event)+(lang==='en'?'/en/':'/'), body, lang }) };
+    return { statusCode:404, headers:htmlHeaders(), body:pageShell({ title, description:title, canonical:canonicalBase(event)+(lang==='en'?'/en/':'/'), body, lang, content }) };
   }
   const title = pageTitleFor(key, lang);
   const description = descriptionFor(key, content, lang);
@@ -16,5 +16,5 @@ exports.handler = async function(event) {
   const routeMap = lang === 'en' ? { 'yayin-notu':'/en/publication-note/','kaynakca':'/en/bibliography/','gizlilik-politikasi':'/en/privacy-policy/','cerez-politikasi':'/en/cookie-policy/','kullanim-sartlari':'/en/terms-of-use/','iletisim':'/en/contact/' } : { 'yayin-notu':'/yayin-notu/','kaynakca':'/kaynakca/','gizlilik-politikasi':'/gizlilik-politikasi/','cerez-politikasi':'/cerez-politikasi/','kullanim-sartlari':'/kullanim-sartlari/','iletisim':'/iletisim/' };
   const canonical = canonicalBase(event) + routeMap[key];
   const meta = `<p class="meta">${lang==='en'?'Live content last updated':'Canlı içerik son güncelleme'}: ${escapeHtml(content.updatedAt || '')}.</p>`;
-  return { statusCode:200, headers:htmlHeaders(), body:pageShell({ title, description, canonical, body: body + meta, lang }) };
+  return { statusCode:200, headers:htmlHeaders(), body:pageShell({ title, description, canonical, body: body + meta, lang, content }) };
 };
