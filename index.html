@@ -140,6 +140,22 @@ button{user-select:none;cursor:pointer}
   text-align:center;
   font-style:italic;
 }
+
+.homepage-quote{
+  max-width:760px;
+  margin:16px auto 0;
+  padding:13px 18px;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  color:var(--accent-deep);
+  font-size:15px;
+  line-height:1.75;
+  text-align:center;
+  letter-spacing:.035em;
+  text-transform:uppercase;
+}
+.homepage-quote strong{font-weight:800}
+
 .site-footer{
   margin:40px 0 0;
   padding:22px 0 0;
@@ -490,6 +506,143 @@ mark{background:var(--mark);color:var(--ink);border-radius:2px;padding:0 2px;fon
 .table-wrap tbody tr:active{background:var(--accent-soft)}
 .table-wrap .open-row{min-height:28px;padding:0 10px;font-size:12.5px}
 
+.table-wrap.term-list-wrap{
+  overflow:visible;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+}
+.term-list-view{display:grid;gap:11px}
+.term-list-row{
+  position:relative;
+  display:grid;
+  grid-template-columns:minmax(190px,1.22fr) minmax(160px,.9fr) minmax(170px,.92fr) minmax(210px,1.1fr) 42px;
+  gap:12px;
+  align-items:stretch;
+  padding:14px 12px 13px 14px;
+  border:1px solid var(--line-strong);
+  border-radius:var(--radius);
+  background:linear-gradient(180deg,rgba(255,254,250,.96),rgba(255,254,250,.88));
+  box-shadow:var(--shadow-card);
+  cursor:pointer;
+  transition:transform .14s var(--press), box-shadow .14s ease, border-color .14s ease, background .14s ease;
+}
+.term-list-row::before{
+  content:"";
+  position:absolute;
+  left:0;top:0;bottom:0;width:4px;
+  border-radius:var(--radius) 0 0 var(--radius);
+  background:linear-gradient(180deg,var(--brass),transparent 86%);
+  opacity:.65;
+}
+.term-list-row:hover{
+  transform:translateY(-2px);
+  border-color:var(--brass);
+  background:var(--card);
+  box-shadow:0 3px 8px rgba(30,39,50,.06), 0 22px 40px -20px rgba(32,57,90,.30);
+}
+.term-list-row:active{transform:translateY(0) scale(.996)}
+.term-list-cell{
+  min-width:0;
+  padding:2px 6px;
+  border-right:1px solid rgba(201,194,176,.62);
+}
+.term-list-cell:last-of-type{border-right:0}
+.term-list-label{
+  display:block;
+  margin-bottom:5px;
+  color:var(--brass-deep);
+  font-size:10px;
+  line-height:1.2;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  font-weight:700;
+}
+.term-list-main strong{
+  display:block;
+  font-family:var(--serif-display);
+  color:var(--ink);
+  font-size:20px;
+  line-height:1.18;
+  font-weight:700;
+}
+.term-list-category{
+  display:inline-flex;
+  margin-top:8px;
+  max-width:100%;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--panel);
+  color:var(--ink-soft);
+  padding:3px 8px;
+  font-size:10.5px;
+  font-weight:700;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.association-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+.association-chip{
+  display:inline-flex;
+  max-width:100%;
+  border-radius:5px;
+  background:rgba(47,78,113,.09);
+  border:1px solid #C6D2E0;
+  color:var(--accent-deep);
+  padding:3px 7px;
+  font-size:12px;
+  line-height:1.25;
+  font-weight:700;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.term-list-value{
+  color:var(--ink);
+  font-size:14.5px;
+  line-height:1.45;
+  font-weight:600;
+  overflow-wrap:anywhere;
+}
+.term-list-value--soft{color:var(--ink-soft);font-weight:500;font-style:italic}
+.term-list-example{
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.term-list-open{
+  align-self:center;
+  justify-self:center;
+  width:34px;
+  height:34px;
+  border-radius:999px;
+  border:1px solid var(--line-strong);
+  background:var(--panel);
+  color:var(--ink-soft);
+  font-weight:700;
+  line-height:1;
+  cursor:pointer;
+  transition:border-color .12s ease, background .12s ease, color .12s ease, transform .1s var(--press);
+}
+.term-list-open:hover{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-deep)}
+.term-list-open:active{transform:scale(.92)}
+@media (max-width:980px){
+  .term-list-row{grid-template-columns:1fr 1fr;gap:10px}
+  .term-list-cell{border-right:0;border-bottom:1px solid rgba(201,194,176,.56);padding-bottom:9px}
+  .term-list-cell:nth-of-type(3),.term-list-cell:nth-of-type(4){border-bottom:0}
+  .term-list-open{position:absolute;right:12px;top:12px}
+  .term-list-main{padding-right:40px}
+}
+@media (max-width:640px){
+  .term-list-row{grid-template-columns:1fr;padding:14px 12px 12px 15px}
+  .term-list-cell{border:0;border-bottom:1px solid rgba(201,194,176,.54)}
+  .term-list-cell:last-of-type{border-bottom:0}
+  .term-list-main strong{font-size:19px}
+}
+
 .pagination{display:flex;justify-content:center;align-items:center;gap:14px;padding:24px 0 4px}
 #pageInfo{font-weight:600;color:var(--ink-soft);font-size:13px;min-width:52px;text-align:center;font-variant-numeric:tabular-nums}
 
@@ -527,6 +680,14 @@ mark{background:var(--mark);color:var(--ink);border-radius:2px;padding:0 2px;fon
 .icon-btn:hover{border-color:var(--accent);background:var(--accent-soft)}
 .icon-btn:active{transform:scale(.9)}
 .drawer__content{padding:18px 24px;overflow:auto;display:grid;gap:10px;flex:1;align-content:start}
+.drawer-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 8px;padding:0 0 10px;border-bottom:1px solid var(--line)}
+.drawer-tab{border:1px solid var(--line-strong);background:var(--card);color:var(--ink-soft);border-radius:999px;padding:7px 12px;font-family:var(--serif-text);font-size:13px;font-weight:600;cursor:pointer;transition:border-color .12s ease,background .12s ease,color .12s ease,transform .1s var(--press)}
+.drawer-tab:hover{border-color:var(--accent);background:var(--accent-soft);color:var(--ink)}
+.drawer-tab:active{transform:scale(.98)}
+.drawer-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.drawer-tab[hidden]{display:none}
+.drawer-panel{display:grid;gap:10px;align-content:start}
+.drawer-panel[hidden]{display:none}
 .detail-row{background:var(--card);border:1px solid var(--line-strong);border-radius:10px;padding:10px 13px}
 .detail-row small{display:block;color:var(--brass-deep);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-bottom:2px}
 .detail-row div{line-height:1.45;white-space:pre-wrap;font-size:16px;color:var(--ink);font-weight:600}
@@ -685,7 +846,7 @@ body.search-active .results{padding-top:4px!important}
         <button id="downloadPublishBtn" class="btn" hidden="">⬇ Yedek yayın paketini indir</button>
       </div>
     </header>
-    <nav id="siteNav" class="site-nav" aria-label="Site bağlantıları">
+    <nav class="site-nav" aria-label="Site bağlantıları">
       <a href="/">Sözlük</a>
       <a href="/terimler/">Terimler Dizini</a>
       <a href="/yayin-notu/">Yayın Notu</a>
@@ -704,7 +865,8 @@ body.search-active .results{padding-top:4px!important}
         <span class="h1-date">1880–1918</span>
       </h1>
       <p class="beta-label">Beta (Deneme) Sürümü</p>
-      <p class="hero-subtitle">İngilizce-Türkçe ve Türkçe-İngilizce arama yapılabilen açıklamalı online askerî terimler sözlüğü.</p>
+      <p id="heroSubtitle" class="hero-subtitle">İngilizce-Türkçe ve Türkçe-İngilizce arama yapılabilen açıklamalı online askerî terimler sözlüğü.</p>
+      <blockquote id="homeQuote" class="homepage-quote" aria-label="Ana sayfa sözü"><strong>HAYATTA EN HAKİKİ MÜRŞİD İLİMDİR, FENDİR.<br>MUSTAFA KEMAL ATATÜRK</strong></blockquote>
 
       <div class="search-shell">
         <div class="search-row">
@@ -783,7 +945,7 @@ body.search-active .results{padding-top:4px!important}
       <div class="page-editor__head">
         <div>
           <h2>Sayfa Metinleri</h2>
-          <p>Sözlük, yayın notu, kaynakça, gizlilik, çerez, kullanım şartları ve iletişim metinleri editör girişiyle düzenlenebilir. "Menü / Alt Bağlantılar" seçeneğinde her satır <code>Ad | /adres/</code> biçiminde yazılır (üst menü ve alttaki bağlantılar bu listeden üretilir). Kaydet butonu değişiklikleri canlı yayın verisine işler; yedek ZIP yalnızca arşiv amaçlıdır.</p>
+          <p>Ana sayfa açıklaması, ana sayfa sözü, sözlük alt notu, yayın notu, kaynakça, gizlilik, çerez, kullanım şartları ve iletişim metinleri editör girişiyle düzenlenebilir. Kaydet butonu değişiklikleri canlı yayın verisine işler; yedek ZIP yalnızca arşiv amaçlıdır.</p>
         </div>
       </div>
       <div class="page-editor__controls">
@@ -798,7 +960,7 @@ body.search-active .results{padding-top:4px!important}
       </div>
       <div class="page-editor__actions">
         <button id="savePageContentBtn" class="btn btn-primary">Sayfa metnini kaydet</button>
-        <p class="page-editor__hint">Paragraf düzeni için <code>&lt;p&gt;...&lt;/p&gt;</code> kullanılabilir. Ana sayfa notu düz metin olarak değerlendirilir.</p>
+        <p class="page-editor__hint">Paragraf düzeni için <code>&lt;p&gt;...&lt;/p&gt;</code> kullanılabilir. Ana sayfa açıklaması ve ana sayfa sözü satır sonlarını korur; sözü iki satıra almak için Enter kullanın.</p>
       </div>
     </section>
 
@@ -837,7 +999,7 @@ body.search-active .results{padding-top:4px!important}
 
     <footer class="site-footer" aria-label="Alt bağlantılar">
       <p>© 2026 Ferdi Ertekin · Çevrimiçi Askerî Terimler Sözlüğü (1880–1918)</p>
-      <p id="siteFooterLinks"><a href="/">Sözlük</a> · <a href="/terimler/">Terimler Dizini</a> · <a href="/yayin-notu/">Yayın Notu</a> · <a href="/kaynakca/">Kaynakça</a> · <a href="/gizlilik-politikasi/">Gizlilik</a> · <a href="/cerez-politikasi/">Çerezler</a> · <a href="/kullanim-sartlari/">Kullanım Şartları</a> · <a href="/iletisim/">İletişim</a></p>
+      <p><a href="/">Sözlük</a> · <a href="/terimler/">Terimler Dizini</a> · <a href="/yayin-notu/">Yayın Notu</a> · <a href="/kaynakca/">Kaynakça</a> · <a href="/gizlilik-politikasi/">Gizlilik</a> · <a href="/cerez-politikasi/">Çerezler</a> · <a href="/kullanim-sartlari/">Kullanım Şartları</a> · <a href="/iletisim/">İletişim</a></p>
     </footer>
   </div>
 
@@ -867,12 +1029,15 @@ body.search-active .results{padding-top:4px!important}
 <script>
 window.PAGE_CONTENT_DEFAULTS = {
   "sozluk": "Sözlükte yapılan ekleme ve düzeltmeler yalnızca editör girişiyle mümkündür.",
-  "yayin-notu": "<p class=\"lead\">Askerî Terimler Sözlüğü, 1880–1918 aralığındaki askerî tarih, teşkilat, rütbe, idarî yapı ve belge terminolojisine odaklanan çevrimiçi bir başvuru aracıdır.<\/p><p>Bu sözlük, İngiliz askerî istihbarat raporları üzerine yürütülen arşiv çalışmaları sırasında derlenmiştir. Maddelerde İngilizce terim, Osmanlıca veya dönem karşılığı, günümüz Türkçesi ve editör notu birlikte gösterilmeye çalışılmıştır. Amaç, tek kelimelik mekanik karşılıklar üretmek değil, terimlerin tarihî bağlamdaki kullanımını denetlenebilir biçimde görünür kılmaktır.<\/p><p>Site beta sürümdedir. Bu nedenle bazı maddelerde “kontrol”, “askıda” veya bağlama bağlılık notları bulunabilir. Kesinliği şüpheli karşılıklar, kaynak ve bağlam denetimi tamamlanmadan mutlak hüküm olarak değerlendirilmemelidir.<\/p>",
-  "kaynakca": "<p class=\"lead\">Bu bölüm, sözlüğün hazırlanmasında ve terim karşılıklarının denetlenmesinde kullanılan başlıca arşiv koleksiyonlarını göstermekter. <\/p>\nKAYNAKÇA\nHandbook of the Turkish Army. Eighth Provisional Edition. Cairo: Intelligence Section, February 1916.\n<h2>The National Archives (TNA)<\/h2>\n<h3>Foreign Office (FO)<\/h3>\n<p><strong>FO 195/2346:<\/strong> No. 1, No. 3, No. 4, No. 5, No. 6, No. 7, No. 8, No. 11, No. 12, No. 13, No. 15, No. 16, No. 17, No. 19, No. 20, No. 21, No. 23, No. 24, No. 25, No. 26, No. 27, No. 28, No. 30, No. 31, No. 32, No. 33, No. 34, No. 35, No. 36, No. 37, No. 38, No. 39, No. 40, No. 42, No. 44, No. 45, No. 48, No. 51, No. 52, No. 54, No. 55, No. 56, No. 58, No. 59, No. 60, No. 61, No. 63, No. 65, No. 66, No. 67, No. 68, No. 69, No. 70, No. 71, No. 72, No. 76, Kahire (Ek).<\/p>\n<p>FO 195/1664, FO 195/1718, FO 195/1759, FO 195/1794, FO 195/1837, FO 195/1880, FO 195/1929, FO 195/1974, FO 195/2016, FO 195/2053, FO 195/2107, FO 195/2128, FO 195/2150, FO 195/2176, FO 195/2200, FO 195/2226, FO 195/2290.<\/p>\n<h3>Record of the Security Service (KV)<\/h3>\n<p>KV 1/4.<\/p>\n<h3>War Office (WO)<\/h3>\n<p>WO 106/42, WO 106/6285.<\/p>\n<h3>Cabinet Office Files (CAB)<\/h3>\n<p>CAB 24/6/26, CAB 37/61, CAB 37/74/16, CAB 37/75/45, CAB 37/18, CAB 37/37, CAB 37/38, CAB 37/43/59, CAB 37/47/35, CAB 37/86/10, CAB 38/2, CAB 38/3, CAB 37/92/61, CAB 37/95/135, CAB 37/95/134, CAB 37/95/137.<\/p>\n<h2>The British Library<\/h2>\n<h3>India Office Records and Private Papers<\/h3>\n<p>IOR/L/MIL/17/15/21.<\/p>\n<h2>Kullanım notu<\/h2>\n<p>Bu kaynakça, sözlüğün arşiv temelli karakterini göstermek amacıyla yayımlanmıştır. Tekil sözlük maddelerinde geçen karşılıklar, ilgili belge bağlamı ve dönem literatürüyle birlikte değerlendirilmelidir.<\/p>",
-  "gizlilik-politikasi": "<p class=\"lead\">Bu site, sözlük kullanıcısını kişisel profil çıkarmaya yönelik biçimde izlemek amacıyla tasarlanmamıştır.<\/p><p>Site statik bir çevrimiçi sözlük olarak çalışır. Arama işlevi kullanıcının tarayıcısında gerçekleşir. Sözlük araması için girilen terimler, bu statik sürümde haricî bir veri tabanına gönderilmez.<\/p><p>Barındırma hizmeti, güvenlik, performans ve genel trafik ölçümü amacıyla sunucu günlükleri veya toplulaştırılmış web analitiği kayıtları üretebilir. Bu kayıtlar sözlüğün teknik erişilebilirliğini ve kullanım yoğunluğunu görmek için değerlendirilir.<\/p><p>Editör modu kullanılırsa, sözlükte yapılan yerel düzenlemeler tarayıcının yerel depolama alanında saklanabilir. Bu işlev normal ziyaretçiler için zorunlu değildir.<\/p>",
-  "cerez-politikasi": "<p class=\"lead\">Bu sürümde site, kullanıcıyı reklam veya pazarlama amacıyla takip eden bir çerez sistemi üzerine kurulmamıştır.<\/p><p>Sözlük araması tarayıcı içinde çalışır. Editör modunda yapılan yerel değişiklikler için tarayıcının yerel depolama alanı kullanılabilir. Yerel depolama, teknik olarak çerez değildir; ancak kullanıcının cihazında veri tutması bakımından burada ayrıca belirtilmiştir.<\/p><p>Barındırma ve güvenlik hizmetleri, kendi teknik işleyişleri kapsamında zorunlu sunucu kayıtları veya toplulaştırılmış istatistikler oluşturabilir. Bu kayıtlar, siteyi çalışır tutma ve erişim sorunlarını teşhis etme amacıyla sınırlı olarak değerlendirilir.<\/p>",
-  "kullanim-sartlari": "<p class=\"lead\">Askerî Terimler Sözlüğü, akademik araştırma ve belge okuma süreçlerine yardımcı olmak amacıyla hazırlanmış çevrimiçi bir terminoloji aracıdır.<\/p><p>Sözlükteki karşılıklar, tarihî bağlam ve kaynak dili dikkate alınarak verilmiştir. Bununla birlikte, özellikle bağlama bağlı askerî, idarî ve kurumsal terimlerde tek bir değişmez karşılık varsayılmamalıdır. Kullanıcı, akademik yayınlarda sözlük maddelerini ilgili belge ve literatürle karşılaştırarak kullanmalıdır.<\/p><p>İçeriklerin izinsiz biçimde toplu kopyalanması, yeniden paketlenmesi veya sözlüğün müstakil bir veri kaynağı olarak ticari amaçla çoğaltılması uygun değildir. Akademik atıf ve sınırlı alıntı yoluyla kullanım mümkündür.<\/p>",
-  "iletisim": "<p class=\"lead\">Sözlük maddelerine ilişkin düzeltme, ekleme ve kaynak önerileri sistemli biçimde değerlendirilir.<\/p><p>Bir madde için öneri gönderilirken madde başı, önerilen karşılık, bağlam, kaynak künyesi ve mümkünse sayfa ya da belge referansı birlikte belirtilmelidir. Özellikle kişi, kurum, rütbe, birlik, yer adı ve dönem karşılığı içeren önerilerde kaynak gösterimi zorunludur.<\/p><p>İletişim adresi: <a href='mailto:ferdiertekin@gmail.com'>ferdiertekin@gmail.com<\/a><\/p>"
+  "terimler": "<p class=\"lead\">Bu dizin, sözlük maddelerinin arama motorları ve JavaScript kapalı kullanıcılar tarafından da okunabilmesi için canlı sözlük verisinden üretilir.</p>",
+  "yayin-notu": "<p class=\"lead\">Askerî Terimler Sözlüğü, 1880–1918 aralığındaki askerî tarih, teşkilat, rütbe, idarî yapı ve belge terminolojisine odaklanan çevrimiçi bir başvuru aracıdır.</p><p>Bu sözlük, İngiliz askerî istihbarat raporları üzerine yürütülen arşiv çalışmaları sırasında derlenmiştir. Maddelerde İngilizce terim, Osmanlıca veya dönem karşılığı, günümüz Türkçesi ve editör notu birlikte gösterilmeye çalışılmıştır. Amaç, tek kelimelik mekanik karşılıklar üretmek değil, terimlerin tarihî bağlamdaki kullanımını denetlenebilir biçimde görünür kılmaktır.</p><p>Site beta sürümdedir. Bu nedenle bazı maddelerde “kontrol”, “askıda” veya bağlama bağlılık notları bulunabilir. Kesinliği şüpheli karşılıklar, kaynak ve bağlam denetimi tamamlanmadan mutlak hüküm olarak değerlendirilmemelidir.</p>",
+  "kaynakca": "<p class=\"lead\">Bu bölüm, sözlüğün hazırlanmasında ve terim karşılıklarının denetlenmesinde kullanılan başlıca arşiv koleksiyonlarını göstermekter. </p>\nKAYNAKÇA\nHandbook of the Turkish Army. Eighth Provisional Edition. Cairo: Intelligence Section, February 1916.\n<h2>The National Archives (TNA)</h2>\n<h3>Foreign Office (FO)</h3>\n<p><strong>FO 195/2346:</strong> No. 1, No. 3, No. 4, No. 5, No. 6, No. 7, No. 8, No. 11, No. 12, No. 13, No. 15, No. 16, No. 17, No. 19, No. 20, No. 21, No. 23, No. 24, No. 25, No. 26, No. 27, No. 28, No. 30, No. 31, No. 32, No. 33, No. 34, No. 35, No. 36, No. 37, No. 38, No. 39, No. 40, No. 42, No. 44, No. 45, No. 48, No. 51, No. 52, No. 54, No. 55, No. 56, No. 58, No. 59, No. 60, No. 61, No. 63, No. 65, No. 66, No. 67, No. 68, No. 69, No. 70, No. 71, No. 72, No. 76, Kahire (Ek).</p>\n<p>FO 195/1664, FO 195/1718, FO 195/1759, FO 195/1794, FO 195/1837, FO 195/1880, FO 195/1929, FO 195/1974, FO 195/2016, FO 195/2053, FO 195/2107, FO 195/2128, FO 195/2150, FO 195/2176, FO 195/2200, FO 195/2226, FO 195/2290.</p>\n<h3>Record of the Security Service (KV)</h3>\n<p>KV 1/4.</p>\n<h3>War Office (WO)</h3>\n<p>WO 106/42, WO 106/6285.</p>\n<h3>Cabinet Office Files (CAB)</h3>\n<p>CAB 24/6/26, CAB 37/61, CAB 37/74/16, CAB 37/75/45, CAB 37/18, CAB 37/37, CAB 37/38, CAB 37/43/59, CAB 37/47/35, CAB 37/86/10, CAB 38/2, CAB 38/3, CAB 37/92/61, CAB 37/95/135, CAB 37/95/134, CAB 37/95/137.</p>\n<h2>The British Library</h2>\n<h3>India Office Records and Private Papers</h3>\n<p>IOR/L/MIL/17/15/21.</p>\n<h2>Kullanım notu</h2>\n<p>Bu kaynakça, sözlüğün arşiv temelli karakterini göstermek amacıyla yayımlanmıştır. Tekil sözlük maddelerinde geçen karşılıklar, ilgili belge bağlamı ve dönem literatürüyle birlikte değerlendirilmelidir.</p>",
+  "gizlilik-politikasi": "<p class=\"lead\">Bu site, sözlük kullanıcısını kişisel profil çıkarmaya yönelik biçimde izlemek amacıyla tasarlanmamıştır.</p><p>Site statik bir çevrimiçi sözlük olarak çalışır. Arama işlevi kullanıcının tarayıcısında gerçekleşir. Sözlük araması için girilen terimler, bu statik sürümde haricî bir veri tabanına gönderilmez.</p><p>Barındırma hizmeti, güvenlik, performans ve genel trafik ölçümü amacıyla sunucu günlükleri veya toplulaştırılmış web analitiği kayıtları üretebilir. Bu kayıtlar sözlüğün teknik erişilebilirliğini ve kullanım yoğunluğunu görmek için değerlendirilir.</p><p>Editör modu kullanılırsa, sözlükte yapılan yerel düzenlemeler tarayıcının yerel depolama alanında saklanabilir. Bu işlev normal ziyaretçiler için zorunlu değildir.</p>",
+  "cerez-politikasi": "<p class=\"lead\">Bu sürümde site, kullanıcıyı reklam veya pazarlama amacıyla takip eden bir çerez sistemi üzerine kurulmamıştır.</p><p>Sözlük araması tarayıcı içinde çalışır. Editör modunda yapılan yerel değişiklikler için tarayıcının yerel depolama alanı kullanılabilir. Yerel depolama, teknik olarak çerez değildir; ancak kullanıcının cihazında veri tutması bakımından burada ayrıca belirtilmiştir.</p><p>Barındırma ve güvenlik hizmetleri, kendi teknik işleyişleri kapsamında zorunlu sunucu kayıtları veya toplulaştırılmış istatistikler oluşturabilir. Bu kayıtlar, siteyi çalışır tutma ve erişim sorunlarını teşhis etme amacıyla sınırlı olarak değerlendirilir.</p>",
+  "kullanim-sartlari": "<p class=\"lead\">Askerî Terimler Sözlüğü, akademik araştırma ve belge okuma süreçlerine yardımcı olmak amacıyla hazırlanmış çevrimiçi bir terminoloji aracıdır.</p><p>Sözlükteki karşılıklar, tarihî bağlam ve kaynak dili dikkate alınarak verilmiştir. Bununla birlikte, özellikle bağlama bağlı askerî, idarî ve kurumsal terimlerde tek bir değişmez karşılık varsayılmamalıdır. Kullanıcı, akademik yayınlarda sözlük maddelerini ilgili belge ve literatürle karşılaştırarak kullanmalıdır.</p><p>İçeriklerin izinsiz biçimde toplu kopyalanması, yeniden paketlenmesi veya sözlüğün müstakil bir veri kaynağı olarak ticari amaçla çoğaltılması uygun değildir. Akademik atıf ve sınırlı alıntı yoluyla kullanım mümkündür.</p>",
+  "iletisim": "<p class=\"lead\">Sözlük maddelerine ilişkin düzeltme, ekleme ve kaynak önerileri sistemli biçimde değerlendirilir.</p><p>Bir madde için öneri gönderilirken madde başı, önerilen karşılık, bağlam, kaynak künyesi ve mümkünse sayfa ya da belge referansı birlikte belirtilmelidir. Özellikle kişi, kurum, rütbe, birlik, yer adı ve dönem karşılığı içeren önerilerde kaynak gösterimi zorunludur.</p><p>İletişim adresi: <a href='mailto:ferdiertekin@gmail.com'>ferdiertekin@gmail.com</a></p>",
+  "ana-aciklama": "İngilizce-Türkçe ve Türkçe-İngilizce arama yapılabilen açıklamalı online askerî terimler sözlüğü.",
+  "ana-soz": "HAYATTA EN HAKİKİ MÜRŞİD İLİMDİR, FENDİR.\nMUSTAFA KEMAL ATATÜRK"
 };
 window.DICTIONARY_META = {
   "title": "Çevrimiçi Askerî Terimler Sözlüğü (1880–1918)",
@@ -10699,7 +10864,10 @@ window.DICTIONARY_DATA = [
   const PENDING_PAGE_KEY = STORAGE_KEY + "_pending_live_pages";
   const DEFAULT_DATA = clone(window.DICTIONARY_DATA || []);
   const PAGE_DEFS = [
-    { key: "sozluk", title: "Sözlük", url: "/" },
+    { key: "sozluk", title: "Sözlük Alt Notu", url: "/" },
+    { key: "ana-aciklama", title: "Ana Sayfa Açıklaması", url: "/" },
+    { key: "ana-soz", title: "Ana Sayfa Sözü", url: "/" },
+    { key: "terimler", title: "Terimler Dizini", url: "/terimler/" },
     { key: "yayin-notu", title: "Yayın Notu", url: "/yayin-notu/" },
     { key: "kaynakca", title: "Kaynakça", url: "/kaynakca/" },
     { key: "gizlilik-politikasi", title: "Gizlilik", url: "/gizlilik-politikasi/" },
@@ -10708,57 +10876,10 @@ window.DICTIONARY_DATA = [
     { key: "iletisim", title: "İletişim", url: "/iletisim/" }
   ];
   const DEFAULT_PAGE_CONTENT = clone(window.PAGE_CONTENT_DEFAULTS || {});
+  const SUMMARY_EXCLUDE_FIELDS = new Set(["Harf", "Madde Başı", "Güven Durumu", "Güven", "Kaynak Dosyadaki Karşılık", "Bağlam / Editör Notu", "Editör Notu", "Not", "Kritik Not", "Açıklama", "Künye", "Kaynak", "Kaynakça", "Atıf", "Bibliyografik Künye", "Arşiv Kodu", "Belge Kodu"]);
+  const EXPLANATION_FIELD_NAMES = ["Açıklama", "Bağlam / Editör Notu", "Editör Notu", "Not", "Kritik Not", "Kullanım Notu", "Açıklamalar"];
+  const CITATION_FIELD_NAMES = ["Künye", "Kaynak", "Kaynakça", "Atıf", "Bibliyografik Künye", "Arşiv Kodu", "Belge Kodu", "Belge", "Dosya", "Kaynak Dosyadaki Karşılık", "Güven Durumu", "Güven"];
   let pageContent = clone(DEFAULT_PAGE_CONTENT);
-
-  /* ---------- düzenlenebilir menü / alt bağlantılar ---------- */
-  const DEFAULT_NAV = [
-    ["Sözlük", "/"],
-    ["Terimler Dizini", "/terimler/"],
-    ["Yayın Notu", "/yayin-notu/"],
-    ["Kaynakça", "/kaynakca/"],
-    ["Gizlilik", "/gizlilik-politikasi/"],
-    ["Çerezler", "/cerez-politikasi/"],
-    ["Kullanım Şartları", "/kullanim-sartlari/"],
-    ["İletişim", "/iletisim/"]
-  ];
-  PAGE_DEFS.push({ key: "__nav__", title: "Menü / Alt Bağlantılar", url: "" });
-
-  function parseNavText(text) {
-    return String(text || "")
-      .split(/\r?\n/)
-      .map(line => line.trim())
-      .filter(Boolean)
-      .map(line => {
-        const i = line.lastIndexOf("|");
-        if (i < 0) return null;
-        const label = line.slice(0, i).trim();
-        const url = line.slice(i + 1).trim();
-        return (label && url) ? [label, url] : null;
-      })
-      .filter(Boolean);
-  }
-  function navTextFromPairs(pairs) {
-    return pairs.map(([l, u]) => `${l} | ${u}`).join("\n");
-  }
-  function resolveNavPairs() {
-    const raw = pageContent && pageContent["__nav__"];
-    const parsed = raw ? parseNavText(raw) : [];
-    return parsed.length ? parsed : DEFAULT_NAV;
-  }
-  function renderNav() {
-    const pairs = resolveNavPairs();
-    if (els.siteNav) {
-      els.siteNav.innerHTML = pairs
-        .map(([l, u]) => `<a href="${escapeAttr(u)}">${escapeHtml(l)}</a>`)
-        .join("");
-    }
-    if (els.siteFooterLinks) {
-      els.siteFooterLinks.innerHTML = pairs
-        .map(([l, u]) => `<a href="${escapeAttr(u)}">${escapeHtml(l)}</a>`)
-        .join(" · ");
-    }
-  }
-
   const INITIAL_QUERY = getInitialQueryFromUrl();
   const INITIAL_HTML_SOURCE = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
   let data = clone(DEFAULT_DATA);
@@ -10776,6 +10897,15 @@ window.DICTIONARY_DATA = [
   };
 
   const LIVE_API = "/api/content";
+  const NETLIFY_TOML_CONTENT = "[build]\n  publish = \".\"\n  functions = \"netlify/functions\"\n  command = \"npm run build\"\n\n[functions]\n  node_bundler = \"esbuild\"\n\n[[redirects]]\n  from = \"/api/content\"\n  to = \"/.netlify/functions/content\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/robots.txt\"\n  to = \"/.netlify/functions/robots\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/sitemap.xml\"\n  to = \"/.netlify/functions/sitemap\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/terimler\"\n  to = \"/.netlify/functions/terms\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/terimler/\"\n  to = \"/.netlify/functions/terms\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/terim/:slug\"\n  to = \"/.netlify/functions/term?slug=:slug\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/terim/:slug/\"\n  to = \"/.netlify/functions/term?slug=:slug\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/yayin-notu\"\n  to = \"/.netlify/functions/page?key=yayin-notu\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/yayin-notu/\"\n  to = \"/.netlify/functions/page?key=yayin-notu\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/kaynakca\"\n  to = \"/.netlify/functions/page?key=kaynakca\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/kaynakca/\"\n  to = \"/.netlify/functions/page?key=kaynakca\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/gizlilik-politikasi\"\n  to = \"/.netlify/functions/page?key=gizlilik-politikasi\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/gizlilik-politikasi/\"\n  to = \"/.netlify/functions/page?key=gizlilik-politikasi\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/cerez-politikasi\"\n  to = \"/.netlify/functions/page?key=cerez-politikasi\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/cerez-politikasi/\"\n  to = \"/.netlify/functions/page?key=cerez-politikasi\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/kullanim-sartlari\"\n  to = \"/.netlify/functions/page?key=kullanim-sartlari\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/kullanim-sartlari/\"\n  to = \"/.netlify/functions/page?key=kullanim-sartlari\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/iletisim\"\n  to = \"/.netlify/functions/page?key=iletisim\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/iletisim/\"\n  to = \"/.netlify/functions/page?key=iletisim\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/atif-bilgisi\"\n  to = \"/.netlify/functions/page?key=kaynakca\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/atif-bilgisi/\"\n  to = \"/.netlify/functions/page?key=kaynakca\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/terms\"\n  to = \"/.netlify/functions/terms?lang=en\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/terms/\"\n  to = \"/.netlify/functions/terms?lang=en\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/term/:slug\"\n  to = \"/.netlify/functions/term?lang=en&slug=:slug\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/term/:slug/\"\n  to = \"/.netlify/functions/term?lang=en&slug=:slug\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/publication-note\"\n  to = \"/.netlify/functions/page?lang=en&key=yayin-notu\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/publication-note/\"\n  to = \"/.netlify/functions/page?lang=en&key=yayin-notu\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/bibliography\"\n  to = \"/.netlify/functions/page?lang=en&key=kaynakca\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/bibliography/\"\n  to = \"/.netlify/functions/page?lang=en&key=kaynakca\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/privacy-policy\"\n  to = \"/.netlify/functions/page?lang=en&key=gizlilik-politikasi\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/privacy-policy/\"\n  to = \"/.netlify/functions/page?lang=en&key=gizlilik-politikasi\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/cookie-policy\"\n  to = \"/.netlify/functions/page?lang=en&key=cerez-politikasi\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/cookie-policy/\"\n  to = \"/.netlify/functions/page?lang=en&key=cerez-politikasi\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/terms-of-use\"\n  to = \"/.netlify/functions/page?lang=en&key=kullanim-sartlari\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/terms-of-use/\"\n  to = \"/.netlify/functions/page?lang=en&key=kullanim-sartlari\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/contact\"\n  to = \"/.netlify/functions/page?lang=en&key=iletisim\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/contact/\"\n  to = \"/.netlify/functions/page?lang=en&key=iletisim\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/*\"\n  to = \"/404.html\"\n  status = 404\n";
+  const PACKAGE_JSON_CONTENT = "{\n  \"name\": \"askeri-terimler-sozlugu\",\n  \"version\": \"1.0.0\",\n  \"private\": true,\n  \"description\": \"Askerî Terimler Sözlüğü - canlı editör kayıt sistemi\",\n  \"scripts\": {\n    \"build\": \"node -e \\\"console.log('Statik dosyalar hazır; Netlify Functions paketleniyor.')\\\"\"\n  },\n  \"dependencies\": {\n    \"@netlify/blobs\": \"latest\"\n  }\n}\n";
+  const NETLIFY_CONTENT_FUNCTION = "const { jsonHeaders, isAuthorized, readContent, writeContent } = require('./_shared');\n\nexports.handler = async function(event) {\n  if (event.httpMethod === 'OPTIONS') {\n    return { statusCode: 204, headers: jsonHeaders(), body: '' };\n  }\n\n  if (event.httpMethod === 'GET') {\n    const check = event.queryStringParameters && event.queryStringParameters.check;\n    if (String(check || '').toLowerCase() === 'auth') {\n      if (!isAuthorized(event)) {\n        return {\n          statusCode: 401,\n          headers: jsonHeaders(),\n          body: JSON.stringify({ ok: false, error: 'unauthorized' })\n        };\n      }\n      return {\n        statusCode: 200,\n        headers: jsonHeaders(),\n        body: JSON.stringify({ ok: true })\n      };\n    }\n\n    try {\n      const content = await readContent();\n      return {\n        statusCode: 200,\n        headers: jsonHeaders(),\n        body: JSON.stringify(content)\n      };\n    } catch (err) {\n      return {\n        statusCode: 500,\n        headers: jsonHeaders(),\n        body: JSON.stringify({\n          ok: false,\n          error: 'read_failed',\n          message: err && err.message ? err.message : String(err)\n        })\n      };\n    }\n  }\n\n  if (event.httpMethod !== 'POST') {\n    return {\n      statusCode: 405,\n      headers: jsonHeaders(),\n      body: JSON.stringify({ ok: false, error: 'method_not_allowed' })\n    };\n  }\n\n  if (!isAuthorized(event)) {\n    return {\n      statusCode: 401,\n      headers: jsonHeaders(),\n      body: JSON.stringify({ ok: false, error: 'unauthorized' })\n    };\n  }\n\n  let payload;\n  try {\n    payload = JSON.parse(event.body || '{}');\n  } catch (err) {\n    return {\n      statusCode: 400,\n      headers: jsonHeaders(),\n      body: JSON.stringify({ ok: false, error: 'invalid_json' })\n    };\n  }\n\n  try {\n    const current = await readContent();\n    const next = { ...current };\n    const kind = payload.kind || 'all';\n\n    if ((kind === 'all' || kind === 'data') && Array.isArray(payload.data)) {\n      next.data = payload.data;\n    }\n    if ((kind === 'all' || kind === 'pages') && payload.pages && typeof payload.pages === 'object') {\n      next.pages = { ...(current.pages || {}), ...payload.pages };\n    }\n    if ((kind === 'all' || kind === 'pages') && payload.pages_en && typeof payload.pages_en === 'object') {\n      next.pages_en = { ...(current.pages_en || {}), ...payload.pages_en };\n    }\n    if (payload.meta && typeof payload.meta === 'object') {\n      next.meta = { ...(current.meta || {}), ...payload.meta };\n    }\n\n    const saved = await writeContent(next);\n    return {\n      statusCode: 200,\n      headers: jsonHeaders(),\n      body: JSON.stringify({\n        ok: true,\n        updatedAt: saved.updatedAt,\n        writeId: saved._writeId,\n        blobResult: saved._blobResult || {}\n      })\n    };\n  } catch (err) {\n    return {\n      statusCode: 500,\n      headers: jsonHeaders(),\n      body: JSON.stringify({\n        ok: false,\n        error: 'write_failed',\n        message: err && err.message ? err.message : String(err)\n      })\n    };\n  }\n};\n";
+  const NETLIFY_SHARED_FUNCTION = "const { getStore } = require('@netlify/blobs');\nconst crypto = require('crypto');\nconst defaults = require('./default-content.json');\n\nconst STORE_NAME = 'ats-live-content';\nconst STORE_KEY = 'live';\n\nfunction editorHash() {\n  return String(process.env.EDITOR_PASSWORD_HASH || '').trim().toLowerCase();\n}\n\nfunction jsonHeaders(extra = {}) {\n  return {\n    'Content-Type': 'application/json; charset=utf-8',\n    'Cache-Control': 'no-store, max-age=0',\n    'Access-Control-Allow-Origin': '*',\n    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Editor-Password',\n    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',\n    ...extra\n  };\n}\nfunction htmlHeaders(extra = {}) { return { 'Content-Type':'text/html; charset=utf-8', 'Cache-Control':'public, max-age=60, s-maxage=60', ...extra }; }\nfunction textHeaders(extra = {}) { return { 'Content-Type':'text/plain; charset=utf-8', 'Cache-Control':'public, max-age=300, s-maxage=300', ...extra }; }\nfunction xmlHeaders(extra = {}) { return { 'Content-Type':'application/xml; charset=utf-8', 'Cache-Control':'public, max-age=300, s-maxage=300', ...extra }; }\n\nfunction hash(value) {\n  return crypto.createHash('sha256').update(String(value || ''), 'utf8').digest('hex');\n}\n\nfunction timingSafeEqualHex(a, b) {\n  const aa = String(a || '').trim().toLowerCase();\n  const bb = String(b || '').trim().toLowerCase();\n  if (!/^[0-9a-f]{64}$/.test(aa) || !/^[0-9a-f]{64}$/.test(bb)) return false;\n  return crypto.timingSafeEqual(Buffer.from(aa, 'hex'), Buffer.from(bb, 'hex'));\n}\n\nfunction isAuthorized(event) {\n  const expected = editorHash();\n  if (!expected) return false;\n  const h = event.headers || {};\n  const auth = h.authorization || h.Authorization || '';\n  const bearer = String(auth).replace(/^Bearer\\s+/i, '').trim();\n  const pass = h['x-editor-password'] || h['X-Editor-Password'] || bearer;\n  return !!pass && timingSafeEqualHex(hash(pass), expected);\n}\n\nfunction store() {\n  const config = { name: STORE_NAME, consistency: 'strong' };\n  const siteID = process.env.NETLIFY_BLOBS_SITE_ID || process.env.NETLIFY_SITE_ID || process.env.SITE_ID;\n  const token = process.env.NETLIFY_BLOBS_TOKEN || process.env.NETLIFY_AUTH_TOKEN;\n  if (siteID) config.siteID = siteID;\n  if (token) config.token = token;\n  return getStore(config);\n}\n\nfunction deepClone(value) { return JSON.parse(JSON.stringify(value)); }\n\nfunction normalizeLive(live) {\n  const base = deepClone(defaults);\n  if (live && typeof live === 'object') {\n    if (Array.isArray(live.data)) base.data = live.data;\n    if (live.pages && typeof live.pages === 'object') base.pages = { ...(base.pages || {}), ...live.pages };\n    if (live.pages_en && typeof live.pages_en === 'object') base.pages_en = { ...(base.pages_en || {}), ...live.pages_en };\n    if (live.meta && typeof live.meta === 'object') base.meta = { ...(base.meta || {}), ...live.meta };\n    if (live.updatedAt) base.updatedAt = live.updatedAt;\n    if (live._writeId) base._writeId = live._writeId;\n  }\n  if (!base.updatedAt) base.updatedAt = (base.meta && base.meta.generated_at) || new Date().toISOString();\n  if (!base.meta || typeof base.meta !== 'object') base.meta = {};\n  return base;\n}\n\nasync function readContent() {\n  try {\n    const live = await store().get(STORE_KEY, { type: 'json', consistency: 'strong' });\n    const normalized = normalizeLive(live);\n    normalized.meta = { ...(normalized.meta || {}), live_source: live ? 'blob' : 'defaults' };\n    return normalized;\n  } catch (err) {\n    const fallback = normalizeLive(null);\n    fallback.meta = {\n      ...(fallback.meta || {}),\n      live_source: 'defaults',\n      live_read_error: err && err.message ? err.message : String(err)\n    };\n    return fallback;\n  }\n}\n\nasync function writeContent(next) {\n  const normalized = normalizeLive(next);\n  normalized.updatedAt = new Date().toISOString();\n  normalized.meta = {\n    ...(normalized.meta || {}),\n    live_updated_at: normalized.updatedAt,\n    live_source: 'blob'\n  };\n  normalized._writeId = crypto.randomUUID ? crypto.randomUUID() : crypto.randomBytes(16).toString('hex');\n\n  const blobStore = store();\n  const result = await blobStore.setJSON(STORE_KEY, normalized, {\n    metadata: { updatedAt: normalized.updatedAt, writeId: normalized._writeId }\n  });\n  const verify = await blobStore.get(STORE_KEY, { type: 'json', consistency: 'strong' });\n  if (!verify || verify._writeId !== normalized._writeId) throw new Error('blob_write_verification_failed');\n  normalized._blobResult = result || {};\n  return normalized;\n}\n\nfunction escapeHtml(value){ return String(value==null?'':value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#39;'); }\nfunction escapeAttr(value){ return escapeHtml(value); }\nfunction stripHtml(value){ return String(value==null?'':value).replace(/<[^>]*>/g,' ').replace(/\\s+/g,' ').trim(); }\nfunction slugify(value){ return String(value==null?'':value).toLocaleLowerCase('tr').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/ı/g,'i').replace(/ğ/g,'g').replace(/ü/g,'u').replace(/ş/g,'s').replace(/ö/g,'o').replace(/ç/g,'c').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,90)||'terim'; }\nfunction headerIndex(sheet,wanted){ const n=String(wanted||'').toLocaleLowerCase('tr').trim(); return (sheet.headers||[]).findIndex(h=>String(h||'').toLocaleLowerCase('tr').trim()===n); }\nfunction field(rec,names){ for(const name of names){ const idx=headerIndex(rec.sheet,name); if(idx>=0) return rec.row[idx]==null?'':String(rec.row[idx]); } return ''; }\nfunction allRecords(content){ const out=[]; (content.data||[]).forEach((sheet,sheetIndex)=>(sheet.rows||[]).forEach((row,rowIndex)=>out.push({sheet,sheetIndex,row,rowIndex}))); return out; }\nfunction termTitle(rec){ return field(rec,['Madde Başı','İngilizce Terim','Terim','Madde','Açılım','İngilizce / Kurum','Birim','Başlık'])||'Terim'; }\nfunction termSlug(rec){ return slugify(termTitle(rec)); }\nfunction canonicalBase(event){ const proto=(event.headers&&(event.headers['x-forwarded-proto']||event.headers['X-Forwarded-Proto']))||'https'; const host=(event.headers&&(event.headers.host||event.headers.Host))||'localhost'; return `${proto}://${host}`; }\nfunction langFromEvent(event){ const q=(event.queryStringParameters&&event.queryStringParameters.lang)||''; return q.toLowerCase()==='en'?'en':'tr'; }\nfunction siteName(lang){ return lang==='en'?'Military Terms Dictionary':'Askerî Terimler Sözlüğü'; }\nfunction langSwitch(lang){ return lang==='en'?'<nav class=\"lang-switch\" aria-label=\"Language\"><a href=\"/\" lang=\"tr\">TR</a><a href=\"/en/\" class=\"active\" lang=\"en\">ENG</a></nav>':'<nav class=\"lang-switch\" aria-label=\"Dil seçimi\"><a href=\"/\" class=\"active\" lang=\"tr\">TR</a><a href=\"/en/\" lang=\"en\">ENG</a></nav>'; }\nfunction navHtml(lang='tr'){ const items=lang==='en' ? [['Dictionary','/en/'],['Terms Index','/en/terms/'],['Publication Note','/en/publication-note/'],['Bibliography','/en/bibliography/'],['Privacy','/en/privacy-policy/'],['Cookies','/en/cookie-policy/'],['Terms of Use','/en/terms-of-use/'],['Contact','/en/contact/']] : [['Sözlük','/'],['Terimler Dizini','/terimler/'],['Yayın Notu','/yayin-notu/'],['Kaynakça','/kaynakca/'],['Gizlilik','/gizlilik-politikasi/'],['Çerezler','/cerez-politikasi/'],['Kullanım Şartları','/kullanim-sartlari/'],['İletişim','/iletisim/']]; return `<nav class=\"site-nav\" aria-label=\"${lang==='en'?'Site links':'Site bağlantıları'}\">`+items.map(i=>`<a href=\"${i[1]}\">${escapeHtml(i[0])}</a>`).join('')+'</nav>'; }\nfunction css(){ return `:root{--bg:#f8f7f4;--paper:#ffffff;--ink:#232d37;--ink-soft:#5b6570;--line:#e4e2da;--accent:#3d5a78;--olive:#3d5a78;--olive-deep:#2b4460;--brass:#3d5a78;--brass-deep:#2b4460}*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#f8f7f4 0%,#eeede8 100%);background-attachment:fixed;color:var(--ink);font-family:Cambria,Georgia,serif;font-size:17px;line-height:1.62}.site{width:min(1080px,calc(100% - 32px));margin:0 auto;padding:22px 0 36px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:8px 0 18px}.brand{display:flex;align-items:center;gap:14px;color:var(--ink);text-decoration:none}.brand__logo{width:64px;height:64px;display:block;object-fit:contain;border-radius:50%;filter:drop-shadow(0 4px 10px rgba(32,57,90,.14))}.brand__mark{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border:1px solid var(--olive);border-radius:50%;font-weight:700;background:var(--olive);color:#f8f7f4;letter-spacing:.08em}.brand__name{font-size:19px;font-weight:700}.lang-switch{display:inline-flex;gap:4px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.72);padding:3px}.lang-switch a{padding:5px 9px;border-radius:999px;text-decoration:none;color:var(--ink-soft);font-size:12px;font-weight:700;letter-spacing:.04em}.lang-switch a.active{background:var(--olive);color:#f8f7f4}.site-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin:0 0 24px}.site-nav a{padding:8px 12px;border:1px solid var(--line);border-radius:999px;text-decoration:none;color:var(--accent);background:rgba(255,255,255,.70)}main{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:30px 36px;box-shadow:0 18px 50px rgba(20,37,54,.06)}h1{font-family:\"Palatino Linotype\", \"Book Antiqua\", Palatino, Georgia, serif;font-size:34px;line-height:1.15;margin:0 0 16px;text-align:center}h2{font-family:\"Palatino Linotype\", \"Book Antiqua\", Palatino, Georgia, serif;font-size:24px;margin:28px 0 10px}p{text-align:justify}.lead{text-align:center;color:var(--ink-soft);font-size:18px}.meta{margin-top:30px;padding-top:16px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:13px}.source-list{padding-left:22px}.source-list li{margin:7px 0}.term-list{columns:3 220px;column-gap:34px;line-height:1.6}.term-list li{break-inside:avoid;margin:0 0 6px}.term-list a{color:var(--brass);text-decoration:none}.term-list a:hover{text-decoration:underline}.detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:20px}.detail-row{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}.detail-row small{display:block;color:var(--ink-soft);font-size:12px;margin-bottom:4px}.site-footer{margin:26px 0 0;text-align:center;color:var(--ink-soft);font-size:13px}.site-footer p{text-align:center}a{color:var(--accent)}`; }\nfunction pageTitleFor(key,lang='tr'){ const tr={'terimler':'Terimler Dizini','yayin-notu':'Yayın Notu','kaynakca':'Kaynakça','gizlilik-politikasi':'Gizlilik Politikası','cerez-politikasi':'Çerez Politikası','kullanim-sartlari':'Kullanım Şartları','iletisim':'İletişim'}; const en={'terimler':'Terms Index','yayin-notu':'Publication Note','kaynakca':'Bibliography','gizlilik-politikasi':'Privacy Policy','cerez-politikasi':'Cookie Policy','kullanim-sartlari':'Terms of Use','iletisim':'Contact'}; return (lang==='en'?en:tr)[key]||siteName(lang); }\nfunction descriptionFor(key,content,lang='tr'){ const pages=lang==='en'?(content.pages_en||{}):(content.pages||{}); const body=pages&&pages[key]?stripHtml(pages[key]).slice(0,155):''; const f=lang==='en'?{'terimler':'Live terms index of the Military Terms Dictionary.','yayin-notu':'Publication principles, scope and beta notes for the Military Terms Dictionary.','kaynakca':'Archival sources and bibliographical foundations of the Military Terms Dictionary.','gizlilik-politikasi':'Privacy principles and data processing statement for the Military Terms Dictionary.','cerez-politikasi':'Cookie and local storage statement for the Military Terms Dictionary.','kullanim-sartlari':'Terms of use and academic use principles for the Military Terms Dictionary.','iletisim':'Contact page for corrections, additions and source suggestions.'}:{'terimler':'Askerî Terimler Sözlüğü canlı terimler dizini.','yayin-notu':'Askerî Terimler Sözlüğü’nün yayın ilkeleri, kapsamı ve beta sürüm notu.','kaynakca':'Askerî Terimler Sözlüğü’nün arşiv kaynakları ve bibliyografik dayanakları.','gizlilik-politikasi':'Askerî Terimler Sözlüğü gizlilik ilkeleri ve veri işleme açıklaması.','cerez-politikasi':'Askerî Terimler Sözlüğü çerez ve yerel depolama açıklaması.','kullanim-sartlari':'Askerî Terimler Sözlüğü kullanım şartları ve akademik kullanım ilkeleri.','iletisim':'Askerî Terimler Sözlüğü için düzeltme, ekleme ve kaynak önerisi iletişim sayfası.'}; return body||f[key]||siteName(lang); }\nfunction altForPath(canonical,lang){ try{ const u=new URL(canonical); let p=u.pathname; const pairs=[['/','/en/'],['/terimler/','/en/terms/'],['/yayin-notu/','/en/publication-note/'],['/kaynakca/','/en/bibliography/'],['/gizlilik-politikasi/','/en/privacy-policy/'],['/cerez-politikasi/','/en/cookie-policy/'],['/kullanim-sartlari/','/en/terms-of-use/'],['/iletisim/','/en/contact/']]; for(const [tr,en] of pairs){ if(p===tr) return {tr:u.origin+tr,en:u.origin+en}; if(p===en) return {tr:u.origin+tr,en:u.origin+en}; } return {tr:u.origin+'/',en:u.origin+'/en/'}; }catch(e){ return {tr:'/',en:'/en/'}; } }\nfunction pageShell({ title, description, canonical, body, lang='tr' }){ const s=siteName(lang); const home=lang==='en'?'/en/':'/'; const alt=altForPath(canonical,lang); return `<!doctype html><html lang=\"${lang}\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>${escapeHtml(title)} · ${escapeHtml(s)}</title><meta name=\"description\" content=\"${escapeAttr(description)}\"><meta name=\"robots\" content=\"index, follow\"><link rel=\"canonical\" href=\"${escapeAttr(canonical)}\"><link rel=\"alternate\" hreflang=\"tr\" href=\"${escapeAttr(alt.tr)}\"><link rel=\"alternate\" hreflang=\"en\" href=\"${escapeAttr(alt.en)}\"><link rel=\"alternate\" hreflang=\"x-default\" href=\"${escapeAttr(alt.tr)}\"><link rel=\"icon\" href=\"/favicon.ico\" sizes=\"any\"><link rel=\"icon\" type=\"image/png\" href=\"/favicon-96.png\" sizes=\"96x96\"><link rel=\"apple-touch-icon\" href=\"/apple-touch-icon.png\"><style>${css()}</style></head><body><div class=\"site\"><header class=\"topbar\"><a class=\"brand\" href=\"${home}\" aria-label=\"${escapeAttr(s)}\"><img class=\"brand__logo\" src=\"/ats-logo.png\" alt=\"ATS\"><span class=\"brand__name\">${escapeHtml(s)}</span></a>${langSwitch(lang)}</header>${navHtml(lang)}<main><h1>${escapeHtml(title)}</h1>${body}</main><footer class=\"site-footer\"><p>© 2026 Ferdi Ertekin · ${escapeHtml(s)}</p></footer></div></body></html>`; }\nfunction xmlEscape(value){ return String(value==null?'':value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&apos;'); }\nmodule.exports={ defaults,jsonHeaders,htmlHeaders,textHeaders,xmlHeaders,isAuthorized,readContent,writeContent,escapeHtml,escapeAttr,stripHtml,slugify,allRecords,field,termTitle,termSlug,canonicalBase,langFromEvent,siteName,pageTitleFor,descriptionFor,pageShell,xmlEscape };\n";
+  const NETLIFY_PAGE_FUNCTION = "const { htmlHeaders, readContent, escapeHtml, pageTitleFor, descriptionFor, canonicalBase, pageShell, langFromEvent } = require('./_shared');\nexports.handler = async function(event) {\n  const lang = langFromEvent(event);\n  const content = await readContent();\n  const key = (event.queryStringParameters && event.queryStringParameters.key) || 'yayin-notu';\n  const allowed = new Set(['yayin-notu','kaynakca','gizlilik-politikasi','cerez-politikasi','kullanim-sartlari','iletisim']);\n  if (!allowed.has(key)) {\n    const title = lang === 'en' ? 'Page not found' : 'Sayfa bulunamadı';\n    const body = `<p class=\"lead\">${lang === 'en' ? 'The requested page was not found.' : 'Aradığınız sayfa bulunamadı.'}</p>`;\n    return { statusCode:404, headers:htmlHeaders(), body:pageShell({ title, description:title, canonical:canonicalBase(event)+(lang==='en'?'/en/':'/'), body, lang }) };\n  }\n  const title = pageTitleFor(key, lang);\n  const description = descriptionFor(key, content, lang);\n  const pages = lang === 'en' ? (content.pages_en || {}) : (content.pages || {});\n  const body = pages[key] ? pages[key] : `<p class=\"lead\">${escapeHtml(title)} ${lang==='en'?'has not yet been published.':'metni henüz yayımlanmamıştır.'}</p>`;\n  const routeMap = lang === 'en' ? { 'yayin-notu':'/en/publication-note/','kaynakca':'/en/bibliography/','gizlilik-politikasi':'/en/privacy-policy/','cerez-politikasi':'/en/cookie-policy/','kullanim-sartlari':'/en/terms-of-use/','iletisim':'/en/contact/' } : { 'yayin-notu':'/yayin-notu/','kaynakca':'/kaynakca/','gizlilik-politikasi':'/gizlilik-politikasi/','cerez-politikasi':'/cerez-politikasi/','kullanim-sartlari':'/kullanim-sartlari/','iletisim':'/iletisim/' };\n  const canonical = canonicalBase(event) + routeMap[key];\n  const meta = `<p class=\"meta\">${lang==='en'?'Live content last updated':'Canlı içerik son güncelleme'}: ${escapeHtml(content.updatedAt || '')}.</p>`;\n  return { statusCode:200, headers:htmlHeaders(), body:pageShell({ title, description, canonical, body: body + meta, lang }) };\n};\n";
+  const NETLIFY_TERMS_FUNCTION = "const { htmlHeaders, readContent, allRecords, termTitle, termSlug, escapeHtml, canonicalBase, pageShell, langFromEvent } = require('./_shared');\nexports.handler = async function(event) {\n  const lang = langFromEvent(event);\n  const content = await readContent();\n  const seen = new Set(); const items=[];\n  for (const rec of allRecords(content)) { const title=termTitle(rec).trim(); if(!title) continue; const slug=termSlug(rec); const key=slug+'|'+title.toLocaleLowerCase('tr'); if(seen.has(key)) continue; seen.add(key); items.push({title,slug}); }\n  items.sort((a,b)=>a.title.localeCompare(b.title,'tr'));\n  const pages = lang === 'en' ? (content.pages_en || {}) : (content.pages || {});\n  const lead = pages.terimler || (lang === 'en' ? '<p class=\"lead\">This index is generated from live data so that dictionary entries can be read directly by search engines.</p>' : '<p class=\"lead\">Bu dizin, sözlük maddelerinin arama motorları tarafından doğrudan okunabilmesi için canlı veriden üretilir.</p>');\n  const base = lang === 'en' ? '/en/term/' : '/terim/';\n  const title = lang === 'en' ? 'Terms Index' : 'Terimler Dizini';\n  const desc = lang === 'en' ? 'Live terms index of the Military Terms Dictionary.' : 'Askerî Terimler Sözlüğü canlı terimler dizini.';\n  const canonical = canonicalBase(event) + (lang === 'en' ? '/en/terms/' : '/terimler/');\n  const meta = lang === 'en' ? `Live content last updated: ${escapeHtml(content.updatedAt || '')}. Total entries: ${items.length}.` : `Canlı içerik son güncelleme: ${escapeHtml(content.updatedAt || '')}. Toplam madde: ${items.length}.`;\n  const list = `${lead}<ul class=\"term-list\">${items.map(t=>`<li><a href=\"${base}${encodeURIComponent(t.slug)}/\">${escapeHtml(t.title)}</a></li>`).join('')}</ul><p class=\"meta\">${meta}</p>`;\n  return { statusCode:200, headers:htmlHeaders(), body:pageShell({ title, description:desc, canonical, body:list, lang }) };\n};\n";
+  const NETLIFY_TERM_FUNCTION = "const { htmlHeaders, readContent, allRecords, termTitle, termSlug, field, escapeHtml, canonicalBase, pageShell, langFromEvent } = require('./_shared');\nexports.handler = async function(event) {\n  const lang = langFromEvent(event);\n  const content = await readContent();\n  const rawSlug = (event.queryStringParameters && event.queryStringParameters.slug) || '';\n  const slug = decodeURIComponent(rawSlug).replace(/^\\/+|\\/+$/g,'');\n  const rec = allRecords(content).find(r => termSlug(r) === slug);\n  if (!rec) {\n    const title = lang === 'en' ? 'Term not found' : 'Terim bulunamadı';\n    const back = lang === 'en' ? '<p><a href=\"/en/terms/\">Return to the terms index</a></p>' : '<p><a href=\"/terimler/\">Terimler dizinine dön</a></p>';\n    const body = `<p class=\"lead\">${lang === 'en' ? 'The requested term was not found in the dictionary.' : 'Aradığınız terim sözlükte bulunamadı.'}</p>${back}`;\n    return { statusCode:404, headers:htmlHeaders(), body:pageShell({ title, description:title, canonical:canonicalBase(event)+(lang==='en'?'/en/terms/':'/terimler/'), body, lang }) };\n  }\n  const title = termTitle(rec);\n  const ottoman = field(rec, ['Osmanlıca / Dönem Karşılığı','Osmanlıca','Dönem Karşılığı','Nihai Türkçe Karşılık','Karşılık','Standart Türkçe','Eşiti','Not','İçerik']);\n  const modern = field(rec, ['Günümüz Türkçesi','Modern Türkçe','Türkçe Karşılık','Standart Türkçe Karşılık','Metrik Karşılık']);\n  const desc = `${title}${modern ? ' — ' + modern : ''}${ottoman ? ' — ' + ottoman : ''}`.slice(0,155);\n  const details = (rec.sheet.headers||[]).map((h,i)=>{ const v=rec.row[i]==null||rec.row[i]===''?'—':String(rec.row[i]); return `<div class=\"detail-row\"><small>${escapeHtml(h)}</small><div>${escapeHtml(v)}</div></div>`; }).join('');\n  const label = lang === 'en' ? 'Dictionary entry' : 'Sözlük maddesi';\n  const meta = lang === 'en' ? 'Live content last updated' : 'Canlı içerik son güncelleme';\n  const body = `<p class=\"lead\">${escapeHtml(rec.sheet.name || label)}</p><div class=\"detail-grid\">${details}</div><p class=\"meta\">${meta}: ${escapeHtml(content.updatedAt || '')}.</p>`;\n  const canonical = canonicalBase(event) + (lang === 'en' ? '/en/term/' : '/terim/') + encodeURIComponent(termSlug(rec)) + '/';\n  return { statusCode:200, headers:htmlHeaders(), body:pageShell({ title, description:desc, canonical, body, lang }) };\n};\n";
+  const NETLIFY_ROBOTS_FUNCTION = "const { textHeaders } = require('./_shared');\nexports.handler = async function() {\n  return { statusCode: 200, headers: textHeaders(), body: `User-agent: *\\nAllow: /\\n\\nSitemap: https://askeriterimlersozlugu.com/sitemap.xml\\n` };\n};\n";
+  const NETLIFY_SITEMAP_FUNCTION = "const { xmlHeaders, readContent, allRecords, termSlug, canonicalBase, xmlEscape } = require('./_shared');\n\nfunction altPair(path) {\n  const staticPairs = {\n    '/': '/en/',\n    '/terimler/': '/en/terms/',\n    '/yayin-notu/': '/en/publication-note/',\n    '/kaynakca/': '/en/bibliography/',\n    '/gizlilik-politikasi/': '/en/privacy-policy/',\n    '/cerez-politikasi/': '/en/cookie-policy/',\n    '/kullanim-sartlari/': '/en/terms-of-use/',\n    '/iletisim/': '/en/contact/'\n  };\n  for (const [tr, en] of Object.entries(staticPairs)) {\n    if (path === tr || path === en) return { tr, en };\n  }\n  if (path.startsWith('/terim/')) return { tr: path, en: path.replace('/terim/', '/en/term/') };\n  if (path.startsWith('/en/term/')) return { tr: path.replace('/en/term/', '/terim/'), en: path };\n  return { tr: '/', en: '/en/' };\n}\n\nfunction urlEntry(base, path, lastmod) {\n  const alt = altPair(path);\n  return `  <url>\\n    <loc>${xmlEscape(base + path)}</loc>\\n    <xhtml:link rel=\"alternate\" hreflang=\"tr\" href=\"${xmlEscape(base + alt.tr)}\" />\\n    <xhtml:link rel=\"alternate\" hreflang=\"en\" href=\"${xmlEscape(base + alt.en)}\" />\\n    <xhtml:link rel=\"alternate\" hreflang=\"x-default\" href=\"${xmlEscape(base + alt.tr)}\" />\\n    <lastmod>${xmlEscape(lastmod)}</lastmod>\\n  </url>`;\n}\n\nexports.handler = async function(event) {\n  const content = await readContent();\n  const base = 'https://askeriterimlersozlugu.com';\n  const urls = ['/', '/en/', '/terimler/', '/en/terms/', '/yayin-notu/', '/en/publication-note/', '/kaynakca/', '/en/bibliography/', '/gizlilik-politikasi/', '/en/privacy-policy/', '/cerez-politikasi/', '/en/cookie-policy/', '/kullanim-sartlari/', '/en/terms-of-use/', '/iletisim/', '/en/contact/'];\n  const seen = new Set(urls);\n  for (const rec of allRecords(content)) {\n    const slug = encodeURIComponent(termSlug(rec));\n    for (const u of ['/terim/' + slug + '/', '/en/term/' + slug + '/']) {\n      if (!seen.has(u)) { urls.push(u); seen.add(u); }\n    }\n  }\n  const lastmod = new Date(content.updatedAt || Date.now()).toISOString();\n  const body = `<?xml version=\"1.0\" encoding=\"UTF-8\"?>\\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">\\n${urls.map(u => urlEntry(base, u, lastmod)).join('\\n')}\\n</urlset>\\n`;\n  return { statusCode:200, headers:xmlHeaders(), body };\n};\n";
   let liveContentCache = null;
   let liveContentLoaded = false;
 
@@ -10823,12 +10953,22 @@ window.DICTIONARY_DATA = [
     pageEditorTextarea: $("#pageEditorTextarea"),
     savePageContentBtn: $("#savePageContentBtn"),
     editableHomeNotice: $("#editableHomeNotice"),
-    siteNav: $("#siteNav"),
-    siteFooterLinks: $("#siteFooterLinks"),
+    heroSubtitle: $("#heroSubtitle"),
+    homeQuote: $("#homeQuote"),
     toast: $("#toast")
   };
 
   init();
+
+  function ensureTermMetadataColumns(targetData) {
+    (targetData || []).forEach(sheet => {
+      if (!sheet || !Array.isArray(sheet.headers) || !Array.isArray(sheet.rows)) return;
+      if (!sheet.headers.includes("Künye")) {
+        sheet.headers.push("Künye");
+        sheet.rows.forEach(row => { if (Array.isArray(row)) row.push(""); });
+      }
+    });
+  }
 
   /* ---------- editör yetkisi ---------- */
   // Parola özeti ARTIK istemcide tutulmaz. Doğrulama sunucuda
@@ -10928,6 +11068,7 @@ window.DICTIONARY_DATA = [
     if (INITIAL_QUERY && els.searchInput) els.searchInput.value = INITIAL_QUERY;
     await fetchLiveContent();
     data = await loadData();
+    ensureTermMetadataColumns(data);
     pageContent = await loadPageContent();
     hydrateSelects();
     hydratePageEditor();
@@ -11086,15 +11227,70 @@ window.DICTIONARY_DATA = [
   }
 
   function renderTable(records) {
-    const columns = collectTableColumns(records);
-    const thead = els.resultsTable.querySelector("thead");
-    const tbody = els.resultsTable.querySelector("tbody");
-    thead.innerHTML = `<tr>${columns.map(c => `<th>${escapeHtml(c)}</th>`).join("")}<th>İşlem</th></tr>`;
-    tbody.innerHTML = records.map(rec => {
-      return `<tr data-ref="${rec.sheetIndex}:${rec.rowIndex}">${columns.map(c => `<td>${highlight(field(rec, [c]) || "")}</td>`).join("")}<td><button class="btn btn-outline open-row">Aç</button></td></tr>`;
-    }).join("");
-    tbody.querySelectorAll("tr").forEach(tr => tr.addEventListener("click", () => openRecord(tr.dataset.ref)));
-    tbody.querySelectorAll(".open-row").forEach(btn => btn.addEventListener("click", (e) => { e.stopPropagation(); openRecord(btn.closest("tr").dataset.ref); }));
+    els.resultsTableWrap.classList.add("term-list-wrap");
+    els.resultsTableWrap.innerHTML = `<div class="term-list-view" role="list">${records.map(rec => renderListRow(rec)).join("")}</div>`;
+    els.resultsTableWrap.querySelectorAll(".term-list-row").forEach(row => {
+      row.addEventListener("click", () => openRecord(row.dataset.ref));
+    });
+    els.resultsTableWrap.querySelectorAll(".term-list-open").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const row = btn.closest(".term-list-row");
+        if (row) openRecord(row.dataset.ref);
+      });
+    });
+  }
+
+  function renderListRow(rec) {
+    const ref = `${rec.sheetIndex}:${rec.rowIndex}`;
+    const term = field(rec, ["Madde Başı", "İngilizce Terim", "Terim", "Madde", "Açılım", "İngilizce / Kurum", "Birim", "Başlık"]);
+    const variant = field(rec, ["Varyant/Kısaltma", "Kısaltma", "Varyant"]);
+    const ottoman = field(rec, ["Osmanlıca / Dönem Karşılığı", "Osmanlıca", "Dönem Karşılığı", "Nihai Türkçe Karşılık", "Karşılık", "Standart Türkçe", "Eşiti", "İçerik"]);
+    const modern = field(rec, ["Günümüz Türkçesi", "Modern Türkçe", "Türkçe Karşılık", "Standart Türkçe Karşılık", "Metrik Karşılık"]);
+    const category = field(rec, ["Kategori", "Tür"]);
+    const example = field(rec, ["Örnek Cümle", "Örnek", "Örnek Kullanım", "Example", "Bağlam / Editör Notu", "Açıklama", "Not", "Kritik Not"]);
+    const associations = listAssociations(rec, term, variant);
+    return `<article class="term-list-row" role="listitem" data-ref="${escapeAttr(ref)}" aria-label="${escapeAttr(term || "Terim")}">
+      <div class="term-list-cell term-list-main">
+        <span class="term-list-label">Ana terim / çağrışımlar</span>
+        <strong>${highlight(term || "—")}</strong>
+        ${category ? `<span class="term-list-category ${badgeClass(category)}">${escapeHtml(category)}</span>` : ""}
+        ${associations.length ? `<div class="association-chips">${associations.map(v => `<b class="association-chip">${highlight(v)}</b>`).join("")}</div>` : ""}
+      </div>
+      <div class="term-list-cell">
+        <span class="term-list-label">Osmanlıca / Dönem</span>
+        <div class="term-list-value">${highlight(ottoman || "—")}</div>
+      </div>
+      <div class="term-list-cell">
+        <span class="term-list-label">Günümüz Türkçesi</span>
+        <div class="term-list-value">${highlight(modern || "—")}</div>
+      </div>
+      <div class="term-list-cell">
+        <span class="term-list-label">Örnek / Bağlam</span>
+        <div class="term-list-value term-list-value--soft term-list-example">${highlight(example || "—")}</div>
+      </div>
+      <button type="button" class="term-list-open" aria-label="Maddeyi aç">•••</button>
+    </article>`;
+  }
+
+  function listAssociations(rec, term, variant) {
+    const values = [
+      variant,
+      field(rec, ["Kaynak Dosyadaki Karşılık", "Kaynak Karşılığı", "Orijinal Karşılık"]),
+      field(rec, ["Alternatif Karşılık", "Alternatif", "Eş Anlam", "Eşanlam", "Yakın Terimler", "İlgili Terimler", "Çağrışımlar"]),
+      field(rec, ["Açılım"])
+    ];
+    const seen = new Set([normalize(term)]);
+    const out = [];
+    for (const value of values) {
+      String(value || "").split(/[,;|]+/).map(v => v.trim()).filter(Boolean).forEach(v => {
+        const key = normalize(v);
+        if (!key || seen.has(key)) return;
+        seen.add(key);
+        out.push(v);
+      });
+    }
+    return out.slice(0, 5);
   }
 
   function collectTableColumns(records) {
@@ -11201,19 +11397,13 @@ window.DICTIONARY_DATA = [
     const rec = { sheet, sheetIndex, row: sheet.rows[rowIndex], rowIndex };
     els.drawerSheet.textContent = sheet.name;
     els.drawerTitle.textContent = field(rec, ["Madde Başı", "Terim", "İngilizce Terim", "Açılım", "Kısaltma", "İngilizce / Kurum", "Birim", "Başlık"]) || "Madde";
-    // Sade panel: yalnızca dolu ve anlamlı alanlar gösterilir.
-    // Gizlenenler: Harf (yalnızca ilk harf), Madde Başı (zaten başlıkta),
-    // Güven Durumu (iç editör notu) ve Kaynak Dosyadaki Karşılık (Osmanlıca ile aynı).
-    const GIZLI_ALANLAR = new Set([
-      "Harf", "Madde Başı", "Güven Durumu", "Güven", "Kaynak Dosyadaki Karşılık",
-      "Bağlam / Editör Notu", "Editör Notu"
-    ]);
-    const gosterilecek = sheet.headers
+    const summaryFields = sheet.headers
       .map((h, i) => [h, rec.row[i]])
-      .filter(([h, v]) => !GIZLI_ALANLAR.has(h) && v != null && String(v).trim() !== "" && String(v).trim() !== "—");
-    els.drawerContent.innerHTML = gosterilecek.length
-      ? gosterilecek.map(([h, v]) => detailRow(h, v)).join("")
-      : `<p class="drawer-empty">Bu madde için İngilizce başlık dışında ek karşılık kaydı bulunmuyor.</p>`;
+      .filter(([h, v]) => !SUMMARY_EXCLUDE_FIELDS.has(h) && hasDisplayValue(v));
+    const explanationFields = collectNamedFields(rec, EXPLANATION_FIELD_NAMES);
+    const citationFields = collectNamedFields(rec, CITATION_FIELD_NAMES);
+    els.drawerContent.innerHTML = renderDrawerTabs(summaryFields, explanationFields, citationFields);
+    bindDrawerTabs();
     els.editForm.hidden = true;
     els.drawerContent.hidden = false;
     els.editEntryBtn.hidden = !isEditor();
@@ -11224,6 +11414,56 @@ window.DICTIONARY_DATA = [
     els.editEntryBtn.title = "";
     els.drawer.classList.add("open");
     els.drawer.setAttribute("aria-hidden", "false");
+  }
+
+  function hasDisplayValue(value) {
+    return value != null && String(value).trim() !== "" && String(value).trim() !== "—";
+  }
+
+  function collectNamedFields(rec, names) {
+    const out = [];
+    const seen = new Set();
+    names.forEach(name => {
+      const i = headerIndex(rec.sheet, name);
+      if (i < 0 || seen.has(i)) return;
+      const value = rec.row[i];
+      if (!hasDisplayValue(value)) return;
+      out.push([rec.sheet.headers[i], value]);
+      seen.add(i);
+    });
+    return out;
+  }
+
+  function renderDrawerTabs(summaryFields, explanationFields, citationFields) {
+    const panels = [
+      { key: "summary", title: "Özet", fields: summaryFields, empty: "Bu madde için özet karşılık kaydı bulunmuyor." },
+      { key: "explanation", title: "Açıklama", fields: explanationFields, empty: "Bu madde için açıklama kaydı bulunmuyor." },
+      { key: "citation", title: "Künye", fields: citationFields, empty: "Bu madde için künye veya kaynak kaydı bulunmuyor." }
+    ];
+    const active = panels.find(p => p.fields.length)?.key || "summary";
+    const tabs = panels.map(p => `<button type="button" class="drawer-tab${p.key === active ? " active" : ""}" data-tab="${p.key}" aria-selected="${p.key === active ? "true" : "false"}">${p.title}</button>`).join("");
+    const body = panels.map(p => {
+      const html = p.fields.length ? p.fields.map(([h, v]) => detailRow(h, v)).join("") : `<p class="drawer-empty">${p.empty}</p>`;
+      return `<div class="drawer-panel" data-panel="${p.key}"${p.key === active ? "" : " hidden"}>${html}</div>`;
+    }).join("");
+    return `<div class="drawer-tabs" role="tablist" aria-label="Madde ayrıntıları">${tabs}</div>${body}`;
+  }
+
+  function bindDrawerTabs() {
+    const tabs = els.drawerContent.querySelectorAll(".drawer-tab");
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        const key = tab.dataset.tab;
+        tabs.forEach(t => {
+          const on = t === tab;
+          t.classList.toggle("active", on);
+          t.setAttribute("aria-selected", on ? "true" : "false");
+        });
+        els.drawerContent.querySelectorAll(".drawer-panel").forEach(panel => {
+          panel.hidden = panel.dataset.panel !== key;
+        });
+      });
+    });
   }
 
   function detailRow(header, value) {
@@ -11253,7 +11493,7 @@ window.DICTIONARY_DATA = [
     els.deleteEntryBtn.hidden = isNew;
     els.editForm.innerHTML = sheet.headers.map((h, i) => {
       const value = row[i] == null ? "" : String(row[i]);
-      const wide = /not|açıklama|karşılık|türkçe|osmanlıca/i.test(normalize(h)) ? " wide" : "";
+      const wide = /not|açıklama|karşılık|türkçe|osmanlıca|künye|kaynak|atıf|belge/i.test(normalize(h)) ? " wide" : "";
       const tag = value.length > 70 || wide ? "textarea" : "input";
       if (tag === "textarea") {
         return `<label class="${wide.trim()}">${escapeHtml(h)}<textarea data-col="${i}">${escapeHtml(value)}</textarea></label>`;
@@ -11351,19 +11591,29 @@ window.DICTIONARY_DATA = [
   function renderPageEditorText() {
     if (!els.pageEditorSelect || !els.pageEditorTextarea) return;
     const key = els.pageEditorSelect.value || PAGE_DEFS[0].key;
-    if (key === "__nav__") {
-      const raw = pageContent["__nav__"];
-      els.pageEditorTextarea.value = (raw && raw.trim()) ? raw : navTextFromPairs(DEFAULT_NAV);
-      return;
-    }
     els.pageEditorTextarea.value = pageContent[key] || "";
+  }
+
+  function editorTextToHtml(value) {
+    const raw = String(value ?? "").trim();
+    if (!raw) return "";
+    if (/<[a-z][\s\S]*>/i.test(raw)) return raw;
+    return escapeHtml(raw).replace(/\r\n|\r|\n/g, "<br>");
   }
 
   function applyPageContentToDom() {
     if (els.editableHomeNotice && typeof pageContent.sozluk === "string") {
       els.editableHomeNotice.textContent = stripHtml(pageContent.sozluk).trim() || DEFAULT_PAGE_CONTENT.sozluk || "";
     }
-    renderNav();
+    if (els.heroSubtitle) {
+      const subtitle = pageContent["ana-aciklama"] || DEFAULT_PAGE_CONTENT["ana-aciklama"] || (window.DICTIONARY_META && window.DICTIONARY_META.subtitle) || "";
+      els.heroSubtitle.innerHTML = editorTextToHtml(subtitle);
+    }
+    if (els.homeQuote) {
+      const quote = pageContent["ana-soz"] || DEFAULT_PAGE_CONTENT["ana-soz"] || "";
+      els.homeQuote.hidden = !String(quote).trim();
+      els.homeQuote.innerHTML = `<strong>${editorTextToHtml(quote)}</strong>`;
+    }
   }
 
   async function savePageContentFromEditor() {
@@ -11445,6 +11695,18 @@ window.DICTIONARY_DATA = [
         "",
         "Not: Canlı düzenlemeler Netlify Blobs üzerinde yayımlanır. Bu ZIP yalnızca arşiv/yedek amaçlıdır."
       ].join("\n");
+      const apiDefaultMeta = { ...(window.DICTIONARY_META || {}) };
+      apiDefaultMeta.generated_at = iso;
+      apiDefaultMeta.editor_exported_at = iso;
+      apiDefaultMeta.editor_export_note = "Bu dosya editör modunda yapılan son yerel düzenlemeler gömülerek oluşturulmuştur.";
+      const apiDefaultContent = JSON.stringify({
+        data,
+        pages: pageContent,
+        pages_en: {},
+        meta: apiDefaultMeta,
+        updatedAt: iso
+      }, null, 2);
+
       const files = [
         { name: "index.html", content: html },
         { name: "YAYIN_NOTU.txt", content: note },
@@ -11459,7 +11721,18 @@ window.DICTIONARY_DATA = [
         { name: "cerez-politikasi/index.html", content: buildStaticPageHtml("cerez-politikasi", iso) },
         { name: "kullanim-sartlari/index.html", content: buildStaticPageHtml("kullanim-sartlari", iso) },
         { name: "iletisim/index.html", content: buildStaticPageHtml("iletisim", iso) },
-        { name: "terimler/index.html", content: buildTermsIndexHtml(iso) }
+        { name: "terimler/index.html", content: buildTermsIndexHtml(iso) },
+        { name: "netlify.toml", content: NETLIFY_TOML_CONTENT },
+        { name: "package.json", content: PACKAGE_JSON_CONTENT },
+        { name: "netlify/functions/content.js", content: NETLIFY_CONTENT_FUNCTION },
+        { name: "netlify/functions/_shared.js", content: NETLIFY_SHARED_FUNCTION },
+        { name: "netlify/functions/page.js", content: NETLIFY_PAGE_FUNCTION },
+        { name: "netlify/functions/terms.js", content: NETLIFY_TERMS_FUNCTION },
+        { name: "netlify/functions/term.js", content: NETLIFY_TERM_FUNCTION },
+        { name: "netlify/functions/robots.js", content: NETLIFY_ROBOTS_FUNCTION },
+        { name: "netlify/functions/sitemap.js", content: NETLIFY_SITEMAP_FUNCTION },
+        { name: "netlify/functions/default-content.json", content: apiDefaultContent },
+        { name: "default-content.json", content: apiDefaultContent }
       ];
       const assets = await collectBinaryAssets();
       const zipBlob = makeZip([...files, ...assets]);
@@ -11474,6 +11747,7 @@ window.DICTIONARY_DATA = [
 
   function buildPublishHtml(iso) {
     const meta = { ...(window.DICTIONARY_META || {}) };
+    meta.subtitle = stripHtml(pageContent["ana-aciklama"] || meta.subtitle || "").trim();
     meta.generated_at = iso;
     meta.editor_exported_at = iso;
     meta.editor_export_note = "Bu dosya editör modunda yapılan son yerel düzenlemeler gömülerek oluşturulmuştur.";
@@ -11486,6 +11760,8 @@ window.DICTIONARY_DATA = [
     let html = INITIAL_HTML_SOURCE;
     html = html.replace(/<!-- Editör dışa aktarımı: .*? -->/, "<!-- Editör dışa aktarımı: " + iso + " -->");
     html = html.replace(/<p id="editableHomeNotice">[\s\S]*?<\/p>/, `<p id="editableHomeNotice">${escapeHtml(stripHtml(pageContent.sozluk || ""))}</p>`);
+    html = html.replace(/<p id="heroSubtitle" class="hero-subtitle">[\s\S]*?<\/p>/, `<p id="heroSubtitle" class="hero-subtitle">${editorTextToHtml(pageContent["ana-aciklama"] || "")}</p>`);
+    html = html.replace(/<blockquote id="homeQuote" class="homepage-quote"[\s\S]*?<\/blockquote>/, `<blockquote id="homeQuote" class="homepage-quote" aria-label="Ana sayfa sözü"><strong>${editorTextToHtml(pageContent["ana-soz"] || "")}</strong></blockquote>`);
     const scriptClose = "<" + "/script>";
     const dataScriptPattern = new RegExp(
       "window\\.PAGE_CONTENT_DEFAULTS\\s*=\\s*[\\s\\S]*?;\\s*" +
@@ -11552,7 +11828,8 @@ window.DICTIONARY_DATA = [
       }
     }
     const unique = [...new Set(items)].sort((a,b) => a.localeCompare(b, "tr"));
-    const list = `<p class="lead">Bu dizin, arama motorları ve JavaScript kapalı kullanıcılar için sözlük maddelerinin statik listesini sunar.</p><ul class="term-list">${unique.map(t => `<li><a href="/?q=${encodeURIComponent(t)}">${escapeHtml(t)}</a></li>`).join("")}</ul>`;
+    const intro = pageContent.terimler || `<p class="lead">Bu dizin, arama motorları ve JavaScript kapalı kullanıcılar için sözlük maddelerinin statik listesini sunar.</p>`;
+    const list = `${intro}<ul class="term-list">${unique.map(t => `<li><a href="/?q=${encodeURIComponent(t)}">${escapeHtml(t)}</a></li>`).join("")}</ul>`;
     return staticPageTemplate("Terimler Dizini", "Askerî Terimler Sözlüğü statik terimler dizini.", "/terimler/", list, iso);
   }
 
@@ -11562,18 +11839,50 @@ window.DICTIONARY_DATA = [
 
   function buildRedirectsTxt() {
     return [
-      "/atif-bilgisi           /kaynakca/               301",
-      "/atif-bilgisi/          /kaynakca/               301",
-      "/iletisim               /iletisim/               301",
-      "/kaynakca               /kaynakca/               301",
-      "/kullanim-sartlari      /kullanim-sartlari/      301",
-      "/cerez-politikasi       /cerez-politikasi/       301",
-      "/gizlilik-politikasi    /gizlilik-politikasi/    301",
-      "/yayin-notu             /yayin-notu/             301",
-      "/terimler               /terimler/               301",
-      "/*                     /404.html                404",
-      ""
-    ].join("\n");
+      "/api/content            /.netlify/functions/content   200!",
+      "/robots.txt             /.netlify/functions/robots     200!",
+      "/sitemap.xml            /.netlify/functions/sitemap    200!",
+      "",
+      "/terimler               /.netlify/functions/terms      200!",
+      "/terimler/              /.netlify/functions/terms      200!",
+      "/terim/:slug            /.netlify/functions/term?slug=:slug      200!",
+      "/terim/:slug/           /.netlify/functions/term?slug=:slug      200!",
+      "",
+      "/yayin-notu             /.netlify/functions/page?key=yayin-notu             200!",
+      "/yayin-notu/            /.netlify/functions/page?key=yayin-notu             200!",
+      "/kaynakca               /.netlify/functions/page?key=kaynakca               200!",
+      "/kaynakca/              /.netlify/functions/page?key=kaynakca               200!",
+      "/gizlilik-politikasi    /.netlify/functions/page?key=gizlilik-politikasi    200!",
+      "/gizlilik-politikasi/   /.netlify/functions/page?key=gizlilik-politikasi    200!",
+      "/cerez-politikasi       /.netlify/functions/page?key=cerez-politikasi       200!",
+      "/cerez-politikasi/      /.netlify/functions/page?key=cerez-politikasi       200!",
+      "/kullanim-sartlari      /.netlify/functions/page?key=kullanim-sartlari      200!",
+      "/kullanim-sartlari/     /.netlify/functions/page?key=kullanim-sartlari      200!",
+      "/iletisim               /.netlify/functions/page?key=iletisim               200!",
+      "/iletisim/              /.netlify/functions/page?key=iletisim               200!",
+      "",
+      "/atif-bilgisi           /.netlify/functions/page?key=kaynakca               200!",
+      "/atif-bilgisi/          /.netlify/functions/page?key=kaynakca               200!",
+      "",
+      "/en/terms               /.netlify/functions/terms?lang=en                  200!",
+      "/en/terms/              /.netlify/functions/terms?lang=en                  200!",
+      "/en/term/:slug          /.netlify/functions/term?lang=en&slug=:slug        200!",
+      "/en/term/:slug/         /.netlify/functions/term?lang=en&slug=:slug        200!",
+      "/en/publication-note    /.netlify/functions/page?lang=en&key=yayin-notu    200!",
+      "/en/publication-note/   /.netlify/functions/page?lang=en&key=yayin-notu    200!",
+      "/en/bibliography        /.netlify/functions/page?lang=en&key=kaynakca      200!",
+      "/en/bibliography/       /.netlify/functions/page?lang=en&key=kaynakca      200!",
+      "/en/privacy-policy      /.netlify/functions/page?lang=en&key=gizlilik-politikasi 200!",
+      "/en/privacy-policy/     /.netlify/functions/page?lang=en&key=gizlilik-politikasi 200!",
+      "/en/cookie-policy       /.netlify/functions/page?lang=en&key=cerez-politikasi 200!",
+      "/en/cookie-policy/      /.netlify/functions/page?lang=en&key=cerez-politikasi 200!",
+      "/en/terms-of-use        /.netlify/functions/page?lang=en&key=kullanim-sartlari 200!",
+      "/en/terms-of-use/       /.netlify/functions/page?lang=en&key=kullanim-sartlari 200!",
+      "/en/contact             /.netlify/functions/page?lang=en&key=iletisim      200!",
+      "/en/contact/            /.netlify/functions/page?lang=en&key=iletisim      200!",
+      "",
+      "/*                      /404.html                404"
+    ].join("\n") + "\n";
   }
 
   function buildManifestJson() {
@@ -11619,10 +11928,7 @@ ${urls.map(u => `  <url><loc>BASE_URL${u}</loc></url>`).join("\n")}
   }
 
   function navHtml() {
-    const pairs = resolveNavPairs();
-    return `<nav class="site-nav" aria-label="Site bağlantıları">` +
-      pairs.map(([l, u]) => `<a href="${escapeAttr(u)}">${escapeHtml(l)}</a>`).join("") +
-      `</nav>`;
+    return `<nav class="site-nav" aria-label="Site bağlantıları"><a href="/">Sözlük</a><a href="/terimler/">Terimler Dizini</a><a href="/yayin-notu/">Yayın Notu</a><a href="/kaynakca/">Kaynakça</a><a href="/gizlilik-politikasi/">Gizlilik</a><a href="/cerez-politikasi/">Çerezler</a><a href="/kullanim-sartlari/">Kullanım Şartları</a><a href="/iletisim/">İletişim</a></nav>`;
   }
 
   function staticPageCss() {
@@ -11774,7 +12080,7 @@ ${urls.map(u => `  <url><loc>BASE_URL${u}</loc></url>`).join("\n")}
       kind: kind || "all",
       data: kind === "pages" ? undefined : data,
       pages: kind === "data" ? undefined : pageContent,
-      meta: { ...(window.DICTIONARY_META || {}), client_published_at: new Date().toISOString() }
+      meta: { ...(window.DICTIONARY_META || {}), subtitle: stripHtml(pageContent["ana-aciklama"] || ((window.DICTIONARY_META || {}).subtitle) || "").trim(), client_published_at: new Date().toISOString() }
     };
 
     try {
@@ -11824,6 +12130,7 @@ ${urls.map(u => `  <url><loc>BASE_URL${u}</loc></url>`).join("\n")}
     if (!isEditor()) { toast("Sıfırlama için editör girişi gerekir."); return; }
     if (!confirm("Bu tarayıcıdaki kayıtlı düzenlemeler silinip varsayılan sözlük verisine dönülsün mü?")) return;
     data = clone(DEFAULT_DATA);
+    ensureTermMetadataColumns(data);
     try { await storageDelete(STORAGE_KEY); } catch (err) { console.warn("storage delete error:", err); }
     state = { ...state, query: "", sheet: "__all__", letter: "", category: "", confidence: "", page: 1, selected: null, editing: false };
     els.searchInput.value = "";

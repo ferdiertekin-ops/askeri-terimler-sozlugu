@@ -1,11 +1,6 @@
 {
   "name": "Askerî Terimler Sözlüğü",
   "short_name": "ATS",
-  "lang": "tr",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#F7F4EC",
-  "theme_color": "#2F4E71",
   "icons": [
     {
       "src": "/favicon-96.png",
@@ -17,5 +12,8 @@
       "sizes": "180x180",
       "type": "image/png"
     }
-  ]
+  ],
+  "theme_color": "#2b4460",
+  "background_color": "#F7F4EC",
+  "display": "standalone"
 }

@@ -1,22 +1,12 @@
 Askerî Terimler Sözlüğü
 Yayın paketi
 
-Bu paket teknik erişim ve SEO kontrolünden geçirilmiştir.
-Dışa aktarım zamanı: 2026-07-07T18:41:10.858Z
-Teknik güncelleme zamanı: 2026-07-07T18:46:25+00:00
+Bu paket editör modunda yedek amaçlı dışa aktarılmıştır.
+Dışa aktarım zamanı: 2026-07-08T20:07:33.835Z
 
-Netlify yükleme talimatı:
-1. Mevcut Netlify projesinde Deploys bölümünü açın.
-2. Bu ZIP dosyasını sürükleyip bırakın.
-3. Canlı site aynı adres altında güncellenir.
-4. Dağıtımdan sonra şu adresleri test edin: /, /robots.txt, /favicon.ico, /terimler/, /iletisim/, /kullanim-sartlari/, /cerez-politikasi/.
+Yedekleme notu:
+1. Bu ZIP, canlı verinin statik yedeğidir.
+2. Olağan düzenlemeler için yeniden deploy gerekmez.
+3. Büyük yapısal değişikliklerde bu paket arşiv olarak saklanabilir.
 
-Paket içeriği:
-- index.html: güncel sözlük verisi gömülü ana sözlük sitesi
-- favicon.ico, favicon-96.png, apple-touch-icon.png: site simgeleri
-- robots.txt: arama motoru tarama izni
-- _redirects: temiz URL yönlendirmeleri
-- 404.html: özel bulunamadı sayfası
-- /terimler/: statik terim dizini
-- /yayin-notu/, /kaynakca/, /gizlilik-politikasi/, /cerez-politikasi/, /kullanim-sartlari/, /iletisim/: statik bilgi sayfaları
-- sitemap-template.xml ve SEO_KURULUM_NOTU.txt: alan adı kesinleşince tamamlanacak Google/Search Console notları
+Not: Canlı düzenlemeler Netlify Blobs üzerinde yayımlanır. Bu ZIP yalnızca arşiv/yedek amaçlıdır.

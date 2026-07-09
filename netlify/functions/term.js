@@ -9,7 +9,7 @@ exports.handler = async function(event) {
     const title = lang === 'en' ? 'Term not found' : 'Terim bulunamadı';
     const back = lang === 'en' ? '<p><a href="/en/terms/">Return to the terms index</a></p>' : '<p><a href="/terimler/">Terimler dizinine dön</a></p>';
     const body = `<p class="lead">${lang === 'en' ? 'The requested term was not found in the dictionary.' : 'Aradığınız terim sözlükte bulunamadı.'}</p>${back}`;
-    return { statusCode:404, headers:htmlHeaders(), body:pageShell({ title, description:title, canonical:canonicalBase(event)+(lang==='en'?'/en/terms/':'/terimler/'), body, lang, content }) };
+    return { statusCode:404, headers:htmlHeaders(), body:pageShell({ title, description:title, canonical:canonicalBase(event)+(lang==='en'?'/en/terms/':'/terimler/'), body, lang }) };
   }
   const title = termTitle(rec);
   const ottoman = field(rec, ['Osmanlıca / Dönem Karşılığı','Osmanlıca','Dönem Karşılığı','Nihai Türkçe Karşılık','Karşılık','Standart Türkçe','Eşiti','Not','İçerik']);
@@ -20,5 +20,5 @@ exports.handler = async function(event) {
   const meta = lang === 'en' ? 'Live content last updated' : 'Canlı içerik son güncelleme';
   const body = `<p class="lead">${escapeHtml(rec.sheet.name || label)}</p><div class="detail-grid">${details}</div><p class="meta">${meta}: ${escapeHtml(content.updatedAt || '')}.</p>`;
   const canonical = canonicalBase(event) + (lang === 'en' ? '/en/term/' : '/terim/') + encodeURIComponent(termSlug(rec)) + '/';
-  return { statusCode:200, headers:htmlHeaders(), body:pageShell({ title, description:desc, canonical, body, lang, content }) };
+  return { statusCode:200, headers:htmlHeaders(), body:pageShell({ title, description:desc, canonical, body, lang }) };
 };
