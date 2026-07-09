@@ -55,6 +55,28 @@ function store() {
 
 function deepClone(value) { return JSON.parse(JSON.stringify(value)); }
 
+
+function firstEmailFromHtml(value) {
+  const m = String(value || '').match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
+  return m ? m[0] : '';
+}
+function syncEmailHtml(value, email) {
+  if (!email) return String(value || '');
+  return String(value || '')
+    .replace(/mailto:[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, 'mailto:' + email)
+    .replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, email);
+}
+function syncEnglishContactEmail(content) {
+  const trPages = (content && content.pages) || {};
+  const enPages = (content && content.pages_en) || {};
+  const email = firstEmailFromHtml(trPages.iletisim) || firstEmailFromHtml(trPages['gizlilik-politikasi']) || 'askeriterimlersozlugu@gmail.com';
+  for (const key of ['iletisim', 'gizlilik-politikasi']) {
+    if (enPages[key]) enPages[key] = syncEmailHtml(enPages[key], email);
+  }
+  content.pages_en = enPages;
+  return content;
+}
+
 function normalizeLive(live) {
   const base = deepClone(defaults);
   if (live && typeof live === 'object') {
@@ -67,7 +89,7 @@ function normalizeLive(live) {
   }
   if (!base.updatedAt) base.updatedAt = (base.meta && base.meta.generated_at) || new Date().toISOString();
   if (!base.meta || typeof base.meta !== 'object') base.meta = {};
-  return base;
+  return syncEnglishContactEmail(base);
 }
 
 async function readContent() {
