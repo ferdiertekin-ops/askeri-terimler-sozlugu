@@ -878,7 +878,7 @@ body.search-active .results{padding-top:4px!important}
           <input id="searchInput" type="search" autocomplete="off" placeholder="mülâzım, war office, topçu, mirliva…" aria-label="Terim ara">
           <button id="clearSearchBtn" class="clear-btn" title="Aramayı temizle">×</button>
         </div>
-        <p class="search-meta"><strong id="metricVisible">0</strong> sonuç · <strong id="metricTotal">0</strong> madde · <span id="metricSheet">Tüm Bölümler</span> · <span id="metricSave">Yükleniyor…</span></p>
+        <p class="search-meta"><span id="metricVisible" hidden>0</span><strong id="metricTotal">0</strong> madde<span id="metricSheet" hidden></span><span id="metricSave" hidden></span></p>
       </div>
         <noscript><p class="noscript-note">Bu sözlüğün arama işlevi JavaScript ile çalışır. JavaScript kapalıysa <a href="/terimler/">Terimler Dizini</a> üzerinden sözlük maddelerinin statik listesini görüntüleyebilirsiniz.</p></noscript>
     </section>
@@ -919,9 +919,9 @@ body.search-active .results{padding-top:4px!important}
     </section>
 
     <main class="results" id="resultsSection">
-      <div class="results__head">
-        <h2 id="resultsTitle">Sonuçlar</h2>
-        <p id="resultsSubtitle">Arama yapmak için bir terim yazın.</p>
+      <div class="results__head" hidden aria-hidden="true" style="display:none!important">
+        <h2 id="resultsTitle"></h2>
+        <p id="resultsSubtitle"></p>
       </div>
 
       <div id="resultsList" class="results-list"></div>
