@@ -8,13 +8,13 @@
 
 [[redirects]]
   from = "/en"
-  to = "/en/index.html"
+  to = "/index.html"
   status = 200
   force = true
 
 [[redirects]]
   from = "/en/"
-  to = "/en/index.html"
+  to = "/index.html"
   status = 200
   force = true
 
@@ -33,6 +33,150 @@
 [[redirects]]
   from = "/sitemap.xml"
   to = "/.netlify/functions/sitemap"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/yayin-notu"
+  to = "/.netlify/functions/page-yayin-notu"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/yayin-notu/"
+  to = "/.netlify/functions/page-yayin-notu"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/kaynakca"
+  to = "/.netlify/functions/page-kaynakca"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/kaynakca/"
+  to = "/.netlify/functions/page-kaynakca"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/gizlilik-politikasi"
+  to = "/.netlify/functions/page-gizlilik-politikasi"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/gizlilik-politikasi/"
+  to = "/.netlify/functions/page-gizlilik-politikasi"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/cerez-politikasi"
+  to = "/.netlify/functions/page-cerez-politikasi"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/cerez-politikasi/"
+  to = "/.netlify/functions/page-cerez-politikasi"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/kullanim-sartlari"
+  to = "/.netlify/functions/page-kullanim-sartlari"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/kullanim-sartlari/"
+  to = "/.netlify/functions/page-kullanim-sartlari"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/iletisim"
+  to = "/.netlify/functions/page-iletisim"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/iletisim/"
+  to = "/.netlify/functions/page-iletisim"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/en/publication-note"
+  to = "/.netlify/functions/page-yayin-notu-en"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/en/publication-note/"
+  to = "/.netlify/functions/page-yayin-notu-en"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/en/bibliography"
+  to = "/.netlify/functions/page-kaynakca-en"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/en/bibliography/"
+  to = "/.netlify/functions/page-kaynakca-en"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/en/privacy-policy"
+  to = "/.netlify/functions/page-gizlilik-politikasi-en"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/en/privacy-policy/"
+  to = "/.netlify/functions/page-gizlilik-politikasi-en"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/en/cookie-policy"
+  to = "/.netlify/functions/page-cerez-politikasi-en"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/en/cookie-policy/"
+  to = "/.netlify/functions/page-cerez-politikasi-en"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/en/terms-of-use"
+  to = "/.netlify/functions/page-kullanim-sartlari-en"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/en/terms-of-use/"
+  to = "/.netlify/functions/page-kullanim-sartlari-en"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/en/contact"
+  to = "/.netlify/functions/page-iletisim-en"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/en/contact/"
+  to = "/.netlify/functions/page-iletisim-en"
   status = 200
   force = true
 

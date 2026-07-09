@@ -2,7 +2,7 @@ Askerî Terimler Sözlüğü
 Yayın paketi
 
 Bu paket editör modunda yedek amaçlı dışa aktarılmıştır.
-Dışa aktarım zamanı: 2026-07-08T20:07:33.835Z
+Dışa aktarım zamanı: 2026-07-09T19:16:11.711Z
 
 Yedekleme notu:
 1. Bu ZIP, canlı verinin statik yedeğidir.
