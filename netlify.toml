@@ -7,6 +7,18 @@
   node_bundler = "esbuild"
 
 [[redirects]]
+  from = "/en"
+  to = "/en/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/en/"
+  to = "/en/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/api/content"
   to = "/.netlify/functions/content"
   status = 200
@@ -49,90 +61,6 @@
   force = true
 
 [[redirects]]
-  from = "/yayin-notu"
-  to = "/.netlify/functions/page?key=yayin-notu"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/yayin-notu/"
-  to = "/.netlify/functions/page?key=yayin-notu"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/kaynakca"
-  to = "/.netlify/functions/page?key=kaynakca"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/kaynakca/"
-  to = "/.netlify/functions/page?key=kaynakca"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/gizlilik-politikasi"
-  to = "/.netlify/functions/page?key=gizlilik-politikasi"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/gizlilik-politikasi/"
-  to = "/.netlify/functions/page?key=gizlilik-politikasi"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/cerez-politikasi"
-  to = "/.netlify/functions/page?key=cerez-politikasi"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/cerez-politikasi/"
-  to = "/.netlify/functions/page?key=cerez-politikasi"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/kullanim-sartlari"
-  to = "/.netlify/functions/page?key=kullanim-sartlari"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/kullanim-sartlari/"
-  to = "/.netlify/functions/page?key=kullanim-sartlari"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/iletisim"
-  to = "/.netlify/functions/page?key=iletisim"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/iletisim/"
-  to = "/.netlify/functions/page?key=iletisim"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/atif-bilgisi"
-  to = "/.netlify/functions/page?key=kaynakca"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/atif-bilgisi/"
-  to = "/.netlify/functions/page?key=kaynakca"
-  status = 200
-  force = true
-
-[[redirects]]
   from = "/en/terms"
   to = "/.netlify/functions/terms?lang=en"
   status = 200
@@ -153,78 +81,6 @@
 [[redirects]]
   from = "/en/term/:slug/"
   to = "/.netlify/functions/term?lang=en&slug=:slug"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/en/publication-note"
-  to = "/.netlify/functions/page?lang=en&key=yayin-notu"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/en/publication-note/"
-  to = "/.netlify/functions/page?lang=en&key=yayin-notu"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/en/bibliography"
-  to = "/.netlify/functions/page?lang=en&key=kaynakca"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/en/bibliography/"
-  to = "/.netlify/functions/page?lang=en&key=kaynakca"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/en/privacy-policy"
-  to = "/.netlify/functions/page?lang=en&key=gizlilik-politikasi"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/en/privacy-policy/"
-  to = "/.netlify/functions/page?lang=en&key=gizlilik-politikasi"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/en/cookie-policy"
-  to = "/.netlify/functions/page?lang=en&key=cerez-politikasi"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/en/cookie-policy/"
-  to = "/.netlify/functions/page?lang=en&key=cerez-politikasi"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/en/terms-of-use"
-  to = "/.netlify/functions/page?lang=en&key=kullanim-sartlari"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/en/terms-of-use/"
-  to = "/.netlify/functions/page?lang=en&key=kullanim-sartlari"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/en/contact"
-  to = "/.netlify/functions/page?lang=en&key=iletisim"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/en/contact/"
-  to = "/.netlify/functions/page?lang=en&key=iletisim"
   status = 200
   force = true
 

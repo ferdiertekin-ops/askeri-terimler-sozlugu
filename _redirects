@@ -1,3 +1,5 @@
+/en/                   /en/index.html             200!
+/en                    /en/index.html             200!
 /api/content            /.netlify/functions/content   200!
 /robots.txt             /.netlify/functions/robots     200!
 /sitemap.xml            /.netlify/functions/sitemap    200!
@@ -7,37 +9,9 @@
 /terim/:slug            /.netlify/functions/term?slug=:slug      200!
 /terim/:slug/           /.netlify/functions/term?slug=:slug      200!
 
-/yayin-notu             /.netlify/functions/page?key=yayin-notu             200!
-/yayin-notu/            /.netlify/functions/page?key=yayin-notu             200!
-/kaynakca               /.netlify/functions/page?key=kaynakca               200!
-/kaynakca/              /.netlify/functions/page?key=kaynakca               200!
-/gizlilik-politikasi    /.netlify/functions/page?key=gizlilik-politikasi    200!
-/gizlilik-politikasi/   /.netlify/functions/page?key=gizlilik-politikasi    200!
-/cerez-politikasi       /.netlify/functions/page?key=cerez-politikasi       200!
-/cerez-politikasi/      /.netlify/functions/page?key=cerez-politikasi       200!
-/kullanim-sartlari      /.netlify/functions/page?key=kullanim-sartlari      200!
-/kullanim-sartlari/     /.netlify/functions/page?key=kullanim-sartlari      200!
-/iletisim               /.netlify/functions/page?key=iletisim               200!
-/iletisim/              /.netlify/functions/page?key=iletisim               200!
-
-/atif-bilgisi           /.netlify/functions/page?key=kaynakca               200!
-/atif-bilgisi/          /.netlify/functions/page?key=kaynakca               200!
-
 /en/terms               /.netlify/functions/terms?lang=en                  200!
 /en/terms/              /.netlify/functions/terms?lang=en                  200!
 /en/term/:slug          /.netlify/functions/term?lang=en&slug=:slug        200!
 /en/term/:slug/         /.netlify/functions/term?lang=en&slug=:slug        200!
-/en/publication-note    /.netlify/functions/page?lang=en&key=yayin-notu    200!
-/en/publication-note/   /.netlify/functions/page?lang=en&key=yayin-notu    200!
-/en/bibliography        /.netlify/functions/page?lang=en&key=kaynakca      200!
-/en/bibliography/       /.netlify/functions/page?lang=en&key=kaynakca      200!
-/en/privacy-policy      /.netlify/functions/page?lang=en&key=gizlilik-politikasi 200!
-/en/privacy-policy/     /.netlify/functions/page?lang=en&key=gizlilik-politikasi 200!
-/en/cookie-policy       /.netlify/functions/page?lang=en&key=cerez-politikasi 200!
-/en/cookie-policy/      /.netlify/functions/page?lang=en&key=cerez-politikasi 200!
-/en/terms-of-use        /.netlify/functions/page?lang=en&key=kullanim-sartlari 200!
-/en/terms-of-use/       /.netlify/functions/page?lang=en&key=kullanim-sartlari 200!
-/en/contact             /.netlify/functions/page?lang=en&key=iletisim      200!
-/en/contact/            /.netlify/functions/page?lang=en&key=iletisim      200!
 
 /*                      /404.html                404

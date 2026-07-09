@@ -19,7 +19,7 @@ function jsonHeaders(extra = {}) {
     ...extra
   };
 }
-function htmlHeaders(extra = {}) { return { 'Content-Type':'text/html; charset=utf-8', 'Cache-Control':'public, max-age=60, s-maxage=60', ...extra }; }
+function htmlHeaders(extra = {}) { return { 'Content-Type':'text/html; charset=utf-8', 'Cache-Control':'no-store, max-age=0', ...extra }; }
 function textHeaders(extra = {}) { return { 'Content-Type':'text/plain; charset=utf-8', 'Cache-Control':'public, max-age=300, s-maxage=300', ...extra }; }
 function xmlHeaders(extra = {}) { return { 'Content-Type':'application/xml; charset=utf-8', 'Cache-Control':'public, max-age=300, s-maxage=300', ...extra }; }
 
