@@ -1,0 +1,10 @@
+Düzeltme notu - 09.07.2026
+
+Bu pakette ana sayfa ve İngilizce ana sayfadaki JavaScript kırılması giderildi.
+Düzeltilen başlıca noktalar:
+- Sayfanın en altında görünen ham kod çıktısı temizlendi.
+- Sözlük verisinin yüklenmesini engelleyen gömülü script/string hataları düzeltildi.
+- Kart ve liste görünümlerinin tekrar çalışması sağlandı.
+- Editör girişi düğmesinin çalışmasını engelleyen ana script hatası giderildi.
+- İngilizce madde ayrıntılarında Explanation ve Bibliographic Citation sekmeleri eklendi.
+- Netlify Functions tarafındaki term.js dosyası da aynı düzeltmeyle güncellendi.

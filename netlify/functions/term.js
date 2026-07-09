@@ -4,6 +4,13 @@ const SUMMARY_EXCLUDE_FIELDS = new Set(['Harf', 'Madde Başı', 'Güven Durumu',
 const EXPLANATION_FIELD_NAMES = ['Açıklama', 'Bağlam / Editör Notu', 'Editör Notu', 'Not', 'Kritik Not', 'Kullanım Notu', 'Açıklamalar'];
 const CITATION_FIELD_NAMES = ['Künye', 'Kaynak', 'Kaynakça', 'Atıf', 'Bibliyografik Künye', 'Arşiv Kodu', 'Belge Kodu', 'Belge', 'Dosya', 'Kaynak Dosyadaki Karşılık', 'Güven Durumu', 'Güven'];
 const EN_FIELD_LABELS = {
+  'Açıklama': 'Explanation',
+  'Bağlam / Editör Notu': "Context / editor's note",
+  'Editör Notu': "Editor's note",
+  'Not': 'Note',
+  'Kritik Not': 'Critical note',
+  'Kullanım Notu': 'Usage note',
+  'Açıklamalar': 'Explanatory notes',
   'Künye': 'Bibliographic citation',
   'Kaynak': 'Source',
   'Kaynakça': 'Bibliography',
@@ -120,7 +127,8 @@ function renderTermTabs(rec, lang) {
   const panels = lang === 'en'
     ? [
         { key: 'summary', title: 'Summary', fields: summaryFields, empty: 'No summary record is available for this entry.' },
-        { key: 'citation', title: 'Bibliography', fields: citationFields, empty: 'No bibliographic record is available for this entry.' }
+        { key: 'explanation', title: 'Explanation', fields: explanationFields, empty: 'No explanatory note is available for this entry.' },
+        { key: 'citation', title: 'Bibliographic Citation', fields: citationFields, empty: 'No bibliographic record is available for this entry.' }
       ]
     : [
         { key: 'summary', title: 'Özet', fields: summaryFields, empty: 'Bu madde için özet karşılık kaydı bulunmuyor.' },
