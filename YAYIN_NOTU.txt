@@ -1,12 +1,18 @@
-Askerî Terimler Sözlüğü
-Yayın paketi
+Askerî Terimler Sözlüğü — Son Yayın Paketi
 
-Bu paket editör modunda yedek amaçlı dışa aktarılmıştır.
-Dışa aktarım zamanı: 2026-07-09T19:16:11.711Z
+Paketleme zamanı: 2026-07-10T19:47:32Z
 
-Yedekleme notu:
-1. Bu ZIP, canlı verinin statik yedeğidir.
-2. Olağan düzenlemeler için yeniden deploy gerekmez.
-3. Büyük yapısal değişikliklerde bu paket arşiv olarak saklanabilir.
+Bu sürümde:
+- Canlı Netlify Blobs kaydı, tarayıcıdaki eski/pending kayıtlardan öncelikli ve tarih kontrollü olarak yüklenir.
+- Editörden indirilen sonraki ZIP paketleri, canlı kayıt ile daha yeni bekleyen yerel yedeği karşılaştırarak en güncel anlık görüntüyü gömer.
+- Ferdi Ertekin'e ait üç kitap tanıtımı Türkçe ve İngilizce ana arayüzlerden kaldırılmıştır.
+- Türkçe ve İngilizce madde kartları aynı sekiz alanlı güncel tasarımı kullanır.
+- iPhone/Safari editör girişi ASCII SHA-256 başlığı, mobil parola formu ve güvenli oturum yedeğiyle çalışır.
+- Canlı madde kaydı tek POST işlemine düşürülerek gereksiz iki doğrulama okuması kaldırılmıştır.
 
-Not: Canlı düzenlemeler Netlify Blobs üzerinde yayımlanır. Bu ZIP yalnızca arşiv/yedek amaçlıdır.
+Dağıtımda ZIP içindeki bütün dosyalar birlikte yüklenmelidir. Mevcut Netlify sitesi ve aynı Blobs deposu kullanıldığında canlı kayıtlar korunur.
+
+2026-07-10 görünüm güncellemesi:
+- Ana görünüm varsayılan olarak Liste düzenine alınmıştır.
+- Liste/Kart seçici Türkçe ve İngilizce arayüzde ortalanmış, genişletilmiş ve mobil uyumlu hâle getirilmiştir.
+- Seçicinin arkasındaki ayrı dikdörtgen zemin kaldırılmıştır.

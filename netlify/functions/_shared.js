@@ -14,7 +14,7 @@ function jsonHeaders(extra = {}) {
     'Content-Type': 'application/json; charset=utf-8',
     'Cache-Control': 'no-store, max-age=0',
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Editor-Password',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Editor-Password, X-Editor-Password-Hash',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     ...extra
   };
@@ -38,6 +38,8 @@ function isAuthorized(event) {
   const expected = editorHash();
   if (!expected) return false;
   const h = event.headers || {};
+  const suppliedHash = String(h['x-editor-password-hash'] || h['X-Editor-Password-Hash'] || '').trim().toLowerCase();
+  if (/^[0-9a-f]{64}$/.test(suppliedHash)) return timingSafeEqualHex(suppliedHash, expected);
   const auth = h.authorization || h.Authorization || '';
   const bearer = String(auth).replace(/^Bearer\s+/i, '').trim();
   const pass = h['x-editor-password'] || h['X-Editor-Password'] || bearer;
@@ -55,28 +57,6 @@ function store() {
 
 function deepClone(value) { return JSON.parse(JSON.stringify(value)); }
 
-
-function firstEmailFromHtml(value) {
-  const m = String(value || '').match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
-  return m ? m[0] : '';
-}
-function syncEmailHtml(value, email) {
-  if (!email) return String(value || '');
-  return String(value || '')
-    .replace(/mailto:[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, 'mailto:' + email)
-    .replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, email);
-}
-function syncEnglishContactEmail(content) {
-  const trPages = (content && content.pages) || {};
-  const enPages = (content && content.pages_en) || {};
-  const email = firstEmailFromHtml(trPages.iletisim) || firstEmailFromHtml(trPages['gizlilik-politikasi']) || 'askeriterimlersozlugu@gmail.com';
-  for (const key of ['iletisim', 'gizlilik-politikasi']) {
-    if (enPages[key]) enPages[key] = syncEmailHtml(enPages[key], email);
-  }
-  content.pages_en = enPages;
-  return content;
-}
-
 function normalizeLive(live) {
   const base = deepClone(defaults);
   if (live && typeof live === 'object') {
@@ -89,7 +69,7 @@ function normalizeLive(live) {
   }
   if (!base.updatedAt) base.updatedAt = (base.meta && base.meta.generated_at) || new Date().toISOString();
   if (!base.meta || typeof base.meta !== 'object') base.meta = {};
-  return syncEnglishContactEmail(base);
+  return base;
 }
 
 async function readContent() {
@@ -123,8 +103,8 @@ async function writeContent(next) {
   const result = await blobStore.setJSON(STORE_KEY, normalized, {
     metadata: { updatedAt: normalized.updatedAt, writeId: normalized._writeId }
   });
-  const verify = await blobStore.get(STORE_KEY, { type: 'json', consistency: 'strong' });
-  if (!verify || verify._writeId !== normalized._writeId) throw new Error('blob_write_verification_failed');
+  // Netlify Blobs setJSON tamamlandığında yazma işlemi onaylanmıştır. İkinci bir GET
+  // kaydı gereksiz yere yavaşlattığı için istemciye yazma kimliği doğrudan döndürülür.
   normalized._blobResult = result || {};
   return normalized;
 }

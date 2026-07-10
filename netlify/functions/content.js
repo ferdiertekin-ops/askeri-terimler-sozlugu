@@ -70,21 +70,28 @@ exports.handler = async function(event) {
   }
 
   try {
-    const current = await readContent();
-    const next = { ...current };
     const kind = payload.kind || 'all';
+    const fullSnapshot = Array.isArray(payload.data)
+      && payload.pages && typeof payload.pages === 'object'
+      && payload.pages_en && typeof payload.pages_en === 'object';
+    let next;
 
-    if ((kind === 'all' || kind === 'data') && Array.isArray(payload.data)) {
-      next.data = payload.data;
-    }
-    if ((kind === 'all' || kind === 'pages') && payload.pages && typeof payload.pages === 'object') {
-      next.pages = { ...(current.pages || {}), ...payload.pages };
-    }
-    if ((kind === 'all' || kind === 'pages') && payload.pages_en && typeof payload.pages_en === 'object') {
-      next.pages_en = { ...(current.pages_en || {}), ...payload.pages_en };
-    }
-    if (payload.meta && typeof payload.meta === 'object') {
-      next.meta = { ...(current.meta || {}), ...payload.meta };
+    if (fullSnapshot) {
+      // Güncel istemci tam anlık görüntü gönderir; önceki blobu okumadan tek yazma yapılır.
+      next = {
+        data: payload.data,
+        pages: payload.pages,
+        pages_en: payload.pages_en,
+        meta: payload.meta && typeof payload.meta === 'object' ? payload.meta : {}
+      };
+    } else {
+      // Eski istemcilerle geriye dönük uyumluluk.
+      const current = await readContent();
+      next = { ...current };
+      if ((kind === 'all' || kind === 'data') && Array.isArray(payload.data)) next.data = payload.data;
+      if ((kind === 'all' || kind === 'pages') && payload.pages && typeof payload.pages === 'object') next.pages = { ...(current.pages || {}), ...payload.pages };
+      if ((kind === 'all' || kind === 'pages') && payload.pages_en && typeof payload.pages_en === 'object') next.pages_en = { ...(current.pages_en || {}), ...payload.pages_en };
+      if (payload.meta && typeof payload.meta === 'object') next.meta = { ...(current.meta || {}), ...payload.meta };
     }
 
     const saved = await writeContent(next);
