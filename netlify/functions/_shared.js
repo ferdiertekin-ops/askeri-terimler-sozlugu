@@ -6,7 +6,15 @@ const STORE_NAME = 'ats-live-content';
 const STORE_KEY = 'live';
 
 function editorHash() {
-  return String(process.env.EDITOR_PASSWORD_HASH || '').trim().toLowerCase();
+  const configured = String(process.env.EDITOR_PASSWORD_HASH || '').trim();
+  if (configured) {
+    const lower = configured.toLowerCase();
+    // Doğru SHA-256 özeti verilmişse aynen kullan; yanlışlıkla düz parola
+    // EDITOR_PASSWORD_HASH alanına girilmişse geriye dönük olarak özetle.
+    return /^[0-9a-f]{64}$/.test(lower) ? lower : hash(configured);
+  }
+  const legacyPlain = String(process.env.EDITOR_PASSWORD || process.env.ATS_EDITOR_PASSWORD || '').trim();
+  return legacyPlain ? hash(legacyPlain) : '';
 }
 
 function jsonHeaders(extra = {}) {

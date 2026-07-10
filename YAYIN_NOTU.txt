@@ -16,3 +16,11 @@ Dağıtımda ZIP içindeki bütün dosyalar birlikte yüklenmelidir. Mevcut Netl
 - Ana görünüm varsayılan olarak Liste düzenine alınmıştır.
 - Liste/Kart seçici Türkçe ve İngilizce arayüzde ortalanmış, genişletilmiş ve mobil uyumlu hâle getirilmiştir.
 - Seçicinin arkasındaki ayrı dikdörtgen zemin kaldırılmıştır.
+
+DÜZELTİCİ YAYIN PAKETİ
+Oluşturulma: 2026-07-10T20:09:19+00:00
+- 931 maddelik gömülü anlık görüntü korunmuştur.
+- Başlangıçtaki setSaveStatus çalışma zamanı hatası giderilmiştir.
+- Sözlük ve arayüz kontrolleri canlı API yanıtını beklemeden açılır.
+- Türkçe/İngilizce dil geçişi ve mobil editör giriş ekranı etkinleştirilmiştir.
+- EDITOR_PASSWORD_HASH ve geriye dönük EDITOR_PASSWORD ortam değişkenleri desteklenir.
