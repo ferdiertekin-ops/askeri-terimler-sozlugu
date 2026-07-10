@@ -14467,14 +14467,16 @@ window.DICTIONARY_DATA = [
       if (!sheet || !Array.isArray(sheet.headers) || !Array.isArray(sheet.rows)) return;
       const ensureColumn = (name) => {
         let idx = headerIndex(sheet, name);
-        if (idx >= 0) return idx;
+        if (idx >= 0) return { idx, added: false };
         sheet.headers.push(name);
         idx = sheet.headers.length - 1;
         sheet.rows.forEach(row => { if (Array.isArray(row)) row.push(""); });
-        return idx;
+        return { idx, added: true };
       };
-      const explanationIndex = ensureColumn("Açıklama");
-      const citationIndex = ensureColumn("Künye/Kaynak");
+      const explanationColumn = ensureColumn("Açıklama");
+      const citationColumn = ensureColumn("Künye/Kaynak");
+      const explanationIndex = explanationColumn.idx;
+      const citationIndex = citationColumn.idx;
       const legacyExplanationIndexes = ["Bağlam / Editör Notu", "Editör Notu", "Not", "Kritik Not", "Kullanım Notu", "Açıklamalar"]
         .map(name => headerIndex(sheet, name)).filter(i => i >= 0);
       const legacyCitationIndexes = ["Künye", "Kaynak", "Kaynakça", "Atıf", "Bibliyografik Künye", "Arşiv Kodu", "Belge Kodu", "Belge", "Dosya", "Kaynak Dosyadaki Karşılık"]
@@ -14482,11 +14484,13 @@ window.DICTIONARY_DATA = [
       sheet.rows.forEach(row => {
         if (!Array.isArray(row)) return;
         while (row.length < sheet.headers.length) row.push("");
-        if (!String(row[explanationIndex] || "").trim()) {
+        // Eski alanlardan yeni alanlara aktarım yalnızca sütun ilk kez oluşturulurken yapılır.
+        // Böylece editörün bilerek sildiği boş değer, sonraki açılışta eski alandan geri gelmez.
+        if (explanationColumn.added && !String(row[explanationIndex] || "").trim()) {
           const legacy = legacyExplanationIndexes.map(i => row[i]).find(v => String(v || "").trim());
           if (legacy != null) row[explanationIndex] = String(legacy);
         }
-        if (!String(row[citationIndex] || "").trim()) {
+        if (citationColumn.added && !String(row[citationIndex] || "").trim()) {
           const legacy = legacyCitationIndexes.map(i => row[i]).find(v => String(v || "").trim());
           if (legacy != null) row[citationIndex] = String(legacy);
         }
@@ -14850,7 +14854,9 @@ window.DICTIONARY_DATA = [
     const ottoman = field(rec, ["Osmanlıca / Dönem Karşılığı", "Osmanlıca", "Dönem Karşılığı", "Nihai Türkçe Karşılık", "Karşılık", "Standart Türkçe", "Eşiti", "İçerik"]);
     const modern = field(rec, ["Günümüz Türkçesi", "Modern Türkçe", "Türkçe Karşılık", "Standart Türkçe Karşılık", "Metrik Karşılık"]);
     const category = field(rec, ["Kategori", "Tür"]);
-    const example = field(rec, ["Örnek Cümle", "Örnek", "Örnek Kullanım", "Example", "Bağlam / Editör Notu", "Açıklama", "Not", "Kritik Not"]);
+    // Liste görünümünde yalnızca editör kartındaki kanonik Açıklama alanı gösterilir.
+    // Eski/tekrarlı alanlara geri düşülmez; böylece silinen açıklama yeniden görünmez.
+    const example = field(rec, ["Açıklama"]);
     const associations = listAssociations(rec, term, variant);
     const labels = en ? {
       main: "Main term / associations",
@@ -15195,6 +15201,17 @@ window.DICTIONARY_DATA = [
     els.editForm.querySelectorAll("[data-col]").forEach(input => {
       newRow[Number(input.dataset.col)] = input.value.trim();
     });
+
+    // Açıklama alanını eski açıklama sütunlarıyla eşitle. Bu, daha önce çoğaltılmış
+    // metnin editörce silindikten sonra eski sütundan geri dönmesini engeller.
+    const explanationIndex = headerIndex(sheet, "Açıklama");
+    if (explanationIndex >= 0) {
+      const explanationValue = newRow[explanationIndex] == null ? "" : String(newRow[explanationIndex]).trim();
+      ["Bağlam / Editör Notu", "Editör Notu", "Not", "Kritik Not", "Kullanım Notu", "Açıklamalar"].forEach(name => {
+        const legacyIndex = headerIndex(sheet, name);
+        if (legacyIndex >= 0 && legacyIndex !== explanationIndex) newRow[legacyIndex] = explanationValue;
+      });
+    }
     sheet.rows[rowIndex] = newRow;
 
     const saveButton = els.saveEntryBtn;
