@@ -18,6 +18,16 @@ const ROUTE_EN = {
   'iletisim':'/en/contact/'
 };
 
+
+function formatEditorialBody(value) {
+  const raw = String(value == null ? '' : value).replace(/\r\n?/g, '\n').trim();
+  if (!raw) return '';
+  if (/<[a-z][\s\S]*>/i.test(raw)) return `<div class="editorial-content">${raw}</div>`;
+  const paragraphs = raw.split(/\n{2,}/).map(block => block.trim()).filter(Boolean);
+  const html = paragraphs.map(block => `<p>${escapeHtml(block).replace(/\n/g, '<br>')}</p>`).join('\n');
+  return `<div class="editorial-content">${html}</div>`;
+}
+
 function keyFromPath(value) {
   const raw = decodeURIComponent(String(value || '')).toLowerCase();
   if (raw.includes('/kaynakca') || raw.includes('/bibliography') || raw.includes('/atif-bilgisi')) return 'kaynakca';
@@ -57,16 +67,16 @@ async function renderPage(event, fixedKey, explicitLang) {
   if (!ALLOWED.has(key)) {
     const title = lang === 'en' ? 'Page not found' : 'Sayfa bulunamadı';
     const body = `<p class="lead">${lang === 'en' ? 'The requested page was not found.' : 'Aradığınız sayfa bulunamadı.'}</p>`;
-    return { statusCode:404, headers:htmlHeaders(), body:pageShell({ title, description:title, canonical:canonicalBase(event)+(lang==='en'?'/en/':'/'), body, lang }) };
+    return { statusCode:404, headers:htmlHeaders({ 'CDN-Cache-Control':'no-store', 'Netlify-CDN-Cache-Control':'no-store' }), body:pageShell({ title, description:title, canonical:canonicalBase(event)+(lang==='en'?'/en/':'/'), body, lang }) };
   }
   const title = pageTitleFor(key, lang);
   const description = descriptionFor(key, content, lang);
   const pages = lang === 'en' ? (content.pages_en || {}) : (content.pages || {});
-  const rawBody = pages[key] ? String(pages[key]) : `<p class="lead">${escapeHtml(title)} ${lang==='en'?'has not yet been published.':'metni henüz yayımlanmamıştır.'}</p>`;
+  const rawBody = pages[key] ? formatEditorialBody(pages[key]) : `<p class="lead">${escapeHtml(title)} ${lang==='en'?'has not yet been published.':'metni henüz yayımlanmamıştır.'}</p>`;
   const routeMap = lang === 'en' ? ROUTE_EN : ROUTE_TR;
   const canonical = canonicalBase(event) + routeMap[key];
   const meta = `<p class="meta">${lang==='en'?'Live content last updated':'Canlı içerik son güncelleme'}: ${escapeHtml(content.updatedAt || '')}.</p>`;
-  return { statusCode:200, headers:htmlHeaders(), body:pageShell({ title, description, canonical, body: rawBody + meta, lang }) };
+  return { statusCode:200, headers:htmlHeaders({ 'CDN-Cache-Control':'no-store', 'Netlify-CDN-Cache-Control':'no-store' }), body:pageShell({ title, description, canonical, body: rawBody + meta, lang }) };
 }
 
 module.exports = { renderPage };

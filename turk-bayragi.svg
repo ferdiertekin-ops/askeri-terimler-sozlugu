@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="54" height="36" viewBox="0 0 54 36" role="img" aria-labelledby="title desc">
+<title>Türk bayrağı</title><desc>Kırmızı zemin üzerinde beyaz ay ve yıldız</desc>
+<rect width="54" height="36" rx="2" fill="#E30A17"/>
+<circle cx="21" cy="18" r="9.2" fill="#fff"/>
+<circle cx="23.8" cy="18" r="7.2" fill="#E30A17"/>
+<path d="M31.2 18l3.96-1.29-2.45 3.37 3.96 1.29h-4.9L29.32 25l1.52-4.63h-4.9l3.96-1.29-2.45-3.37 3.96 1.29L31.2 12l1.53 4.71z" fill="#fff"/>
+</svg>

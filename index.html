@@ -104,6 +104,7 @@ button{user-select:none;cursor:pointer}
   font-family:var(--serif-display);
   font-weight:600;color:var(--ink);font-size:16.5px;letter-spacing:.015em;
 }
+.brand__flag{width:22px;height:auto;display:block;flex:0 0 auto;border-radius:2px;box-shadow:0 1px 4px rgba(0,0,0,.14)}
 .topbar__actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
 .lang-switch{display:inline-flex;gap:3px;border:1px solid var(--line-strong);border-radius:var(--radius-sm);background:rgba(255,254,250,.78);padding:3px}
 .lang-switch a{padding:5px 10px;border-radius:4px;text-decoration:none;color:var(--ink-soft);font-size:12px;font-weight:600;letter-spacing:.08em}
@@ -658,10 +659,13 @@ mark{background:var(--mark);color:var(--ink);border-radius:2px;padding:0 2px;fon
 }
 .term-list-value--soft{color:var(--ink-soft);font-weight:500;font-style:italic}
 .term-list-example{
-  display:-webkit-box;
-  -webkit-line-clamp:3;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
+  display:block;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  overflow:visible;
+  color:var(--ink);
+  font-weight:700;
+  font-style:normal;
 }
 .term-list-open{
   align-self:center;
@@ -701,7 +705,7 @@ mark{background:var(--mark);color:var(--ink);border-radius:2px;padding:0 2px;fon
   margin-top:32px;padding-top:16px;border-top:1px solid var(--line);
   display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;text-align:center;
 }
-.footnote p{margin:0 auto;font-size:12.5px;color:var(--ink-soft);line-height:1.6;max-width:760px;font-style:italic}
+.footnote p{margin:0 auto;font-size:14px;color:var(--ink-soft);line-height:1.75;max-width:900px;font-family:Cambria,Georgia,serif;font-style:normal;text-align:justify;white-space:pre-wrap;overflow-wrap:anywhere}
 .footnote b{color:var(--ink)}
 
 /* ---------- drawer / entry editor ---------- */
@@ -851,7 +855,7 @@ mark{background:var(--mark);color:var(--ink);border-radius:2px;padding:0 2px;fon
   width:100%;border:1px solid var(--line-strong);border-radius:var(--radius-sm);background:var(--card);color:var(--ink);
   font-family:var(--serif-text);font-size:14px;line-height:1.55;padding:10px 12px
 }
-.page-editor textarea{min-height:220px;resize:vertical;font-family:Consolas, "Courier New", monospace;font-size:13px}
+.page-editor textarea{min-height:220px;resize:vertical;font-family:Cambria,Georgia,serif;font-size:16px;line-height:1.75;text-align:justify;white-space:pre-wrap;tab-size:4}
 .page-editor__actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center}
 .page-editor__hint{font-size:12.5px;color:var(--ink-soft);line-height:1.55;margin:0}
 @media (max-width:720px){.page-editor__controls{grid-template-columns:1fr}.page-editor{padding:18px}}
@@ -932,7 +936,7 @@ body.search-active .results{padding-top:4px!important}
     <header class="topbar">
       <a class="brand" href="/" aria-label="Askerî Terimler Sözlüğü">
         <img class="brand__logo" src="/ats-logo.png" alt="ATS">
-        <span class="brand__name">Askerî Terimler Sözlüğü</span>
+        <span class="brand__name">Askerî Terimler Sözlüğü</span><img class="brand__flag" src="/turk-bayragi.svg" alt="Türk bayrağı">
       </a>
       <div class="topbar__actions">
         <nav class="lang-switch" aria-label="Dil seçimi"><a href="/" class="active" lang="tr">TR</a><a href="/en/" lang="en">ENG</a></nav>
@@ -1105,10 +1109,10 @@ window.PAGE_CONTENT_DEFAULTS = {
 window.DICTIONARY_META = {
   "title": "Çevrimiçi Askerî Terimler Sözlüğü (1880–1918)",
   "subtitle": "",
-  "generated_at": "2026-07-11T07:48:54.840Z",
+  "generated_at": "2026-07-11T11:37:54.832Z",
   "institution_translation_principle": "İngiliz/Britanya kurumları modern Türkçe kurum diliyle çevrilir: War Office = Savaş Bakanlığı. Osmanlı kurumları dönem adıyla verilir: Harbiye Nezareti.",
   "source": "nihai_aranabilir_askeri_terimler_sozlugu.xlsx",
-  "editor_exported_at": "2026-07-11T07:48:54.840Z",
+  "editor_exported_at": "2026-07-11T11:37:54.832Z",
   "editor_export_note": "Bu dosya, canlı Netlify Blobs kaydı ile daha yeni bekleyen tarayıcı yedeği karşılaştırılarak en güncel veri gömülerek oluşturulmuştur.",
   "package_built_at": "2026-07-10T19:47:32Z",
   "package_note": "Canlı Netlify Blobs verisi açılışta önceliklidir; statik veri yalnızca geri dönüş yedeğidir."
@@ -1131,6 +1135,20 @@ window.DICTIONARY_DATA = [
       "Künye/Kaynak"
     ],
     "rows": [
+      [
+        "F",
+        "Fortress",
+        "",
+        "Müstahkem Mevki",
+        "",
+        "",
+        "",
+        "Yeni / kontrol",
+        "",
+        "",
+        "",
+        ""
+      ],
       [
         "D",
         "Decipherer",
@@ -1737,7 +1755,7 @@ window.DICTIONARY_DATA = [
         "F",
         "First Levy",
         "",
-        "Birinci tertip",
+        "Birinci/ilk tertip",
         "",
         "",
         "",
@@ -2017,7 +2035,7 @@ window.DICTIONARY_DATA = [
         "G",
         "Guard Corps",
         "",
-        "Hassa Ordusu",
+        "Hassa Ordusu/Kolordusu",
         "",
         "",
         "",
@@ -2230,11 +2248,11 @@ window.DICTIONARY_DATA = [
         "Yeniçeri",
         "",
         "",
-        "1826'da II. Mahmud tarafından kaldırılan teşkilat.",
+        "1826'da II. Mahmud tarafından kaldırılan askeri teşkilat.",
         "Kesin",
         "",
         "",
-        "1826'da II. Mahmud tarafından kaldırılan teşkilat.",
+        "1826'da II. Mahmud tarafından kaldırılan askeri teşkilat.",
         ""
       ],
       [
@@ -2340,7 +2358,7 @@ window.DICTIONARY_DATA = [
         "Full general",
         "",
         "Ferik-i Evvel, Birinci Ferik",
-        "Birinci Ferik",
+        "",
         "",
         "",
         "",
@@ -2477,24 +2495,10 @@ window.DICTIONARY_DATA = [
       ],
       [
         "I",
-        "Industrial soldiers",
-        "",
-        "Sanayi kıtaâtı/kıtaları",
-        "",
-        "",
-        "",
-        "Handbook of the Turkish Army",
-        "",
-        "",
-        "",
-        ""
-      ],
-      [
-        "I",
         "Industrial school",
         "",
-        "Sanayi mektebi",
-        "",
+        "Mekteb-i Sanayi",
+        "Endüstri Mektebi, Sanayi Mektebi/Okulu",
         "",
         "",
         "Handbook of the Turkish Army",
@@ -2620,7 +2624,7 @@ window.DICTIONARY_DATA = [
         "Gendarmerie",
         "",
         "Jandarma",
-        "",
+        "Jandarma",
         "",
         "",
         "",
@@ -2634,7 +2638,7 @@ window.DICTIONARY_DATA = [
         "General Staff College",
         "",
         "Erkân-ı Harbiye Mektebi",
-        "",
+        "Kurmay Okulu/Harp Akademisi",
         "",
         "",
         "Handbook of the Turkish Army",
@@ -3084,11 +3088,11 @@ window.DICTIONARY_DATA = [
         "Palamar",
         "",
         "Denizcilik",
-        "",
+        "Geminin bağlanması ve yedeklenmesinde kullanılan kalın halat.",
         "Kaynak korundu",
         "",
         "",
-        "",
+        "Geminin bağlanması ve yedeklenmesinde kullanılan kalın halat.",
         ""
       ],
       [
@@ -3671,7 +3675,7 @@ window.DICTIONARY_DATA = [
         "",
         "Pamuk Barutu",
         "",
-        "Silah",
+        "Mühimmat/Silah",
         "",
         "Yeni / kontrol",
         "",
@@ -3742,11 +3746,11 @@ window.DICTIONARY_DATA = [
         "Mola",
         "Mola",
         "",
-        "",
+        "Dinlenmek için durmak, ara vermek.",
         "Yeni / kontrol",
         "",
         "",
-        "",
+        "Dinlenmek için durmak, ara vermek.",
         ""
       ],
       [
@@ -4876,11 +4880,11 @@ window.DICTIONARY_DATA = [
         "",
         "Amirallik Kurulu [Kraliyet Donanması idare organı]",
         "İngiliz/Britanya Kurumu",
-        "Amirallik Kurulu [Board of Admiralty], 18., 19. ve 20. yüzyılların büyük bölümünde Kraliyet Donanması'nın [Royal Navy] sevk ve idaresini elinde bulunduran organdı; Birinci Amirallik Lordu'nun [First Lord of the Admiralty] başkanlığında, Amirallik Lordları [Lords Commissioners] ya da Deniz Lordları [Sea Lords] adıyla anılan en fazla yedi üyeden oluşurdu. Çoğu kez yalnızca \"Amirallik\" [the Admiralty] olarak anılan kurul, Donanma'nın siyasî temsilcisi işlevini görür; üyeleri de büyük ölçüde bizzat siyasetçilerden oluşurdu. Bkz. https://www.nationalarchives.gov.uk/help-with-your-research/research-guides/royal-navy-operations-correspondence-1660-1914/?utm_source=chatgpt.com.",
+        "Amirallik Kurulu [Board of Admiralty], 18., 19. ve 20. yüzyılların büyük bölümünde Kraliyet Donanması'nın [Royal Navy] sevk ve idaresini elinde bulunduran organdı; Amirallik Birinci Lordu'nun [First Lord of the Admiralty] başkanlığında, Amirallik Lordları [Lords Commissioners] ya da Deniz Lordları [Sea Lords] adıyla anılan en fazla yedi üyeden oluşurdu. Çoğu kez yalnızca \"Amirallik\" [the Admiralty] olarak anılan kurul, Donanma'nın \"siyasî\" temsilcisi işlevini görür; üyeleri de büyük ölçüde bizzat siyasetçilerden oluşurdu. Bkz. https://www.nationalarchives.gov.uk/help-with-your-research/research-guides/royal-navy-operations-correspondence-1660-1914/?utm_source=chatgpt.com.",
         "",
         "",
         "",
-        "Amirallik Kurulu [Board of Admiralty], 18., 19. ve 20. yüzyılların büyük bölümünde Kraliyet Donanması'nın [Royal Navy] sevk ve idaresini elinde bulunduran organdı; Birinci Amirallik Lordu'nun [First Lord of the Admiralty] başkanlığında, Amirallik Lordları [Lords Commissioners] ya da Deniz Lordları [Sea Lords] adıyla anılan en fazla yedi üyeden oluşurdu. Çoğu kez yalnızca \"Amirallik\" [the Admiralty] olarak anılan kurul, Donanma'nın siyasî temsilcisi işlevini görür; üyeleri de büyük ölçüde bizzat siyasetçilerden oluşurdu. Bkz. https://www.nationalarchives.gov.uk/help-with-your-research/research-guides/royal-navy-operations-correspondence-1660-1914/?utm_source=chatgpt.com.",
+        "Amirallik Kurulu [Board of Admiralty], 18., 19. ve 20. yüzyılların büyük bölümünde Kraliyet Donanması'nın [Royal Navy] sevk ve idaresini elinde bulunduran organdı; Amirallik Birinci Lordu'nun [First Lord of the Admiralty] başkanlığında, Amirallik Lordları [Lords Commissioners] ya da Deniz Lordları [Sea Lords] adıyla anılan en fazla yedi üyeden oluşurdu. Çoğu kez yalnızca \"Amirallik\" [the Admiralty] olarak anılan kurul, Donanma'nın \"siyasî\" temsilcisi işlevini görür; üyeleri de büyük ölçüde bizzat siyasetçilerden oluşurdu. Bkz. https://www.nationalarchives.gov.uk/help-with-your-research/research-guides/royal-navy-operations-correspondence-1660-1914/?utm_source=chatgpt.com.",
         ""
       ],
       [
@@ -5503,14 +5507,14 @@ window.DICTIONARY_DATA = [
         "C",
         "Governor (Civil)",
         "",
-        "Vali",
+        "Vali (Sivil)",
+        "",
+        "",
+        "Vali sivil ve askeri olarak iki ayrı kategoride ele alınır. II. Abdülhamid döneminde \"askeri vali\"ler de görev yapmıştır.",
         "",
         "",
         "",
-        "",
-        "",
-        "",
-        "",
+        "Vali sivil ve askeri olarak iki ayrı kategoride ele alınır. II. Abdülhamid döneminde \"askeri vali\"ler de görev yapmıştır.",
         ""
       ],
       [
@@ -7097,34 +7101,6 @@ window.DICTIONARY_DATA = [
       ],
       [
         "F",
-        "Flail",
-        "",
-        "Harman döveni",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        ""
-      ],
-      [
-        "F",
-        "Flanged Mace",
-        null,
-        "Şeşber",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Şeşber",
-        "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Şeşber"
-      ],
-      [
-        "F",
         "Flank",
         null,
         "Cenah, kanat",
@@ -7139,17 +7115,17 @@ window.DICTIONARY_DATA = [
       ],
       [
         "F",
-        "Flintlock (Musket)",
+        "Flintlock",
         "",
         "Filinta",
         "",
-        "",
-        "",
+        "Silah",
+        "Çakmaklı tüfek.",
         "Kaynak korundu",
         "Filinta",
         "",
-        "",
-        "Filinta"
+        "Çakmaklı tüfek.",
+        ""
       ],
       [
         "F",
@@ -7169,15 +7145,15 @@ window.DICTIONARY_DATA = [
         "F",
         "Foot",
         "",
-        "Kadem, adım (ölçü birimi)",
+        "Kadem, adım",
         "",
-        "",
+        "Ölçü Birimi",
         "",
         "Kaynak korundu",
         "Kadem, adım (ölçü birimi)",
         "",
         "",
-        "Kadem, adım (ölçü birimi)"
+        ""
       ],
       [
         "F",
@@ -7185,13 +7161,13 @@ window.DICTIONARY_DATA = [
         "",
         "Yaya Zaptiye, Yaya jandarma",
         "",
-        "İç Güvenlik",
-        "1880–1914 Osmanlı bağlamında çoğu kez zaptiye kastedilmiş olabilir; modern/bağlamsız metinde yaya jandarma mümkündür.",
+        "",
+        "",
         "Bağlamlı",
         "Zaptiye",
         "",
-        "1880–1914 Osmanlı bağlamında çoğu kez zaptiye kastedilmiş olabilir; modern/bağlamsız metinde yaya jandarma mümkündür.",
-        "Zaptiye"
+        "",
+        ""
       ],
       [
         "F",
@@ -7227,27 +7203,27 @@ window.DICTIONARY_DATA = [
         "",
         "Hariciye Dairesi",
         "Dışişleri",
-        "Yabancı Kurum/İdare",
-        "İngiliz kurumuysa Dışişleri; Osmanlı kurumuysa Hariciye Nezareti/Dairesi denir.",
+        "",
+        "İngiliz/Britanya kurumuysa Dışişleri; Osmanlı kurumuysa Hariciye Nezareti.",
         "Bağlamlı",
         "Hariciye Dâiresi, Dışişleri Bürosu, Hariciye Nezareti",
         "",
-        "İngiliz kurumuysa Dışişleri; Osmanlı kurumuysa Hariciye Nezareti/Dairesi denir.",
-        "Hariciye Dâiresi, Dışişleri Bürosu, Hariciye Nezareti"
+        "İngiliz/Britanya kurumuysa Dışişleri; Osmanlı kurumuysa Hariciye Nezareti.",
+        ""
       ],
       [
         "F",
         "Foreign Intelligence Committee",
         "",
-        "Dış İstihbarat Komitesi",
+        "",
         "Dış İstihbarat Komitesi",
         "İngiliz/Britanya Kurumu",
-        "Britanya kurum adı; Osmanlı kurumu değildir.",
+        "",
         "Kesin",
         "Dış İstihbarat Komitesi",
         "",
-        "Britanya kurum adı; Osmanlı kurumu değildir.",
-        "Dış İstihbarat Komitesi"
+        "",
+        ""
       ],
       [
         "F",
@@ -7281,29 +7257,15 @@ window.DICTIONARY_DATA = [
         "F",
         "Fort",
         "",
-        "Tabya",
-        "Tabya",
+        "Tabya/Kale/İstihkâm",
         "",
+        "Tahkimat/İstihkâm",
         "Fort Yıldız = Yıldız Tabya",
         "Kaynak korundu",
-        "Tabya (örn. Fort Yıldız = Yıldız Tabya)",
+        "Kale, istihkâm, müstahkem mevki",
         "",
         "Fort Yıldız = Yıldız Tabya",
         ""
-      ],
-      [
-        "F",
-        "Fort / Fortress",
-        null,
-        "Kale, istihkâm, müstahkem mevki",
-        null,
-        "Tahkimat/İstihkâm",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Kale, istihkâm, müstahkem mevki",
-        "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kale, istihkâm, müstahkem mevki"
       ],
       [
         "F",
@@ -7335,31 +7297,17 @@ window.DICTIONARY_DATA = [
       ],
       [
         "F",
-        "Frock Coat",
-        null,
-        "Setre",
-        null,
-        "Kıyafet/Teçhizat",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Setre",
+        "Fugitive/Deserter",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Setre"
-      ],
-      [
-        "F",
-        "Fugitive (Deserter)",
-        null,
-        "Firârî, asker kaçağı",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Firârî",
+        "Kaçak, asker kaçağı",
+        "",
+        "",
         "Kaynak korundu",
         "Firârî, asker kaçağı",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Firârî, asker kaçağı"
+        "",
+        ""
       ],
       [
         "F",
@@ -7420,16 +7368,16 @@ window.DICTIONARY_DATA = [
       [
         "F",
         "Fuze Setting",
-        null,
+        "",
         "Tapa ayarı",
-        null,
+        "",
         "Mühimmat",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "Tapa ayarı",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Tapa ayarı"
+        "",
+        ""
       ],
       [
         "G",
@@ -7437,41 +7385,41 @@ window.DICTIONARY_DATA = [
         "",
         "Garnizon",
         "Garnizon",
-        "Tahkimat/İstihkâm",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
+        "Stratejik bir mevkide yahut yerleşim yerinde konuşlandırılmış silahlı kuvvetler unsurlarının bütünü ile bu birliklerin ve bağlı kurumların teşkilatlandığı idari-askerî mahal.",
         "Kaynak korundu",
         "Garnizon, kale muhâfızları",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Garnizon, kale muhâfızları"
+        "Stratejik bir mevkide yahut yerleşim yerinde konuşlandırılmış silahlı kuvvetler unsurlarının bütünü ile bu birliklerin ve bağlı kurumların teşkilatlandığı idari-askerî mahal.",
+        ""
       ],
       [
         "G",
         "Gauntlet",
-        null,
+        "",
         "Zırh eldiven",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Zırh eldiven",
+        "",
+        "",
         "Kaynak korundu",
         "Zırh eldiven",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Zırh eldiven"
+        "",
+        ""
       ],
       [
         "G",
         "Gendarmerie Office",
-        null,
+        "",
         "Jandarma Dâiresi",
-        null,
+        "",
         "Kurum/Teşkilat",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir. Yabancı kurum adlarında modern Türkçe kurum dili kullanılmalı; Osmanlı kurumları için nezaret/dâire/mekteb gibi dönem adları ayrılmalıdır.",
+        "",
         "Kurum Adı",
         "Jandarma Dâiresi",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir. Yabancı kurum adlarında modern Türkçe kurum dili kullanılmalı; Osmanlı kurumları için nezaret/dâire/mekteb gibi dönem adları ayrılmalıdır.",
-        "Jandarma Dâiresi"
+        "",
+        ""
       ],
       [
         "G",
@@ -7494,34 +7442,34 @@ window.DICTIONARY_DATA = [
         "Paşa, Erkân-ı Askeriyye",
         "General/komutan sınıfı subaylar",
         "Rütbe",
-        "General Officer kurmay subay değildir; Staff Officer ayrı maddedir.",
         "",
         "",
         "",
-        "General Officer kurmay subay değildir; Staff Officer ayrı maddedir.",
+        "",
+        "",
         ""
       ],
       [
         "G",
-        "General Officer Commanding (GOC)",
-        null,
-        "Kumandan Paşa, Komutan Subay,",
-        null,
-        "Rütbe",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir. Yabancı kurum adlarında modern Türkçe kurum dili kullanılmalı; Osmanlı kurumları için nezaret/dâire/mekteb gibi dönem adları ayrılmalıdır.",
+        "General Officer Commanding",
+        "GOC",
+        "",
+        "(İlgili birliğin) Komutanı/Kumandanı",
+        "",
+        "GOC, Division → Fırka Kumandanı\nGOC, Corps → Ordu/Kolordu Kumandanı\nGOC, Army → Ordu Kumandanı",
         "Kurum Adı",
         "Kumandan Paşa, Komutan Subay,",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir. Yabancı kurum adlarında modern Türkçe kurum dili kullanılmalı; Osmanlı kurumları için nezaret/dâire/mekteb gibi dönem adları ayrılmalıdır.",
-        "Kumandan Paşa, Komutan Subay,"
+        "GOC, Division → Fırka Kumandanı\nGOC, Corps → Ordu/Kolordu Kumandanı\nGOC, Army → Ordu Kumandanı",
+        ""
       ],
       [
         "G",
         "General Staff Officer (GSO)",
-        "",
+        "GSO",
         "Erkân-ı Harp Zâbiti",
         "Kurmay subay",
-        "Görev/Rütbe",
+        "",
         "",
         "",
         "",
@@ -7532,127 +7480,71 @@ window.DICTIONARY_DATA = [
       [
         "G",
         "Generals of Division",
-        null,
+        "",
         "Ferikân (çoğul)",
-        null,
-        "Rütbe",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
+        "",
+        "",
         "Kaynak korundu",
         "Ferikân (çoğul)",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Ferikân (çoğul)"
+        "",
+        ""
       ],
       [
         "G",
         "Glacis",
-        null,
+        "",
         "Şev",
-        null,
+        "",
         "Tahkimat/İstihkâm",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "Şev",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Şev"
-      ],
-      [
-        "G",
-        "Glaive (Voulge)",
-        null,
-        "Tırpan",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Tırpan",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Tırpan"
+        ""
       ],
       [
         "G",
-        "Good Track",
-        null,
-        "Stabilize yol",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Stabilize yol",
+        "Government Code and Cipher School",
+        "GC&CS",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Stabilize yol"
-      ],
-      [
-        "G",
-        "Gorget",
-        null,
-        "Gerdanlık",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Gerdanlık",
-        "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Gerdanlık"
-      ],
-      [
-        "G",
-        "Government Code and Cipher School (GCCS)",
-        null,
-        "Hükümet Kod ve Şifre Mektebi",
-        null,
-        "Kurum/Teşkilat",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Hükümet/Devlet Şifre ve Kripto Okulu",
+        "Britanya/İngiliz Kurumu",
+        "Britanya'nın sinyal istihbaratı ve şifre çözme çalışmalarını yürüten kurumudur; GCHQ'nun öncülüdür. 1919'da kurulmuş, İkinci Dünya Savaşı sırasında Bletchley Park'ta Enigma şifrelerinin çözülmesiyle tanınmış, 1946'da adı Government Communications Headquarters (GCHQ) olarak değiştirilmiştir.",
         "Kaynak korundu",
         "Hükümet Kod ve Şifre Mektebi",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Hükümet Kod ve Şifre Mektebi"
+        "Britanya'nın sinyal istihbaratı ve şifre çözme çalışmalarını yürüten kurumudur; GCHQ'nun öncülüdür. 1919'da kurulmuş, İkinci Dünya Savaşı sırasında Bletchley Park'ta Enigma şifrelerinin çözülmesiyle tanınmış, 1946'da adı Government Communications Headquarters (GCHQ) olarak değiştirilmiştir.",
+        ""
       ],
       [
         "G",
-        "Government Communications Centre (GCHQ)",
-        null,
-        "Hükûmet Muhabere Karargâhı",
-        "Hükûmet İletişim Karargâhı",
+        "Government Communications Headquarters",
+        "GCHQ",
+        "",
+        "Devlet İletişim Karargâhı, Hükümet Haberleşme Karargâhı",
         "İngiliz/Britanya Kurumu",
-        "GCHQ açılımı Government Communications Headquarters’tır; source satırındaki Centre düzeltilmelidir.",
+        "GCHQ için Türkçede yerleşik, herkesçe kabul görmüş tek bir resmî karşılık yoktur; kurum genellikle özgün adıyla anılır.",
         "Düzeltilmiş",
         "Hükümet Muhâbere (İletişim) Merkezi",
         "",
-        "GCHQ açılımı Government Communications Headquarters’tır; source satırındaki Centre düzeltilmelidir.",
-        "Hükümet Muhâbere (İletişim) Merkezi"
-      ],
-      [
-        "G",
-        "Governor (Civil)",
-        null,
-        "Vali",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Vali",
-        "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Vali"
+        "GCHQ için Türkçede yerleşik, herkesçe kabul görmüş tek bir resmî karşılık yoktur; kurum genellikle özgün adıyla anılır.",
+        ""
       ],
       [
         "G",
         "Governor General",
         "",
         "Vali, Umumî Vali",
-        "Vali",
-        "Rütbe",
+        "Genel Vali",
         "",
+        "Vali/beylerbeyi/genel vali (döneme ve bağlama göre)",
         "",
         "",
         "Handbook of the Turkish Army",
-        "",
+        "Vali/beylerbeyi/genel vali (döneme ve bağlama göre)",
         "Handbook of the Turkish Army"
       ],
       [
@@ -7662,68 +7554,40 @@ window.DICTIONARY_DATA = [
         "Tophâne Müşiri, Tophâne-İ Âmire Müşiri",
         "",
         "Görev/Unvan",
-        "Kesin alınacak madde.",
+        "",
         "Kesin",
         "Tophâne Müşiri",
         "",
-        "Kesin alınacak madde.",
-        "Tophâne Müşiri"
+        "",
+        ""
       ],
       [
         "G",
-        "Grand Military Council (Grand Council of War)",
-        null,
+        "Grand Military Council/Grand Council of War",
+        "",
         "Dâr-ı Şûrâ-yı Askerî",
-        null,
+        "",
         "Kurum/Teşkilat",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir. Yabancı kurum adlarında modern Türkçe kurum dili kullanılmalı; Osmanlı kurumları için nezaret/dâire/mekteb gibi dönem adları ayrılmalıdır.",
+        "",
         "Kurum Adı",
         "Dâr-ı Şûrâ-yı Askerî",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir. Yabancı kurum adlarında modern Türkçe kurum dili kullanılmalı; Osmanlı kurumları için nezaret/dâire/mekteb gibi dönem adları ayrılmalıdır.",
-        "Dâr-ı Şûrâ-yı Askerî"
+        "",
+        ""
       ],
       [
         "G",
-        "Grand Vezirat",
-        null,
-        "Sadâret Dâiresi",
-        null,
+        "Grand Vizierate",
+        "",
+        "Sadâret",
+        "",
         "Kurum/Teşkilat",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Makam / mevki: Sadâret ya da sadâret makamı\nMakamı işgal eden kişi: Sadrazam (Grand Vizier)",
         "Kaynak korundu",
         "Sadâret Dâiresi",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Sadâret Dâiresi"
-      ],
-      [
-        "G",
-        "Greatcoat",
-        null,
-        "Kaput (askerî kıyafet)",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Kaput (askerî kıyafet)",
-        "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaput (askerî kıyafet)"
-      ],
-      [
-        "G",
-        "Greave",
-        null,
-        "Dizçek",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Dizçek",
-        "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Dizçek"
+        "Makam / mevki: Sadâret ya da sadâret makamı\nMakamı işgal eden kişi: Sadrazam (Grand Vizier)",
+        ""
       ],
       [
         "G",
@@ -7731,13 +7595,13 @@ window.DICTIONARY_DATA = [
         "",
         "Humbaracı",
         "El Bombası Atan Asker",
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
+        "Osmanlı ordusunda bu sınıfın karşılığı humbaracıdır. Humbara (el bombası, havan mermisi) atan asker anlamına gelir ve Grenadier'in hem etimolojik hem işlevsel tam karşılığıdır. Osmanlı'da humbaracılar, özellikle Humbaracı Ahmed Paşa (Comte de Bonneval) döneminde düzenli bir ocak olarak örgütlenmiştir.",
         "Kaynak korundu",
         "Humbaracı",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Humbaracı"
+        "Osmanlı ordusunda bu sınıfın karşılığı humbaracıdır. Humbara (el bombası, havan mermisi) atan asker anlamına gelir ve Grenadier'in hem etimolojik hem işlevsel tam karşılığıdır. Osmanlı'da humbaracılar, özellikle Humbaracı Ahmed Paşa (Comte de Bonneval) döneminde düzenli bir ocak olarak örgütlenmiştir.",
+        ""
       ],
       [
         "G",
@@ -7745,111 +7609,97 @@ window.DICTIONARY_DATA = [
         "",
         "Askerî Karakol",
         "",
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
+        "",
         "Kaynak korundu",
         "Karakol",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Karakol"
+        "",
+        ""
       ],
       [
         "G",
-        "Guardsman (Guard)",
-        null,
+        "Guardsman/Guard",
+        "",
         "Muhâfız",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
+        "",
+        "",
         "Kaynak korundu",
         "Muhâfız",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Muhâfız"
-      ],
-      [
-        "G",
-        "Guisarme",
-        null,
-        "Nacak",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Nacak",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Nacak"
+        ""
       ],
       [
         "G",
         "Gun",
-        null,
-        "Top",
-        null,
+        "",
+        "Top, Silâh, tabanca",
+        "",
         "Silah",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "Top",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Top"
+        "",
+        ""
       ],
       [
         "G",
         "Gun Carriage",
-        null,
-        "Kundak, top arabası, top kundağı",
-        null,
-        "Silah",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
+        "Top arabası, top kundağı",
+        "",
+        "",
+        "",
         "Kaynak korundu",
         "Kundak, top arabası, top kundağı",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kundak, top arabası, top kundağı"
+        "",
+        ""
       ],
       [
         "G",
         "Gun Cotton",
-        null,
+        "",
         "Pamuk barutu",
-        null,
-        "Silah",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
+        "Mühimmat/Silah",
+        "",
         "Kaynak korundu",
         "Pamuk barutu",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Pamuk barutu"
+        "",
+        ""
       ],
       [
         "G",
         "Gunner",
-        null,
-        "Topçu",
-        null,
-        "Silah",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
+        "Topçu, Topçu neferi/askeri",
+        "",
+        "",
+        "",
         "Kaynak korundu",
         "Topçu",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Topçu"
+        "",
+        ""
       ],
       [
         "G",
         "Gunpowder",
-        null,
+        "",
         "Barut",
-        null,
-        "Silah",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Barut",
+        "Mühimmat/Silah",
+        "",
         "Kaynak korundu",
         "Barut",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Barut"
+        "",
+        ""
       ],
       [
         "G",
@@ -7868,44 +7718,44 @@ window.DICTIONARY_DATA = [
       [
         "G",
         "Gunsmith",
-        null,
+        "",
+        "Tüfenkci",
         "Tüfekçi",
-        null,
         "Silah",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "Tüfekçi",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Tüfekçi"
+        "",
+        ""
       ],
       [
         "H",
-        "H.I.M.",
+        "H.I.M. (Her/His Imperial Majesty)",
+        "HIM",
+        "Hazret-i Şehriyârî, Zât-ı Şâhâne",
+        "Majesteleri",
         "",
-        "Hazret-i Şehriyârî, Zât-ı Şâhâne (Her/His Imperial Majesty)",
         "",
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
         "Kaynak korundu",
         "Hazret-i Şehriyârî, Zât-ı Şâhâne (Her / His Imperial Majesty)",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Hazret-i Şehriyârî, Zât-ı Şâhâne (Her / His Imperial Majesty)"
+        "",
+        ""
       ],
       [
         "H",
-        "H.M.",
-        "",
-        "Zât-ı Şâhâne, Majeste (Her/His Majesty)",
-        "",
+        "H.M. (Her/His Majesty)",
+        "HM",
+        "Zât-ı Şâhâne, Majeste",
+        "Majeste",
         "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "Zât-ı Şâhâne, Majeste (Her / His Majesty)",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Zât-ı Şâhâne, Majeste (Her / His Majesty)"
+        "",
+        ""
       ],
       [
         "H",
@@ -7938,72 +7788,44 @@ window.DICTIONARY_DATA = [
       [
         "H",
         "Hand Gun",
-        null,
-        "El topu",
-        null,
+        "",
+        "Tabanca/Piştov",
+        "",
         "Silah",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "El topu",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "El topu"
+        "",
+        ""
       ],
       [
         "H",
         "Hand-grenade",
         "",
-        "El Humbarası",
+        "Humbara (el humbarası)",
         "El bombası",
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
+        "",
         "Kaynak korundu",
         "El kumbarası, el bombası",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "El kumbarası, el bombası"
+        "",
+        "ı"
       ],
       [
         "H",
-        "Harquebusier (Carabineer)",
-        null,
-        "Karabinacı",
-        null,
-        "Tarihî Silah-Zırh Eki",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Harquebusier",
+        "",
+        "Tüfenkendaz",
+        "Tüfekli asker (piyade/süvari)",
+        "",
+        "",
         "Tarihî Ek",
         "Karabinacı",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Karabinacı"
-      ],
-      [
-        "H",
-        "Hauberk",
-        null,
-        "Zincir gömlek (chain shirt)",
-        null,
-        "Tarihî Silah-Zırh Eki",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Tarihî Ek",
-        "Zincir gömlek (chain shirt)",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Zincir gömlek (chain shirt)"
-      ],
-      [
-        "H",
-        "Haversack",
-        null,
-        "Ekmek torbası",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Ekmek torbası",
-        "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Ekmek torbası"
+        ""
       ],
       [
         "H",
@@ -8011,13 +7833,13 @@ window.DICTIONARY_DATA = [
         "",
         "Merkez, karargâh, merkezî karargâh, merkez karargâhı",
         "",
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
+        "",
         "Kaynak korundu",
         "Merkez, karargâh, merkez karargâhı",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Merkez, karargâh, merkez karargâhı"
+        "",
+        ""
       ],
       [
         "H",
@@ -8026,208 +7848,180 @@ window.DICTIONARY_DATA = [
         "Sıhhıye Zâbiti",
         "Sıhhıye Subayı",
         "Kurum/Teşkilat",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir. Yabancı kurum adlarında modern Türkçe kurum dili kullanılmalı; Osmanlı kurumları için nezaret/dâire/mekteb gibi dönem adları ayrılmalıdır.",
+        "",
         "Kurum Adı",
         "Sıhhıye Zâbiti / Subayı",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir. Yabancı kurum adlarında modern Türkçe kurum dili kullanılmalı; Osmanlı kurumları için nezaret/dâire/mekteb gibi dönem adları ayrılmalıdır.",
-        "Sıhhıye Zâbiti / Subayı"
-      ],
-      [
-        "H",
-        "Heavy Infantry",
-        null,
-        "Ağır piyade",
-        null,
-        "Birlik/Sınıf",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Ağır piyade",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Ağır piyade"
+        ""
       ],
       [
         "H",
         "Helmet",
-        null,
+        "",
         "Miğfer",
-        null,
+        "",
         "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "Miğfer",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Miğfer"
-      ],
-      [
-        "H",
-        "High Angle Weapon and/or Fire",
-        null,
-        "Dikey mermi yollu silâh, dikey ateş",
-        null,
-        "Mühimmat",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Dikey mermi yollu silâh, dikey ateş",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Dikey mermi yollu silâh, dikey ateş"
+        ""
       ],
       [
         "H",
         "High Explosive",
-        null,
-        "Yüksek infilâklı (mermi, barut)",
-        null,
+        "",
+        "Şedid (şiddetli) patlayıcı madde,  infilâk kuvveti yüksek madde, mevâdd-ı infilâkiye",
+        "",
         "Mühimmat",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "Yüksek infilâklı (mermi, barut)",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Yüksek infilâklı (mermi, barut)"
+        "",
+        ""
       ],
       [
         "H",
         "Hornwork",
-        null,
+        "",
+        "",
         "Boynuz tabya",
-        null,
         "Tahkimat/İstihkâm",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Hornwork – boynuz tabya\nCrownwork – taç tabya\nravelin – ok tabya\nbastion – burç tabya\noutwork – hariç istihkâm / dış tahkimat",
         "Kaynak korundu",
         "Boynuz tabya",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Boynuz tabya"
+        "Hornwork – boynuz tabya\nCrownwork – taç tabya\nravelin – ok tabya\nbastion – burç tabya\noutwork – hariç istihkâm / dış tahkimat",
+        ""
       ],
       [
         "H",
         "Horse Artillery",
-        null,
-        "Hafif Koşulu Topçu, Hafif Seyyâr Topçu",
-        null,
-        "Silah",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
+        "Süvari Topçusu",
+        "",
+        "",
+        "",
         "Kaynak korundu",
         "Hafif Koşulu Topçu, Hafif Seyyâr Topçu",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Hafif Koşulu Topçu, Hafif Seyyâr Topçu"
+        "",
+        ""
       ],
       [
         "H",
         "House",
-        null,
+        "",
         "Hâne, ev",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
+        "",
+        "",
         "Kaynak korundu",
         "Hâne, ev",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Hâne, ev"
+        "",
+        ""
       ],
       [
         "H",
         "Howitzer",
         "",
         "Obüs",
-        "",
+        "Obüs",
         "Silah",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "Obüs, havan topu",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Obüs, havan topu"
+        "",
+        ""
       ],
       [
         "H",
-        "Human Intelligence (HUMINT)",
-        null,
-        "Beşerî İstihbarat, insanî istihbarat",
-        null,
-        "Modern İstihbarat Eki",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Human Intelligence",
+        "HUMINT",
+        "",
+        "Beşerî/İnsanî İstihbarat",
+        "Britanya/İngiliz Kurumu",
+        "İnsan eliyle/tarafından toplanan istihbarat",
         "Modern Ek",
         "Beşerî İstihbarat, insanî istihbarat",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Beşerî İstihbarat, insanî istihbarat"
+        "İnsan eliyle/tarafından toplanan istihbarat",
+        ""
       ],
       [
         "I",
-        "Imagery Intelligence (IMINT)",
-        null,
+        "Imagery Intelligence",
+        "IMINT",
+        "",
         "Görüntü İstihbaratı",
-        null,
-        "Modern İstihbarat Eki",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Britanya/İngiliz Kurumu",
+        "Hava fotoğrafçılığının askerî keşifte kullanılmaya başladığı çağdır. Balonla keşif (aerostat) 19. yüzyıl boyunca gelişmiş, uçağın gelişiyle (özellikle 1911–1918) hava keşfi ve hava fotoğrafçılığı askerî istihbaratın gerçek bir kolu hâline gelmiştir. Yani IMINT'in çekirdeği tam da bu aralıkta atılmıştır.",
         "Modern Ek",
         "Görüntü İstihbaratı",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Görüntü İstihbaratı"
+        "Hava fotoğrafçılığının askerî keşifte kullanılmaya başladığı çağdır. Balonla keşif (aerostat) 19. yüzyıl boyunca gelişmiş, uçağın gelişiyle (özellikle 1911–1918) hava keşfi ve hava fotoğrafçılığı askerî istihbaratın gerçek bir kolu hâline gelmiştir. Yani IMINT'in çekirdeği tam da bu aralıkta atılmıştır.",
+        ""
       ],
       [
         "I",
         "Imperial College of Mathematics",
         "",
-        "Mühendishâne-i Berrî-i Hümâyûn; Hendese Mektebi",
-        "",
+        "Mühendishâne-i Berrî-i Hümâyûn/Mühendishâne-i Bahrî-i Hümâyûn",
+        "Kara Mühendishanesi/Deniz Mühendishanesi",
         "Eğitim/Kurum",
-        "Hendese-i Mekteb-i Şâhâne gibi sorunlu tamlama yerine bu form tercih edilir.",
+        "Bağlama göre Kara ya da Deniz Mühendishanesi.",
         "Düzeltilmiş",
         "Hendese-i Mekteb-i Şâhâne, Mühendishâne-i Berrî-i Hümâyûn",
         "",
-        "Hendese-i Mekteb-i Şâhâne gibi sorunlu tamlama yerine bu form tercih edilir.",
-        "Hendese-i Mekteb-i Şâhâne, Mühendishâne-i Berrî-i Hümâyûn"
+        "Bağlama göre Kara ya da Deniz Mühendishanesi.",
+        ""
       ],
       [
         "I",
         "Imperial Guard",
-        null,
+        "",
         "Muhâfız-ı Hümâyûn",
-        null,
+        "",
         "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "Özellikle I. Ordu (İstanbul) bölgesinde Sultan'ı koruyan birlikleri ifade eder.",
         "Kaynak korundu",
         "Muhâfız-ı Hümâyûn",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Muhâfız-ı Hümâyûn"
+        "Özellikle I. Ordu (İstanbul) bölgesinde Sultan'ı koruyan birlikleri ifade eder.",
+        ""
       ],
       [
         "I",
-        "Imperial Medical School (School of Military Medicine)",
+        "Imperial Medical School/School of Military Medicine",
         "",
         "Mekteb-i Tıbbiye-i Şâhâne, Mekteb-i Fünûn-ı Tıbbiye-i Şâhâne",
         "Tıbbiye",
         "Kurum/Teşkilat",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "Mekteb-i Tıbbiye-i Şâhâne, Mekteb-i Fünûn-ı Tıbbiye-i Şâhâne",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Mekteb-i Tıbbiye-i Şâhâne, Mekteb-i Fünûn-ı Tıbbiye-i Şâhâne"
+        "",
+        ""
       ],
       [
         "I",
-        "Imperial Military Academy (School)",
+        "Imperial Military Academy/School",
         "",
         "Mekteb-i Harbiye-i Şâhâne",
         "Harbiye",
         "Kurum/Teşkilat",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "Mekteb-i Harbiye-i Şâhâne",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Mekteb-i Harbiye-i Şâhâne"
+        "",
+        ""
       ],
       [
         "I",
@@ -8236,12 +8030,12 @@ window.DICTIONARY_DATA = [
         "Donanma-yı Hümâyûn",
         "İmparatorluk Donanması",
         "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "Donanma-yı Hümâyûn",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Donanma-yı Hümâyûn"
+        "",
+        ""
       ],
       [
         "I",
@@ -8250,40 +8044,40 @@ window.DICTIONARY_DATA = [
         "Hindistan Ofisi/Bakanlığı Arşivi",
         "",
         "İngiliz/Britanya-Hindistan Kurumu",
-        "Arşiv/kaynak adı.",
+        "Arşiv adı.",
         "Kesin",
         "Hindistan Ofisi Arşivi",
         "",
-        "Arşiv/kaynak adı.",
-        "Hindistan Ofisi Arşivi"
+        "Arşiv adı.",
+        ""
       ],
       [
         "I",
         "Indian Civil Service",
+        "ICS",
         "",
-        "Hindistan Mülkî Hizmetleri",
-        "Hindistan Sivil Servisi",
-        "Kurum/Teşkilat",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir. Yabancı kurum adlarında modern Türkçe kurum dili kullanılmalı; Osmanlı kurumları için nezaret/dâire/mekteb gibi dönem adları ayrılmalıdır.",
+        "Hindistan Sivil Servisi, Hindistan Mülkî İdaresi",
+        "Britanya/Hindistan Kurumu",
+        "Britanya kurumu; Osmanlı karşılığı yoktur.",
         "Kurum Adı",
         "Hindistan Mülkî Hizmetleri, Hindistan Sivil Servisi",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir. Yabancı kurum adlarında modern Türkçe kurum dili kullanılmalı; Osmanlı kurumları için nezaret/dâire/mekteb gibi dönem adları ayrılmalıdır.",
-        "Hindistan Mülkî Hizmetleri, Hindistan Sivil Servisi"
+        "Britanya kurumu; Osmanlı karşılığı yoktur.",
+        ""
       ],
       [
         "I",
-        "Infantry (Infantryman)",
-        null,
-        "Piyâde; piyâde neferi",
-        "Piyade eri",
+        "Infantry/Infantryman",
+        "",
+        "Piyâde/piyâde neferi",
+        "Piyade/Piyade eri/askeri",
         "Birlik/Sınıf",
-        "Kesin madde.",
+        "",
         "Kesin",
         "Piyâde",
         "",
-        "Kesin madde.",
-        "Piyâde"
+        "",
+        ""
       ],
       [
         "I",
@@ -8291,111 +8085,97 @@ window.DICTIONARY_DATA = [
         "",
         "Han, Konak",
         "",
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
+        "",
         "Kaynak korundu",
         "Han",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Han"
+        "",
+        ""
       ],
       [
         "I",
         "Inspector General",
-        null,
+        "",
         "Umum Müfettişi, Müfettiş-i Umumî",
-        null,
-        "Rütbe",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
+        "",
+        "",
         "Kaynak korundu",
         "Umum Müfettişi, Müfettiş-i Umumî",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Umum Müfettişi, Müfettiş-i Umumî"
+        "",
+        ""
       ],
       [
         "I",
         "Inspectorate-General",
-        null,
-        "Umumî Müfettişlik",
-        null,
+        "",
+        "Umûmî Müfettişlik/Umûm Müfettişliği",
+        "Genel Müfettişlik",
         "Rütbe",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "Umumî Müfettişlik",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Umumî Müfettişlik"
+        "",
+        ""
       ],
       [
         "I",
         "Instruction Officer",
         "",
-        "Muallim Zâbit/Subay",
+        "Muallim Zâbit",
+        "Muallim Subay",
         "",
-        "Kurum/Teşkilat",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir. Yabancı kurum adlarında modern Türkçe kurum dili kullanılmalı; Osmanlı kurumları için nezaret/dâire/mekteb gibi dönem adları ayrılmalıdır.",
+        "",
         "Kurum Adı",
         "Muallim Zâbit / Subay",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir. Yabancı kurum adlarında modern Türkçe kurum dili kullanılmalı; Osmanlı kurumları için nezaret/dâire/mekteb gibi dönem adları ayrılmalıdır.",
-        "Muallim Zâbit / Subay"
+        "",
+        ""
       ],
       [
         "I",
         "Intelligence Branch",
-        null,
+        "",
         "İstihbarat Şubesi",
-        null,
+        "İstihbarat Şubesi",
         "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "İstihbarat Şubesi",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "İstihbarat Şubesi"
+        "",
+        ""
       ],
       [
         "I",
         "Intelligence Division",
         "",
-        "İstihbarat Dairesi/Şubesi",
-        "",
+        "İstihbarat Dairesi",
+        "İstihbarat Dairesi",
         "Kurum/İstihbarat",
-        "Division kurum hiyerarşisine göre şube veya daire olabilir.",
+        "",
         "Bağlamlı",
         "",
         "",
-        "Division kurum hiyerarşisine göre şube veya daire olabilir.",
+        "",
         ""
       ],
       [
         "I",
-        "Interception of the Mail",
-        null,
-        "Posta Sansürü",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Posta Sansürü",
+        "Interpreter/Dragoman to the Imperial Divan",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Posta Sansürü"
-      ],
-      [
-        "I",
-        "Interpreter to the Imperial Divan",
-        null,
         "Dîvân-ı Hümâyûn Tercümanı",
-        null,
+        "",
         "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "Dîvân-ı Hümâyûn Tercümanı",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Dîvân-ı Hümâyûn Tercümanı"
+        "",
+        ""
       ],
       [
         "I",
@@ -8403,27 +8183,27 @@ window.DICTIONARY_DATA = [
         "",
         "Gayrinizâmî",
         "Düzensiz",
-        "Birlik/Sınıf",
-        "Başıbozuk yalnız belirli Osmanlı düzensiz unsurları için kullanılmalıdır.",
+        "",
+        "",
         "Kesin",
         "Gayrinizâmî",
         "",
-        "Başıbozuk yalnız belirli Osmanlı düzensiz unsurları için kullanılmalıdır.",
-        "Gayrinizâmî"
+        "",
+        ""
       ],
       [
         "J",
         "Istanbul",
-        null,
-        "Dersaâdet, Âsitâne-i Sa‘âdet, Der-i Aliyye, İstanbul",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
+        "İstanbul, Dersaâdet, Âsitâne-i Sa'âdet",
+        "İstanbul",
+        "",
+        "",
         "Kaynak korundu",
         "Dersaâdet, Âsitâne-i Sa‘âdet, Der-i Aliyye, İstanbul",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Dersaâdet, Âsitâne-i Sa‘âdet, Der-i Aliyye, İstanbul"
+        "",
+        ""
       ],
       [
         "J",
@@ -8438,48 +8218,6 @@ window.DICTIONARY_DATA = [
         "",
         "Almanca kökenli askerî sınıf terimi.",
         "Avcı"
-      ],
-      [
-        "J",
-        "Javelineer",
-        null,
-        "Ciritçi",
-        null,
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Ciritçi",
-        "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Ciritçi"
-      ],
-      [
-        "K",
-        "Keep (Castle)",
-        "",
-        "Kıstel",
-        "",
-        "Genel",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Kıstel, şato",
-        "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kıstel, şato"
-      ],
-      [
-        "K",
-        "Kepi",
-        null,
-        "Kep",
-        null,
-        "Kıyafet/Teçhizat",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kaynak korundu",
-        "Kep",
-        "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Kep"
       ],
       [
         "K",
@@ -8497,59 +8235,45 @@ window.DICTIONARY_DATA = [
       ],
       [
         "L",
-        "Lamellar Armour",
-        "",
-        "Levhalı zırh; lamelli zırh",
-        "Levhalı zırh",
-        "Tarihî Silah-Zırh Eki",
-        "Varaklı zırh güvenli değildir.",
-        "Düzeltilmiş",
-        "Varaklı zırh",
-        "",
-        "Varaklı zırh güvenli değildir.",
-        "Varaklı zırh"
-      ],
-      [
-        "L",
         "Lance",
         "",
         "Mızrak, Kargı",
         "",
         "Silah",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "Mızrak, kargı",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Mızrak, kargı"
+        "",
+        ""
       ],
       [
         "L",
-        "Lance Sergeant",
-        null,
-        "Çavuş Vekili",
-        null,
+        "Lance sergeant",
+        "",
+        "Çavuş Vekili, Vekil Çavuş",
+        "",
         "Rütbe",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "Çavuş Vekili",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Çavuş Vekili"
+        "",
+        ""
       ],
       [
         "L",
-        "Lance-corporal",
-        null,
-        "Onbaşı Vekili",
-        null,
+        "Lance corporal",
+        "",
+        "Onbaşı Vekili, Vekil Onbaşı",
+        "",
         "Rütbe",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
+        "",
         "Kaynak korundu",
         "Onbaşı Vekili",
         "",
-        "Kaynak dosyadaki karşılık korunmuştur; terim bağlamda yeniden kontrol edilebilir.",
-        "Onbaşı Vekili"
+        "",
+        ""
       ],
       [
         "L",
@@ -14273,8 +13997,9 @@ window.DICTIONARY_DATA = [
 (() => {
   "use strict";
 
-  const STORAGE_KEY = "askeri_terimler_profesyonel_v3_20260711074854";
+  const STORAGE_KEY = "askeri_terimler_profesyonel_v3_20260711113754";
   const PAGE_STORAGE_KEY = STORAGE_KEY + "_page_texts";
+  const PAGE_STORAGE_KEY_EN = STORAGE_KEY + "_page_texts_en";
   const PENDING_DATA_KEY = STORAGE_KEY + "_pending_live_data";
   const PENDING_PAGE_KEY = STORAGE_KEY + "_pending_live_pages";
   const DEFAULT_DATA = clone(window.DICTIONARY_DATA || []);
@@ -14318,6 +14043,7 @@ window.DICTIONARY_DATA = [
     { key: "Künye/Kaynak", wide: true, multiline: true }
   ];
   let pageContent = clone(DEFAULT_PAGE_CONTENT);
+  let pageContentEn = clone(DEFAULT_PAGE_CONTENT_EN);
   const INITIAL_QUERY = getInitialQueryFromUrl();
   const INITIAL_HTML_SOURCE = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
   let data = clone(DEFAULT_DATA);
@@ -14338,9 +14064,9 @@ window.DICTIONARY_DATA = [
   const NETLIFY_TOML_CONTENT = "[build]\n  publish = \".\"\n  functions = \"netlify/functions\"\n  command = \"npm run build\"\n\n[functions]\n  node_bundler = \"esbuild\"\n\n[[redirects]]\n  from = \"/en\"\n  to = \"/index.html\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/\"\n  to = \"/index.html\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/api/content\"\n  to = \"/.netlify/functions/content\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/robots.txt\"\n  to = \"/.netlify/functions/robots\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/sitemap.xml\"\n  to = \"/.netlify/functions/sitemap\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/yayin-notu\"\n  to = \"/.netlify/functions/page-yayin-notu\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/yayin-notu/\"\n  to = \"/.netlify/functions/page-yayin-notu\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/kaynakca\"\n  to = \"/.netlify/functions/page-kaynakca\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/kaynakca/\"\n  to = \"/.netlify/functions/page-kaynakca\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/gizlilik-politikasi\"\n  to = \"/.netlify/functions/page-gizlilik-politikasi\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/gizlilik-politikasi/\"\n  to = \"/.netlify/functions/page-gizlilik-politikasi\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/cerez-politikasi\"\n  to = \"/.netlify/functions/page-cerez-politikasi\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/cerez-politikasi/\"\n  to = \"/.netlify/functions/page-cerez-politikasi\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/kullanim-sartlari\"\n  to = \"/.netlify/functions/page-kullanim-sartlari\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/kullanim-sartlari/\"\n  to = \"/.netlify/functions/page-kullanim-sartlari\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/iletisim\"\n  to = \"/.netlify/functions/page-iletisim\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/iletisim/\"\n  to = \"/.netlify/functions/page-iletisim\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/publication-note\"\n  to = \"/.netlify/functions/page-yayin-notu-en\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/publication-note/\"\n  to = \"/.netlify/functions/page-yayin-notu-en\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/bibliography\"\n  to = \"/.netlify/functions/page-kaynakca-en\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/bibliography/\"\n  to = \"/.netlify/functions/page-kaynakca-en\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/privacy-policy\"\n  to = \"/.netlify/functions/page-gizlilik-politikasi-en\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/privacy-policy/\"\n  to = \"/.netlify/functions/page-gizlilik-politikasi-en\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/cookie-policy\"\n  to = \"/.netlify/functions/page-cerez-politikasi-en\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/cookie-policy/\"\n  to = \"/.netlify/functions/page-cerez-politikasi-en\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/terms-of-use\"\n  to = \"/.netlify/functions/page-kullanim-sartlari-en\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/terms-of-use/\"\n  to = \"/.netlify/functions/page-kullanim-sartlari-en\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/contact\"\n  to = \"/.netlify/functions/page-iletisim-en\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/contact/\"\n  to = \"/.netlify/functions/page-iletisim-en\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/terimler\"\n  to = \"/.netlify/functions/terms\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/terimler/\"\n  to = \"/.netlify/functions/terms\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/terim/:slug\"\n  to = \"/.netlify/functions/term?slug=:slug\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/terim/:slug/\"\n  to = \"/.netlify/functions/term?slug=:slug\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/terms\"\n  to = \"/.netlify/functions/terms?lang=en\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/terms/\"\n  to = \"/.netlify/functions/terms?lang=en\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/term/:slug\"\n  to = \"/.netlify/functions/term?lang=en&slug=:slug\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/en/term/:slug/\"\n  to = \"/.netlify/functions/term?lang=en&slug=:slug\"\n  status = 200\n  force = true\n\n[[redirects]]\n  from = \"/*\"\n  to = \"/404.html\"\n  status = 404\n";
   const PACKAGE_JSON_CONTENT = "{\n  \"name\": \"askeri-terimler-sozlugu\",\n  \"version\": \"1.0.0\",\n  \"private\": true,\n  \"description\": \"Askerî Terimler Sözlüğü - canlı editör kayıt sistemi\",\n  \"scripts\": {\n    \"build\": \"node -e \\\"console.log('Statik dosyalar hazır; Netlify Functions paketleniyor.')\\\"\"\n  },\n  \"dependencies\": {\n    \"@netlify/blobs\": \"latest\"\n  }\n}\n";
   const NETLIFY_CONTENT_FUNCTION = "const { jsonHeaders, isAuthorized, readContent, writeContent } = require('./_shared');\n\nexports.handler = async function(event) {\n  if (event.httpMethod === 'OPTIONS') {\n    return { statusCode: 204, headers: jsonHeaders(), body: '' };\n  }\n\n  if (event.httpMethod === 'GET') {\n    const check = event.queryStringParameters && event.queryStringParameters.check;\n    if (String(check || '').toLowerCase() === 'auth') {\n      if (!isAuthorized(event)) {\n        return {\n          statusCode: 401,\n          headers: jsonHeaders(),\n          body: JSON.stringify({ ok: false, error: 'unauthorized' })\n        };\n      }\n      return {\n        statusCode: 200,\n        headers: jsonHeaders(),\n        body: JSON.stringify({ ok: true })\n      };\n    }\n\n    try {\n      const content = await readContent();\n      return {\n        statusCode: 200,\n        headers: jsonHeaders(),\n        body: JSON.stringify(content)\n      };\n    } catch (err) {\n      return {\n        statusCode: 500,\n        headers: jsonHeaders(),\n        body: JSON.stringify({\n          ok: false,\n          error: 'read_failed',\n          message: err && err.message ? err.message : String(err)\n        })\n      };\n    }\n  }\n\n  if (event.httpMethod !== 'POST') {\n    return {\n      statusCode: 405,\n      headers: jsonHeaders(),\n      body: JSON.stringify({ ok: false, error: 'method_not_allowed' })\n    };\n  }\n\n  if (!isAuthorized(event)) {\n    return {\n      statusCode: 401,\n      headers: jsonHeaders(),\n      body: JSON.stringify({ ok: false, error: 'unauthorized' })\n    };\n  }\n\n  let payload;\n  try {\n    payload = JSON.parse(event.body || '{}');\n  } catch (err) {\n    return {\n      statusCode: 400,\n      headers: jsonHeaders(),\n      body: JSON.stringify({ ok: false, error: 'invalid_json' })\n    };\n  }\n\n  try {\n    const kind = payload.kind || 'all';\n    const fullSnapshot = Array.isArray(payload.data)\n      && payload.pages && typeof payload.pages === 'object'\n      && payload.pages_en && typeof payload.pages_en === 'object';\n    let next;\n\n    if (fullSnapshot) {\n      // Güncel istemci tam anlık görüntü gönderir; önceki blobu okumadan tek yazma yapılır.\n      next = {\n        data: payload.data,\n        pages: payload.pages,\n        pages_en: payload.pages_en,\n        meta: payload.meta && typeof payload.meta === 'object' ? payload.meta : {}\n      };\n    } else {\n      // Eski istemcilerle geriye dönük uyumluluk.\n      const current = await readContent();\n      next = { ...current };\n      if ((kind === 'all' || kind === 'data') && Array.isArray(payload.data)) next.data = payload.data;\n      if ((kind === 'all' || kind === 'pages') && payload.pages && typeof payload.pages === 'object') next.pages = { ...(current.pages || {}), ...payload.pages };\n      if ((kind === 'all' || kind === 'pages') && payload.pages_en && typeof payload.pages_en === 'object') next.pages_en = { ...(current.pages_en || {}), ...payload.pages_en };\n      if (payload.meta && typeof payload.meta === 'object') next.meta = { ...(current.meta || {}), ...payload.meta };\n    }\n\n    const saved = await writeContent(next);\n    return {\n      statusCode: 200,\n      headers: jsonHeaders(),\n      body: JSON.stringify({\n        ok: true,\n        updatedAt: saved.updatedAt,\n        writeId: saved._writeId,\n        blobResult: saved._blobResult || {}\n      })\n    };\n  } catch (err) {\n    return {\n      statusCode: 500,\n      headers: jsonHeaders(),\n      body: JSON.stringify({\n        ok: false,\n        error: 'write_failed',\n        message: err && err.message ? err.message : String(err)\n      })\n    };\n  }\n};\n";
-  const NETLIFY_SHARED_FUNCTION = "const { getStore } = require('@netlify/blobs');\nconst crypto = require('crypto');\nconst defaults = require('./default-content.json');\n\nconst STORE_NAME = 'ats-live-content';\nconst STORE_KEY = 'live';\n\nfunction editorHash() {\n  const configured = String(process.env.EDITOR_PASSWORD_HASH || '').trim();\n  if (configured) {\n    const lower = configured.toLowerCase();\n    // Doğru SHA-256 özeti verilmişse aynen kullan; yanlışlıkla düz parola\n    // EDITOR_PASSWORD_HASH alanına girilmişse geriye dönük olarak özetle.\n    return /^[0-9a-f]{64}$/.test(lower) ? lower : hash(configured);\n  }\n  const legacyPlain = String(process.env.EDITOR_PASSWORD || process.env.ATS_EDITOR_PASSWORD || '').trim();\n  return legacyPlain ? hash(legacyPlain) : '';\n}\n\nfunction jsonHeaders(extra = {}) {\n  return {\n    'Content-Type': 'application/json; charset=utf-8',\n    'Cache-Control': 'no-store, max-age=0',\n    'Access-Control-Allow-Origin': '*',\n    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Editor-Password, X-Editor-Password-Hash',\n    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',\n    ...extra\n  };\n}\nfunction htmlHeaders(extra = {}) { return { 'Content-Type':'text/html; charset=utf-8', 'Cache-Control':'no-store, max-age=0', ...extra }; }\nfunction textHeaders(extra = {}) { return { 'Content-Type':'text/plain; charset=utf-8', 'Cache-Control':'public, max-age=300, s-maxage=300', ...extra }; }\nfunction xmlHeaders(extra = {}) { return { 'Content-Type':'application/xml; charset=utf-8', 'Cache-Control':'public, max-age=300, s-maxage=300', ...extra }; }\n\nfunction hash(value) {\n  return crypto.createHash('sha256').update(String(value || ''), 'utf8').digest('hex');\n}\n\nfunction timingSafeEqualHex(a, b) {\n  const aa = String(a || '').trim().toLowerCase();\n  const bb = String(b || '').trim().toLowerCase();\n  if (!/^[0-9a-f]{64}$/.test(aa) || !/^[0-9a-f]{64}$/.test(bb)) return false;\n  return crypto.timingSafeEqual(Buffer.from(aa, 'hex'), Buffer.from(bb, 'hex'));\n}\n\nfunction isAuthorized(event) {\n  const expected = editorHash();\n  if (!expected) return false;\n  const h = event.headers || {};\n  const suppliedHash = String(h['x-editor-password-hash'] || h['X-Editor-Password-Hash'] || '').trim().toLowerCase();\n  if (/^[0-9a-f]{64}$/.test(suppliedHash)) return timingSafeEqualHex(suppliedHash, expected);\n  const auth = h.authorization || h.Authorization || '';\n  const bearer = String(auth).replace(/^Bearer\\s+/i, '').trim();\n  const pass = h['x-editor-password'] || h['X-Editor-Password'] || bearer;\n  return !!pass && timingSafeEqualHex(hash(pass), expected);\n}\n\nfunction store() {\n  const config = { name: STORE_NAME, consistency: 'strong' };\n  const siteID = process.env.NETLIFY_BLOBS_SITE_ID || process.env.NETLIFY_SITE_ID || process.env.SITE_ID;\n  const token = process.env.NETLIFY_BLOBS_TOKEN || process.env.NETLIFY_AUTH_TOKEN;\n  if (siteID) config.siteID = siteID;\n  if (token) config.token = token;\n  return getStore(config);\n}\n\nfunction deepClone(value) { return JSON.parse(JSON.stringify(value)); }\n\nfunction normalizeLive(live) {\n  const base = deepClone(defaults);\n  if (live && typeof live === 'object') {\n    if (Array.isArray(live.data)) base.data = live.data;\n    if (live.pages && typeof live.pages === 'object') base.pages = { ...(base.pages || {}), ...live.pages };\n    if (live.pages_en && typeof live.pages_en === 'object') base.pages_en = { ...(base.pages_en || {}), ...live.pages_en };\n    if (live.meta && typeof live.meta === 'object') base.meta = { ...(base.meta || {}), ...live.meta };\n    if (live.updatedAt) base.updatedAt = live.updatedAt;\n    if (live._writeId) base._writeId = live._writeId;\n  }\n  if (!base.updatedAt) base.updatedAt = (base.meta && base.meta.generated_at) || new Date().toISOString();\n  if (!base.meta || typeof base.meta !== 'object') base.meta = {};\n  return base;\n}\n\nasync function readContent() {\n  try {\n    const live = await store().get(STORE_KEY, { type: 'json', consistency: 'strong' });\n    const normalized = normalizeLive(live);\n    normalized.meta = { ...(normalized.meta || {}), live_source: live ? 'blob' : 'defaults' };\n    return normalized;\n  } catch (err) {\n    const fallback = normalizeLive(null);\n    fallback.meta = {\n      ...(fallback.meta || {}),\n      live_source: 'defaults',\n      live_read_error: err && err.message ? err.message : String(err)\n    };\n    return fallback;\n  }\n}\n\nasync function writeContent(next) {\n  const normalized = normalizeLive(next);\n  normalized.updatedAt = new Date().toISOString();\n  normalized.meta = {\n    ...(normalized.meta || {}),\n    live_updated_at: normalized.updatedAt,\n    live_source: 'blob'\n  };\n  normalized._writeId = crypto.randomUUID ? crypto.randomUUID() : crypto.randomBytes(16).toString('hex');\n\n  const blobStore = store();\n  const result = await blobStore.setJSON(STORE_KEY, normalized, {\n    metadata: { updatedAt: normalized.updatedAt, writeId: normalized._writeId }\n  });\n  // Netlify Blobs setJSON tamamlandığında yazma işlemi onaylanmıştır. İkinci bir GET\n  // kaydı gereksiz yere yavaşlattığı için istemciye yazma kimliği doğrudan döndürülür.\n  normalized._blobResult = result || {};\n  return normalized;\n}\n\nfunction escapeHtml(value){ return String(value==null?'':value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#39;'); }\nfunction escapeAttr(value){ return escapeHtml(value); }\nfunction stripHtml(value){ return String(value==null?'':value).replace(/<[^>]*>/g,' ').replace(/\\s+/g,' ').trim(); }\nfunction slugify(value){ return String(value==null?'':value).toLocaleLowerCase('tr').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/ı/g,'i').replace(/ğ/g,'g').replace(/ü/g,'u').replace(/ş/g,'s').replace(/ö/g,'o').replace(/ç/g,'c').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,90)||'terim'; }\nfunction headerIndex(sheet,wanted){ const n=String(wanted||'').toLocaleLowerCase('tr').trim(); return (sheet.headers||[]).findIndex(h=>String(h||'').toLocaleLowerCase('tr').trim()===n); }\nfunction field(rec,names){ for(const name of names){ const idx=headerIndex(rec.sheet,name); if(idx>=0) return rec.row[idx]==null?'':String(rec.row[idx]); } return ''; }\nfunction allRecords(content){ const out=[]; (content.data||[]).forEach((sheet,sheetIndex)=>(sheet.rows||[]).forEach((row,rowIndex)=>out.push({sheet,sheetIndex,row,rowIndex}))); return out; }\nfunction termTitle(rec){ return field(rec,['Madde Başı','İngilizce Terim','Terim','Madde','Açılım','İngilizce / Kurum','Birim','Başlık'])||'Terim'; }\nfunction termSlug(rec){ return slugify(termTitle(rec)); }\nfunction canonicalBase(event){ const proto=(event.headers&&(event.headers['x-forwarded-proto']||event.headers['X-Forwarded-Proto']))||'https'; const host=(event.headers&&(event.headers.host||event.headers.Host))||'localhost'; return `${proto}://${host}`; }\nfunction langFromEvent(event){ const q=(event.queryStringParameters&&event.queryStringParameters.lang)||''; return q.toLowerCase()==='en'?'en':'tr'; }\nfunction siteName(lang){ return lang==='en'?'Military Terms Dictionary':'Askerî Terimler Sözlüğü'; }\nfunction langSwitch(lang){ return lang==='en'?'<nav class=\"lang-switch\" aria-label=\"Language\"><a href=\"/\" lang=\"tr\">TR</a><a href=\"/en/\" class=\"active\" lang=\"en\">ENG</a></nav>':'<nav class=\"lang-switch\" aria-label=\"Dil seçimi\"><a href=\"/\" class=\"active\" lang=\"tr\">TR</a><a href=\"/en/\" lang=\"en\">ENG</a></nav>'; }\nfunction navHtml(lang='tr'){ const items=lang==='en' ? [['Dictionary','/en/'],['Terms Index','/en/terms/'],['Publication Note','/en/publication-note/'],['Bibliography','/en/bibliography/'],['Privacy','/en/privacy-policy/'],['Cookies','/en/cookie-policy/'],['Terms of Use','/en/terms-of-use/'],['Contact','/en/contact/']] : [['Sözlük','/'],['Terimler Dizini','/terimler/'],['Yayın Notu','/yayin-notu/'],['Kaynakça','/kaynakca/'],['Gizlilik','/gizlilik-politikasi/'],['Çerezler','/cerez-politikasi/'],['Kullanım Şartları','/kullanim-sartlari/'],['İletişim','/iletisim/']]; return `<nav class=\"site-nav\" aria-label=\"${lang==='en'?'Site links':'Site bağlantıları'}\">`+items.map(i=>`<a href=\"${i[1]}\">${escapeHtml(i[0])}</a>`).join('')+'</nav>'; }\nfunction css(){ return `:root{--bg:#f8f7f4;--paper:#ffffff;--ink:#232d37;--ink-soft:#5b6570;--line:#e4e2da;--accent:#3d5a78;--olive:#3d5a78;--olive-deep:#2b4460;--brass:#3d5a78;--brass-deep:#2b4460}*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#f8f7f4 0%,#eeede8 100%);background-attachment:fixed;color:var(--ink);font-family:Cambria,Georgia,serif;font-size:17px;line-height:1.62}.site{width:min(1080px,calc(100% - 32px));margin:0 auto;padding:22px 0 36px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:8px 0 18px}.brand{display:flex;align-items:center;gap:14px;color:var(--ink);text-decoration:none}.brand__logo{width:64px;height:64px;display:block;object-fit:contain;border-radius:50%;filter:drop-shadow(0 4px 10px rgba(32,57,90,.14))}.brand__mark{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border:1px solid var(--olive);border-radius:50%;font-weight:700;background:var(--olive);color:#f8f7f4;letter-spacing:.08em}.brand__name{font-size:19px;font-weight:700}.lang-switch{display:inline-flex;gap:4px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.72);padding:3px}.lang-switch a{padding:5px 9px;border-radius:999px;text-decoration:none;color:var(--ink-soft);font-size:12px;font-weight:700;letter-spacing:.04em}.lang-switch a.active{background:var(--olive);color:#f8f7f4}.site-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin:0 0 24px}.site-nav a{padding:8px 12px;border:1px solid var(--line);border-radius:999px;text-decoration:none;color:var(--accent);background:rgba(255,255,255,.70)}main{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:30px 36px;box-shadow:0 18px 50px rgba(20,37,54,.06)}h1{font-family:\"Palatino Linotype\", \"Book Antiqua\", Palatino, Georgia, serif;font-size:34px;line-height:1.15;margin:0 0 16px;text-align:center}h2{font-family:\"Palatino Linotype\", \"Book Antiqua\", Palatino, Georgia, serif;font-size:24px;margin:28px 0 10px}p{text-align:justify}.lead{text-align:center;color:var(--ink-soft);font-size:18px}.meta{margin-top:30px;padding-top:16px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:13px}.source-list{padding-left:22px}.source-list li{margin:7px 0}.term-list{columns:3 220px;column-gap:34px;line-height:1.6}.term-list li{break-inside:avoid;margin:0 0 6px}.term-list a{color:var(--brass);text-decoration:none}.term-list a:hover{text-decoration:underline}.detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:20px}.detail-row{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}.detail-row small{display:block;color:var(--ink-soft);font-size:12px;margin-bottom:4px}.site-footer{margin:26px 0 0;text-align:center;color:var(--ink-soft);font-size:13px}.site-footer p{text-align:center}a{color:var(--accent)}`; }\nfunction pageTitleFor(key,lang='tr'){ const tr={'terimler':'Terimler Dizini','yayin-notu':'Yayın Notu','kaynakca':'Kaynakça','gizlilik-politikasi':'Gizlilik Politikası','cerez-politikasi':'Çerez Politikası','kullanim-sartlari':'Kullanım Şartları','iletisim':'İletişim'}; const en={'terimler':'Terms Index','yayin-notu':'Publication Note','kaynakca':'Bibliography','gizlilik-politikasi':'Privacy Policy','cerez-politikasi':'Cookie Policy','kullanim-sartlari':'Terms of Use','iletisim':'Contact'}; return (lang==='en'?en:tr)[key]||siteName(lang); }\nfunction descriptionFor(key,content,lang='tr'){ const pages=lang==='en'?(content.pages_en||{}):(content.pages||{}); const body=pages&&pages[key]?stripHtml(pages[key]).slice(0,155):''; const f=lang==='en'?{'terimler':'Live terms index of the Military Terms Dictionary.','yayin-notu':'Publication principles, scope and beta notes for the Military Terms Dictionary.','kaynakca':'Archival sources and bibliographical foundations of the Military Terms Dictionary.','gizlilik-politikasi':'Privacy principles and data processing statement for the Military Terms Dictionary.','cerez-politikasi':'Cookie and local storage statement for the Military Terms Dictionary.','kullanim-sartlari':'Terms of use and academic use principles for the Military Terms Dictionary.','iletisim':'Contact page for corrections, additions and source suggestions.'}:{'terimler':'Askerî Terimler Sözlüğü canlı terimler dizini.','yayin-notu':'Askerî Terimler Sözlüğü’nün yayın ilkeleri, kapsamı ve beta sürüm notu.','kaynakca':'Askerî Terimler Sözlüğü’nün arşiv kaynakları ve bibliyografik dayanakları.','gizlilik-politikasi':'Askerî Terimler Sözlüğü gizlilik ilkeleri ve veri işleme açıklaması.','cerez-politikasi':'Askerî Terimler Sözlüğü çerez ve yerel depolama açıklaması.','kullanim-sartlari':'Askerî Terimler Sözlüğü kullanım şartları ve akademik kullanım ilkeleri.','iletisim':'Askerî Terimler Sözlüğü için düzeltme, ekleme ve kaynak önerisi iletişim sayfası.'}; return body||f[key]||siteName(lang); }\nfunction altForPath(canonical,lang){ try{ const u=new URL(canonical); let p=u.pathname; const pairs=[['/','/en/'],['/terimler/','/en/terms/'],['/yayin-notu/','/en/publication-note/'],['/kaynakca/','/en/bibliography/'],['/gizlilik-politikasi/','/en/privacy-policy/'],['/cerez-politikasi/','/en/cookie-policy/'],['/kullanim-sartlari/','/en/terms-of-use/'],['/iletisim/','/en/contact/']]; for(const [tr,en] of pairs){ if(p===tr) return {tr:u.origin+tr,en:u.origin+en}; if(p===en) return {tr:u.origin+tr,en:u.origin+en}; } return {tr:u.origin+'/',en:u.origin+'/en/'}; }catch(e){ return {tr:'/',en:'/en/'}; } }\nfunction pageShell({ title, description, canonical, body, lang='tr' }){ const s=siteName(lang); const home=lang==='en'?'/en/':'/'; const alt=altForPath(canonical,lang); return `<!doctype html><html lang=\"${lang}\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>${escapeHtml(title)} · ${escapeHtml(s)}</title><meta name=\"description\" content=\"${escapeAttr(description)}\"><meta name=\"robots\" content=\"index, follow\"><link rel=\"canonical\" href=\"${escapeAttr(canonical)}\"><link rel=\"alternate\" hreflang=\"tr\" href=\"${escapeAttr(alt.tr)}\"><link rel=\"alternate\" hreflang=\"en\" href=\"${escapeAttr(alt.en)}\"><link rel=\"alternate\" hreflang=\"x-default\" href=\"${escapeAttr(alt.tr)}\"><link rel=\"icon\" href=\"/favicon.ico\" sizes=\"any\"><link rel=\"icon\" type=\"image/png\" href=\"/favicon-96.png\" sizes=\"96x96\"><link rel=\"apple-touch-icon\" href=\"/apple-touch-icon.png\"><style>${css()}</style></head><body><div class=\"site\"><header class=\"topbar\"><a class=\"brand\" href=\"${home}\" aria-label=\"${escapeAttr(s)}\"><img class=\"brand__logo\" src=\"/ats-logo.png\" alt=\"ATS\"><span class=\"brand__name\">${escapeHtml(s)}</span></a>${langSwitch(lang)}</header>${navHtml(lang)}<main><h1>${escapeHtml(title)}</h1>${body}</main><footer class=\"site-footer\"><p>© 2026 Ferdi Ertekin · ${escapeHtml(s)}</p></footer></div></body></html>`; }\nfunction xmlEscape(value){ return String(value==null?'':value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&apos;'); }\nmodule.exports={ defaults,jsonHeaders,htmlHeaders,textHeaders,xmlHeaders,isAuthorized,readContent,writeContent,escapeHtml,escapeAttr,stripHtml,slugify,allRecords,field,termTitle,termSlug,canonicalBase,langFromEvent,siteName,pageTitleFor,descriptionFor,pageShell,xmlEscape };\n";
+  const NETLIFY_SHARED_FUNCTION = "const { getStore } = require('@netlify/blobs');\nconst crypto = require('crypto');\nconst defaults = require('./default-content.json');\n\nconst STORE_NAME = 'ats-live-content';\nconst STORE_KEY = 'live';\n\nfunction editorHash() {\n  const configured = String(process.env.EDITOR_PASSWORD_HASH || '').trim();\n  if (configured) {\n    const lower = configured.toLowerCase();\n    // Doğru SHA-256 özeti verilmişse aynen kullan; yanlışlıkla düz parola\n    // EDITOR_PASSWORD_HASH alanına girilmişse geriye dönük olarak özetle.\n    return /^[0-9a-f]{64}$/.test(lower) ? lower : hash(configured);\n  }\n  const legacyPlain = String(process.env.EDITOR_PASSWORD || process.env.ATS_EDITOR_PASSWORD || '').trim();\n  return legacyPlain ? hash(legacyPlain) : '';\n}\n\nfunction jsonHeaders(extra = {}) {\n  return {\n    'Content-Type': 'application/json; charset=utf-8',\n    'Cache-Control': 'no-store, max-age=0',\n    'Access-Control-Allow-Origin': '*',\n    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Editor-Password, X-Editor-Password-Hash',\n    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',\n    ...extra\n  };\n}\nfunction htmlHeaders(extra = {}) { return { 'Content-Type':'text/html; charset=utf-8', 'Cache-Control':'no-store, max-age=0', ...extra }; }\nfunction textHeaders(extra = {}) { return { 'Content-Type':'text/plain; charset=utf-8', 'Cache-Control':'public, max-age=300, s-maxage=300', ...extra }; }\nfunction xmlHeaders(extra = {}) { return { 'Content-Type':'application/xml; charset=utf-8', 'Cache-Control':'public, max-age=300, s-maxage=300', ...extra }; }\n\nfunction hash(value) {\n  return crypto.createHash('sha256').update(String(value || ''), 'utf8').digest('hex');\n}\n\nfunction timingSafeEqualHex(a, b) {\n  const aa = String(a || '').trim().toLowerCase();\n  const bb = String(b || '').trim().toLowerCase();\n  if (!/^[0-9a-f]{64}$/.test(aa) || !/^[0-9a-f]{64}$/.test(bb)) return false;\n  return crypto.timingSafeEqual(Buffer.from(aa, 'hex'), Buffer.from(bb, 'hex'));\n}\n\nfunction isAuthorized(event) {\n  const expected = editorHash();\n  if (!expected) return false;\n  const h = event.headers || {};\n  const suppliedHash = String(h['x-editor-password-hash'] || h['X-Editor-Password-Hash'] || '').trim().toLowerCase();\n  if (/^[0-9a-f]{64}$/.test(suppliedHash)) return timingSafeEqualHex(suppliedHash, expected);\n  const auth = h.authorization || h.Authorization || '';\n  const bearer = String(auth).replace(/^Bearer\\s+/i, '').trim();\n  const pass = h['x-editor-password'] || h['X-Editor-Password'] || bearer;\n  return !!pass && timingSafeEqualHex(hash(pass), expected);\n}\n\nfunction store() {\n  const config = { name: STORE_NAME, consistency: 'strong' };\n  const siteID = process.env.NETLIFY_BLOBS_SITE_ID || process.env.NETLIFY_SITE_ID || process.env.SITE_ID;\n  const token = process.env.NETLIFY_BLOBS_TOKEN || process.env.NETLIFY_AUTH_TOKEN;\n  if (siteID) config.siteID = siteID;\n  if (token) config.token = token;\n  return getStore(config);\n}\n\nfunction deepClone(value) { return JSON.parse(JSON.stringify(value)); }\n\nfunction normalizeLive(live) {\n  const base = deepClone(defaults);\n  if (live && typeof live === 'object') {\n    if (Array.isArray(live.data)) base.data = live.data;\n    if (live.pages && typeof live.pages === 'object') base.pages = { ...(base.pages || {}), ...live.pages };\n    if (live.pages_en && typeof live.pages_en === 'object') base.pages_en = { ...(base.pages_en || {}), ...live.pages_en };\n    if (live.meta && typeof live.meta === 'object') base.meta = { ...(base.meta || {}), ...live.meta };\n    if (live.updatedAt) base.updatedAt = live.updatedAt;\n    if (live._writeId) base._writeId = live._writeId;\n  }\n  if (!base.updatedAt) base.updatedAt = (base.meta && base.meta.generated_at) || new Date().toISOString();\n  if (!base.meta || typeof base.meta !== 'object') base.meta = {};\n  return base;\n}\n\nasync function readContent() {\n  try {\n    const live = await store().get(STORE_KEY, { type: 'json', consistency: 'strong' });\n    const normalized = normalizeLive(live);\n    normalized.meta = { ...(normalized.meta || {}), live_source: live ? 'blob' : 'defaults' };\n    return normalized;\n  } catch (err) {\n    const fallback = normalizeLive(null);\n    fallback.meta = {\n      ...(fallback.meta || {}),\n      live_source: 'defaults',\n      live_read_error: err && err.message ? err.message : String(err)\n    };\n    return fallback;\n  }\n}\n\nasync function writeContent(next) {\n  const normalized = normalizeLive(next);\n  normalized.updatedAt = new Date().toISOString();\n  normalized.meta = {\n    ...(normalized.meta || {}),\n    live_updated_at: normalized.updatedAt,\n    live_source: 'blob'\n  };\n  normalized._writeId = crypto.randomUUID ? crypto.randomUUID() : crypto.randomBytes(16).toString('hex');\n\n  const blobStore = store();\n  const result = await blobStore.setJSON(STORE_KEY, normalized, {\n    metadata: { updatedAt: normalized.updatedAt, writeId: normalized._writeId }\n  });\n  // Netlify Blobs setJSON tamamlandığında yazma işlemi onaylanmıştır. İkinci bir GET\n  // kaydı gereksiz yere yavaşlattığı için istemciye yazma kimliği doğrudan döndürülür.\n  normalized._blobResult = result || {};\n  return normalized;\n}\n\nfunction escapeHtml(value){ return String(value==null?'':value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#39;'); }\nfunction escapeAttr(value){ return escapeHtml(value); }\nfunction stripHtml(value){ return String(value==null?'':value).replace(/<[^>]*>/g,' ').replace(/\\s+/g,' ').trim(); }\nfunction slugify(value){ return String(value==null?'':value).toLocaleLowerCase('tr').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/ı/g,'i').replace(/ğ/g,'g').replace(/ü/g,'u').replace(/ş/g,'s').replace(/ö/g,'o').replace(/ç/g,'c').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,90)||'terim'; }\nfunction headerIndex(sheet,wanted){ const n=String(wanted||'').toLocaleLowerCase('tr').trim(); return (sheet.headers||[]).findIndex(h=>String(h||'').toLocaleLowerCase('tr').trim()===n); }\nfunction field(rec,names){ for(const name of names){ const idx=headerIndex(rec.sheet,name); if(idx>=0) return rec.row[idx]==null?'':String(rec.row[idx]); } return ''; }\nfunction allRecords(content){ const out=[]; (content.data||[]).forEach((sheet,sheetIndex)=>(sheet.rows||[]).forEach((row,rowIndex)=>out.push({sheet,sheetIndex,row,rowIndex}))); return out; }\nfunction termTitle(rec){ return field(rec,['Madde Başı','İngilizce Terim','Terim','Madde','Açılım','İngilizce / Kurum','Birim','Başlık'])||'Terim'; }\nfunction termSlug(rec){ return slugify(termTitle(rec)); }\nfunction canonicalBase(event){ const proto=(event.headers&&(event.headers['x-forwarded-proto']||event.headers['X-Forwarded-Proto']))||'https'; const host=(event.headers&&(event.headers.host||event.headers.Host))||'localhost'; return `${proto}://${host}`; }\nfunction langFromEvent(event){ const q=(event.queryStringParameters&&event.queryStringParameters.lang)||''; return q.toLowerCase()==='en'?'en':'tr'; }\nfunction siteName(lang){ return lang==='en'?'Military Terms Dictionary':'Askerî Terimler Sözlüğü'; }\nfunction langSwitch(lang){ return lang==='en'?'<nav class=\"lang-switch\" aria-label=\"Language\"><a href=\"/\" lang=\"tr\">TR</a><a href=\"/en/\" class=\"active\" lang=\"en\">ENG</a></nav>':'<nav class=\"lang-switch\" aria-label=\"Dil seçimi\"><a href=\"/\" class=\"active\" lang=\"tr\">TR</a><a href=\"/en/\" lang=\"en\">ENG</a></nav>'; }\nfunction navHtml(lang='tr'){ const items=lang==='en' ? [['Dictionary','/en/'],['Terms Index','/en/terms/'],['Publication Note','/en/publication-note/'],['Bibliography','/en/bibliography/'],['Privacy','/en/privacy-policy/'],['Cookies','/en/cookie-policy/'],['Terms of Use','/en/terms-of-use/'],['Contact','/en/contact/']] : [['Sözlük','/'],['Terimler Dizini','/terimler/'],['Yayın Notu','/yayin-notu/'],['Kaynakça','/kaynakca/'],['Gizlilik','/gizlilik-politikasi/'],['Çerezler','/cerez-politikasi/'],['Kullanım Şartları','/kullanim-sartlari/'],['İletişim','/iletisim/']]; return `<nav class=\"site-nav\" aria-label=\"${lang==='en'?'Site links':'Site bağlantıları'}\">`+items.map(i=>`<a href=\"${i[1]}\">${escapeHtml(i[0])}</a>`).join('')+'</nav>'; }\nfunction css(){ return `:root{--bg:#f8f7f4;--paper:#ffffff;--ink:#232d37;--ink-soft:#5b6570;--line:#e4e2da;--accent:#3d5a78;--olive:#3d5a78;--olive-deep:#2b4460;--brass:#3d5a78;--brass-deep:#2b4460}*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#f8f7f4 0%,#eeede8 100%);background-attachment:fixed;color:var(--ink);font-family:Cambria,Georgia,serif;font-size:17px;line-height:1.62}.site{width:min(1080px,calc(100% - 32px));margin:0 auto;padding:22px 0 36px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:8px 0 18px}.brand{display:flex;align-items:center;gap:14px;color:var(--ink);text-decoration:none}.brand__logo{width:64px;height:64px;display:block;object-fit:contain;border-radius:50%;filter:drop-shadow(0 4px 10px rgba(32,57,90,.14))}.brand__mark{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border:1px solid var(--olive);border-radius:50%;font-weight:700;background:var(--olive);color:#f8f7f4;letter-spacing:.08em}.brand__name{font-size:19px;font-weight:700}.brand__flag{width:22px;height:auto;display:block;flex:0 0 auto;border-radius:2px;box-shadow:0 1px 4px rgba(0,0,0,.14)}.lang-switch{display:inline-flex;gap:4px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.72);padding:3px}.lang-switch a{padding:5px 9px;border-radius:999px;text-decoration:none;color:var(--ink-soft);font-size:12px;font-weight:700;letter-spacing:.04em}.lang-switch a.active{background:var(--olive);color:#f8f7f4}.site-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin:0 0 24px}.site-nav a{padding:8px 12px;border:1px solid var(--line);border-radius:999px;text-decoration:none;color:var(--accent);background:rgba(255,255,255,.70)}main{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:30px 36px;box-shadow:0 18px 50px rgba(20,37,54,.06)}h1{font-family:\"Palatino Linotype\", \"Book Antiqua\", Palatino, Georgia, serif;font-size:34px;line-height:1.15;margin:0 0 16px;text-align:center}h2{font-family:\"Palatino Linotype\", \"Book Antiqua\", Palatino, Georgia, serif;font-size:24px;margin:28px 0 10px}p{text-align:justify;font-family:Cambria,Georgia,serif}.editorial-content{font-family:Cambria,Georgia,serif;text-align:justify}.editorial-content p{margin:0 0 1em;text-align:justify;text-indent:1.25cm}.editorial-content p:first-child{margin-top:0}.editorial-content h2,.editorial-content h3,.editorial-content h4{text-align:left;text-indent:0}.editorial-content li{text-align:justify}.lead{text-align:center;color:var(--ink-soft);font-size:18px;text-indent:0!important}.meta{margin-top:30px;padding-top:16px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:13px}.source-list{padding-left:22px}.source-list li{margin:7px 0}.term-list{columns:3 220px;column-gap:34px;line-height:1.6}.term-list li{break-inside:avoid;margin:0 0 6px}.term-list a{color:var(--brass);text-decoration:none}.term-list a:hover{text-decoration:underline}.detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:20px}.detail-row{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}.detail-row small{display:block;color:var(--ink-soft);font-size:12px;margin-bottom:4px}.site-footer{margin:26px 0 0;text-align:center;color:var(--ink-soft);font-size:13px}.site-footer p{text-align:center}a{color:var(--accent)}`; }\nfunction pageTitleFor(key,lang='tr'){ const tr={'terimler':'Terimler Dizini','yayin-notu':'Yayın Notu','kaynakca':'Kaynakça','gizlilik-politikasi':'Gizlilik Politikası','cerez-politikasi':'Çerez Politikası','kullanim-sartlari':'Kullanım Şartları','iletisim':'İletişim'}; const en={'terimler':'Terms Index','yayin-notu':'Publication Note','kaynakca':'Bibliography','gizlilik-politikasi':'Privacy Policy','cerez-politikasi':'Cookie Policy','kullanim-sartlari':'Terms of Use','iletisim':'Contact'}; return (lang==='en'?en:tr)[key]||siteName(lang); }\nfunction descriptionFor(key,content,lang='tr'){ const pages=lang==='en'?(content.pages_en||{}):(content.pages||{}); const body=pages&&pages[key]?stripHtml(pages[key]).slice(0,155):''; const f=lang==='en'?{'terimler':'Live terms index of the Military Terms Dictionary.','yayin-notu':'Publication principles, scope and beta notes for the Military Terms Dictionary.','kaynakca':'Archival sources and bibliographical foundations of the Military Terms Dictionary.','gizlilik-politikasi':'Privacy principles and data processing statement for the Military Terms Dictionary.','cerez-politikasi':'Cookie and local storage statement for the Military Terms Dictionary.','kullanim-sartlari':'Terms of use and academic use principles for the Military Terms Dictionary.','iletisim':'Contact page for corrections, additions and source suggestions.'}:{'terimler':'Askerî Terimler Sözlüğü canlı terimler dizini.','yayin-notu':'Askerî Terimler Sözlüğü’nün yayın ilkeleri, kapsamı ve beta sürüm notu.','kaynakca':'Askerî Terimler Sözlüğü’nün arşiv kaynakları ve bibliyografik dayanakları.','gizlilik-politikasi':'Askerî Terimler Sözlüğü gizlilik ilkeleri ve veri işleme açıklaması.','cerez-politikasi':'Askerî Terimler Sözlüğü çerez ve yerel depolama açıklaması.','kullanim-sartlari':'Askerî Terimler Sözlüğü kullanım şartları ve akademik kullanım ilkeleri.','iletisim':'Askerî Terimler Sözlüğü için düzeltme, ekleme ve kaynak önerisi iletişim sayfası.'}; return body||f[key]||siteName(lang); }\nfunction altForPath(canonical,lang){ try{ const u=new URL(canonical); let p=u.pathname; const pairs=[['/','/en/'],['/terimler/','/en/terms/'],['/yayin-notu/','/en/publication-note/'],['/kaynakca/','/en/bibliography/'],['/gizlilik-politikasi/','/en/privacy-policy/'],['/cerez-politikasi/','/en/cookie-policy/'],['/kullanim-sartlari/','/en/terms-of-use/'],['/iletisim/','/en/contact/']]; for(const [tr,en] of pairs){ if(p===tr) return {tr:u.origin+tr,en:u.origin+en}; if(p===en) return {tr:u.origin+tr,en:u.origin+en}; } return {tr:u.origin+'/',en:u.origin+'/en/'}; }catch(e){ return {tr:'/',en:'/en/'}; } }\nfunction pageShell({ title, description, canonical, body, lang='tr' }){ const s=siteName(lang); const home=lang==='en'?'/en/':'/'; const alt=altForPath(canonical,lang); return `<!doctype html><html lang=\"${lang}\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>${escapeHtml(title)} · ${escapeHtml(s)}</title><meta name=\"description\" content=\"${escapeAttr(description)}\"><meta name=\"robots\" content=\"index, follow\"><link rel=\"canonical\" href=\"${escapeAttr(canonical)}\"><link rel=\"alternate\" hreflang=\"tr\" href=\"${escapeAttr(alt.tr)}\"><link rel=\"alternate\" hreflang=\"en\" href=\"${escapeAttr(alt.en)}\"><link rel=\"alternate\" hreflang=\"x-default\" href=\"${escapeAttr(alt.tr)}\"><link rel=\"icon\" href=\"/favicon.ico\" sizes=\"any\"><link rel=\"icon\" type=\"image/png\" href=\"/favicon-96.png\" sizes=\"96x96\"><link rel=\"apple-touch-icon\" href=\"/apple-touch-icon.png\"><style>${css()}</style></head><body><div class=\"site\"><header class=\"topbar\"><a class=\"brand\" href=\"${home}\" aria-label=\"${escapeAttr(s)}\"><img class=\"brand__logo\" src=\"/ats-logo.png\" alt=\"ATS\"><span class=\"brand__name\">${escapeHtml(s)}</span><img class=\"brand__flag\" src=\"/turk-bayragi.svg\" alt=\"${lang==='en'?'Turkish flag':'Türk bayrağı'}\"></a>${langSwitch(lang)}</header>${navHtml(lang)}<main><h1>${escapeHtml(title)}</h1>${body}</main><footer class=\"site-footer\"><p>© 2026 Ferdi Ertekin · ${escapeHtml(s)}</p></footer></div></body></html>`; }\nfunction xmlEscape(value){ return String(value==null?'':value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&apos;'); }\nmodule.exports={ defaults,jsonHeaders,htmlHeaders,textHeaders,xmlHeaders,isAuthorized,readContent,writeContent,escapeHtml,escapeAttr,stripHtml,slugify,allRecords,field,termTitle,termSlug,canonicalBase,langFromEvent,siteName,pageTitleFor,descriptionFor,pageShell,xmlEscape };\n";
   const NETLIFY_PAGE_FUNCTION = "const { renderPage } = require('./page-render');\nexports.handler = async function(event) { return renderPage(event); };\n";
-  const NETLIFY_PAGE_RENDER_FUNCTION = "const { htmlHeaders, readContent, escapeHtml, pageTitleFor, descriptionFor, canonicalBase, pageShell } = require('./_shared');\n\nconst ALLOWED = new Set(['yayin-notu','kaynakca','gizlilik-politikasi','cerez-politikasi','kullanim-sartlari','iletisim']);\nconst ROUTE_TR = {\n  'yayin-notu':'/yayin-notu/',\n  'kaynakca':'/kaynakca/',\n  'gizlilik-politikasi':'/gizlilik-politikasi/',\n  'cerez-politikasi':'/cerez-politikasi/',\n  'kullanim-sartlari':'/kullanim-sartlari/',\n  'iletisim':'/iletisim/'\n};\nconst ROUTE_EN = {\n  'yayin-notu':'/en/publication-note/',\n  'kaynakca':'/en/bibliography/',\n  'gizlilik-politikasi':'/en/privacy-policy/',\n  'cerez-politikasi':'/en/cookie-policy/',\n  'kullanim-sartlari':'/en/terms-of-use/',\n  'iletisim':'/en/contact/'\n};\n\nfunction keyFromPath(value) {\n  const raw = decodeURIComponent(String(value || '')).toLowerCase();\n  if (raw.includes('/kaynakca') || raw.includes('/bibliography') || raw.includes('/atif-bilgisi')) return 'kaynakca';\n  if (raw.includes('/yayin-notu') || raw.includes('/publication-note')) return 'yayin-notu';\n  if (raw.includes('/gizlilik-politikasi') || raw.includes('/privacy-policy')) return 'gizlilik-politikasi';\n  if (raw.includes('/cerez-politikasi') || raw.includes('/cookie-policy')) return 'cerez-politikasi';\n  if (raw.includes('/kullanim-sartlari') || raw.includes('/terms-of-use')) return 'kullanim-sartlari';\n  if (raw.includes('/iletisim') || raw.includes('/contact')) return 'iletisim';\n  return '';\n}\n\nfunction langFromRoute(event, explicitLang) {\n  if (explicitLang) return explicitLang;\n  const q = event.queryStringParameters || {};\n  if (String(q.lang || '').toLowerCase() === 'en') return 'en';\n  const raw = [event.rawUrl, event.path, event.headers && event.headers.referer].filter(Boolean).join(' ');\n  return /\\/en\\//i.test(raw) ? 'en' : 'tr';\n}\n\nfunction resolvePageKey(event, fixedKey) {\n  if (fixedKey) return fixedKey;\n  const q = event.queryStringParameters || {};\n  const qKey = String(q.key || '').trim();\n  if (ALLOWED.has(qKey)) return qKey;\n  const candidates = [event.rawUrl, event.path, event.headers && event.headers['x-nf-original-url'], event.headers && event.headers['x-original-uri'], event.headers && event.headers.referer];\n  for (const candidate of candidates) {\n    const key = keyFromPath(candidate);\n    if (key) return key;\n  }\n  return '';\n}\n\nasync function renderPage(event, fixedKey, explicitLang) {\n  const lang = langFromRoute(event, explicitLang);\n  const key = resolvePageKey(event, fixedKey);\n  const content = await readContent();\n  if (!ALLOWED.has(key)) {\n    const title = lang === 'en' ? 'Page not found' : 'Sayfa bulunamadı';\n    const body = `\u003cp class=\"lead\">${lang === 'en' ? 'The requested page was not found.' : 'Aradığınız sayfa bulunamadı.'}\u003c/p>`;\n    return { statusCode:404, headers:htmlHeaders(), body:pageShell({ title, description:title, canonical:canonicalBase(event)+(lang==='en'?'/en/':'/'), body, lang }) };\n  }\n  const title = pageTitleFor(key, lang);\n  const description = descriptionFor(key, content, lang);\n  const pages = lang === 'en' ? (content.pages_en || {}) : (content.pages || {});\n  const rawBody = pages[key] ? String(pages[key]) : `\u003cp class=\"lead\">${escapeHtml(title)} ${lang==='en'?'has not yet been published.':'metni henüz yayımlanmamıştır.'}\u003c/p>`;\n  const routeMap = lang === 'en' ? ROUTE_EN : ROUTE_TR;\n  const canonical = canonicalBase(event) + routeMap[key];\n  const meta = `\u003cp class=\"meta\">${lang==='en'?'Live content last updated':'Canlı içerik son güncelleme'}: ${escapeHtml(content.updatedAt || '')}.\u003c/p>`;\n  return { statusCode:200, headers:htmlHeaders(), body:pageShell({ title, description, canonical, body: rawBody + meta, lang }) };\n}\n\nmodule.exports = { renderPage };\n";
+  const NETLIFY_PAGE_RENDER_FUNCTION = "const { htmlHeaders, readContent, escapeHtml, pageTitleFor, descriptionFor, canonicalBase, pageShell } = require('./_shared');\n\nconst ALLOWED = new Set(['yayin-notu','kaynakca','gizlilik-politikasi','cerez-politikasi','kullanim-sartlari','iletisim']);\nconst ROUTE_TR = {\n  'yayin-notu':'/yayin-notu/',\n  'kaynakca':'/kaynakca/',\n  'gizlilik-politikasi':'/gizlilik-politikasi/',\n  'cerez-politikasi':'/cerez-politikasi/',\n  'kullanim-sartlari':'/kullanim-sartlari/',\n  'iletisim':'/iletisim/'\n};\nconst ROUTE_EN = {\n  'yayin-notu':'/en/publication-note/',\n  'kaynakca':'/en/bibliography/',\n  'gizlilik-politikasi':'/en/privacy-policy/',\n  'cerez-politikasi':'/en/cookie-policy/',\n  'kullanim-sartlari':'/en/terms-of-use/',\n  'iletisim':'/en/contact/'\n};\n\n\nfunction formatEditorialBody(value) {\n  const raw = String(value == null ? '' : value).replace(/\\r\\n?/g, '\\n').trim();\n  if (!raw) return '';\n  if (/<[a-z][\\s\\S]*>/i.test(raw)) return `<div class=\"editorial-content\">${raw}</div>`;\n  const paragraphs = raw.split(/\\n{2,}/).map(block => block.trim()).filter(Boolean);\n  const html = paragraphs.map(block => `<p>${escapeHtml(block).replace(/\\n/g, '<br>')}</p>`).join('\\n');\n  return `<div class=\"editorial-content\">${html}</div>`;\n}\n\nfunction keyFromPath(value) {\n  const raw = decodeURIComponent(String(value || '')).toLowerCase();\n  if (raw.includes('/kaynakca') || raw.includes('/bibliography') || raw.includes('/atif-bilgisi')) return 'kaynakca';\n  if (raw.includes('/yayin-notu') || raw.includes('/publication-note')) return 'yayin-notu';\n  if (raw.includes('/gizlilik-politikasi') || raw.includes('/privacy-policy')) return 'gizlilik-politikasi';\n  if (raw.includes('/cerez-politikasi') || raw.includes('/cookie-policy')) return 'cerez-politikasi';\n  if (raw.includes('/kullanim-sartlari') || raw.includes('/terms-of-use')) return 'kullanim-sartlari';\n  if (raw.includes('/iletisim') || raw.includes('/contact')) return 'iletisim';\n  return '';\n}\n\nfunction langFromRoute(event, explicitLang) {\n  if (explicitLang) return explicitLang;\n  const q = event.queryStringParameters || {};\n  if (String(q.lang || '').toLowerCase() === 'en') return 'en';\n  const raw = [event.rawUrl, event.path, event.headers && event.headers.referer].filter(Boolean).join(' ');\n  return /\\/en\\//i.test(raw) ? 'en' : 'tr';\n}\n\nfunction resolvePageKey(event, fixedKey) {\n  if (fixedKey) return fixedKey;\n  const q = event.queryStringParameters || {};\n  const qKey = String(q.key || '').trim();\n  if (ALLOWED.has(qKey)) return qKey;\n  const candidates = [event.rawUrl, event.path, event.headers && event.headers['x-nf-original-url'], event.headers && event.headers['x-original-uri'], event.headers && event.headers.referer];\n  for (const candidate of candidates) {\n    const key = keyFromPath(candidate);\n    if (key) return key;\n  }\n  return '';\n}\n\nasync function renderPage(event, fixedKey, explicitLang) {\n  const lang = langFromRoute(event, explicitLang);\n  const key = resolvePageKey(event, fixedKey);\n  const content = await readContent();\n  if (!ALLOWED.has(key)) {\n    const title = lang === 'en' ? 'Page not found' : 'Sayfa bulunamadı';\n    const body = `<p class=\"lead\">${lang === 'en' ? 'The requested page was not found.' : 'Aradığınız sayfa bulunamadı.'}</p>`;\n    return { statusCode:404, headers:htmlHeaders({ 'CDN-Cache-Control':'no-store', 'Netlify-CDN-Cache-Control':'no-store' }), body:pageShell({ title, description:title, canonical:canonicalBase(event)+(lang==='en'?'/en/':'/'), body, lang }) };\n  }\n  const title = pageTitleFor(key, lang);\n  const description = descriptionFor(key, content, lang);\n  const pages = lang === 'en' ? (content.pages_en || {}) : (content.pages || {});\n  const rawBody = pages[key] ? formatEditorialBody(pages[key]) : `<p class=\"lead\">${escapeHtml(title)} ${lang==='en'?'has not yet been published.':'metni henüz yayımlanmamıştır.'}</p>`;\n  const routeMap = lang === 'en' ? ROUTE_EN : ROUTE_TR;\n  const canonical = canonicalBase(event) + routeMap[key];\n  const meta = `<p class=\"meta\">${lang==='en'?'Live content last updated':'Canlı içerik son güncelleme'}: ${escapeHtml(content.updatedAt || '')}.</p>`;\n  return { statusCode:200, headers:htmlHeaders({ 'CDN-Cache-Control':'no-store', 'Netlify-CDN-Cache-Control':'no-store' }), body:pageShell({ title, description, canonical, body: rawBody + meta, lang }) };\n}\n\nmodule.exports = { renderPage };\n";
   const NETLIFY_PAGE_YAYIN_NOTU_FUNCTION = "const { renderPage } = require('./page-render');\nexports.handler = async function(event) { return renderPage(event, 'yayin-notu', 'tr'); };\n";
   const NETLIFY_PAGE_KAYNAKCA_FUNCTION = "const { renderPage } = require('./page-render');\nexports.handler = async function(event) { return renderPage(event, 'kaynakca', 'tr'); };\n";
   const NETLIFY_PAGE_GIZLILIK_POLITIKASI_FUNCTION = "const { renderPage } = require('./page-render');\nexports.handler = async function(event) { return renderPage(event, 'gizlilik-politikasi', 'tr'); };\n";
@@ -14353,7 +14079,7 @@ window.DICTIONARY_DATA = [
   const NETLIFY_PAGE_CEREZ_POLITIKASI_EN_FUNCTION = "const { renderPage } = require('./page-render');\nexports.handler = async function(event) { return renderPage(event, 'cerez-politikasi', 'en'); };\n";
   const NETLIFY_PAGE_KULLANIM_SARTLARI_EN_FUNCTION = "const { renderPage } = require('./page-render');\nexports.handler = async function(event) { return renderPage(event, 'kullanim-sartlari', 'en'); };\n";
   const NETLIFY_PAGE_ILETISIM_EN_FUNCTION = "const { renderPage } = require('./page-render');\nexports.handler = async function(event) { return renderPage(event, 'iletisim', 'en'); };\n";
-  const NETLIFY_TERMS_FUNCTION = "const { htmlHeaders, readContent, allRecords, termTitle, termSlug, escapeHtml, canonicalBase, pageShell, langFromEvent } = require('./_shared');\nexports.handler = async function(event) {\n  const lang = langFromEvent(event);\n  const content = await readContent();\n  const seen = new Set(); const items=[];\n  for (const rec of allRecords(content)) { const title=termTitle(rec).trim(); if(!title) continue; const slug=termSlug(rec); const key=slug+'|'+title.toLocaleLowerCase('tr'); if(seen.has(key)) continue; seen.add(key); items.push({title,slug}); }\n  items.sort((a,b)=>a.title.localeCompare(b.title,'tr'));\n  const pages = lang === 'en' ? (content.pages_en || {}) : (content.pages || {});\n  const lead = pages.terimler || (lang === 'en' ? '\u003cp class=\"lead\">This index is generated from live data so that dictionary entries can be read directly by search engines.\u003c/p>' : '\u003cp class=\"lead\">Bu dizin, sözlük maddelerinin arama motorları tarafından doğrudan okunabilmesi için canlı veriden üretilir.\u003c/p>');\n  const base = lang === 'en' ? '/en/term/' : '/terim/';\n  const title = lang === 'en' ? 'Terms Index' : 'Terimler Dizini';\n  const desc = lang === 'en' ? 'Live terms index of the Military Terms Dictionary.' : 'Askerî Terimler Sözlüğü canlı terimler dizini.';\n  const canonical = canonicalBase(event) + (lang === 'en' ? '/en/terms/' : '/terimler/');\n  const meta = lang === 'en' ? `Live content last updated: ${escapeHtml(content.updatedAt || '')}. Total entries: ${items.length}.` : `Canlı içerik son güncelleme: ${escapeHtml(content.updatedAt || '')}. Toplam madde: ${items.length}.`;\n  const list = `${lead}\u003cul class=\"term-list\">${items.map(t=>`\u003cli>\u003ca href=\"${base}${encodeURIComponent(t.slug)}/\">${escapeHtml(t.title)}\u003c/a>\u003c/li>`).join('')}\u003c/ul>\u003cp class=\"meta\">${meta}\u003c/p>`;\n  return { statusCode:200, headers:htmlHeaders(), body:pageShell({ title, description:desc, canonical, body:list, lang }) };\n};\n";
+  const NETLIFY_TERMS_FUNCTION = "const { htmlHeaders, readContent, allRecords, termTitle, termSlug, escapeHtml, canonicalBase, pageShell, langFromEvent } = require('./_shared');\n\nfunction formatEditorialBody(value) {\n  const raw = String(value == null ? '' : value).replace(/\\r\\n?/g, '\\n').trim();\n  if (!raw) return '';\n  if (/<[a-z][\\s\\S]*>/i.test(raw)) return `<div class=\"editorial-content\">${raw}</div>`;\n  const paragraphs = raw.split(/\\n{2,}/).map(block => block.trim()).filter(Boolean);\n  return `<div class=\"editorial-content\">${paragraphs.map(block => `<p>${escapeHtml(block).replace(/\\n/g, '<br>')}</p>`).join('\\n')}</div>`;\n}\n\nexports.handler = async function(event) {\n  const lang = langFromEvent(event);\n  const locale = lang === 'en' ? 'en' : 'tr';\n  const content = await readContent();\n  const seen = new Set();\n  const items = [];\n\n  for (const rec of allRecords(content)) {\n    const title = termTitle(rec).trim();\n    if (!title) continue;\n    const slug = termSlug(rec);\n    const key = title.toLocaleLowerCase(locale);\n    if (seen.has(key)) continue;\n    seen.add(key);\n    items.push({ title, slug });\n  }\n\n  items.sort((a, b) => a.title.localeCompare(b.title, locale, { sensitivity: 'base', numeric: true }));\n\n  const pages = lang === 'en' ? (content.pages_en || {}) : (content.pages || {});\n  const fallbackLead = lang === 'en'\n    ? '<p class=\"lead\">This index is generated from live data so that dictionary entries can be read directly by search engines.</p>'\n    : '<p class=\"lead\">Bu dizin, sözlük maddelerinin arama motorları tarafından doğrudan okunabilmesi için canlı veriden üretilir.</p>';\n  const lead = pages.terimler ? formatEditorialBody(pages.terimler) : fallbackLead;\n  const base = lang === 'en' ? '/en/term/' : '/terim/';\n  const title = lang === 'en' ? 'Terms Index' : 'Terimler Dizini';\n  const desc = lang === 'en' ? 'Live terms index of the Military Terms Dictionary.' : 'Askerî Terimler Sözlüğü canlı terimler dizini.';\n  const canonical = canonicalBase(event) + (lang === 'en' ? '/en/terms/' : '/terimler/');\n  const meta = lang === 'en'\n    ? `Live content last updated: ${escapeHtml(content.updatedAt || '')}. Total entries: ${items.length}.`\n    : `Canlı içerik son güncelleme: ${escapeHtml(content.updatedAt || '')}. Toplam madde: ${items.length}.`;\n  const list = `${lead}<ul class=\"term-list\">${items.map(t => `<li><a href=\"${base}${encodeURIComponent(t.slug)}/\">${escapeHtml(t.title)}</a></li>`).join('')}</ul><p class=\"meta\">${meta}</p>`;\n\n  return {\n    statusCode: 200,\n    headers: htmlHeaders({ 'CDN-Cache-Control': 'no-store', 'Netlify-CDN-Cache-Control': 'no-store' }),\n    body: pageShell({ title, description: desc, canonical, body: list, lang })\n  };\n};\n";
   const NETLIFY_TERM_FUNCTION = "const {\n  htmlHeaders, readContent, allRecords, termTitle, termSlug, slugify, field,\n  escapeHtml, canonicalBase, pageShell, langFromEvent\n} = require('./_shared');\n\nconst CARD_FIELDS = [\n  { key: 'Harf', tr: 'Harf', en: 'Letter', names: ['Harf'] },\n  { key: 'Madde Başı', tr: 'Madde Başı', en: 'Headword', names: ['Madde Başı', 'İngilizce Terim', 'Terim', 'Madde', 'Başlık'] },\n  { key: 'Varyant/Kısaltma', tr: 'Varyant/Kısaltma', en: 'Variant / abbreviation', names: ['Varyant/Kısaltma', 'Varyant', 'Kısaltma'] },\n  { key: 'Osmanlıca / Dönem Karşılığı', tr: 'Osmanlıca / Dönem Karşılığı', en: 'Ottoman / period equivalent', names: ['Osmanlıca / Dönem Karşılığı', 'Osmanlıca', 'Dönem Karşılığı', 'Nihai Türkçe Karşılık', 'Karşılık'] },\n  { key: 'Günümüz Türkçesi', tr: 'Günümüz Türkçesi', en: 'Modern Turkish', names: ['Günümüz Türkçesi', 'Modern Türkçe', 'Türkçe Karşılık', 'Standart Türkçe Karşılık'] },\n  { key: 'Kategori', tr: 'Kategori', en: 'Category', names: ['Kategori', 'Tür'] },\n  { key: 'Açıklama', tr: 'Açıklama', en: 'Explanation', names: ['Açıklama', 'Bağlam / Editör Notu', 'Editör Notu', 'Not', 'Kritik Not', 'Kullanım Notu', 'Açıklamalar'], wide: true },\n  { key: 'Künye/Kaynak', tr: 'Künye/Kaynak', en: 'Bibliographic citation / source', names: ['Künye/Kaynak', 'Künye', 'Kaynak', 'Bibliyografik Künye', 'Atıf', 'Kaynakça', 'Arşiv Kodu', 'Belge Kodu', 'Belge', 'Dosya', 'Kaynak Dosyadaki Karşılık'], wide: true }\n];\n\nfunction cleanSlug(value) {\n  return decodeURIComponent(String(value || ''))\n    .split('?')[0]\n    .replace(/^\\/+|\\/+$/g, '')\n    .trim();\n}\n\nfunction slugCandidatesFromEvent(event) {\n  const out = [];\n  const q = event.queryStringParameters || {};\n  if (q.slug) out.push(q.slug);\n  if (event.path) out.push(String(event.path).replace(/^.*\\/(?:terim|term)\\//, ''));\n  if (event.rawUrl) {\n    try {\n      const u = new URL(event.rawUrl);\n      const parts = u.pathname.split('/').filter(Boolean);\n      const iTr = parts.indexOf('terim');\n      const iEn = parts.indexOf('term');\n      if (iTr >= 0 && parts[iTr + 1]) out.push(parts.slice(iTr + 1).join('/'));\n      if (iEn >= 0 && parts[iEn + 1]) out.push(parts.slice(iEn + 1).join('/'));\n    } catch (e) {}\n  }\n  return [...new Set(out.map(cleanSlug).filter(Boolean))];\n}\n\nfunction recordSlugCandidates(rec) {\n  const values = [termTitle(rec)];\n  const aliasFields = [\n    'Varyant/Kısaltma', 'Varyant', 'Kısaltma', 'İngilizce Terim', 'Terim', 'Madde Başı',\n    'Kaynak Dosyadaki Karşılık', 'Osmanlıca / Dönem Karşılığı', 'Günümüz Türkçesi'\n  ];\n  for (const name of aliasFields) {\n    const v = field(rec, [name]);\n    if (v) values.push(v);\n  }\n  const candidates = [];\n  for (const v of values) {\n    String(v || '').split(/[;,/|]+/).map(x => x.trim()).filter(Boolean).forEach(x => candidates.push(slugify(x)));\n  }\n  candidates.push(termSlug(rec));\n  return [...new Set(candidates.filter(Boolean))];\n}\n\nfunction findRecord(content, requestedSlugs) {\n  const normalized = requestedSlugs.flatMap(s => [s, slugify(s)]).map(cleanSlug).filter(Boolean);\n  const wanted = new Set(normalized);\n  const records = allRecords(content);\n  for (const rec of records) if (wanted.has(termSlug(rec))) return rec;\n  for (const rec of records) if (recordSlugCandidates(rec).some(s => wanted.has(s))) return rec;\n  return null;\n}\n\nfunction sheetLabel(name, lang) {\n  if (lang !== 'en') return name;\n  const labels = {\n    'Ana Sözlük': 'Main Dictionary',\n    'Kontrol ve Askıda': 'Review and Pending',\n    'Kurum Standardı': 'Institutional Standard',\n    'Kısaltmalar': 'Abbreviations',\n    'Ölçü ve Para': 'Measures and Currency',\n    'Editör Notları': 'Editorial Notes',\n    'Kullanım İlkeleri': 'Usage Principles'\n  };\n  return labels[name] || name;\n}\n\nfunction renderTermCard(rec, lang) {\n  const rows = CARD_FIELDS.map(def => {\n    const value = field(rec, def.names);\n    const label = lang === 'en' ? def.en : def.tr;\n    return `<div class=\"detail-row${def.wide ? ' wide' : ''}\"><small>${escapeHtml(label)}</small><div>${escapeHtml(value || '—')}</div></div>`;\n  }).join('');\n  return `<style>\n.term-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}\n.term-card-grid .wide{grid-column:1/-1}\n.term-card-grid .detail-row{position:relative;border:1px solid var(--line);border-radius:14px;padding:14px 15px;background:linear-gradient(180deg,#fff,#fbfaf7);min-width:0;box-shadow:0 10px 24px -23px rgba(30,39,50,.55)}\n.term-card-grid .detail-row::before{content:\"\";position:absolute;left:0;top:13px;bottom:13px;width:2px;background:var(--brass);opacity:.55}\n.term-card-grid .detail-row small{display:block;color:var(--ink-soft);font-size:11px;margin-bottom:6px;text-transform:uppercase;letter-spacing:.09em;font-weight:700}\n.term-card-grid .detail-row div{white-space:pre-wrap;overflow-wrap:anywhere;font-weight:600}\n@media(max-width:640px){.term-card-grid{grid-template-columns:1fr}.term-card-grid .wide{grid-column:1}}\n</style><div class=\"term-card-grid\">${rows}</div>`;\n}\n\nexports.handler = async function(event) {\n  const lang = langFromEvent(event);\n  const content = await readContent();\n  const requestedSlugs = slugCandidatesFromEvent(event);\n  const rec = findRecord(content, requestedSlugs);\n\n  if (!rec) {\n    const title = lang === 'en' ? 'Term not found' : 'Terim bulunamadı';\n    const back = lang === 'en'\n      ? '<p><a href=\"/en/terms/\">Return to the terms index</a></p>'\n      : '<p><a href=\"/terimler/\">Terimler dizinine dön</a></p>';\n    const body = `<p class=\"lead\">${lang === 'en' ? 'The requested term was not found in the dictionary.' : 'Aradığınız terim sözlükte bulunamadı.'}</p>${back}`;\n    return {\n      statusCode: 404,\n      headers: htmlHeaders(),\n      body: pageShell({\n        title,\n        description: title,\n        canonical: canonicalBase(event) + (lang === 'en' ? '/en/terms/' : '/terimler/'),\n        body,\n        lang\n      })\n    };\n  }\n\n  const title = termTitle(rec);\n  const ottoman = field(rec, ['Osmanlıca / Dönem Karşılığı', 'Osmanlıca', 'Dönem Karşılığı', 'Nihai Türkçe Karşılık', 'Karşılık']);\n  const modern = field(rec, ['Günümüz Türkçesi', 'Modern Türkçe', 'Türkçe Karşılık', 'Standart Türkçe Karşılık']);\n  const desc = `${title}${modern ? ' — ' + modern : ''}${ottoman ? ' — ' + ottoman : ''}`.slice(0, 155);\n  const meta = lang === 'en' ? 'Live content last updated' : 'Canlı içerik son güncelleme';\n  const card = renderTermCard(rec, lang);\n  const body = `<p class=\"lead\">${escapeHtml(sheetLabel(rec.sheet.name || '', lang))}</p>${card}<p class=\"meta\">${meta}: ${escapeHtml(content.updatedAt || '')}.</p>`;\n  const canonical = canonicalBase(event) + (lang === 'en' ? '/en/term/' : '/terim/') + encodeURIComponent(termSlug(rec)) + '/';\n\n  return {\n    statusCode: 200,\n    headers: htmlHeaders(),\n    body: pageShell({ title, description: desc, canonical, body, lang })\n  };\n};\n";
   const NETLIFY_ROBOTS_FUNCTION = "const { textHeaders } = require('./_shared');\nexports.handler = async function() {\n  return { statusCode: 200, headers: textHeaders(), body: `User-agent: *\\nAllow: /\\n\\nSitemap: https://askeriterimlersozlugu.com/sitemap.xml\\n` };\n};\n";
   const NETLIFY_SITEMAP_FUNCTION = "const { xmlHeaders, readContent, allRecords, termSlug, canonicalBase, xmlEscape } = require('./_shared');\n\nfunction altPair(path) {\n  const staticPairs = {\n    '/': '/en/',\n    '/terimler/': '/en/terms/',\n    '/yayin-notu/': '/en/publication-note/',\n    '/kaynakca/': '/en/bibliography/',\n    '/gizlilik-politikasi/': '/en/privacy-policy/',\n    '/cerez-politikasi/': '/en/cookie-policy/',\n    '/kullanim-sartlari/': '/en/terms-of-use/',\n    '/iletisim/': '/en/contact/'\n  };\n  for (const [tr, en] of Object.entries(staticPairs)) {\n    if (path === tr || path === en) return { tr, en };\n  }\n  if (path.startsWith('/terim/')) return { tr: path, en: path.replace('/terim/', '/en/term/') };\n  if (path.startsWith('/en/term/')) return { tr: path.replace('/en/term/', '/terim/'), en: path };\n  return { tr: '/', en: '/en/' };\n}\n\nfunction urlEntry(base, path, lastmod) {\n  const alt = altPair(path);\n  return `  \u003curl>\\n    \u003cloc>${xmlEscape(base + path)}\u003c/loc>\\n    \u003cxhtml:link rel=\"alternate\" hreflang=\"tr\" href=\"${xmlEscape(base + alt.tr)}\" />\\n    \u003cxhtml:link rel=\"alternate\" hreflang=\"en\" href=\"${xmlEscape(base + alt.en)}\" />\\n    \u003cxhtml:link rel=\"alternate\" hreflang=\"x-default\" href=\"${xmlEscape(base + alt.tr)}\" />\\n    \u003clastmod>${xmlEscape(lastmod)}\u003c/lastmod>\\n  \u003c/url>`;\n}\n\nexports.handler = async function(event) {\n  const content = await readContent();\n  const base = 'https://askeriterimlersozlugu.com';\n  const urls = ['/', '/en/', '/terimler/', '/en/terms/', '/yayin-notu/', '/en/publication-note/', '/kaynakca/', '/en/bibliography/', '/gizlilik-politikasi/', '/en/privacy-policy/', '/cerez-politikasi/', '/en/cookie-policy/', '/kullanim-sartlari/', '/en/terms-of-use/', '/iletisim/', '/en/contact/'];\n  const seen = new Set(urls);\n  for (const rec of allRecords(content)) {\n    const slug = encodeURIComponent(termSlug(rec));\n    for (const u of ['/terim/' + slug + '/', '/en/term/' + slug + '/']) {\n      if (!seen.has(u)) { urls.push(u); seen.add(u); }\n    }\n  }\n  const lastmod = new Date(content.updatedAt || Date.now()).toISOString();\n  const body = `\u003c?xml version=\"1.0\" encoding=\"UTF-8\"?>\\n\u003curlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">\\n${urls.map(u => urlEntry(base, u, lastmod)).join('\\n')}\\n\u003c/urlset>\\n`;\n  return { statusCode:200, headers:xmlHeaders(), body };\n};\n";
@@ -14696,10 +14422,15 @@ window.DICTIONARY_DATA = [
 
     // Ardından canlı/yerel kaydı yükleyip görünümü tek kez güncelle.
     try {
-      await fetchLiveContent();
+      const liveSnapshot = await fetchLiveContent();
       data = await loadData();
       ensureTermMetadataColumns(data);
       pageContent = await loadPageContent();
+      if (liveSnapshot && liveSnapshot.pages_en) pageContentEn = { ...clone(DEFAULT_PAGE_CONTENT_EN), ...clone(liveSnapshot.pages_en) };
+      else {
+        const savedEn = await storageGet(PAGE_STORAGE_KEY_EN);
+        if (savedEn) { try { pageContentEn = { ...clone(DEFAULT_PAGE_CONTENT_EN), ...JSON.parse(savedEn) }; } catch (_) {} }
+      }
       hydrateSelects();
       hydratePageEditor();
       applyPageContentToDom();
@@ -14764,6 +14495,15 @@ window.DICTIONARY_DATA = [
     if (els.resetDataBtn) els.resetDataBtn.addEventListener("click", resetData);
     if (els.pageEditorSelect) els.pageEditorSelect.addEventListener("change", renderPageEditorText);
     if (els.savePageContentBtn) els.savePageContentBtn.addEventListener("click", savePageContentFromEditor);
+    if (els.pageEditorTextarea) els.pageEditorTextarea.addEventListener("keydown", (event) => {
+      if (event.key !== "Tab") return;
+      event.preventDefault();
+      const start = els.pageEditorTextarea.selectionStart;
+      const end = els.pageEditorTextarea.selectionEnd;
+      const value = els.pageEditorTextarea.value;
+      els.pageEditorTextarea.value = value.slice(0, start) + "    " + value.slice(end);
+      els.pageEditorTextarea.selectionStart = els.pageEditorTextarea.selectionEnd = start + 4;
+    });
   }
 
   function render() {
@@ -14838,7 +14578,7 @@ window.DICTIONARY_DATA = [
       const confidence = field(rec, ["Güven Durumu", "Güven"]);
       return `<article class="result-card" data-ref="${rec.sheetIndex}:${rec.rowIndex}">
         <div class="result-term">
-          <span class="label">İngilizce / Madde</span>
+          <span class="label">${isEnglishMode && isEnglishMode() ? "Main Term" : "Ana Terim"}</span>
           <strong>${highlight(term || "—")}</strong>
           ${variant ? `<span class="variant">${highlight(variant)}</span>` : ""}
         </div>
@@ -14887,17 +14627,17 @@ window.DICTIONARY_DATA = [
     const example = field(rec, ["Açıklama"]);
     const associations = listAssociations(rec, term, variant);
     const labels = en ? {
-      main: "Main term / associations",
+      main: "Main Term",
       ottoman: "Ottoman / Period",
       modern: "Modern Turkish",
-      example: "Example / Context",
+      example: "Explanation",
       open: "Open entry",
       term: "Term"
     } : {
-      main: "Ana terim / çağrışımlar",
+      main: "Ana Terim",
       ottoman: "Osmanlıca / Dönem",
       modern: "Günümüz Türkçesi",
-      example: "Örnek / Bağlam",
+      example: "Açıklama",
       open: "Maddeyi aç",
       term: "Terim"
     };
@@ -15335,7 +15075,8 @@ window.DICTIONARY_DATA = [
   function renderPageEditorText() {
     if (!els.pageEditorSelect || !els.pageEditorTextarea) return;
     const key = els.pageEditorSelect.value || PAGE_DEFS[0].key;
-    els.pageEditorTextarea.value = pageContent[key] || "";
+    const source = isEnglishMode() ? pageContentEn : pageContent;
+    els.pageEditorTextarea.value = source[key] || "";
   }
 
   function editorTextToHtml(value) {
@@ -15343,6 +15084,15 @@ window.DICTIONARY_DATA = [
     if (!raw) return "";
     if (/<[a-z][\s\S]*>/i.test(raw)) return raw;
     return escapeHtml(raw).replace(/\r\n|\r|\n/g, "<br>");
+  }
+
+  function formatEditorialPageBody(value) {
+    const raw = String(value ?? "").replace(/\r\n?/g, "\n").trim();
+    if (!raw) return "";
+    if (/<[a-z][\s\S]*>/i.test(raw)) return `<div class="editorial-content">${raw}</div>`;
+    const paragraphs = raw.split(/\n{2,}/).map(block => block.trim()).filter(Boolean);
+    const html = paragraphs.map(block => `<p>${escapeHtml(block).replace(/\n/g, "<br>")}</p>`).join("\n");
+    return `<div class="editorial-content">${html}</div>`;
   }
 
   function normalizeHomeQuote(value) {
@@ -15354,7 +15104,7 @@ window.DICTIONARY_DATA = [
 
   function applyPageContentToDom() {
     if (els.editableHomeNotice && typeof pageContent.sozluk === "string") {
-      els.editableHomeNotice.textContent = stripHtml(pageContent.sozluk).trim() || DEFAULT_PAGE_CONTENT.sozluk || "";
+      els.editableHomeNotice.textContent = String(pageContent.sozluk ?? "").replace(/<br\s*\/?\s*>/gi, "\n").replace(/<[^>]*>/g, "").trim() || DEFAULT_PAGE_CONTENT.sozluk || "";
     }
     if (els.heroSubtitle) {
       const subtitle = pageContent["ana-aciklama"] || DEFAULT_PAGE_CONTENT["ana-aciklama"] || "";
@@ -15371,7 +15121,8 @@ window.DICTIONARY_DATA = [
     if (!isEditor()) { toast("Sayfa metni kaydı için editör girişi gerekir."); return; }
     const key = els.pageEditorSelect ? els.pageEditorSelect.value : "";
     if (!key) return;
-    pageContent[key] = els.pageEditorTextarea.value.trim();
+    const targetPages = isEnglishMode() ? pageContentEn : pageContent;
+    targetPages[key] = els.pageEditorTextarea.value.trim();
     const btn = els.savePageContentBtn;
     const oldLabel = btn.textContent;
     btn.disabled = true;
@@ -15382,6 +15133,11 @@ window.DICTIONARY_DATA = [
     btn.disabled = false;
     btn.classList.remove("is-busy");
     btn.textContent = oldLabel;
+    if (ok) {
+      // Dinamik sayfalar ve terimler dizini Netlify Blobs'taki aynı anlık görüntüyü okur.
+      // Bir sonraki açılışta tarayıcı önbelleğine takılmaması için canlı önbelleği de yenile.
+      try { await fetchLiveContent(true); } catch (_) {}
+    }
     toast(ok
       ? "Sayfa metni canlı yayına kaydedildi."
       : "Sayfa metni canlı yayına yazılamadı; bu tarayıcıda bekleyen yedek olarak saklandı.");
@@ -15389,16 +15145,19 @@ window.DICTIONARY_DATA = [
 
   async function savePageContent(silent = false) {
     try {
-      const localWrite = storageSet(PAGE_STORAGE_KEY, JSON.stringify(pageContent)).catch(err => console.warn("page local save:", err));
+      const localWrites = Promise.all([
+        storageSet(PAGE_STORAGE_KEY, JSON.stringify(pageContent)).catch(err => console.warn("page local save:", err)),
+        storageSet(PAGE_STORAGE_KEY_EN, JSON.stringify(pageContentEn)).catch(err => console.warn("page local save en:", err))
+      ]);
       const remoteOk = await publishLiveContent("pages");
-      await localWrite;
+      await localWrites;
 
       if (remoteOk) {
         if (!silent) toast("Sayfa metinleri canlı yayına kaydedildi.");
         return true;
       }
 
-      await storageSet(PENDING_PAGE_KEY, JSON.stringify({ savedAt: new Date().toISOString(), pages: pageContent }));
+      await storageSet(PENDING_PAGE_KEY, JSON.stringify({ savedAt: new Date().toISOString(), pages: pageContent, pages_en: pageContentEn }));
       if (!silent) toast("Sayfa metinleri canlı yayına yazılamadı; bu tarayıcıda bekleyen yedek olarak saklandı.");
       return false;
     } catch (err) {
@@ -15451,8 +15210,13 @@ window.DICTIONARY_DATA = [
       const liveTime = isoTime(live && live.updatedAt);
       if (pendingData && Array.isArray(pendingData.data) && isoTime(pendingData.savedAt) > liveTime) data = clone(pendingData.data);
       else if (live && Array.isArray(live.data)) data = clone(live.data);
-      if (pendingPages && pendingPages.pages && isoTime(pendingPages.savedAt) > liveTime) pageContent = { ...clone(DEFAULT_PAGE_CONTENT), ...clone(pendingPages.pages) };
-      else if (live && live.pages) pageContent = { ...clone(DEFAULT_PAGE_CONTENT), ...clone(live.pages) };
+      if (pendingPages && pendingPages.pages && isoTime(pendingPages.savedAt) > liveTime) {
+        pageContent = { ...clone(DEFAULT_PAGE_CONTENT), ...clone(pendingPages.pages) };
+        if (pendingPages.pages_en) pageContentEn = { ...clone(DEFAULT_PAGE_CONTENT_EN), ...clone(pendingPages.pages_en) };
+      } else if (live) {
+        if (live.pages) pageContent = { ...clone(DEFAULT_PAGE_CONTENT), ...clone(live.pages) };
+        if (live.pages_en) pageContentEn = { ...clone(DEFAULT_PAGE_CONTENT_EN), ...clone(live.pages_en) };
+      }
       ensureTermMetadataColumns(data);
       const stamp = new Date();
       const iso = stamp.toISOString();
@@ -15478,7 +15242,7 @@ window.DICTIONARY_DATA = [
       const apiDefaultContent = JSON.stringify({
         data,
         pages: pageContent,
-        pages_en: DEFAULT_PAGE_CONTENT_EN,
+        pages_en: pageContentEn,
         meta: apiDefaultMeta,
         updatedAt: iso
       }, null, 2);
@@ -15547,8 +15311,8 @@ window.DICTIONARY_DATA = [
       "window.DICTIONARY_DATA = " + safeScriptJson(data) + ";\n\n";
 
     let html = INITIAL_HTML_SOURCE;
-    html = html.replace(/<!-- Editör dışa aktarımı: 2026-07-11T07:48:54.840Z -->/, "<!-- Editör dışa aktarımı: " + iso + " -->");
-    html = html.replace(/<p id="editableHomeNotice">[\s\S]*?<\/p>/, `<p id="editableHomeNotice">${escapeHtml(stripHtml(pageContent.sozluk || ""))}</p>`);
+    html = html.replace(/<!-- Editör dışa aktarımı: 2026-07-11T11:37:54.832Z -->/, "<!-- Editör dışa aktarımı: " + iso + " -->");
+    html = html.replace(/<p id="editableHomeNotice">[\s\S]*?<\/p>/, `<p id="editableHomeNotice">${escapeHtml(String(pageContent.sozluk || "").replace(/<br\s*\/?\s*>/gi, "\n").replace(/<[^>]*>/g, ""))}</p>`);
     html = html.replace(/<p id="heroSubtitle" class="hero-subtitle">[\s\S]*?<\/p>/, `<p id="heroSubtitle" class="hero-subtitle">${editorTextToHtml(pageContent["ana-aciklama"] || "")}</p>`);
     const exportedHomeQuote = normalizeHomeQuote(pageContent["ana-soz"] || "");
     html = html.replace(/<blockquote id="homeQuote" class="homepage-quote"[\s\S]*?<\/blockquote>/, exportedHomeQuote ? `<blockquote id="homeQuote" class="homepage-quote" aria-label="Ana sayfa sözü"><strong>${editorTextToHtml(exportedHomeQuote)}</strong></blockquote>` : `<blockquote id="homeQuote" class="homepage-quote" aria-label="Ana sayfa sözü" hidden=""></blockquote>`);
@@ -15571,7 +15335,7 @@ window.DICTIONARY_DATA = [
     const title = pageTitleFor(key);
     const desc = descriptionFor(key);
     const body = pageContent[key] || DEFAULT_PAGE_CONTENT[key] || "";
-    return staticPageTemplate(title, desc, def.url, body, iso);
+    return staticPageTemplate(title, desc, def.url, formatEditorialPageBody(body), iso);
   }
 
   function pageTitleFor(key) {
@@ -15600,11 +15364,11 @@ window.DICTIONARY_DATA = [
 
   function staticPageTemplate(title, description, canonicalPath, body, iso) {
     return `<!doctype html>
-<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(title)} · Askerî Terimler Sözlüğü</title><meta name="description" content="${escapeAttr(description)}"><meta name="robots" content="index, follow"><link rel="canonical" href="${escapeAttr(canonicalPath)}"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" href="/favicon-96.png" sizes="96x96"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><style>${staticPageCss()}</style></head><body><div class="site"><header class="topbar"><a class="brand" href="/" aria-label="Sözlük ana sayfası"><img class="brand__logo" src="/ats-logo.png" alt="ATS"><span class="brand__name">Askerî Terimler Sözlüğü</span></a></header>${navHtml()}<main><h1>${escapeHtml(title)}</h1>${body}<p class="meta">Son teknik güncelleme: ${escapeHtml(formatDateTR(iso))}. Bu sayfa statik olarak yayımlanır ve doğrudan adres girişlerinde 404 hatası vermez.</p></main><footer class="site-footer"><p>© 2026 Ferdi Ertekin · Askerî Terimler Sözlüğü</p></footer></div></body></html>`;
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(title)} · Askerî Terimler Sözlüğü</title><meta name="description" content="${escapeAttr(description)}"><meta name="robots" content="index, follow"><link rel="canonical" href="${escapeAttr(canonicalPath)}"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" href="/favicon-96.png" sizes="96x96"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><style>${staticPageCss()}</style></head><body><div class="site"><header class="topbar"><a class="brand" href="/" aria-label="Sözlük ana sayfası"><img class="brand__logo" src="/ats-logo.png" alt="ATS"><span class="brand__name">Askerî Terimler Sözlüğü</span><img class="brand__flag" src="/turk-bayragi.svg" alt="Türk bayrağı"></a></header>${navHtml()}<main><h1>${escapeHtml(title)}</h1>${body}<p class="meta">Son teknik güncelleme: ${escapeHtml(formatDateTR(iso))}. Bu sayfa statik olarak yayımlanır ve doğrudan adres girişlerinde 404 hatası vermez.</p></main><footer class="site-footer"><p>© 2026 Ferdi Ertekin · Askerî Terimler Sözlüğü</p></footer></div></body></html>`;
   }
 
   function build404Html() {
-    return `<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Sayfa bulunamadı · Askerî Terimler Sözlüğü</title><meta name="robots" content="noindex, nofollow"><link rel="icon" href="/favicon.ico" sizes="any"><style>${staticPageCss()}</style></head><body><div class="site"><header class="topbar"><a class="brand" href="/" aria-label="Sözlük ana sayfası"><img class="brand__logo" src="/ats-logo.png" alt="ATS"><span class="brand__name">Askerî Terimler Sözlüğü</span></a></header>${navHtml()}<main><h1>Sayfa bulunamadı</h1><p class="lead">Aradığınız adres bu yayın paketinde bulunamadı.</p><p>Ana sözlüğe dönerek arama yapabilir veya terimler dizinini kullanabilirsiniz.</p><p><a href="/">Sözlük ana sayfasına dön</a></p></main></div></body></html>`;
+    return `<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Sayfa bulunamadı · Askerî Terimler Sözlüğü</title><meta name="robots" content="noindex, nofollow"><link rel="icon" href="/favicon.ico" sizes="any"><style>${staticPageCss()}</style></head><body><div class="site"><header class="topbar"><a class="brand" href="/" aria-label="Sözlük ana sayfası"><img class="brand__logo" src="/ats-logo.png" alt="ATS"><span class="brand__name">Askerî Terimler Sözlüğü</span><img class="brand__flag" src="/turk-bayragi.svg" alt="Türk bayrağı"></a></header>${navHtml()}<main><h1>Sayfa bulunamadı</h1><p class="lead">Aradığınız adres bu yayın paketinde bulunamadı.</p><p>Ana sözlüğe dönerek arama yapabilir veya terimler dizinini kullanabilirsiniz.</p><p><a href="/">Sözlük ana sayfasına dön</a></p></main></div></body></html>`;
   }
 
   function buildTermsIndexHtml(iso) {
@@ -15661,7 +15425,8 @@ ${urls.map(u => `  <url><loc>BASE_URL${u}</loc></url>`).join("\n")}
       ["/favicon.ico", "favicon.ico"],
       ["/favicon-96.png", "favicon-96.png"],
       ["/apple-touch-icon.png", "apple-touch-icon.png"],
-      ["/ats-logo.png", "ats-logo.png"]
+      ["/ats-logo.png", "ats-logo.png"],
+      ["/turk-bayragi.svg", "turk-bayragi.svg"]
     ]) {
       try {
         const res = await fetch(item[0], { cache: "no-store" });
@@ -15679,7 +15444,7 @@ ${urls.map(u => `  <url><loc>BASE_URL${u}</loc></url>`).join("\n")}
   }
 
   function staticPageCss() {
-    return `:root{--bg:#F7F4EC;--card:#ffffff;--ink:#1E2732;--ink-soft:#5D6672;--accent:#2F4E71;--accent-deep:#20395A;--brass:#8F702F;--line:#E2DDCF;--radius:18px}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Cambria,Georgia,serif}.site{width:min(1060px,calc(100% - 32px));margin:0 auto;padding:18px 0 42px}.topbar{display:flex;justify-content:center;padding-top:12px}.brand{display:flex;align-items:center;gap:10px;text-decoration:none}.brand__logo{width:64px;height:64px;display:block;object-fit:contain;border-radius:50%;filter:drop-shadow(0 4px 10px rgba(32,57,90,.14))}.brand__mark{width:42px;height:38px;border-radius:10px;background:linear-gradient(150deg,var(--accent),var(--accent-deep));display:grid;place-items:center;color:#f8f7f4;font-weight:700;font-size:12px}.brand__name{font-weight:600;color:var(--ink-soft);font-size:14.5px}.site-nav{margin:16px 0 0;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.site-nav a{color:var(--brass);background:rgba(255,255,255,.70);border:1px solid var(--line);border-radius:999px;padding:7px 12px;text-decoration:none;font-size:13px;font-weight:600}.site-nav a:hover{border-color:var(--brass);color:var(--brass-deep);background:var(--card)}main{margin:30px auto 0;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:34px;line-height:1.75;box-shadow:0 16px 40px -32px rgba(24,34,45,.35)}h1{font-family:"Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;font-size:clamp(28px,4vw,42px);line-height:1.15;margin:0 0 18px;text-align:center}p{font-size:16px;text-align:justify}.lead{font-size:17px;color:var(--ink-soft)}.meta{margin-top:26px;color:var(--ink-soft);font-size:13px}.source-list{padding-left:22px}.source-list li{margin:7px 0}.term-list{columns:3 220px;column-gap:34px;line-height:1.6}.term-list li{break-inside:avoid;margin:0 0 6px}.term-list a{color:var(--brass);text-decoration:none}.term-list a:hover{text-decoration:underline}.site-footer{margin:26px 0 0;text-align:center;color:var(--ink-soft);font-size:13px}.site-footer p{text-align:center}a{color:var(--accent)}`;
+    return `:root{--bg:#F7F4EC;--card:#ffffff;--ink:#1E2732;--ink-soft:#5D6672;--accent:#2F4E71;--accent-deep:#20395A;--brass:#8F702F;--line:#E2DDCF;--radius:18px}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Cambria,Georgia,serif}.site{width:min(1060px,calc(100% - 32px));margin:0 auto;padding:18px 0 42px}.topbar{display:flex;justify-content:center;padding-top:12px}.brand{display:flex;align-items:center;gap:10px;text-decoration:none}.brand__logo{width:64px;height:64px;display:block;object-fit:contain;border-radius:50%;filter:drop-shadow(0 4px 10px rgba(32,57,90,.14))}.brand__mark{width:42px;height:38px;border-radius:10px;background:linear-gradient(150deg,var(--accent),var(--accent-deep));display:grid;place-items:center;color:#f8f7f4;font-weight:700;font-size:12px}.brand__name{font-weight:600;color:var(--ink-soft);font-size:14.5px}.brand__flag{width:20px;height:auto;display:block;flex:0 0 auto;border-radius:2px;box-shadow:0 1px 4px rgba(0,0,0,.14)}.site-nav{margin:16px 0 0;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.site-nav a{color:var(--brass);background:rgba(255,255,255,.70);border:1px solid var(--line);border-radius:999px;padding:7px 12px;text-decoration:none;font-size:13px;font-weight:600}.site-nav a:hover{border-color:var(--brass);color:var(--brass-deep);background:var(--card)}main{margin:30px auto 0;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:34px;line-height:1.75;box-shadow:0 16px 40px -32px rgba(24,34,45,.35)}h1{font-family:"Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;font-size:clamp(28px,4vw,42px);line-height:1.15;margin:0 0 18px;text-align:center}p{font-size:16px;text-align:justify;font-family:Cambria,Georgia,serif}.editorial-content{font-family:Cambria,Georgia,serif;text-align:justify}.editorial-content p{margin:0 0 1em;text-align:justify;text-indent:1.25cm;white-space:normal}.editorial-content p:first-child{margin-top:0}.editorial-content h2,.editorial-content h3,.editorial-content h4{text-align:left;text-indent:0}.editorial-content li{text-align:justify}.lead{font-size:17px;color:var(--ink-soft);text-indent:0!important}.meta{margin-top:26px;color:var(--ink-soft);font-size:13px}.source-list{padding-left:22px}.source-list li{margin:7px 0}.term-list{columns:3 220px;column-gap:34px;line-height:1.6}.term-list li{break-inside:avoid;margin:0 0 6px}.term-list a{color:var(--brass);text-decoration:none}.term-list a:hover{text-decoration:underline}.site-footer{margin:26px 0 0;text-align:center;color:var(--ink-soft);font-size:13px}.site-footer p{text-align:center}a{color:var(--accent)}`;
   }
 
   function formatDateTR(iso) {
@@ -15844,7 +15609,7 @@ ${urls.map(u => `  <url><loc>BASE_URL${u}</loc></url>`).join("\n")}
       kind: kind || "all",
       data,
       pages: pageContent,
-      pages_en: DEFAULT_PAGE_CONTENT_EN,
+      pages_en: pageContentEn,
       meta
     };
 
@@ -15868,7 +15633,7 @@ ${urls.map(u => `  <url><loc>BASE_URL${u}</loc></url>`).join("\n")}
       if (!res.ok || saved.ok === false) throw new Error(saved.message || saved.error || ("HTTP " + res.status));
 
       liveContentCache = {
-        data: clone(data), pages: clone(pageContent), pages_en: clone(DEFAULT_PAGE_CONTENT_EN),
+        data: clone(data), pages: clone(pageContent), pages_en: clone(pageContentEn),
         meta: { ...meta, live_source: "blob", live_updated_at: saved.updatedAt },
         updatedAt: saved.updatedAt || new Date().toISOString(), _writeId: saved.writeId || ""
       };
