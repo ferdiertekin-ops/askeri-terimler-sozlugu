@@ -1,26 +1,16 @@
-Askerî Terimler Sözlüğü — Son Yayın Paketi
+Askerî Terimler Sözlüğü
+Yayın paketi
 
-Paketleme zamanı: 2026-07-10T19:47:32Z
+Bu paket, canlı Netlify Blobs kaydıyla eşitlenmiş güncel sözlük verisi gömülerek dışa aktarılmıştır.
+Dışa aktarım zamanı: 2026-07-11T07:48:54.840Z
 
-Bu sürümde:
-- Canlı Netlify Blobs kaydı, tarayıcıdaki eski/pending kayıtlardan öncelikli ve tarih kontrollü olarak yüklenir.
-- Editörden indirilen sonraki ZIP paketleri, canlı kayıt ile daha yeni bekleyen yerel yedeği karşılaştırarak en güncel anlık görüntüyü gömer.
-- Ferdi Ertekin'e ait üç kitap tanıtımı Türkçe ve İngilizce ana arayüzlerden kaldırılmıştır.
-- Türkçe ve İngilizce madde kartları aynı sekiz alanlı güncel tasarımı kullanır.
-- iPhone/Safari editör girişi ASCII SHA-256 başlığı, mobil parola formu ve güvenli oturum yedeğiyle çalışır.
-- Canlı madde kaydı tek POST işlemine düşürülerek gereksiz iki doğrulama okuması kaldırılmıştır.
+Yedekleme notu:
+1. Bu ZIP, dışa aktarım anındaki en güncel canlı verinin statik yedeğidir.
+2. Olağan düzenlemeler için yeniden deploy gerekmez.
+3. Büyük yapısal değişikliklerde bu paket arşiv olarak saklanabilir.
 
-Dağıtımda ZIP içindeki bütün dosyalar birlikte yüklenmelidir. Mevcut Netlify sitesi ve aynı Blobs deposu kullanıldığında canlı kayıtlar korunur.
-
-2026-07-10 görünüm güncellemesi:
-- Ana görünüm varsayılan olarak Liste düzenine alınmıştır.
-- Liste/Kart seçici Türkçe ve İngilizce arayüzde ortalanmış, genişletilmiş ve mobil uyumlu hâle getirilmiştir.
-- Seçicinin arkasındaki ayrı dikdörtgen zemin kaldırılmıştır.
-
-DÜZELTİCİ YAYIN PAKETİ
-Oluşturulma: 2026-07-10T20:09:19+00:00
-- 931 maddelik gömülü anlık görüntü korunmuştur.
-- Başlangıçtaki setSaveStatus çalışma zamanı hatası giderilmiştir.
-- Sözlük ve arayüz kontrolleri canlı API yanıtını beklemeden açılır.
-- Türkçe/İngilizce dil geçişi ve mobil editör giriş ekranı etkinleştirilmiştir.
-- EDITOR_PASSWORD_HASH ve geriye dönük EDITOR_PASSWORD ortam değişkenleri desteklenir.
+Not: Canlı düzenlemeler Netlify Blobs üzerinde yayımlanır. Bu ZIP yalnızca arşiv/yedek amaçlıdır.
+2026-07-11 KANONİK KAYIT DÜZELTMESİ
+- Ana sayfadaki çağrışım etiketleri yalnızca Varyant/Kısaltma alanından üretilir.
+- Kaynak Dosyadaki Karşılık, açıklama veya eski gizli sütunlar etiket üretiminde kullanılmaz.
+- Canlı kayıt onaylandıktan sonra editör çekmecesi kapanır ve ana liste anında yeniden çizilir.
