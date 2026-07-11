@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /.netlify/
+Disallow: /wp-admin/
+Disallow: /wp-login.php
+Disallow: /xmlrpc.php
 
-# Sitemap satırı özel alan adı kesinleşince sitemap.xml içinde mutlak URL ile güncellenmelidir.
+Sitemap: https://askeriterimlersozlugu.com/sitemap.xml

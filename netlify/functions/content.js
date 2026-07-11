@@ -1,4 +1,4 @@
-const { jsonHeaders, isAuthorized, readContent, writeContent } = require('./_shared');
+const { jsonHeaders, isAuthorized, isSameOrigin, readContent, writeContent } = require('./_shared');
 
 exports.handler = async function(event) {
   if (event.httpMethod === 'OPTIONS') {
@@ -42,6 +42,10 @@ exports.handler = async function(event) {
     }
   }
 
+  if (event.httpMethod === 'POST' && !isSameOrigin(event)) {
+    return { statusCode: 403, headers: jsonHeaders(), body: JSON.stringify({ ok: false, error: 'forbidden_origin' }) };
+  }
+
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
@@ -56,6 +60,14 @@ exports.handler = async function(event) {
       headers: jsonHeaders(),
       body: JSON.stringify({ ok: false, error: 'unauthorized' })
     };
+  }
+
+  const contentType = String((event.headers || {})['content-type'] || (event.headers || {})['Content-Type'] || '').toLowerCase();
+  if (!contentType.includes('application/json')) {
+    return { statusCode: 415, headers: jsonHeaders(), body: JSON.stringify({ ok: false, error: 'unsupported_media_type' }) };
+  }
+  if (Buffer.byteLength(event.body || '', 'utf8') > 8 * 1024 * 1024) {
+    return { statusCode: 413, headers: jsonHeaders(), body: JSON.stringify({ ok: false, error: 'payload_too_large' }) };
   }
 
   let payload;
