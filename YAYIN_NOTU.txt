@@ -2,7 +2,7 @@ Askerî Terimler Sözlüğü
 Yayın paketi
 
 Bu paket, canlı Netlify Blobs kaydıyla eşitlenmiş güncel sözlük verisi gömülerek dışa aktarılmıştır.
-Dışa aktarım zamanı: 2026-07-11T20:21:33.780Z
+Dışa aktarım zamanı: 2026-07-12T09:38:53.905Z
 
 Yedekleme notu:
 1. Bu ZIP, dışa aktarım anındaki en güncel canlı verinin statik yedeğidir.

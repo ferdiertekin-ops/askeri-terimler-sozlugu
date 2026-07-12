@@ -80,11 +80,52 @@ function sheetLabel(name, lang) {
   return labels[name] || name;
 }
 
+function linkifyUrls(value) {
+  const source = String(value == null ? '' : value);
+  const urlPattern = /https?:\/\/[^\s<>"']+/gi;
+  let html = '';
+  let lastIndex = 0;
+  let match;
+  while ((match = urlPattern.exec(source)) !== null) {
+    html += escapeHtml(source.slice(lastIndex, match.index));
+    let url = match[0];
+    let trailing = '';
+    while (/[.,;:!?\)\]]$/.test(url)) {
+      trailing = url.slice(-1) + trailing;
+      url = url.slice(0, -1);
+    }
+    if (url) {
+      html += `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(url)}</a>`;
+    }
+    html += escapeHtml(trailing);
+    lastIndex = match.index + match[0].length;
+  }
+  html += escapeHtml(source.slice(lastIndex));
+  return html;
+}
+
+function splitCitationEntries(value) {
+  return String(value == null ? '' : value)
+    .replace(/\r\n?/g, '\n')
+    .split(/\n+/)
+    .map(x => x.trim())
+    .filter(Boolean)
+    .slice(0, 6);
+}
+
+function renderCitationList(value) {
+  const items = splitCitationEntries(value);
+  if (!items.length) return '—';
+  return `<ol class="citation-list">${items.map(item => `<li class="citation-item">${linkifyUrls(item)}</li>`).join('')}</ol>`;
+}
+
 function renderTermCard(rec, lang) {
   const rows = CARD_FIELDS.map(def => {
     const value = field(rec, def.names);
     const label = lang === 'en' ? def.en : def.tr;
-    return `<div class="detail-row${def.wide ? ' wide' : ''}"><small>${escapeHtml(label)}</small><div>${escapeHtml(value || '—')}</div></div>`;
+    const shown = value || '—';
+    const rendered = def.key === 'Künye/Kaynak' ? renderCitationList(shown) : escapeHtml(shown);
+    return `<div class="detail-row${def.wide ? ' wide' : ''}"><small>${escapeHtml(label)}</small><div>${rendered}</div></div>`;
   }).join('');
   return `<style>
 .term-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
@@ -93,6 +134,8 @@ function renderTermCard(rec, lang) {
 .term-card-grid .detail-row::before{content:"";position:absolute;left:0;top:13px;bottom:13px;width:2px;background:var(--brass);opacity:.55}
 .term-card-grid .detail-row small{display:block;color:var(--ink-soft);font-size:11px;margin-bottom:6px;text-transform:uppercase;letter-spacing:.09em;font-weight:700}
 .term-card-grid .detail-row div{white-space:pre-wrap;overflow-wrap:anywhere;font-weight:600}
+.term-card-grid .detail-row a{color:var(--accent);text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere}
+.citation-list{display:grid;gap:8px;margin:0;padding:0;list-style:none}.citation-item{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.68);white-space:pre-wrap;overflow-wrap:anywhere;font-weight:500}.citation-item a{color:var(--accent);text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere}
 @media(max-width:640px){.term-card-grid{grid-template-columns:1fr}.term-card-grid .wide{grid-column:1}}
 </style><div class="term-card-grid">${rows}</div>`;
 }
