@@ -6,6 +6,7 @@ const STORE_NAME = 'ats-live-content';
 const STORE_KEY = 'live';
 const HAGOPIAN_MIGRATION_VERSION = 'hagopian-1907-v1';
 const HAGOPIAN_MIGRATION_HEADWORDS = new Set(["Bureau of Correspondence (Foreign Office)","Directorate of Weights and Measures","Department of Minting","Department of Assays","Department of Refining","Customs Administration","Administration of the Six Indirect Taxes","Directorate of the Customs on Cereals and Liquors","Directorate of the Customs on Wood","Directorate of the Customs on Fruits and Vegetables","Directorate of the Fishery","Regie Co-Interesse of Tobaccos of the Ottoman Empire","Administration of Public Debts","Imperial Commissary of the Ottoman Public Debts","Council of Inspection and Censure (Supervision)","Bureau of the Domestic Press","Director of the Domestic Press Bureau","Directorate of the Higher Schools","Imperial Civil College","Imperial Lyceum of Galata Seray","Imperial Lyceum of Law","Imperial Lyceum of Languages","School of Arts and Industry","Primary School","Grammar School","Academy or Preparatory School","Superior (High-) School or College","Normal School for Teachers","Normal School for Lady Teachers","Civil Medical School","School for Nomadic Tribes","Imperial Meteorological Observatory","Imperial Museum","Imperial Printing-House","Ministry of Justice and Public Worship","Director of Public Worship (Religions)","Board of the Justice","Court of Cassation","Procurator General of the Court of Cassation","Court of Appeals","Section of Requests","Criminal Section","Correctional Section","Civil Section","Court of Criminal Jurisdiction","Court of Accusation","Court of First Instance","Tribunal of Commerce","First Commercial Court","Maritime Commercial Court","Judge","President (Presiding Judge)","Member of Council","Procurator General (Public Prosecutor)","Assistant Procurator General","Clerk (Judiciary)","Assistant","Trial Justice","Notary Public","Plaintiff","Defendant","Witness","Lawyer, Attorney","Power of Attorney","Prefecture of Police","Council of Police","Council of Gendarmerie","Commissary of Police","Bureau of Passports","Prefects of Police","Directorate of Waters","First Municipality Circle","Municipality (Istanbul)","Municipal Council","Hospital for Strangers","General Directorate of Roads and Bridges","Alienation, Quitclaim","Transmission by Inheritance","International Ottoman Posts","Chaplain of a Regiment","Chaplain of a Battalion","4th Army Corps","Short sword-bayonet","Hilt / Scabbard","Yatagan","Staff-Office","Naval Cadet","Naval Instructor","Assistant Engineer","Clerk (Navy)","Dock Hand","Rigging Loft","Armour-plated Barbette Ship","Armour-plated Turret Ship","Barque","Full-rigged Ship","Iron Ship","Passenger Ship","Torpedo Catcher","Newly-appointed Vali","Acting Governor-General","Comptrollers of Revenue and Expenditure","Chief Secretaries","Registrar of Real-Estate or Title-Deeds","Census-Taker","Quit-claim Commission","Commission of Taxes","Commission of Immigrants","Treasurer","Bureau of Cadasters","Branch of the Agricultural Bank","First Commissioner of Police","Police, Policeman","Inspector","Court of Canon-Law","Judge of Canon-Law","Judicial Court (plural Mehakim)","Deputy Judge","Judge, Magistrate","Chief Secretary (Provincial Administration)","Clerks","Municipality (Provincial Administration)","Municipality Doctor","Vaccinator","Post-Master","Ambassador","Counsellor of Legation","Chargé d'Affaires","Personnel of the Embassy","Embassy, Legation","Chief Secretary (Diplomatic Service)","Consular Corps","Consul-General","General-Consulate","Chancellery","Exchange of Correspondence","Official Correspondence","Unofficial Correspondence","Officially","Unofficially","Exchange of Opinions","Divergency of Opinions","Consular Dispatch","Collective Note","Verbal Note","Ultimatum","Conference, Congress","Plenipotentiary","Treaty","Treaty of Peace","Treaty of Commerce","Indemnity","War Indemnity","Cession of Territory","Occupation","Evacuation","On Furlough","Constitutional Government","Absolute Government","Republic","Commons (Parliament)","Deputy, Delegate, Member of Parliament","Senator","Candidate","Elector","Vote, Votes","Majority of Votes","Minority of Votes","Motion, to Move","Quorum","Political Parties","Conservative Party","Progressive Party","Liberal Party","Supporters of the Government","Opposition","Democratic Party","Republican Party","Leader of the Opposition","Ministerial Crisis","Change of Ministry","Resignation, to Resign","Removal, to Remove","Nomination","Promotion","Decoration","Class, Order","Deficit","Budget","Income","Expenditure","Surplus","War","Naval Battle","Land Battle","Civil War","Declaration of War","State of Siege","Triple Alliance","Offensive and Defensive Alliance","Belligerent Powers","Allied Power","Neutral Power","Attack","Capitulation","Conquest","International","God, the Most High","Jesus Christ","Holy Spirit","Church, Christian Church","Anniversary","Ceremony of Selamliq","Festival (Id; Plural Ayad)","Moslem or Jewish Festival","Birthday","Name-Day","New Year's Day","Birthday of Sultan","Accession of His Imperial Majesty","Investiture with the Sword of the Prophet","Ceremony of Investiture","Circumcision Feast of the Imperial Princes","Circumcision Feast","Wedding","Holy night(s)","Birthday of the Prophet","Night of the Ascent of the Prophet","Night of Ragayib","Night of Absolution (15th Shaban)","Any Night of General Illumination","Night of Power (27th Ramazan)","Night Preceding a Bayram Day","Day Preceding the Two Bayrams","Festival at the End of Ramazan","Moslem Festival of Sacrifice","Mantle of Muhammed","Sultan's Yearly Gifts for Mecca and Medina","Sacred Caravan for the Holy Lands","Christmas","Christmas Eve","Carnival","Lent","Easter","Ascension","Feast of Pentecost","Eucharist","Lord's Supper","Passover (Nissan)","Feast of Atonement (10 Tishri)","Feast of Tabernacles (15 Tishri)","Jewish Fast (Destruction of Jerusalem, 9 Ab)","Jewish Pentecost (6 Sivan)","Festival of Purim (14 Adar)","Khanedani Al Osman (Star in Brilliants)","Ertogroul Nishani (Gold)","Nishani Iftikhar (Star in Brilliants)","Nishani Imtiyaz (Star in Brilliants)","Nishani Osmanee (4 Classes)","Nishani Mejidee (5 Classes)","Nishani Shefaqat (for Ladies, 3 Classes)","Gold Medal of Liyaqat","Gold and Silver Medals of Imtiyaz","Medal of Industry","Silver Medal for Saving Life","Medal of Iftikhar","Rank of Vezir (Highest Civil Grade)","Rank of Bala","1st Grade, 1st Class (Rumeli Beylerbeyi Payesi)","1st Grade, 2nd Class (Rank of Mirimiran)","2nd Class Mutemayiz (Miyrul Umera Payesi)","2nd Grade, 2nd Class","3rd Class","4th Class","5th Class","Marshal = Admiral","General of Division 1st Rank","General of Division 2nd Rank = Vice Admiral","General of Brigade = Rear Admiral","Colonel = Captain","Lieutenant Colonel = Captain of Frigate","Major = Commander","Adjutant Major = Lieutenant Major","Captain = Lieutenant","Chancellor of Roumeli (≈ Archbishop): Vice-Chancellor of Turkey","Chancellor of Anadolou (≈ Bishop)","Rank of the Qadi of Istanbul","Rank of the Two Holy Cities","Rank of the Five Cities (Bilad-I Hamse)","Makhrej Mevleviyeti Payesi","Kibar-I Muderriseen Payesi","Muderriseen Below Suleymaniye","Hoja Payesi"]);
+const SCOPE_MIGRATION_VERSION = 'scope-1876-1918-v1';
 
 function editorHash() {
   const configured = String(process.env.EDITOR_PASSWORD_HASH || '').trim();
@@ -141,19 +142,59 @@ function applyHagopianMigration(content) {
   return { changed: true, added };
 }
 
+
+function replaceScopeRange(value) {
+  return String(value == null ? '' : value)
+    .replace(/1880–1918/g, '1876–1918')
+    .replace(/1880-1918/g, '1876-1918');
+}
+
+function replaceScopeValue(value) {
+  if (typeof value === 'string') return replaceScopeRange(value);
+  if (Array.isArray(value)) return value.map(replaceScopeValue);
+  if (value && typeof value === 'object') {
+    const out = {};
+    for (const [key, child] of Object.entries(value)) out[key] = replaceScopeValue(child);
+    return out;
+  }
+  return value;
+}
+
+function applyScopeMigration(content) {
+  if (!content.meta || typeof content.meta !== 'object') content.meta = {};
+  const applied = Array.isArray(content.meta.migrations) ? content.meta.migrations : [];
+  if (applied.includes(SCOPE_MIGRATION_VERSION)) return { changed: false };
+
+  content.pages = replaceScopeValue(content.pages || {});
+  content.pages_en = replaceScopeValue(content.pages_en || {});
+  content.meta = replaceScopeValue(content.meta || {});
+  const migrations = new Set(Array.isArray(content.meta.migrations) ? content.meta.migrations : applied);
+  migrations.add(SCOPE_MIGRATION_VERSION);
+  content.meta.migrations = [...migrations];
+  content.meta.scope_migration = {
+    version: SCOPE_MIGRATION_VERSION,
+    range: '1876–1918',
+    applied_at: new Date().toISOString()
+  };
+  content.updatedAt = new Date().toISOString();
+  content._writeId = crypto.randomUUID ? crypto.randomUUID() : crypto.randomBytes(16).toString('hex');
+  return { changed: true };
+}
+
 async function readContent() {
   try {
     const blobStore = store();
     const live = await blobStore.get(STORE_KEY, { type: 'json', consistency: 'strong' });
     const normalized = normalizeLive(live);
     const migration = applyHagopianMigration(normalized);
-    if (live && migration.changed) {
+    const scopeMigration = applyScopeMigration(normalized);
+    if (live && (migration.changed || scopeMigration.changed)) {
       try {
         await blobStore.setJSON(STORE_KEY, normalized, {
           metadata: {
             updatedAt: normalized.updatedAt,
             writeId: normalized._writeId,
-            migration: HAGOPIAN_MIGRATION_VERSION
+            migration: [HAGOPIAN_MIGRATION_VERSION, SCOPE_MIGRATION_VERSION].join(',')
           }
         });
       } catch (migrationError) {
@@ -168,12 +209,14 @@ async function readContent() {
     normalized.meta = {
       ...(normalized.meta || {}),
       live_source: live ? 'blob' : 'defaults',
-      migration_added: migration.added
+      migration_added: migration.added,
+      scope_migration_changed: scopeMigration.changed
     };
     return normalized;
   } catch (err) {
     const fallback = normalizeLive(null);
     applyHagopianMigration(fallback);
+    applyScopeMigration(fallback);
     fallback.meta = {
       ...(fallback.meta || {}),
       live_source: 'defaults',
@@ -185,6 +228,14 @@ async function readContent() {
 
 async function writeContent(next) {
   const normalized = normalizeLive(next);
+  // İstemci eski bir meta nesnesi gönderse bile tamamlanmış göçleri yeniden
+  // çalıştırma. Bu işaretler, editörden silinen maddelerin geri gelmesini önler.
+  applyScopeMigration(normalized);
+  if (!normalized.meta || typeof normalized.meta !== 'object') normalized.meta = {};
+  const completedMigrations = new Set(Array.isArray(normalized.meta.migrations) ? normalized.meta.migrations : []);
+  completedMigrations.add(HAGOPIAN_MIGRATION_VERSION);
+  completedMigrations.add(SCOPE_MIGRATION_VERSION);
+  normalized.meta.migrations = [...completedMigrations];
   normalized.updatedAt = new Date().toISOString();
   normalized.meta = {
     ...(normalized.meta || {}),
@@ -221,6 +272,6 @@ function css(){ return `:root{--bg:#f8f7f4;--paper:#ffffff;--ink:#232d37;--ink-s
 function pageTitleFor(key,lang='tr'){ const tr={'terimler':'Terimler Dizini','yayin-notu':'Yayın Notu','kaynakca':'Kaynakça','gizlilik-politikasi':'Gizlilik Politikası','cerez-politikasi':'Çerez Politikası','kullanim-sartlari':'Kullanım Şartları','iletisim':'İletişim'}; const en={'terimler':'Terms Index','yayin-notu':'Publication Note','kaynakca':'Bibliography','gizlilik-politikasi':'Privacy Policy','cerez-politikasi':'Cookie Policy','kullanim-sartlari':'Terms of Use','iletisim':'Contact'}; return (lang==='en'?en:tr)[key]||siteName(lang); }
 function descriptionFor(key,content,lang='tr'){ const pages=lang==='en'?(content.pages_en||{}):(content.pages||{}); const body=pages&&pages[key]?stripHtml(pages[key]).slice(0,155):''; const f=lang==='en'?{'terimler':'Live terms index of the Military Terms Dictionary.','yayin-notu':'Publication principles, scope and beta notes for the Military Terms Dictionary.','kaynakca':'Archival sources and bibliographical foundations of the Military Terms Dictionary.','gizlilik-politikasi':'Privacy principles and data processing statement for the Military Terms Dictionary.','cerez-politikasi':'Cookie and local storage statement for the Military Terms Dictionary.','kullanim-sartlari':'Terms of use and academic use principles for the Military Terms Dictionary.','iletisim':'Contact page for corrections, additions and source suggestions.'}:{'terimler':'Askerî Terimler Sözlüğü canlı terimler dizini.','yayin-notu':'Askerî Terimler Sözlüğü’nün yayın ilkeleri, kapsamı ve beta sürüm notu.','kaynakca':'Askerî Terimler Sözlüğü’nün arşiv kaynakları ve bibliyografik dayanakları.','gizlilik-politikasi':'Askerî Terimler Sözlüğü gizlilik ilkeleri ve veri işleme açıklaması.','cerez-politikasi':'Askerî Terimler Sözlüğü çerez ve yerel depolama açıklaması.','kullanim-sartlari':'Askerî Terimler Sözlüğü kullanım şartları ve akademik kullanım ilkeleri.','iletisim':'Askerî Terimler Sözlüğü için düzeltme, ekleme ve kaynak önerisi iletişim sayfası.'}; return body||f[key]||siteName(lang); }
 function altForPath(canonical,lang){ try{ const u=new URL(canonical); let p=u.pathname; const pairs=[['/','/en/'],['/terimler/','/en/terms/'],['/yayin-notu/','/en/publication-note/'],['/kaynakca/','/en/bibliography/'],['/gizlilik-politikasi/','/en/privacy-policy/'],['/cerez-politikasi/','/en/cookie-policy/'],['/kullanim-sartlari/','/en/terms-of-use/'],['/iletisim/','/en/contact/']]; for(const [tr,en] of pairs){ if(p===tr) return {tr:u.origin+tr,en:u.origin+en}; if(p===en) return {tr:u.origin+tr,en:u.origin+en}; } return {tr:u.origin+'/',en:u.origin+'/en/'}; }catch(e){ return {tr:'/',en:'/en/'}; } }
-function pageShell({ title, description, canonical, body, lang='tr' }){ const s=siteName(lang); const home=lang==='en'?'/en/':'/'; const alt=altForPath(canonical,lang); const noindexPaths=new Set(['/gizlilik-politikasi/','/cerez-politikasi/','/kullanim-sartlari/','/iletisim/','/en/privacy-policy/','/en/cookie-policy/','/en/terms-of-use/','/en/contact/']); let canonicalPath=''; try{canonicalPath=new URL(canonical).pathname}catch(e){} const robots=noindexPaths.has(canonicalPath)?'noindex, follow':'index, follow'; return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(title)} · ${escapeHtml(s)}</title><meta name="description" content="${escapeAttr(description)}"><meta name="robots" content="${escapeAttr(robots)}"><link rel="canonical" href="${escapeAttr(canonical)}"><link rel="alternate" hreflang="tr" href="${escapeAttr(alt.tr)}"><link rel="alternate" hreflang="en" href="${escapeAttr(alt.en)}"><link rel="alternate" hreflang="x-default" href="${escapeAttr(alt.tr)}"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" href="/favicon-96.png" sizes="96x96"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><style>${css()}</style></head><body><div class="site"><header class="topbar"><a class="brand" href="${home}" aria-label="${escapeAttr(s)}"><img class="brand__logo" src="/ats-logo.png" alt="ATS"><span class="brand__name">${escapeHtml(s)}</span><img class="brand__flag" src="/turk-bayragi.svg" alt="${lang==='en'?'Turkish flag':'Türk bayrağı'}"></a>${langSwitch(lang)}</header>${navHtml(lang)}<main><h1>${escapeHtml(title)}</h1>${body}</main><footer class="site-footer"><p>${lang==='en'?'© 2026 [Beta/Trial Version] English-Turkish Dictionary of British Military Terms':'© 2026 [Beta/Deneme Sürümü] İngilizce-Türkçe-İngiliz Askeri Terimler Sözlüğü'}</p></footer></div></body></html>`; }
+function pageShell({ title, description, canonical, body, lang='tr' }){ const s=siteName(lang); const home=lang==='en'?'/en/':'/'; const alt=altForPath(canonical,lang); const noindexPaths=new Set(['/gizlilik-politikasi/','/cerez-politikasi/','/kullanim-sartlari/','/iletisim/','/en/privacy-policy/','/en/cookie-policy/','/en/terms-of-use/','/en/contact/']); let canonicalPath=''; try{canonicalPath=new URL(canonical).pathname}catch(e){} const robots=noindexPaths.has(canonicalPath)?'noindex, follow':'index, follow'; return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(title)} · ${escapeHtml(s)}</title><meta name="description" content="${escapeAttr(description)}"><meta name="robots" content="${escapeAttr(robots)}"><link rel="canonical" href="${escapeAttr(canonical)}"><link rel="alternate" hreflang="tr" href="${escapeAttr(alt.tr)}"><link rel="alternate" hreflang="en" href="${escapeAttr(alt.en)}"><link rel="alternate" hreflang="x-default" href="${escapeAttr(alt.tr)}"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" href="/favicon-96.png" sizes="96x96"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><style>${css()}</style></head><body><div class="site"><header class="topbar"><a class="brand" href="${home}" aria-label="${escapeAttr(s)}"><img class="brand__logo" src="/ats-logo-2026.svg" alt="ATS"><span class="brand__name">${escapeHtml(s)}</span></a>${langSwitch(lang)}</header>${navHtml(lang)}<main><h1>${escapeHtml(title)}</h1>${body}</main><footer class="site-footer"><p>${lang==='en'?'© 2026 [Beta/Trial Version] English-Turkish Dictionary of British Military Terms':'© 2026 [Beta/Deneme Sürümü] İngilizce-Türkçe-İngiliz Askeri Terimler Sözlüğü'}</p></footer></div></body></html>`; }
 function xmlEscape(value){ return String(value==null?'':value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;'); }
 module.exports={ defaults,jsonHeaders,htmlHeaders,textHeaders,xmlHeaders,isAuthorized,readContent,writeContent,escapeHtml,escapeAttr,stripHtml,slugify,allRecords,field,termTitle,termSlug,canonicalBase,langFromEvent,siteName,pageTitleFor,descriptionFor,pageShell,xmlEscape };
