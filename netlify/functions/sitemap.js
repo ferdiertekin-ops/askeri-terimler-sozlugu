@@ -27,7 +27,7 @@ function urlEntry(base, path, lastmod) {
 exports.handler = async function(event) {
   const content = await readContent();
   const base = 'https://askeriterimlersozlugu.com';
-  const urls = ['/', '/en/', '/terimler/', '/en/terms/', '/yayin-notu/', '/en/publication-note/', '/kaynakca/', '/en/bibliography/', '/gizlilik-politikasi/', '/en/privacy-policy/', '/cerez-politikasi/', '/en/cookie-policy/', '/kullanim-sartlari/', '/en/terms-of-use/', '/iletisim/', '/en/contact/'];
+  const urls = ['/', '/en/', '/terimler/', '/en/terms/', '/yayin-notu/', '/en/publication-note/', '/kaynakca/', '/en/bibliography/'];
   const seen = new Set(urls);
   for (const rec of allRecords(content)) {
     const slug = encodeURIComponent(termSlug(rec));
