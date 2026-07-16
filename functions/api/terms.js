@@ -15,13 +15,13 @@ export async function onRequest(context) {
     if (q) {
       const pattern = `%${q}%`;
       statement = context.env.DB.prepare(`
-        SELECT id, slug, headword_en, ottoman_period_term, modern_tr, category,
+        SELECT id, slug, headword_en, ottoman_period_term, modern_equivalent_tr, category,
                explanation_tr, explanation_en, updated_at, version
         FROM terms
         WHERE status = 'published'
           AND (headword_en LIKE ?1 COLLATE NOCASE
             OR ottoman_period_term LIKE ?1 COLLATE NOCASE
-            OR modern_tr LIKE ?1 COLLATE NOCASE
+            OR modern_equivalent_tr LIKE ?1 COLLATE NOCASE
             OR EXISTS (
               SELECT 1 FROM term_variants v
               WHERE v.term_id = terms.id AND v.variant LIKE ?1 COLLATE NOCASE
@@ -31,7 +31,7 @@ export async function onRequest(context) {
       `).bind(pattern, limit, offset);
     } else {
       statement = context.env.DB.prepare(`
-        SELECT id, slug, headword_en, ottoman_period_term, modern_tr, category,
+        SELECT id, slug, headword_en, ottoman_period_term, modern_equivalent_tr, category,
                explanation_tr, explanation_en, updated_at, version
         FROM terms
         WHERE status = 'published'
