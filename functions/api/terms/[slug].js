@@ -10,7 +10,7 @@ export async function onRequest(context) {
 
   try {
     const term = await context.env.DB.prepare(`
-      SELECT id, slug, headword_en, ottoman_period_term, modern_tr, category,
+      SELECT id, slug, headword_en, ottoman_period_term, modern_equivalent_tr, category,
              explanation_tr, explanation_en, updated_at, published_at, version
       FROM terms
       WHERE slug = ?1 AND status = 'published'
