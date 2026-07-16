@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>D1 Veri Aktarımı</title>
+  <style>
+    :root { color-scheme: light; font-family: Arial, sans-serif; }
+    body { margin: 0; background: #f4f6f8; color: #172033; }
+    main { max-width: 760px; margin: 48px auto; padding: 28px; background: #fff; border: 1px solid #d9dee7; border-radius: 12px; }
+    h1 { margin-top: 0; font-size: 25px; }
+    p { line-height: 1.55; }
+    label { display: block; font-weight: 700; margin: 22px 0 8px; }
+    input { box-sizing: border-box; width: 100%; padding: 12px; border: 1px solid #aeb7c5; border-radius: 7px; font-size: 16px; }
+    .buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+    button { border: 0; border-radius: 7px; padding: 11px 16px; font-weight: 700; cursor: pointer; }
+    button.primary { background: #102a4c; color: #fff; }
+    button.secondary { background: #e7ebf0; color: #172033; }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    progress { width: 100%; height: 22px; margin-top: 18px; }
+    pre { min-height: 180px; padding: 14px; overflow: auto; background: #101722; color: #e7edf5; border-radius: 8px; white-space: pre-wrap; word-break: break-word; }
+    .warning { padding: 12px 14px; background: #fff5d8; border-left: 4px solid #c48a00; }
+    .ok { color: #146c2e; font-weight: 700; }
+    .error { color: #a61b1b; font-weight: 700; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Askerî Terimler Sözlüğü — D1 Aktarımı</h1>
+  <p class="warning">Bu ekran yalnız Cloudflare Preview veritabanı içindir. Ön denetim başarılı olmadan aktarım düğmesi açılmaz. Sayfayı aktarım sırasında kapatmayın.</p>
+
+  <label for="password">Editör parolası</label>
+  <input id="password" type="password" autocomplete="current-password" maxlength="256">
+
+  <div class="buttons">
+    <button id="preflight" class="secondary">1. Ön denetimi çalıştır</button>
+    <button id="start" class="primary" disabled>2. Aktarımı başlat</button>
+    <button id="verify" class="secondary" disabled>3. Son doğrulamayı çalıştır</button>
+  </div>
+
+  <progress id="progress" max="1232" value="0"></progress>
+  <p id="state">Henüz işlem yapılmadı.</p>
+  <pre id="output" aria-live="polite"></pre>
+</main>
+<script>
+(() => {
+  'use strict';
+  const endpoint = '/api/migration/import';
+  const password = document.getElementById('password');
+  const preflightButton = document.getElementById('preflight');
+  const startButton = document.getElementById('start');
+  const verifyButton = document.getElementById('verify');
+  const progress = document.getElementById('progress');
+  const state = document.getElementById('state');
+  const output = document.getElementById('output');
+  let running = false;
+
+  function show(data) {
+    output.textContent = JSON.stringify(data, null, 2);
+  }
+
+  function setState(message, kind = '') {
+    state.textContent = message;
+    state.className = kind;
+  }
+
+  function lock(value) {
+    running = value;
+    preflightButton.disabled = value;
+    startButton.disabled = value || startButton.dataset.ready !== 'true';
+    verifyButton.disabled = value || verifyButton.dataset.ready !== 'true';
+    password.disabled = value;
+  }
+
+  async function call(action, extra = {}) {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ action, password: password.value, ...extra })
+    });
+    let data;
+    try { data = await response.json(); }
+    catch { throw new Error(`Sunucu JSON döndürmedi (${response.status}).`); }
+    if (!response.ok || !data.ok) {
+      const error = new Error(data.error || `HTTP ${response.status}`);
+      error.data = data;
+      throw error;
+    }
+    return data;
+  }
+
+  preflightButton.addEventListener('click', async () => {
+    if (running) return;
+    if (!password.value) { setState('Editör parolasını girin.', 'error'); return; }
+    lock(true);
+    setState('Ön denetim çalışıyor…');
+    try {
+      const data = await call('preflight');
+      show(data);
+      const valid = data.databaseEmpty && Object.values(data.invariantChecks || {}).every(Boolean) && data.plannedCounts?.terms === 1232;
+      if (!valid) throw new Error('Ön denetim beklenen koşulları sağlamadı.');
+      startButton.dataset.ready = 'true';
+      setState('Ön denetim başarılı. Veritabanı boş ve 1.232 terim aktarılmaya hazır.', 'ok');
+    } catch (error) {
+      startButton.dataset.ready = 'false';
+      show(error.data || { error: error.message });
+      setState(`Ön denetim başarısız: ${error.message}`, 'error');
+    } finally { lock(false); }
+  });
+
+  startButton.addEventListener('click', async () => {
+    if (running || startButton.dataset.ready !== 'true') return;
+    const confirmed = window.confirm('1.232 terim Preview D1 veritabanına yazılacak. Devam edilsin mi?');
+    if (!confirmed) return;
+    lock(true);
+    startButton.dataset.ready = 'false';
+    let cursor = 0;
+    progress.value = 0;
+    setState('Aktarım başladı. Sayfayı kapatmayın.');
+    try {
+      while (cursor < 1232) {
+        const data = await call('import', { cursor });
+        if (!Number.isInteger(data.nextCursor) || data.nextCursor <= cursor) throw new Error('Aktarım ilerleme değeri geçersiz.');
+        cursor = data.nextCursor;
+        progress.value = cursor;
+        show(data);
+        setState(`Aktarım sürüyor: ${cursor} / 1232 terim işlendi.`);
+        await new Promise(resolve => setTimeout(resolve, 120));
+      }
+      verifyButton.dataset.ready = 'true';
+      setState('Aktarım yazma aşaması tamamlandı. Son doğrulamayı çalıştırın.', 'ok');
+    } catch (error) {
+      show(error.data || { error: error.message, cursor });
+      setState(`Aktarım durdu: ${error.message}. İmleç: ${cursor}. Bu ekranda yeni işlem yapmayın.`, 'error');
+    } finally { lock(false); }
+  });
+
+  verifyButton.addEventListener('click', async () => {
+    if (running || verifyButton.dataset.ready !== 'true') return;
+    lock(true);
+    setState('Son doğrulama çalışıyor…');
+    try {
+      const data = await call('verify');
+      show(data);
+      if (!Object.values(data.countChecks || {}).every(Boolean) || !data.samplesOk) throw new Error('Sayı veya örnek kayıt doğrulaması başarısız.');
+      progress.value = 1232;
+      verifyButton.dataset.ready = 'false';
+      setState('Aktarım doğrulandı: terimler, varyantlar, kaynaklar ve çakışma örnekleri doğru.', 'ok');
+    } catch (error) {
+      show(error.data || { error: error.message });
+      setState(`Son doğrulama başarısız: ${error.message}`, 'error');
+    } finally { lock(false); }
+  });
+})();
+</script>
+</body>
+</html>
