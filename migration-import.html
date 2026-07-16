@@ -28,14 +28,14 @@
 <body>
 <main>
   <h1>Askerî Terimler Sözlüğü — D1 Aktarımı</h1>
-  <p class="warning">Bu ekran yalnız Cloudflare Preview veritabanı içindir. Ön denetim başarılı olmadan aktarım düğmesi açılmaz. Sayfayı aktarım sırasında kapatmayın.</p>
+  <p class="warning">Bu ekran yalnız Cloudflare Preview veritabanı içindir. Sistem mevcut D1 kayıt sayısını denetler ve kesilen aktarımı güvenli biçimde kaldığı yerden sürdürür. Sayfayı aktarım sırasında kapatmayın.</p>
 
   <label for="password">Editör parolası</label>
   <input id="password" type="password" autocomplete="current-password" maxlength="256">
 
   <div class="buttons">
-    <button id="preflight" class="secondary">1. Ön denetimi çalıştır</button>
-    <button id="start" class="primary" disabled>2. Aktarımı başlat</button>
+    <button id="preflight" class="secondary">1. Durumu denetle</button>
+    <button id="start" class="primary" disabled>2. Aktarımı başlat / sürdür</button>
     <button id="verify" class="secondary" disabled>3. Son doğrulamayı çalıştır</button>
   </div>
 
@@ -47,6 +47,7 @@
 (() => {
   'use strict';
   const endpoint = '/api/migration/import';
+  const total = 1232;
   const password = document.getElementById('password');
   const preflightButton = document.getElementById('preflight');
   const startButton = document.getElementById('start');
@@ -55,6 +56,7 @@
   const state = document.getElementById('state');
   const output = document.getElementById('output');
   let running = false;
+  let resumeCursor = 0;
 
   function show(data) {
     output.textContent = JSON.stringify(data, null, 2);
@@ -91,49 +93,75 @@
     return data;
   }
 
+  async function readStatus() {
+    const data = await call('status');
+    const cursor = Number(data.nextCursor || 0);
+    if (!Number.isInteger(cursor) || cursor < 0 || cursor > total) throw new Error('D1 ilerleme değeri geçersiz.');
+    resumeCursor = cursor;
+    progress.value = cursor;
+    return data;
+  }
+
   preflightButton.addEventListener('click', async () => {
     if (running) return;
     if (!password.value) { setState('Editör parolasını girin.', 'error'); return; }
     lock(true);
-    setState('Ön denetim çalışıyor…');
+    setState('D1 durumu denetleniyor…');
     try {
-      const data = await call('preflight');
-      show(data);
-      const valid = data.databaseEmpty && Object.values(data.invariantChecks || {}).every(Boolean) && data.plannedCounts?.terms === 1232;
-      if (!valid) throw new Error('Ön denetim beklenen koşulları sağlamadı.');
-      startButton.dataset.ready = 'true';
-      setState('Ön denetim başarılı. Veritabanı boş ve 1.232 terim aktarılmaya hazır.', 'ok');
+      const status = await readStatus();
+      show(status);
+      if (resumeCursor === 0) {
+        const data = await call('preflight');
+        show(data);
+        const valid = data.databaseEmpty && Object.values(data.invariantChecks || {}).every(Boolean) && data.plannedCounts?.terms === total;
+        if (!valid) throw new Error('Ön denetim beklenen koşulları sağlamadı.');
+        startButton.dataset.ready = 'true';
+        setState('Ön denetim başarılı. Veritabanı boş ve 1.232 terim aktarılmaya hazır.', 'ok');
+      } else if (resumeCursor < total) {
+        startButton.dataset.ready = 'true';
+        setState(`Kesilmiş aktarım bulundu. ${resumeCursor} terim mevcut; aktarım ${resumeCursor}. terimden sürdürülebilir.`, 'ok');
+      } else {
+        verifyButton.dataset.ready = 'true';
+        setState('1.232 terimin tamamı mevcut. Son doğrulamayı çalıştırın.', 'ok');
+      }
     } catch (error) {
       startButton.dataset.ready = 'false';
       show(error.data || { error: error.message });
-      setState(`Ön denetim başarısız: ${error.message}`, 'error');
+      setState(`Durum denetimi başarısız: ${error.message}`, 'error');
     } finally { lock(false); }
   });
 
   startButton.addEventListener('click', async () => {
     if (running || startButton.dataset.ready !== 'true') return;
-    const confirmed = window.confirm('1.232 terim Preview D1 veritabanına yazılacak. Devam edilsin mi?');
+    const status = await readStatus().catch(error => {
+      show(error.data || { error: error.message });
+      setState(`Devam noktası okunamadı: ${error.message}`, 'error');
+      return null;
+    });
+    if (!status) return;
+    const confirmed = window.confirm(`Aktarım ${resumeCursor}. terimden sürdürülecek ve toplam 1.232 terime ulaşacaktır. Devam edilsin mi?`);
     if (!confirmed) return;
     lock(true);
     startButton.dataset.ready = 'false';
-    let cursor = 0;
-    progress.value = 0;
-    setState('Aktarım başladı. Sayfayı kapatmayın.');
+    let cursor = resumeCursor;
+    progress.value = cursor;
+    setState(`Aktarım ${cursor}. terimden sürdürülüyor. Sayfayı kapatmayın.`);
     try {
-      while (cursor < 1232) {
+      while (cursor < total) {
         const data = await call('import', { cursor });
         if (!Number.isInteger(data.nextCursor) || data.nextCursor <= cursor) throw new Error('Aktarım ilerleme değeri geçersiz.');
         cursor = data.nextCursor;
+        resumeCursor = cursor;
         progress.value = cursor;
         show(data);
-        setState(`Aktarım sürüyor: ${cursor} / 1232 terim işlendi.`);
-        await new Promise(resolve => setTimeout(resolve, 120));
+        setState(`Aktarım sürüyor: ${cursor} / ${total} terim işlendi.`);
+        await new Promise(resolve => setTimeout(resolve, 250));
       }
       verifyButton.dataset.ready = 'true';
       setState('Aktarım yazma aşaması tamamlandı. Son doğrulamayı çalıştırın.', 'ok');
     } catch (error) {
       show(error.data || { error: error.message, cursor });
-      setState(`Aktarım durdu: ${error.message}. İmleç: ${cursor}. Bu ekranda yeni işlem yapmayın.`, 'error');
+      setState(`Aktarım durdu: ${error.message}. Güvenli devam noktası: ${cursor}. Yeni deployment sonrası Durumu denetle ile devam edin.`, 'error');
     } finally { lock(false); }
   });
 
@@ -145,7 +173,7 @@
       const data = await call('verify');
       show(data);
       if (!Object.values(data.countChecks || {}).every(Boolean) || !data.samplesOk) throw new Error('Sayı veya örnek kayıt doğrulaması başarısız.');
-      progress.value = 1232;
+      progress.value = total;
       verifyButton.dataset.ready = 'false';
       setState('Aktarım doğrulandı: terimler, varyantlar, kaynaklar ve çakışma örnekleri doğru.', 'ok');
     } catch (error) {
