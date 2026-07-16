@@ -49,7 +49,7 @@ export async function onRequestGet(context) {
   const id = requestId(context.request);
   try {
     const response = await fetch(SOURCE_URL, {
-      headers: { Accept: 'application/json', 'User-Agent': 'ATS-Cloudflare-Collision-Audit/1.0' },
+      headers: { Accept: 'application/json', 'User-Agent': 'ATS-Cloudflare-Collision-Audit/1.1' },
       cf: { cacheTtl: 0, cacheEverything: false }
     });
     if (!response.ok) {
@@ -79,7 +79,6 @@ export async function onRequestGet(context) {
           variant: clean(row.varyant_kisaltma),
           category: clean(row.kategori),
           explanation_tr: clean(row.aciklama || row.baglam_editor_notu),
-          confidence: clean(row.guven_durumu),
           source_text: clean(row.kunye_kaynak || row.kunye || row.kaynak_dosyadaki_karsilik)
         };
         const current = groups.get(baseSlug) || [];
@@ -100,6 +99,7 @@ export async function onRequestGet(context) {
 
     return json({
       ok: true,
+      removedFields: ['Güven Durumu'],
       collisionGroupCount: collisions.length,
       collisions,
       writePerformed: false,
