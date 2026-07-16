@@ -1,0 +1,2 @@
+Cloudflare Pages D1 binding redeploy trigger.
+Production and Preview bindings: DB -> askeri-terimler-sozlugu-preview.
