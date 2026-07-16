@@ -1,4 +1,4 @@
-import { json, withRequestId } from '../../_lib/http.js';
+import { json, requestId } from '../../_lib/http.js';
 
 const SOURCE_URL = 'https://askeriterimlersozlugu.com/api/content';
 const HEADWORD_KEYS = ['term','headword','headword_en','english','en','anaTerim','ana_terim','madde','title'];
@@ -20,14 +20,23 @@ function chooseHeadword(row) {
 }
 
 export async function onRequestGet(context) {
-  const requestId = withRequestId(context.request);
+  const id = requestId(context.request);
   try {
     const response = await fetch(SOURCE_URL, {
-      headers: { 'Accept': 'application/json', 'User-Agent': 'ATS-Cloudflare-Migration-Audit/1.0' },
+      headers: {
+        Accept: 'application/json',
+        'User-Agent': 'ATS-Cloudflare-Migration-Audit/1.0'
+      },
       cf: { cacheTtl: 0, cacheEverything: false }
     });
+
     if (!response.ok) {
-      return json({ ok: false, error: 'source_fetch_failed', status: response.status, requestId }, 502);
+      return json({
+        ok: false,
+        error: 'source_fetch_failed',
+        status: response.status,
+        requestId: id
+      }, { status: 502 });
     }
 
     const snapshot = await response.json();
@@ -43,12 +52,17 @@ export async function onRequestGet(context) {
         nonObjectRows += 1;
         return;
       }
-      Object.keys(row).forEach(key => keyCounts.set(key, (keyCounts.get(key) || 0) + 1));
+
+      Object.keys(row).forEach(key => {
+        keyCounts.set(key, (keyCounts.get(key) || 0) + 1);
+      });
+
       const chosen = chooseHeadword(row);
       if (!chosen.value) {
         emptyHeadwords += 1;
         return;
       }
+
       headwordKeyCounts.set(chosen.key, (headwordKeyCounts.get(chosen.key) || 0) + 1);
       const norm = normalized(chosen.value);
       const current = duplicates.get(norm) || { value: chosen.value, indexes: [] };
@@ -72,13 +86,20 @@ export async function onRequestGet(context) {
       expectedVisibleCount: 1234,
       actualRowCount: rows.length,
       countMatchesVisibleSite: rows.length === 1234,
-      pagesTrCount: snapshot?.pages && typeof snapshot.pages === 'object' ? Object.keys(snapshot.pages).length : 0,
-      pagesEnCount: snapshot?.pages_en && typeof snapshot.pages_en === 'object' ? Object.keys(snapshot.pages_en).length : 0,
-      metaKeys: snapshot?.meta && typeof snapshot.meta === 'object' ? Object.keys(snapshot.meta).sort() : [],
+      pagesTrCount: snapshot?.pages && typeof snapshot.pages === 'object'
+        ? Object.keys(snapshot.pages).length
+        : 0,
+      pagesEnCount: snapshot?.pages_en && typeof snapshot.pages_en === 'object'
+        ? Object.keys(snapshot.pages_en).length
+        : 0,
+      metaKeys: snapshot?.meta && typeof snapshot.meta === 'object'
+        ? Object.keys(snapshot.meta).sort()
+        : [],
       rowShape: {
         nonObjectRows,
         emptyHeadwords,
-        detectedHeadwordKeys: [...headwordKeyCounts.entries()].map(([key, count]) => ({ key, count })),
+        detectedHeadwordKeys: [...headwordKeyCounts.entries()]
+          .map(([key, count]) => ({ key, count })),
         fields: sortedKeys
       },
       duplicates: {
@@ -86,10 +107,15 @@ export async function onRequestGet(context) {
         sample: duplicateGroups
       },
       writePerformed: false,
-      requestId,
+      requestId: id,
       timestamp: new Date().toISOString()
     });
   } catch (error) {
-    return json({ ok: false, error: 'inspection_failed', message: String(error?.message || error), requestId }, 500);
+    return json({
+      ok: false,
+      error: 'inspection_failed',
+      message: String(error?.message || error),
+      requestId: id
+    }, { status: 500 });
   }
 }
