@@ -1,10 +1,11 @@
 import { json, methodNotAllowed, requestId } from '../../_lib/http.js';
 import { buildMigrationDataset, fetchMigrationSnapshot } from '../../_lib/migration-data.js';
 
-const MAX_STATEMENTS_PER_BATCH = 10;
+const MAX_STATEMENTS_PER_BATCH = 8;
 const EXPECTED_SOURCE_ROWS = 1234;
 const EXPECTED_TERMS = 1232;
 const ALLOWED_HOST = 'askeri-terimler-sozlugu-preview.pages.dev';
+const DATASET_CACHE_URL = `https://${ALLOWED_HOST}/__internal/migration-dataset-v3.json`;
 
 function hex(buffer) {
   return [...new Uint8Array(buffer)].map(byte => byte.toString(16).padStart(2, '0')).join('');
@@ -60,6 +61,28 @@ async function schemaCheck(db) {
 function statusesMatch(actual, expected) {
   const keys = new Set([...Object.keys(actual || {}), ...Object.keys(expected || {})]);
   return [...keys].every(key => Number(actual?.[key] || 0) === Number(expected?.[key] || 0));
+}
+
+async function getDataset() {
+  const cache = typeof caches !== 'undefined' ? caches.default : null;
+  const cacheKey = new Request(DATASET_CACHE_URL, { method: 'GET' });
+  if (cache) {
+    const hit = await cache.match(cacheKey);
+    if (hit) return { dataset: await hit.json(), cache: 'hit' };
+  }
+
+  const snapshot = await fetchMigrationSnapshot();
+  const dataset = buildMigrationDataset(snapshot);
+  if (cache) {
+    const response = new Response(JSON.stringify(dataset), {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Cache-Control': 'public, max-age=86400'
+      }
+    });
+    await cache.put(cacheKey, response);
+  }
+  return { dataset, cache: 'miss' };
 }
 
 function statementsForRecord(db, record) {
@@ -138,32 +161,47 @@ export async function onRequest(context) {
   try {
     if (action === 'status') {
       const counts = await databaseCounts(context.env.DB);
+      const prepared = await getDataset();
+      const dataset = prepared.dataset;
+      const datasetOk = dataset.sourceRowCount === EXPECTED_SOURCE_ROWS && dataset.termCount === EXPECTED_TERMS;
       const nextCursor = Math.max(0, Math.min(counts.terms, EXPECTED_TERMS));
       return json({
-        ok: true,
+        ok: datasetOk,
         action,
         currentCounts: counts,
         nextCursor,
         complete: counts.terms === EXPECTED_TERMS,
+        datasetPrepared: datasetOk,
+        datasetCache: prepared.cache,
+        plannedCounts: {
+          terms: dataset.termCount,
+          variants: dataset.variantCount,
+          sources: dataset.sourceCount
+        },
         requestId: id
-      });
+      }, { status: datasetOk ? 200 : 409 });
     }
 
-    const snapshot = await fetchMigrationSnapshot();
-    const dataset = buildMigrationDataset(snapshot);
+    const prepared = await getDataset();
+    const dataset = prepared.dataset;
+    const invariantChecks = {
+      sourceRows: dataset.sourceRowCount === EXPECTED_SOURCE_ROWS,
+      transformedTerms: dataset.termCount === EXPECTED_TERMS
+    };
+    if (!Object.values(invariantChecks).every(Boolean)) {
+      return json({ ok: false, error: 'invariant_failed', invariantChecks, requestId: id }, { status: 409 });
+    }
 
     if (action === 'preflight') {
       const [schema, before] = await Promise.all([
         schemaCheck(context.env.DB),
         databaseCounts(context.env.DB)
       ]);
-      const invariantChecks = {
-        sourceRows: dataset.sourceRowCount === EXPECTED_SOURCE_ROWS,
-        transformedTerms: dataset.termCount === EXPECTED_TERMS,
+      Object.assign(invariantChecks, {
         canonicalColumn: schema.hasCanonicalColumn,
         legacyColumnRemoved: !schema.hasLegacyColumn,
         confidenceRemoved: !schema.hasConfidence
-      };
+      });
       const invariantsOk = Object.values(invariantChecks).every(Boolean);
       const databaseEmpty = before.terms === 0 && before.variants === 0 && before.sources === 0;
       return json({
@@ -173,6 +211,7 @@ export async function onRequest(context) {
         invariantChecks,
         databaseEmpty,
         currentCounts: before,
+        datasetCache: prepared.cache,
         plannedCounts: {
           sourceRows: dataset.sourceRowCount,
           terms: dataset.termCount,
@@ -185,27 +224,15 @@ export async function onRequest(context) {
       }, { status: invariantsOk && databaseEmpty ? 200 : 409 });
     }
 
-    const invariantChecks = {
-      sourceRows: dataset.sourceRowCount === EXPECTED_SOURCE_ROWS,
-      transformedTerms: dataset.termCount === EXPECTED_TERMS
-    };
-    if (!Object.values(invariantChecks).every(Boolean)) {
-      return json({ ok: false, error: 'invariant_failed', invariantChecks, requestId: id }, { status: 409 });
-    }
-
     if (action === 'import') {
-      const cursor = Math.max(0, Math.min(Number(body.cursor) || 0, dataset.records.length));
+      const requestedCursor = Math.max(0, Math.min(Number(body.cursor) || 0, dataset.records.length));
       const existing = await context.env.DB.prepare('SELECT COUNT(*) AS count FROM terms').first();
       const existingTerms = Number(existing?.count || 0);
-
-      if (cursor === 0 && existingTerms !== 0) {
-        return json({ ok: false, error: 'database_not_empty', existingTerms, resumeCursor: existingTerms, requestId: id }, { status: 409 });
-      }
-      if (cursor > existingTerms) {
-        return json({ ok: false, error: 'cursor_ahead_of_database', cursor, existingTerms, requestId: id }, { status: 409 });
+      if (requestedCursor > existingTerms) {
+        return json({ ok: false, error: 'cursor_ahead_of_database', requestedCursor, existingTerms, requestId: id }, { status: 409 });
       }
 
-      const safeCursor = Math.min(cursor, existingTerms);
+      const safeCursor = existingTerms;
       const { statements, nextCursor } = buildChunk(context.env.DB, dataset.records, safeCursor);
       if (statements.length === 0 && safeCursor < dataset.records.length) {
         return json({ ok: false, error: 'empty_chunk', cursor: safeCursor, requestId: id }, { status: 500 });
@@ -220,6 +247,7 @@ export async function onRequest(context) {
         complete: nextCursor >= dataset.records.length,
         processedTerms: nextCursor - safeCursor,
         executedStatements: statements.length,
+        datasetCache: prepared.cache,
         expectedFinalCounts: {
           terms: dataset.termCount,
           variants: dataset.variantCount,
@@ -266,6 +294,7 @@ export async function onRequest(context) {
         expectedStatuses: dataset.statusCounts,
         samplesOk,
         samples: samples.results || [],
+        datasetCache: prepared.cache,
         requestId: id
       }, { status: ok ? 200 : 409 });
     }
