@@ -16,6 +16,24 @@ function clean(value) {
   return typeof value === 'string' ? value.trim() : '';
 }
 
+function normalizeKey(value) {
+  return clean(value)
+    .toLocaleLowerCase('tr-TR')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ı/g, 'i')
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '');
+}
+
+function headerLabel(header, index) {
+  if (typeof header === 'string') return header;
+  if (header && typeof header === 'object') {
+    return clean(header.label) || clean(header.name) || clean(header.key) || clean(header.title) || `column_${index + 1}`;
+  }
+  return `column_${index + 1}`;
+}
+
 function slugify(value) {
   return clean(value)
     .toLocaleLowerCase('en-US')
@@ -29,11 +47,13 @@ function slugify(value) {
 function rowObject(section, row) {
   if (!row || typeof row !== 'object') return null;
   if (!Array.isArray(row)) return row;
-  const headers = Array.isArray(section.headers) ? section.headers : [];
+
+  const headers = Array.isArray(section?.headers) ? section.headers : [];
   const obj = {};
-  headers.forEach((header, index) => {
-    const key = typeof header === 'string' ? header : header?.key;
-    if (key) obj[key] = row[index];
+  row.forEach((value, index) => {
+    const label = headerLabel(headers[index], index);
+    const key = normalizeKey(label) || `column_${index + 1}`;
+    obj[key] = value;
   });
   return obj;
 }
@@ -49,7 +69,7 @@ export async function onRequestGet(context) {
   const id = requestId(context.request);
   try {
     const response = await fetch(SOURCE_URL, {
-      headers: { Accept: 'application/json', 'User-Agent': 'ATS-Cloudflare-Migration-Plan/1.0' },
+      headers: { Accept: 'application/json', 'User-Agent': 'ATS-Cloudflare-Migration-Plan/1.1' },
       cf: { cacheTtl: 0, cacheEverything: false }
     });
     if (!response.ok) {
