@@ -1,7 +1,7 @@
 import { json, methodNotAllowed, requestId } from '../../_lib/http.js';
 import { buildMigrationDataset, fetchMigrationSnapshot } from '../../_lib/migration-data.js';
 
-const MAX_STATEMENTS_PER_BATCH = 40;
+const MAX_STATEMENTS_PER_BATCH = 10;
 const EXPECTED_SOURCE_ROWS = 1234;
 const EXPECTED_TERMS = 1232;
 const ALLOWED_HOST = 'askeri-terimler-sozlugu-preview.pages.dev';
@@ -57,6 +57,11 @@ async function schemaCheck(db) {
   };
 }
 
+function statusesMatch(actual, expected) {
+  const keys = new Set([...Object.keys(actual || {}), ...Object.keys(expected || {})]);
+  return [...keys].every(key => Number(actual?.[key] || 0) === Number(expected?.[key] || 0));
+}
+
 function statementsForRecord(db, record) {
   const statements = [
     db.prepare(`
@@ -102,7 +107,9 @@ function buildChunk(db, records, cursor) {
   while (nextCursor < records.length) {
     const candidate = statementsForRecord(db, records[nextCursor]);
     if (statements.length > 0 && statements.length + candidate.length > MAX_STATEMENTS_PER_BATCH) break;
-    if (candidate.length > MAX_STATEMENTS_PER_BATCH) throw new Error(`record_statement_limit:${records[nextCursor].slug}`);
+    if (candidate.length > MAX_STATEMENTS_PER_BATCH) {
+      throw new Error(`record_statement_limit:${records[nextCursor].slug}:${candidate.length}`);
+    }
     statements.push(...candidate);
     nextCursor += 1;
   }
@@ -129,29 +136,42 @@ export async function onRequest(context) {
   const action = String(body.action || 'preflight');
 
   try {
-    const [snapshot, schema, before] = await Promise.all([
-      fetchMigrationSnapshot(),
-      schemaCheck(context.env.DB),
-      databaseCounts(context.env.DB)
-    ]);
+    if (action === 'status') {
+      const counts = await databaseCounts(context.env.DB);
+      const nextCursor = Math.max(0, Math.min(counts.terms, EXPECTED_TERMS));
+      return json({
+        ok: true,
+        action,
+        currentCounts: counts,
+        nextCursor,
+        complete: counts.terms === EXPECTED_TERMS,
+        requestId: id
+      });
+    }
+
+    const snapshot = await fetchMigrationSnapshot();
     const dataset = buildMigrationDataset(snapshot);
 
-    const invariantChecks = {
-      sourceRows: dataset.sourceRowCount === EXPECTED_SOURCE_ROWS,
-      transformedTerms: dataset.termCount === EXPECTED_TERMS,
-      canonicalColumn: schema.hasCanonicalColumn,
-      legacyColumnRemoved: !schema.hasLegacyColumn,
-      confidenceRemoved: !schema.hasConfidence
-    };
-    const invariantsOk = Object.values(invariantChecks).every(Boolean);
-
     if (action === 'preflight') {
+      const [schema, before] = await Promise.all([
+        schemaCheck(context.env.DB),
+        databaseCounts(context.env.DB)
+      ]);
+      const invariantChecks = {
+        sourceRows: dataset.sourceRowCount === EXPECTED_SOURCE_ROWS,
+        transformedTerms: dataset.termCount === EXPECTED_TERMS,
+        canonicalColumn: schema.hasCanonicalColumn,
+        legacyColumnRemoved: !schema.hasLegacyColumn,
+        confidenceRemoved: !schema.hasConfidence
+      };
+      const invariantsOk = Object.values(invariantChecks).every(Boolean);
+      const databaseEmpty = before.terms === 0 && before.variants === 0 && before.sources === 0;
       return json({
-        ok: invariantsOk && before.terms === 0 && before.variants === 0 && before.sources === 0,
+        ok: invariantsOk && databaseEmpty,
         action,
         writePerformed: false,
         invariantChecks,
-        databaseEmpty: before.terms === 0 && before.variants === 0 && before.sources === 0,
+        databaseEmpty,
         currentCounts: before,
         plannedCounts: {
           sourceRows: dataset.sourceRowCount,
@@ -162,35 +182,44 @@ export async function onRequest(context) {
         },
         collisionPolicy: dataset.collisionPolicy,
         requestId: id
-      }, { status: invariantsOk && before.terms === 0 && before.variants === 0 && before.sources === 0 ? 200 : 409 });
+      }, { status: invariantsOk && databaseEmpty ? 200 : 409 });
     }
 
-    if (!invariantsOk) {
+    const invariantChecks = {
+      sourceRows: dataset.sourceRowCount === EXPECTED_SOURCE_ROWS,
+      transformedTerms: dataset.termCount === EXPECTED_TERMS
+    };
+    if (!Object.values(invariantChecks).every(Boolean)) {
       return json({ ok: false, error: 'invariant_failed', invariantChecks, requestId: id }, { status: 409 });
     }
 
     if (action === 'import') {
       const cursor = Math.max(0, Math.min(Number(body.cursor) || 0, dataset.records.length));
-      if (cursor === 0 && (before.terms !== 0 || before.variants !== 0 || before.sources !== 0)) {
-        return json({ ok: false, error: 'database_not_empty', currentCounts: before, requestId: id }, { status: 409 });
+      const existing = await context.env.DB.prepare('SELECT COUNT(*) AS count FROM terms').first();
+      const existingTerms = Number(existing?.count || 0);
+
+      if (cursor === 0 && existingTerms !== 0) {
+        return json({ ok: false, error: 'database_not_empty', existingTerms, resumeCursor: existingTerms, requestId: id }, { status: 409 });
+      }
+      if (cursor > existingTerms) {
+        return json({ ok: false, error: 'cursor_ahead_of_database', cursor, existingTerms, requestId: id }, { status: 409 });
       }
 
-      const { statements, nextCursor } = buildChunk(context.env.DB, dataset.records, cursor);
-      if (statements.length === 0 && cursor < dataset.records.length) {
-        return json({ ok: false, error: 'empty_chunk', cursor, requestId: id }, { status: 500 });
+      const safeCursor = Math.min(cursor, existingTerms);
+      const { statements, nextCursor } = buildChunk(context.env.DB, dataset.records, safeCursor);
+      if (statements.length === 0 && safeCursor < dataset.records.length) {
+        return json({ ok: false, error: 'empty_chunk', cursor: safeCursor, requestId: id }, { status: 500 });
       }
       if (statements.length) await context.env.DB.batch(statements);
 
-      const after = await databaseCounts(context.env.DB);
       return json({
         ok: true,
         action,
-        cursor,
+        cursor: safeCursor,
         nextCursor,
         complete: nextCursor >= dataset.records.length,
-        processedTerms: nextCursor - cursor,
+        processedTerms: nextCursor - safeCursor,
         executedStatements: statements.length,
-        currentCounts: after,
         expectedFinalCounts: {
           terms: dataset.termCount,
           variants: dataset.variantCount,
@@ -208,7 +237,7 @@ export async function onRequest(context) {
         terms: counts.terms === dataset.termCount,
         variants: counts.variants === dataset.variantCount,
         sources: counts.sources === dataset.sourceCount,
-        statuses: JSON.stringify(actualStatuses) === JSON.stringify(dataset.statusCounts)
+        statuses: statusesMatch(actualStatuses, dataset.statusCounts)
       };
       const sampleSlugs = ['artillery-artilleryman', 'gun-cotton', 'captain-naval', 'captain-army', 'lieutenant-naval', 'lieutenant-army'];
       const placeholders = sampleSlugs.map((_, index) => `?${index + 1}`).join(',');
