@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS terms (
   explanation_tr TEXT,
   explanation_en TEXT,
   status TEXT NOT NULL DEFAULT 'published' CHECK (status IN ('draft','review','published','suspended')),
-  confidence TEXT,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),
   updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),
   published_at TEXT,
