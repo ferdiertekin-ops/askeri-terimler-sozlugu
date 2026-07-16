@@ -21,3 +21,11 @@ Please include:
 - a suggested mitigation, if available.
 
 Do not test vulnerabilities by accessing, modifying, deleting, or publishing data that does not belong to you.
+
+## Public-release gate
+
+The repository must not be made public until the mandatory items in `SECURITY_AUDIT.md` have been completed and verified. In particular, the current password-hash-based editor authorization must be replaced before public release.
+
+## Secrets
+
+Credentials and service tokens must be stored only as deployment environment variables. They must never be committed to the repository, included in examples, exported publication packages, screenshots, issues, or pull-request discussions.
