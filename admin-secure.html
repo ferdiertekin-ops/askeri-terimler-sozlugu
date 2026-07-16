@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Güvenli Editör Oturumu Testi</title>
+<style>
+:root{font-family:Cambria,Georgia,serif;color:#1e2732;background:#f4f1e8}body{margin:0}.wrap{max-width:780px;margin:40px auto;padding:0 18px}.card{background:#fff;border:1px solid #d8d2c3;border-radius:16px;padding:24px;box-shadow:0 16px 40px rgba(20,30,40,.08)}h1{margin-top:0;color:#20395a}label{display:grid;gap:7px;margin:14px 0}input,textarea,button{font:inherit}input,textarea{padding:11px;border:1px solid #bdb6a6;border-radius:8px}textarea{min-height:250px;font-family:ui-monospace,monospace}button{padding:10px 15px;border:1px solid #20395a;border-radius:8px;background:#2f4e71;color:#fff;margin:4px 6px 4px 0}button.secondary{background:#fff;color:#20395a}.status{padding:12px;border-radius:8px;background:#eef2f6;white-space:pre-wrap;word-break:break-word}.warn{background:#fff4df;border:1px solid #d9b76f;padding:12px;border-radius:8px}.ok{background:#eaf5ec}.bad{background:#faeaea}
+</style>
+</head>
+<body><main class="wrap"><section class="card">
+<h1>Güvenli Editör Oturumu Testi</h1>
+<p class="warn">Bu sayfa yalnız kimlik doğrulama ve salt okunur içerik testi içindir. Bilerek hiçbir yazma düğmesi içermez.</p>
+<p id="health" class="status">Yapılandırma kontrol ediliyor…</p>
+<label>Editör parolası<input id="password" type="password" autocomplete="current-password"></label>
+<div>
+<button id="login">Giriş yap</button>
+<button id="session" class="secondary">Oturumu kontrol et</button>
+<button id="logout" class="secondary">Çıkış yap</button>
+<button id="load" class="secondary">Canlı içeriği salt okunur yükle</button>
+</div>
+<p id="status" class="status">Hazır.</p>
+<label>Canlı içerik — salt okunur<textarea id="content" readonly></textarea></label>
+</section></main>
+<script>
+(() => {
+  let csrfToken = '';
+  const status = document.getElementById('status');
+  const health = document.getElementById('health');
+  const password = document.getElementById('password');
+  const content = document.getElementById('content');
+
+  function show(message, ok) {
+    status.textContent = message;
+    status.className = 'status ' + (ok === true ? 'ok' : ok === false ? 'bad' : '');
+  }
+
+  async function jsonFetch(url, options = {}) {
+    const response = await fetch(url, { credentials: 'same-origin', cache: 'no-store', ...options });
+    let data = null;
+    try { data = await response.json(); } catch (_) {}
+    return { response, data };
+  }
+
+  async function checkHealth() {
+    try {
+      const { response, data } = await jsonFetch('/api/editor/health');
+      health.textContent = response.ok
+        ? 'Güvenli oturum yapılandırması hazır.'
+        : 'Yapılandırma eksik: ' + JSON.stringify(data && data.checks ? data.checks : data);
+      health.className = 'status ' + (response.ok ? 'ok' : 'bad');
+    } catch (error) {
+      health.textContent = 'Sağlık kontrolüne ulaşılamadı: ' + error.message;
+      health.className = 'status bad';
+    }
+  }
+
+  document.getElementById('login').addEventListener('click', async () => {
+    show('Giriş doğrulanıyor…');
+    try {
+      const { response, data } = await jsonFetch('/api/editor/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: password.value })
+      });
+      if (!response.ok) return show(`Giriş reddedildi (${response.status}).`, false);
+      csrfToken = data.csrfToken || '';
+      password.value = '';
+      show('Giriş başarılı. HttpOnly oturum çerezi oluşturuldu.', true);
+    } catch (error) { show('Giriş hatası: ' + error.message, false); }
+  });
+
+  document.getElementById('session').addEventListener('click', async () => {
+    try {
+      const { response, data } = await jsonFetch('/api/editor/session');
+      if (!response.ok) { csrfToken = ''; return show(`Etkin oturum yok (${response.status}).`, false); }
+      csrfToken = data.csrfToken || '';
+      show('Oturum geçerli. Bitiş zamanı: ' + new Date(data.expiresAt * 1000).toLocaleString('tr-TR'), true);
+    } catch (error) { show('Oturum kontrolü hatası: ' + error.message, false); }
+  });
+
+  document.getElementById('logout').addEventListener('click', async () => {
+    try {
+      const { response } = await jsonFetch('/api/editor/logout', { method: 'POST', headers: csrfToken ? { 'X-CSRF-Token': csrfToken } : {} });
+      csrfToken = '';
+      show(response.ok ? 'Oturum kapatıldı.' : `Çıkış reddedildi (${response.status}).`, response.ok);
+    } catch (error) { show('Çıkış hatası: ' + error.message, false); }
+  });
+
+  document.getElementById('load').addEventListener('click', async () => {
+    try {
+      const { response, data } = await jsonFetch('/api/content');
+      if (!response.ok) return show(`İçerik yüklenemedi (${response.status}).`, false);
+      content.value = JSON.stringify(data, null, 2);
+      show('Canlı içerik salt okunur olarak yüklendi.', true);
+    } catch (error) { show('İçerik yükleme hatası: ' + error.message, false); }
+  });
+
+  checkHealth();
+})();
+</script></body></html>
