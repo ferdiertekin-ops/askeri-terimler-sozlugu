@@ -37,7 +37,13 @@ function parseCookies(event) {
 
 function createSession() {
   const now = Math.floor(Date.now() / 1000);
-  const payload = { iat: now, exp: now + SESSION_TTL_SECONDS, sid: crypto.randomBytes(24).toString('base64url'), csrf: crypto.randomBytes(24).toString('base64url') };
+  const payload = {
+    v: 1,
+    iat: now,
+    exp: now + SESSION_TTL_SECONDS,
+    sid: crypto.randomBytes(24).toString('base64url'),
+    csrf: crypto.randomBytes(24).toString('base64url')
+  };
   const encoded = b64url(JSON.stringify(payload));
   return { token: `${encoded}.${sign(encoded)}`, payload };
 }
@@ -45,12 +51,15 @@ function createSession() {
 function verifySession(event) {
   const token = parseCookies(event)[COOKIE_NAME];
   if (!token) return null;
-  const [encoded, signature] = String(token).split('.');
+  const parts = String(token).split('.');
+  if (parts.length !== 2) return null;
+  const [encoded, signature] = parts;
   if (!encoded || !signature || !safeEqual(signature, sign(encoded))) return null;
   let payload;
   try { payload = JSON.parse(fromB64url(encoded)); } catch (_) { return null; }
   const now = Math.floor(Date.now() / 1000);
-  if (!payload || !payload.sid || !payload.csrf || !payload.exp || payload.exp <= now) return null;
+  if (!payload || payload.v !== 1 || !payload.sid || !payload.csrf || !payload.iat || !payload.exp) return null;
+  if (payload.iat > now + 30 || payload.exp <= now || payload.exp - payload.iat > SESSION_TTL_SECONDS) return null;
   return payload;
 }
 
@@ -67,11 +76,45 @@ function verifyCsrf(event, session) {
   return !!session && safeEqual(supplied, session.csrf);
 }
 
+function normalizeOrigin(value) {
+  try {
+    const url = new URL(String(value || ''));
+    if (url.protocol !== 'https:') return '';
+    return url.origin;
+  } catch (_) {
+    return '';
+  }
+}
+
+function requestOrigin(event) {
+  const headers = event.headers || {};
+  const origin = normalizeOrigin(headers.origin || headers.Origin);
+  if (origin) return origin;
+  const proto = String(headers['x-forwarded-proto'] || headers['X-Forwarded-Proto'] || 'https').split(',')[0].trim();
+  const host = String(headers['x-forwarded-host'] || headers['X-Forwarded-Host'] || headers.host || headers.Host || '').split(',')[0].trim();
+  return normalizeOrigin(`${proto}://${host}`);
+}
+
+function allowedOrigins() {
+  const values = [
+    process.env.PUBLIC_SITE_ORIGIN,
+    process.env.URL,
+    process.env.DEPLOY_PRIME_URL,
+    process.env.DEPLOY_URL
+  ];
+  return new Set(values.map(normalizeOrigin).filter(Boolean));
+}
+
 function sameOrigin(event) {
-  const origin = String((event.headers && (event.headers.origin || event.headers.Origin)) || '');
-  if (!origin) return true;
-  const expected = String(process.env.PUBLIC_SITE_ORIGIN || 'https://askeriterimlersozlugu.com').replace(/\/$/, '');
-  return origin.replace(/\/$/, '') === expected;
+  const headers = event.headers || {};
+  const secFetchSite = String(headers['sec-fetch-site'] || headers['Sec-Fetch-Site'] || '').toLowerCase();
+  if (secFetchSite && !['same-origin', 'none'].includes(secFetchSite)) return false;
+
+  const origin = requestOrigin(event);
+  if (!origin) return false;
+  const allowed = allowedOrigins();
+  if (!allowed.size) allowed.add('https://askeriterimlersozlugu.com');
+  return allowed.has(origin);
 }
 
 function passwordHash() {
@@ -93,8 +136,29 @@ function securityHeaders(extra = {}) {
     'Referrer-Policy': 'no-referrer',
     'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
     'X-Frame-Options': 'DENY',
+    'Cross-Origin-Opener-Policy': 'same-origin',
+    'Cross-Origin-Resource-Policy': 'same-origin',
     ...extra
   };
 }
 
-module.exports = { createSession, verifySession, verifyCsrf, verifyPassword, sameOrigin, sessionCookie, clearCookie, securityHeaders };
+function readiness() {
+  const checks = {
+    editorPasswordHash: /^[0-9a-f]{64}$/.test(String(process.env.EDITOR_PASSWORD_HASH || '').trim().toLowerCase()),
+    sessionSecret: String(process.env.SESSION_SECRET || '').trim().length >= 32,
+    allowedOrigin: allowedOrigins().size > 0
+  };
+  return { ok: Object.values(checks).every(Boolean), checks };
+}
+
+module.exports = {
+  createSession,
+  verifySession,
+  verifyCsrf,
+  verifyPassword,
+  sameOrigin,
+  sessionCookie,
+  clearCookie,
+  securityHeaders,
+  readiness
+};
