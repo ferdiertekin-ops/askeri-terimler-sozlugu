@@ -4,7 +4,8 @@
   "private": true,
   "description": "Askerî Terimler Sözlüğü - canlı editör kayıt sistemi",
   "scripts": {
-    "build": "node -e \"console.log('Statik dosyalar hazır; Netlify Functions paketleniyor.')\""
+    "test": "node scripts/security-smoke-test.js",
+    "build": "npm test && node -e \"console.log('Statik dosyalar hazır; Netlify Functions paketleniyor.')\""
   },
   "dependencies": {
     "@netlify/blobs": "latest"
