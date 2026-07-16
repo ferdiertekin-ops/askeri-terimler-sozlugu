@@ -69,7 +69,7 @@ export async function onRequestGet(context) {
   const id = requestId(context.request);
   try {
     const response = await fetch(SOURCE_URL, {
-      headers: { Accept: 'application/json', 'User-Agent': 'ATS-Cloudflare-Migration-Plan/1.1' },
+      headers: { Accept: 'application/json', 'User-Agent': 'ATS-Cloudflare-Migration-Plan/1.2' },
       cf: { cacheTtl: 0, cacheEverything: false }
     });
     if (!response.ok) {
@@ -120,7 +120,6 @@ export async function onRequestGet(context) {
           category: clean(row.kategori),
           explanation_tr: clean(row.aciklama || row.baglam_editor_notu),
           explanation_en: '',
-          confidence: clean(row.guven_durumu),
           status,
           variant: clean(row.varyant_kisaltma),
           sources,
@@ -146,6 +145,7 @@ export async function onRequestGet(context) {
       source: SOURCE_URL,
       sourceStatus: response.status,
       terminology: { sourceLabel: 'Günümüz Türkçesi', canonicalLabel: 'Günümüz Karşılığı' },
+      removedFields: ['Güven Durumu'],
       expectedVisibleCount: 1234,
       plannedTermCount: records.length,
       countMatchesVisibleSite: records.length === 1234,
