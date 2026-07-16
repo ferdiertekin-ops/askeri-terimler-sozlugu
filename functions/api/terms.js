@@ -16,7 +16,7 @@ export async function onRequest(context) {
       const pattern = `%${q}%`;
       statement = context.env.DB.prepare(`
         SELECT id, slug, headword_en, ottoman_period_term, modern_tr, category,
-               explanation_tr, explanation_en, confidence, updated_at, version
+               explanation_tr, explanation_en, updated_at, version
         FROM terms
         WHERE status = 'published'
           AND (headword_en LIKE ?1 COLLATE NOCASE
@@ -32,7 +32,7 @@ export async function onRequest(context) {
     } else {
       statement = context.env.DB.prepare(`
         SELECT id, slug, headword_en, ottoman_period_term, modern_tr, category,
-               explanation_tr, explanation_en, confidence, updated_at, version
+               explanation_tr, explanation_en, updated_at, version
         FROM terms
         WHERE status = 'published'
         ORDER BY headword_en COLLATE NOCASE
