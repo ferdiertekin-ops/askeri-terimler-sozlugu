@@ -1,4 +1,4 @@
-import { json, requestId } from '../../_lib/http.js';
+import { json, previewOnly, requestId } from '../../_lib/http.js';
 
 const SOURCE_URL = 'https://askeriterimlersozlugu.com/api/content';
 
@@ -46,6 +46,7 @@ function slugify(value) {
 }
 
 export async function onRequestGet(context) {
+  if (!previewOnly(context)) return json({ ok: false, error: 'preview_only' }, { status: 403 });
   const id = requestId(context.request);
   try {
     const response = await fetch(SOURCE_URL, {
