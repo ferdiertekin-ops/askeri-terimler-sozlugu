@@ -1,3 +1,5 @@
+import { renderRobots, renderSitemap, renderTermPage, renderTermsIndex } from './_lib/site.js';
+
 function redirect(url, pathname, status = 308) {
   const target = new URL(url);
   target.pathname = pathname;
@@ -26,5 +28,35 @@ export async function onRequest(context) {
   }
 
   if (getOrHead && path === '/editor') return redirect(url, '/editor/');
+
+  if (getOrHead && path === '/terimler') return redirect(url, '/terimler/');
+  if (getOrHead && path === '/terimler/') {
+    if (!context.env.DB) return context.next();
+    return renderTermsIndex(context.env.DB, 'tr');
+  }
+
+  if (getOrHead && path === '/en/terms') return redirect(url, '/en/terms/');
+  if (getOrHead && path === '/en/terms/') {
+    if (!context.env.DB) return context.next();
+    return renderTermsIndex(context.env.DB, 'en');
+  }
+
+  const trTerm = path.match(/^\/terim\/([^/]+)(\/?)$/);
+  if (getOrHead && trTerm) {
+    if (!trTerm[2]) return redirect(url, `/terim/${trTerm[1]}/`);
+    if (!context.env.DB) return context.next();
+    return renderTermPage(context.env.DB, decodeURIComponent(trTerm[1]), 'tr');
+  }
+
+  const enTerm = path.match(/^\/en\/term\/([^/]+)(\/?)$/);
+  if (getOrHead && enTerm) {
+    if (!enTerm[2]) return redirect(url, `/en/term/${enTerm[1]}/`);
+    if (!context.env.DB) return context.next();
+    return renderTermPage(context.env.DB, decodeURIComponent(enTerm[1]), 'en');
+  }
+
+  if (getOrHead && path === '/sitemap.xml' && context.env.DB) return renderSitemap(context.env.DB);
+  if (getOrHead && path === '/robots.txt') return renderRobots();
+
   return context.next();
 }
