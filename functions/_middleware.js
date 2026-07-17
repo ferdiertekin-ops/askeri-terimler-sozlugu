@@ -1,3 +1,4 @@
+import { handleEditorApi } from './_lib/editor.js';
 import { renderRobots, renderSitemap, renderTermPage, renderTermsIndex } from './_lib/site.js';
 
 function redirect(url, pathname, status = 308) {
@@ -17,6 +18,8 @@ export async function onRequest(context) {
   const url = new URL(context.request.url);
   const path = url.pathname;
   const getOrHead = context.request.method === 'GET' || context.request.method === 'HEAD';
+
+  if (path.startsWith('/api/editor/')) return handleEditorApi(context, path);
 
   if (getOrHead && (path === '/' || path === '/index.html')) {
     return assetRequest(context, '/dictionary-d1-preview');
