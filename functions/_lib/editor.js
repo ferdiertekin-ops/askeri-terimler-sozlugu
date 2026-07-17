@@ -100,6 +100,10 @@ async function readSession(request, env) {
   }
 }
 
+export async function hasEditorSession(context) {
+  return Boolean(await readSession(context.request, context.env));
+}
+
 async function authorize(context, { csrf = false } = {}) {
   const session = await readSession(context.request, context.env);
   if (!session) return { response: json({ ok: false, error: 'unauthorized' }, { status: 401 }) };
