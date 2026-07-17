@@ -1,12 +1,12 @@
 {
   "name": "askeri-terimler-sozlugu",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "Askerî Terimler Sözlüğü - canlı editör kayıt sistemi",
+  "type": "module",
+  "description": "Cloudflare Pages, Pages Functions ve D1 tabanlı Askerî Terimler Sözlüğü",
   "scripts": {
-    "build": "node -e \"console.log('Statik dosyalar hazır; Netlify Functions paketleniyor.')\""
-  },
-  "dependencies": {
-    "@netlify/blobs": "latest"
+    "build": "node -e \"console.log('Cloudflare Pages statik dosyaları ve Functions hazır.')\"",
+    "dev": "npx wrangler pages dev .",
+    "check": "node --check functions/_middleware.js && node --check functions/_lib/http.js && node --check functions/_lib/site.js && node --check functions/_lib/editor.js"
   }
 }
