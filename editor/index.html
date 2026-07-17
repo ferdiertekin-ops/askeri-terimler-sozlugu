@@ -32,62 +32,50 @@ button{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(
   </form>
 </section>
 
-<section id="app" class="app" hidden>
-  <div class="toolbar">
-    <form id="searchForm" class="search-row"><input id="search" class="input" type="search" placeholder="Madde ara"><button type="submit">Ara</button></form>
-    <div class="actions"><button id="newBtn" class="primary" type="button">+ Yeni madde</button><button id="logoutBtn" type="button">Çıkış</button></div>
-  </div>
-  <div class="workspace">
-    <aside id="termList" class="card list" aria-label="Maddeler"></aside>
-    <main class="card">
-      <div class="form-head"><div><h1 id="formTitle">Yeni madde</h1><div id="recordMeta" class="meta"></div></div><span id="recordStatus" class="status">Taslak</span></div>
-      <form id="termForm">
-        <div class="grid">
-          <label>Ana terim<input id="headword" class="input" required maxlength="300"></label>
-          <label>Kalıcı adres (slug)<input id="slug" class="input" maxlength="150" placeholder="Boş bırakılırsa otomatik oluşur"></label>
-          <label>Osmanlıca / dönem<textarea id="ottoman"></textarea></label>
-          <label>Günümüz karşılığı<textarea id="modern"></textarea></label>
-          <label>Kategori<input id="category" class="input" maxlength="200"></label>
-          <label>Yayın durumu<select id="status"><option value="draft">Taslak</option><option value="review">İnceleme</option><option value="published">Yayında</option><option value="suspended">Askıda</option></select></label>
-          <label class="full">Türkçe açıklama<textarea id="explanationTr"></textarea></label>
-          <label class="full">İngilizce açıklama<textarea id="explanationEn"></textarea></label>
-          <label>Varyantlar / kısaltmalar<textarea id="variants" placeholder="Her satıra bir değer"></textarea></label>
-          <label>Kaynaklar<textarea id="sources" placeholder="Her satıra bir kaynak"></textarea></label>
-          <label class="full">Değişiklik notu<input id="changeNote" class="input" maxlength="500" placeholder="Bu düzenlemede ne değişti?"></label>
-        </div>
-        <div class="form-actions"><div class="actions"><button id="saveBtn" class="primary" type="submit">Kaydet</button><button id="resetBtn" type="button">Temizle</button></div><button id="deleteBtn" class="danger" type="button" hidden>Kalıcı olarak sil</button></div>
-      </form>
-    </main>
-  </div>
-</section>
 </div><div id="notice" class="notice" role="status"></div>
 
 <script>
 const $=id=>document.getElementById(id);
-let csrf='',currentSlug='',searchTimer=null;
-const fields={headword:$('headword'),slug:$('slug'),ottoman:$('ottoman'),modern:$('modern'),category:$('category'),status:$('status'),explanationTr:$('explanationTr'),explanationEn:$('explanationEn'),variants:$('variants'),sources:$('sources'),changeNote:$('changeNote')};
 
-function message(text,error=false){const box=$('notice');box.textContent=text;box.className='notice show'+(error?' error':'');clearTimeout(message.timer);message.timer=setTimeout(()=>box.className='notice',3500)}
-async function api(url,options={}){const headers={Accept:'application/json',...(options.headers||{})};if(options.body)headers['Content-Type']='application/json';if(csrf&&options.method&&options.method!=='GET')headers['X-CSRF-Token']=csrf;const response=await fetch(url,{credentials:'same-origin',...options,headers});let data={};try{data=await response.json()}catch{}if(!response.ok||!data.ok)throw new Error(data.error||('HTTP '+response.status));return data}
-function lines(value){return String(value||'').split(/\r?\n/).map(x=>x.trim()).filter(Boolean)}
-function resetForm(){currentSlug='';$('termForm').reset();fields.status.value='draft';$('formTitle').textContent='Yeni madde';$('recordMeta').textContent='';$('recordStatus').textContent='Taslak';$('deleteBtn').hidden=true;document.querySelectorAll('.term-item.active').forEach(x=>x.classList.remove('active'))}
-function fillForm(term){currentSlug=term.slug;fields.headword.value=term.headword_en||'';fields.slug.value=term.slug||'';fields.ottoman.value=term.ottoman_period_term||'';fields.modern.value=term.modern_equivalent_tr||'';fields.category.value=term.category||'';fields.status.value=term.status||'draft';fields.explanationTr.value=term.explanation_tr||'';fields.explanationEn.value=term.explanation_en||'';fields.variants.value=(term.variants||[]).map(x=>x.variant).join('\n');fields.sources.value=(term.sources||[]).map(x=>x.citation).join('\n');fields.changeNote.value='';$('formTitle').textContent=term.headword_en||'Madde';$('recordStatus').textContent=term.status||'draft';$('recordMeta').textContent='Sürüm '+(term.version||1)+' · '+(term.updated_at||'');$('deleteBtn').hidden=false}
-function payload(){return{headword_en:fields.headword.value,slug:fields.slug.value,ottoman_period_term:fields.ottoman.value,modern_equivalent_tr:fields.modern.value,category:fields.category.value,status:fields.status.value,explanation_tr:fields.explanationTr.value,explanation_en:fields.explanationEn.value,variants:lines(fields.variants.value),sources:lines(fields.sources.value),change_note:fields.changeNote.value}}
-async function loadList(q=''){const data=await api('/api/editor/terms?limit=100&q='+encodeURIComponent(q));const box=$('termList');if(!data.items.length){box.innerHTML='<div class="empty">Madde bulunamadı.</div>';return}box.innerHTML=data.items.map(item=>'<button type="button" class="term-item" data-slug="'+escapeAttr(item.slug)+'"><strong>'+escapeHtml(item.headword_en)+'</strong><small>'+escapeHtml(item.status)+' · '+escapeHtml(item.modern_equivalent_tr||'')+'</small></button>').join('');}
-function escapeHtml(value){return String(value||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function escapeAttr(value){return escapeHtml(value)}
-async function openTerm(slug){const data=await api('/api/editor/terms/'+encodeURIComponent(slug));fillForm(data.term);document.querySelectorAll('.term-item').forEach(x=>x.classList.toggle('active',x.dataset.slug===slug))}
-async function boot(){try{const data=await api('/api/editor/session');if(!data.authenticated)return;csrf=data.csrfToken;$('loginPanel').hidden=true;$('app').hidden=false;await loadList()}catch(error){message('Oturum denetlenemedi: '+error.message,true)}}
+async function readJson(response){
+  let data={};
+  try{data=await response.json()}catch{}
+  if(!response.ok||!data.ok)throw new Error(data.error||('HTTP '+response.status));
+  return data;
+}
 
-$('loginForm').addEventListener('submit',async event=>{event.preventDefault();$('loginError').textContent='';try{const data=await api('/api/editor/login',{method:'POST',body:JSON.stringify({password:$('password').value})});csrf=data.csrfToken;$('password').value='';$('loginPanel').hidden=true;$('app').hidden=false;await loadList();message('Giriş başarılı.')}catch(error){$('loginError').textContent=error.message==='rate_limited'?'Çok fazla deneme yapıldı. Lütfen bekleyin.':'Parola doğrulanamadı.'}});
-$('logoutBtn').addEventListener('click',async()=>{try{await api('/api/editor/logout',{method:'POST'});}catch{}csrf='';location.reload()});
-$('newBtn').addEventListener('click',resetForm);$('resetBtn').addEventListener('click',resetForm);
-$('searchForm').addEventListener('submit',event=>{event.preventDefault();loadList($('search').value).catch(error=>message(error.message,true))});
-$('search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>$('searchForm').requestSubmit(),300)});
-$('termList').addEventListener('click',event=>{const button=event.target.closest('[data-slug]');if(button)openTerm(button.dataset.slug).catch(error=>message(error.message,true))});
-$('termForm').addEventListener('submit',async event=>{event.preventDefault();try{const body=JSON.stringify(payload());const data=currentSlug?await api('/api/editor/terms/'+encodeURIComponent(currentSlug),{method:'PUT',body}):await api('/api/editor/terms',{method:'POST',body});fillForm(data.term);await loadList($('search').value);message('Madde kaydedildi.')}catch(error){message('Kaydetme başarısız: '+error.message,true)}});
-$('deleteBtn').addEventListener('click',async()=>{if(!currentSlug||!confirm('Bu madde kalıcı olarak silinecek. Devam edilsin mi?'))return;try{await api('/api/editor/terms/'+encodeURIComponent(currentSlug),{method:'DELETE'});resetForm();await loadList($('search').value);message('Madde kalıcı olarak silindi.')}catch(error){message('Silme başarısız: '+error.message,true)}});
-boot();
+async function checkSession(){
+  try{
+    const response=await fetch('/api/editor/session',{headers:{Accept:'application/json'},credentials:'same-origin'});
+    const data=await readJson(response);
+    if(data.authenticated)location.replace('/editor/panel/');
+  }catch{}
+}
+
+$('loginForm').addEventListener('submit',async event=>{
+  event.preventDefault();
+  const button=event.submitter;
+  $('loginError').textContent='';
+  if(button)button.disabled=true;
+  try{
+    const response=await fetch('/api/editor/login',{
+      method:'POST',
+      credentials:'same-origin',
+      headers:{Accept:'application/json','Content-Type':'application/json'},
+      body:JSON.stringify({password:$('password').value})
+    });
+    await readJson(response);
+    $('password').value='';
+    location.replace('/editor/panel/');
+  }catch(error){
+    $('loginError').textContent=error.message==='rate_limited'
+      ?'Çok fazla deneme yapıldı. Lütfen bekleyin.'
+      :'Parola doğrulanamadı.';
+    if(button)button.disabled=false;
+  }
+});
+
+checkSession();
 </script>
 </body>
 </html>
