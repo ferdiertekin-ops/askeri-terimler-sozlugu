@@ -172,6 +172,41 @@ function stringList(value, maxItems = 50) {
   return [...new Set(values.map(item => clean(item, 1000)).filter(Boolean))].slice(0, maxItems);
 }
 
+function normalizeSourceUrl(value) {
+  const raw = clean(value, 2048);
+  if (!raw) return { value: '' };
+  try {
+    const parsed = new URL(raw);
+    if (parsed.protocol !== 'https:' || parsed.username || parsed.password || parsed.toString().length > 2048) {
+      return { error: 'invalid_source_url' };
+    }
+    return { value: parsed.toString() };
+  } catch {
+    return { error: 'invalid_source_url' };
+  }
+}
+
+function sourceList(value, maxItems = 10) {
+  const values = Array.isArray(value) ? value : String(value || '').split(/\r?\n/);
+  const sources = [];
+  const seen = new Set();
+  for (const item of values) {
+    const object = item && typeof item === 'object' ? item : null;
+    const citation = clean(object ? object.citation : item, 1000);
+    const rawUrl = object ? object.url : '';
+    if (!citation && !clean(rawUrl, 2048)) continue;
+    if (!citation) return { error: 'source_citation_required' };
+    const normalized = normalizeSourceUrl(rawUrl);
+    if (normalized.error) return normalized;
+    const key = citation.toLocaleLowerCase('tr-TR') + '\n' + normalized.value;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    sources.push({ citation, url: normalized.value });
+    if (sources.length >= maxItems) break;
+  }
+  return { value: sources };
+}
+
 function validateTerm(input, existingSlug = '') {
   const headword = clean(input?.headword_en, 300);
   if (!headword) return { error: 'headword_required' };
@@ -179,6 +214,8 @@ function validateTerm(input, existingSlug = '') {
   const requestedSlug = clean(input?.slug, 180);
   const slug = slugify(requestedSlug || existingSlug || headword);
   if (!slug) return { error: 'invalid_slug' };
+  const sources = sourceList(input?.sources);
+  if (sources.error) return { error: sources.error };
   return {
     value: {
       slug,
@@ -190,7 +227,7 @@ function validateTerm(input, existingSlug = '') {
       explanation_en: clean(input?.explanation_en, 12000),
       status,
       variants: stringList(input?.variants),
-      sources: stringList(input?.sources)
+      sources: sources.value
     }
   };
 }
@@ -295,7 +332,7 @@ async function termsCollection(context) {
   const termId = Number(inserted.meta?.last_row_id || 0);
   const statements = [];
   value.variants.forEach(variant => statements.push(context.env.DB.prepare('INSERT INTO term_variants (term_id, variant, variant_type, language) VALUES (?1, ?2, ?3, ?4)').bind(termId, variant, 'editor', 'en')));
-  value.sources.forEach((citation, index) => statements.push(context.env.DB.prepare('INSERT INTO term_sources (term_id, citation, sort_order) VALUES (?1, ?2, ?3)').bind(termId, citation, index)));
+  value.sources.forEach((source, index) => statements.push(context.env.DB.prepare('INSERT INTO term_sources (term_id, citation, url, sort_order) VALUES (?1, ?2, ?3, ?4)').bind(termId, source.citation, source.url || null, index)));
   statements.push(context.env.DB.prepare("INSERT INTO term_revisions (term_id, revision_no, snapshot_json, change_note) VALUES (?1, 1, ?2, 'created')").bind(termId, JSON.stringify(value)));
   if (statements.length) await context.env.DB.batch(statements);
   await audit(context.env.DB, 'term_created', 'term', termId, id, { slug: value.slug, status: value.status });
@@ -339,7 +376,7 @@ async function termItem(context, slug) {
       context.env.DB.prepare('DELETE FROM term_sources WHERE term_id = ?1').bind(current.id)
     ];
     value.variants.forEach(variant => statements.push(context.env.DB.prepare('INSERT INTO term_variants (term_id, variant, variant_type, language) VALUES (?1, ?2, ?3, ?4)').bind(current.id, variant, 'editor', 'en')));
-    value.sources.forEach((citation, index) => statements.push(context.env.DB.prepare('INSERT INTO term_sources (term_id, citation, sort_order) VALUES (?1, ?2, ?3)').bind(current.id, citation, index)));
+    value.sources.forEach((source, index) => statements.push(context.env.DB.prepare('INSERT INTO term_sources (term_id, citation, url, sort_order) VALUES (?1, ?2, ?3, ?4)').bind(current.id, source.citation, source.url || null, index)));
     await context.env.DB.batch(statements);
     await audit(context.env.DB, 'term_updated', 'term', current.id, id, { fromSlug: current.slug, slug: value.slug, version: nextVersion, status: value.status });
     return json({ ok: true, term: await fullTerm(context.env.DB, value.slug), requestId: id });
