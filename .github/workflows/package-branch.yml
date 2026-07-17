@@ -1,0 +1,34 @@
+name: Package migration branch
+
+on:
+  push:
+    branches:
+      - agent/cloudflare-migration
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Prepare archive
+        run: |
+          mkdir -p package/askeri-terimler-sozlugu-cloudflare-migration
+          rsync -a --exclude='.git' --exclude='package' ./ package/askeri-terimler-sozlugu-cloudflare-migration/
+          cd package
+          zip -r askeri-terimler-sozlugu-cloudflare-migration.zip askeri-terimler-sozlugu-cloudflare-migration
+
+      - name: Upload archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: askeri-terimler-sozlugu-cloudflare-migration
+          path: package/askeri-terimler-sozlugu-cloudflare-migration.zip
+          if-no-files-found: error
+          retention-days: 7
