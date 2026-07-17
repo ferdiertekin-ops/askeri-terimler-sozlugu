@@ -1,4 +1,4 @@
-import { json, requestId as getRequestId } from '../../_lib/http.js';
+import { json, previewOnly, requestId as getRequestId } from '../../_lib/http.js';
 
 const SOURCE_URL = 'https://askeriterimlersozlugu.com/api/content';
 const HEADWORD_KEYS = [
@@ -67,6 +67,7 @@ function chooseHeadword(row) {
 }
 
 export async function onRequestGet(context) {
+  if (!previewOnly(context)) return json({ ok: false, error: 'preview_only' }, { status: 403 });
   const reqId = getRequestId(context.request);
   try {
     const response = await fetch(SOURCE_URL, {
