@@ -23,6 +23,14 @@
   Cache-Control: no-store, max-age=0
   X-Robots-Tag: noindex, nofollow, noarchive
 
-/.netlify/functions/*
+/api/editor/*
+  Cache-Control: no-store, max-age=0
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/api/migration/*
+  Cache-Control: no-store, max-age=0
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/editor/*
   Cache-Control: no-store, max-age=0
   X-Robots-Tag: noindex, nofollow, noarchive
