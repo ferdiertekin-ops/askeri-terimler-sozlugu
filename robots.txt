@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /editor/
+Disallow: /api/editor/
+Disallow: /api/migration/
 
-# Sitemap satırı özel alan adı kesinleşince sitemap.xml içinde mutlak URL ile güncellenmelidir.
+Sitemap: https://askeriterimlersozlugu.com/sitemap.xml
