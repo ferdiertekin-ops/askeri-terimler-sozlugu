@@ -1,4 +1,4 @@
-import { handleEditorApi } from './_lib/editor.js';
+import { handleEditorApi, hasEditorSession } from './_lib/editor.js';
 import { renderRobots, renderSitemap, renderTermPage, renderTermsIndex } from './_lib/site.js';
 
 function redirect(url, pathname, status = 308) {
@@ -20,6 +20,14 @@ export async function onRequest(context) {
   const getOrHead = context.request.method === 'GET' || context.request.method === 'HEAD';
 
   if (path.startsWith('/api/editor/')) return handleEditorApi(context, path);
+
+  const editorPanelRequest = path === '/editor/panel' || path === '/editor/panel/' || path === '/editor/panel/index.html';
+  const privatePanelAsset = path === '/editor-panel-private' || path === '/editor-panel-private.html';
+  if (getOrHead && (editorPanelRequest || privatePanelAsset)) {
+    if (!(await hasEditorSession(context))) return redirect(url, '/editor/', 303);
+    if (path === '/editor/panel') return redirect(url, '/editor/panel/');
+    return assetRequest(context, '/editor-panel-private');
+  }
 
   if (getOrHead && (path === '/' || path === '/index.html')) {
     return assetRequest(context, '/dictionary-d1-preview');
