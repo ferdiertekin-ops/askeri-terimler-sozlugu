@@ -14,9 +14,9 @@ header{display:flex;align-items:center;justify-content:space-between;gap:18px;pa
 label{display:block;color:#715d36;font:600 11px/1.2 Calibri,"Segoe UI",sans-serif;letter-spacing:.08em;text-transform:uppercase}.input,textarea,select{width:100%;margin-top:6px;border:1px solid #bdb6aa;border-radius:8px;background:#fff;color:var(--ink);padding:10px 11px;font:15px/1.45 Cambria,Georgia,serif}textarea{min-height:94px;resize:vertical}.password{min-height:44px}
 button{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);padding:10px 15px;font-weight:700;cursor:pointer}button:hover{border-color:var(--navy)}button.primary{background:var(--navy);border-color:var(--navy);color:#fff}button.danger{color:#fff;background:var(--red);border-color:var(--red)}button.ghost{background:transparent}
 .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.login button{width:100%;margin-top:14px}.error{color:var(--red);min-height:20px}.notice{position:fixed;right:18px;bottom:18px;max-width:360px;padding:12px 16px;border-radius:9px;background:#1e2732;color:#fff;box-shadow:0 12px 30px rgba(0,0,0,.25);display:none;z-index:20}.notice.show{display:block}.notice.error{background:var(--red)}
-.app[hidden],.login[hidden]{display:none}.toolbar{display:grid;grid-template-columns:1fr auto;gap:12px;margin:22px 0}.search-row{display:grid;grid-template-columns:1fr auto;gap:8px}.workspace{display:grid;grid-template-columns:minmax(270px,.72fr) minmax(0,1.45fr);gap:16px}.list{max-height:75vh;overflow:auto;padding:0}.term-item{width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:12px 14px;background:transparent}.term-item:hover,.term-item.active{background:#efe9dd}.term-item strong{display:block;font:600 15px Cambria,Georgia,serif}.term-item small{color:var(--muted)}.empty{padding:24px;text-align:center;color:var(--muted)}
-.form-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:18px}.form-head h1{margin:0;font-size:26px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}.source-field{margin:0;padding:0;border:0}.source-field legend{padding:0;color:#715d36;font:600 11px/1.2 Calibri,"Segoe UI",sans-serif;letter-spacing:.08em;text-transform:uppercase}.source-head,.source-row{display:grid;grid-template-columns:34px minmax(0,1fr) minmax(0,1fr);gap:8px;align-items:center}.source-head{margin:7px 0 5px;color:var(--muted);font:600 10px/1.2 Calibri,"Segoe UI",sans-serif;letter-spacing:.06em;text-transform:uppercase}.source-list{display:grid;gap:7px}.source-row .input{margin-top:0}.source-number{display:grid;place-items:center;width:28px;height:28px;border:1px solid var(--line);border-radius:50%;color:var(--muted);font:700 11px Calibri,"Segoe UI",sans-serif}.source-help{display:block;margin-top:7px;color:var(--muted);font:12px/1.45 Calibri,"Segoe UI",sans-serif}.form-actions{display:flex;justify-content:space-between;gap:12px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}.status{display:inline-block;padding:3px 8px;border-radius:999px;background:#eee7da;color:#5f574b;font:700 10px Calibri,sans-serif;text-transform:uppercase}.meta{margin-top:8px;color:var(--muted);font-size:12px}
-@media(max-width:800px){.workspace{grid-template-columns:1fr}.list{max-height:300px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.toolbar{grid-template-columns:1fr}.form-actions{flex-direction:column}.form-actions .actions{width:100%}.form-actions button{flex:1}}@media(max-width:560px){.source-head{display:none}.source-row{grid-template-columns:34px minmax(0,1fr)}.source-row .source-url{grid-column:2}}
+.app[hidden],.login[hidden]{display:none}.toolbar{display:grid;grid-template-columns:1fr auto;gap:12px;margin:22px 0}.search-row{display:grid;grid-template-columns:minmax(180px,1fr) auto auto;gap:8px;align-items:center}.term-count{min-width:150px;color:var(--muted);font:600 12px Cambria,Georgia,serif;text-align:right;white-space:nowrap}.workspace{display:grid;grid-template-columns:minmax(270px,.72fr) minmax(0,1.45fr);gap:16px}.page-workspace{margin-top:16px}.page-workspace[hidden],.workspace[hidden],.search-row[hidden],button[hidden]{display:none!important}.page-editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.page-editor-grid .full{grid-column:1/-1}.page-body-editor{min-height:300px;font-family:"EB Garamond",Garamond,"Palatino Linotype",serif;font-size:17px;line-height:1.65;text-align:justify}.page-help{display:block;margin-top:7px;color:var(--muted);font:12px/1.5 Calibri,"Segoe UI",sans-serif}.list{max-height:75vh;overflow:auto;padding:0}.term-item{width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:12px 14px;background:transparent}.term-item:hover,.term-item.active{background:#efe9dd}.term-item strong{display:block;font:600 15px Cambria,Georgia,serif}.term-item small{color:var(--muted)}.empty{padding:24px;text-align:center;color:var(--muted)}
+.form-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:18px}.form-head h1{margin:0;font-size:26px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}.source-field{margin:0;padding:0;border:0}.source-field legend{padding:0;color:#715d36;font:600 11px/1.2 Calibri,"Segoe UI",sans-serif;letter-spacing:.08em;text-transform:uppercase}.source-head,.source-row{display:grid;grid-template-columns:34px minmax(0,1fr) minmax(0,1fr);gap:8px;align-items:center}.source-head{margin:7px 0 5px;color:var(--muted);font:600 10px/1.2 Calibri,"Segoe UI",sans-serif;letter-spacing:.06em;text-transform:uppercase}.source-list{display:grid;gap:7px}.source-row .input{margin-top:0}.source-number{display:grid;place-items:center;width:28px;height:28px;border:1px solid var(--line);border-radius:50%;color:var(--muted);font:700 11px Calibri,"Segoe UI",sans-serif}.source-help{display:block;margin-top:7px;color:var(--muted);font:12px/1.45 Calibri,"Segoe UI",sans-serif}.sync-report{margin:0 0 16px;border-left:3px solid var(--navy)}.sync-report h2{margin:0 0 6px;font-size:20px}.sync-report p{margin:6px 0;color:var(--muted);line-height:1.5}.sync-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:14px 0}.sync-stat{padding:10px;border:1px solid var(--line);border-radius:8px;background:#f7f3eb;text-align:center}.sync-stat strong{display:block;color:var(--navy);font-size:22px}.sync-warning{color:var(--red)!important;font-weight:700}.form-actions{display:flex;justify-content:space-between;gap:12px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}.status{display:inline-block;padding:3px 8px;border-radius:999px;background:#eee7da;color:#5f574b;font:700 10px Calibri,sans-serif;text-transform:uppercase}.meta{margin-top:8px;color:var(--muted);font-size:12px}
+@media(max-width:800px){.sync-stats{grid-template-columns:1fr}.page-editor-grid{grid-template-columns:1fr}.page-editor-grid .full{grid-column:auto}.workspace{grid-template-columns:1fr}.list{max-height:300px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.toolbar{grid-template-columns:1fr}.form-actions{flex-direction:column}.form-actions .actions{width:100%}.form-actions button{flex:1}}@media(max-width:560px){.source-head{display:none}.source-row{grid-template-columns:34px minmax(0,1fr)}.source-row .source-url{grid-column:2}}
 </style>
 </head>
 <body><div class="shell">
@@ -25,10 +25,22 @@ button{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(
 
 <section id="app" class="app">
   <div class="toolbar">
-    <form id="searchForm" class="search-row"><input id="search" class="input" type="search" placeholder="Madde ara"><button type="submit">Ara</button></form>
-    <div class="actions"><button id="newBtn" class="primary" type="button">+ Yeni madde</button><button id="logoutBtn" type="button">Çıkış</button></div>
+    <form id="searchForm" class="search-row"><input id="search" class="input" type="search" placeholder="Madde ara"><button type="submit">Ara</button><span id="termCount" class="term-count" aria-live="polite">Madde sayısı yükleniyor…</span></form>
+    <div class="actions"><button id="termModeBtn" class="primary" type="button">Maddeler</button><button id="pageModeBtn" type="button">Sayfalar ve alt açıklama</button><button id="newBtn" type="button">+ Yeni madde</button><button id="sourceAuditBtn" type="button">Kaynakçayı denetle</button><button id="logoutBtn" type="button">Çıkış</button></div>
   </div>
-  <div class="workspace">
+  <section id="sourceSyncReport" class="card sync-report" hidden>
+    <h2>Kaynakça aktarım denetimi</h2>
+    <p id="sourceSyncText">Henüz denetlenmedi.</p>
+    <div class="sync-stats">
+      <div class="sync-stat"><strong id="syncRemove">0</strong><span>yanlış kaynak kaldırılacak</span></div>
+      <div class="sync-stat"><strong id="syncAdd">0</strong><span>eksik kaynak eklenecek</span></div>
+      <div class="sync-stat"><strong id="syncLink">0</strong><span>bağlantı tıklanabilir yapılacak</span></div>
+      <div class="sync-stat"><strong id="syncMissingTerms">0</strong><span>D1'de bulunmayan kaynak maddesi</span></div>
+    </div>
+    <p id="sourceSyncWarning" class="sync-warning"></p>
+    <div class="actions"><button id="sourceApplyBtn" class="primary" type="button" hidden>Kaynak düzeltmelerini uygula</button><button id="missingTermsApplyBtn" type="button" hidden>Eksik maddeleri D1'e ekle</button><button id="sourceReportCloseBtn" type="button">Kapat</button></div>
+  </section>
+  <div id="termWorkspace" class="workspace">
     <aside id="termList" class="card list" aria-label="Maddeler"></aside>
     <main class="card">
       <div class="form-head"><div><h1 id="formTitle">Yeni madde</h1><div id="recordMeta" class="meta"></div></div><span id="recordStatus" class="status">Taslak</span></div>
@@ -49,92 +61,378 @@ button{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(
             <div id="sourceRows" class="source-list">
             <div class="source-row">
               <span class="source-number">1</span>
-              <input class="input source-citation" maxlength="1000" aria-label="Kaynak 1 adı veya künyesi" placeholder="Kaynak adı veya künye">
+              <input class="input source-citation" list="sourceSuggestions" maxlength="1000" aria-label="Kaynak 1 adı veya künyesi" placeholder="Kaynak adı veya künye">
               <input class="input source-url" type="url" inputmode="url" maxlength="2048" aria-label="Kaynak 1 bağlantısı" placeholder="https://…">
             </div>
             <div class="source-row">
               <span class="source-number">2</span>
-              <input class="input source-citation" maxlength="1000" aria-label="Kaynak 2 adı veya künyesi" placeholder="Kaynak adı veya künye">
+              <input class="input source-citation" list="sourceSuggestions" maxlength="1000" aria-label="Kaynak 2 adı veya künyesi" placeholder="Kaynak adı veya künye">
               <input class="input source-url" type="url" inputmode="url" maxlength="2048" aria-label="Kaynak 2 bağlantısı" placeholder="https://…">
             </div>
             <div class="source-row">
               <span class="source-number">3</span>
-              <input class="input source-citation" maxlength="1000" aria-label="Kaynak 3 adı veya künyesi" placeholder="Kaynak adı veya künye">
+              <input class="input source-citation" list="sourceSuggestions" maxlength="1000" aria-label="Kaynak 3 adı veya künyesi" placeholder="Kaynak adı veya künye">
               <input class="input source-url" type="url" inputmode="url" maxlength="2048" aria-label="Kaynak 3 bağlantısı" placeholder="https://…">
             </div>
             <div class="source-row">
               <span class="source-number">4</span>
-              <input class="input source-citation" maxlength="1000" aria-label="Kaynak 4 adı veya künyesi" placeholder="Kaynak adı veya künye">
+              <input class="input source-citation" list="sourceSuggestions" maxlength="1000" aria-label="Kaynak 4 adı veya künyesi" placeholder="Kaynak adı veya künye">
               <input class="input source-url" type="url" inputmode="url" maxlength="2048" aria-label="Kaynak 4 bağlantısı" placeholder="https://…">
             </div>
             <div class="source-row">
               <span class="source-number">5</span>
-              <input class="input source-citation" maxlength="1000" aria-label="Kaynak 5 adı veya künyesi" placeholder="Kaynak adı veya künye">
+              <input class="input source-citation" list="sourceSuggestions" maxlength="1000" aria-label="Kaynak 5 adı veya künyesi" placeholder="Kaynak adı veya künye">
               <input class="input source-url" type="url" inputmode="url" maxlength="2048" aria-label="Kaynak 5 bağlantısı" placeholder="https://…">
             </div>
             <div class="source-row">
               <span class="source-number">6</span>
-              <input class="input source-citation" maxlength="1000" aria-label="Kaynak 6 adı veya künyesi" placeholder="Kaynak adı veya künye">
+              <input class="input source-citation" list="sourceSuggestions" maxlength="1000" aria-label="Kaynak 6 adı veya künyesi" placeholder="Kaynak adı veya künye">
               <input class="input source-url" type="url" inputmode="url" maxlength="2048" aria-label="Kaynak 6 bağlantısı" placeholder="https://…">
             </div>
             <div class="source-row">
               <span class="source-number">7</span>
-              <input class="input source-citation" maxlength="1000" aria-label="Kaynak 7 adı veya künyesi" placeholder="Kaynak adı veya künye">
+              <input class="input source-citation" list="sourceSuggestions" maxlength="1000" aria-label="Kaynak 7 adı veya künyesi" placeholder="Kaynak adı veya künye">
               <input class="input source-url" type="url" inputmode="url" maxlength="2048" aria-label="Kaynak 7 bağlantısı" placeholder="https://…">
             </div>
             <div class="source-row">
               <span class="source-number">8</span>
-              <input class="input source-citation" maxlength="1000" aria-label="Kaynak 8 adı veya künyesi" placeholder="Kaynak adı veya künye">
+              <input class="input source-citation" list="sourceSuggestions" maxlength="1000" aria-label="Kaynak 8 adı veya künyesi" placeholder="Kaynak adı veya künye">
               <input class="input source-url" type="url" inputmode="url" maxlength="2048" aria-label="Kaynak 8 bağlantısı" placeholder="https://…">
             </div>
             <div class="source-row">
               <span class="source-number">9</span>
-              <input class="input source-citation" maxlength="1000" aria-label="Kaynak 9 adı veya künyesi" placeholder="Kaynak adı veya künye">
+              <input class="input source-citation" list="sourceSuggestions" maxlength="1000" aria-label="Kaynak 9 adı veya künyesi" placeholder="Kaynak adı veya künye">
               <input class="input source-url" type="url" inputmode="url" maxlength="2048" aria-label="Kaynak 9 bağlantısı" placeholder="https://…">
             </div>
             <div class="source-row">
               <span class="source-number">10</span>
-              <input class="input source-citation" maxlength="1000" aria-label="Kaynak 10 adı veya künyesi" placeholder="Kaynak adı veya künye">
+              <input class="input source-citation" list="sourceSuggestions" maxlength="1000" aria-label="Kaynak 10 adı veya künyesi" placeholder="Kaynak adı veya künye">
               <input class="input source-url" type="url" inputmode="url" maxlength="2048" aria-label="Kaynak 10 bağlantısı" placeholder="https://…">
             </div>
             </div>
+            <datalist id="sourceSuggestions"></datalist>
             <small class="source-help">En fazla 10 kaynak eklenebilir. Bağlantı girilen kaynak adı, yayımlanan maddede tıklanabilir olur.</small>
           </fieldset>
           <label class="full">Değişiklik notu<input id="changeNote" class="input" maxlength="500" placeholder="Bu düzenlemede ne değişti?"></label>
         </div>
-        <div class="form-actions"><div class="actions"><button id="saveBtn" class="primary" type="submit">Kaydet</button><button id="resetBtn" type="button">Temizle</button></div><button id="deleteBtn" class="danger" type="button" hidden>Kalıcı olarak sil</button></div>
+        <div class="form-actions"><div class="actions"><button id="saveBtn" class="primary" type="submit">Kaydet</button><button id="resetBtn" type="button">Kaydedilene dön</button></div><button id="deleteBtn" class="danger" type="button" hidden>Kalıcı olarak sil</button></div>
       </form>
     </main>
   </div>
+  <section id="pageWorkspace" class="card page-workspace" hidden>
+    <div class="form-head"><div><h1>Sayfalar ve alt açıklama</h1><div id="pageMeta" class="meta"></div></div></div>
+    <form id="pageForm">
+      <div class="page-editor-grid">
+        <label class="full">Düzenlenecek alan
+          <select id="pageKey">
+            <option value="publication-note">Yayın Notu</option>
+            <option value="bibliography">Kaynakça</option>
+            <option value="privacy">Gizlilik Politikası</option>
+            <option value="cookies">Çerez Politikası</option>
+            <option value="terms-of-use">Kullanım Şartları</option>
+            <option value="contact">İletişim</option>
+            <option value="home-notice">Ana sayfa alt açıklaması</option>
+          </select>
+        </label>
+        <label>Türkçe başlık<input id="pageTitleTr" class="input" maxlength="500"></label>
+        <label>İngilizce başlık<input id="pageTitleEn" class="input" maxlength="500"></label>
+        <label class="full">Türkçe içerik<textarea id="pageBodyTr" class="page-body-editor" maxlength="100000"></textarea></label>
+        <label class="full">İngilizce içerik<textarea id="pageBodyEn" class="page-body-editor" maxlength="100000"></textarea></label>
+      </div>
+      <small class="page-help">HTML etiketi yazmanız gerekmez. Tek Enter satır sonu, boş satır yeni paragraf oluşturur. Yayımlanan metin EB Garamond ile iki yana yaslanır.</small>
+      <div class="form-actions"><div class="actions"><button id="pageSaveBtn" class="primary" type="submit">Sayfayı kaydet</button><button id="pageReloadBtn" type="button">Kaydedilene dön</button></div></div>
+    </form>
+  </section>
 </section>
 </div><div id="notice" class="notice" role="status"></div>
 
 <script>
 const $=id=>document.getElementById(id);
-let csrf='',currentSlug='',searchTimer=null;
+let csrf='',currentSlug='',searchTimer=null,sourceSuggestionTimer=null,currentPageKey=sessionStorage.getItem('ats-editor-page')||'publication-note',currentTermVersion=0,currentServerVersion=0,currentTermUpdatedAt='',currentPageExpectedUpdatedAt=null,currentPageServerUpdatedAt=null,termDirty=false,pageDirty=false;
+const DRAFT_PREFIX='ats-editor-draft-v2:';
 const fields={headword:$('headword'),slug:$('slug'),ottoman:$('ottoman'),modern:$('modern'),category:$('category'),status:$('status'),explanationTr:$('explanationTr'),explanationEn:$('explanationEn'),variants:$('variants'),changeNote:$('changeNote')};
+const pageFields={titleTr:$('pageTitleTr'),titleEn:$('pageTitleEn'),bodyTr:$('pageBodyTr'),bodyEn:$('pageBodyEn')};
 const sourceRows=[...document.querySelectorAll('.source-row')].map(row=>({citation:row.querySelector('.source-citation'),url:row.querySelector('.source-url')}));
+const sourceSuggestionMap=new Map();
 
 function message(text,error=false){const box=$('notice');box.textContent=text;box.className='notice show'+(error?' error':'');clearTimeout(message.timer);message.timer=setTimeout(()=>box.className='notice',3500)}
-async function api(url,options={}){const headers={Accept:'application/json',...(options.headers||{})};if(options.body)headers['Content-Type']='application/json';if(csrf&&options.method&&options.method!=='GET')headers['X-CSRF-Token']=csrf;const response=await fetch(url,{credentials:'same-origin',...options,headers});let data={};try{data=await response.json()}catch{}if(!response.ok||!data.ok)throw new Error(data.error||('HTTP '+response.status));return data}
+async function api(url,options={}){const headers={Accept:'application/json',...(options.headers||{})};if(options.body)headers['Content-Type']='application/json';if(csrf&&options.method&&options.method!=='GET')headers['X-CSRF-Token']=csrf;const response=await fetch(url,{credentials:'same-origin',cache:'no-store',...options,headers});let data={};try{data=await response.json()}catch{}if(!response.ok||!data.ok){const error=new Error(data.error||('HTTP '+response.status));error.data=data;throw error}return data}
+function sourceSuggestionKey(value){return String(value||'').trim().toLocaleLowerCase('tr-TR')}
+async function loadSourceSuggestions(value){
+  const q=String(value||'').trim();
+  if(!q){$('sourceSuggestions').innerHTML='';sourceSuggestionMap.clear();return}
+  const data=await api('/api/editor/source-suggestions?q='+encodeURIComponent(q));
+  sourceSuggestionMap.clear();
+  for(const item of data.items||[])sourceSuggestionMap.set(sourceSuggestionKey(item.citation),item);
+  $('sourceSuggestions').innerHTML=(data.items||[]).map(item=>'<option value="'+escapeAttr(item.citation)+'"></option>').join('');
+}
+function applyRememberedSource(row){
+  const remembered=sourceSuggestionMap.get(sourceSuggestionKey(row.citation.value));
+  if(remembered?.url&&!row.url.value){row.url.value=remembered.url;markTermDirty()}
+}
+function draftKey(kind,id){return DRAFT_PREFIX+kind+':'+String(id||'new')}
+function readDraft(kind,id){try{return JSON.parse(sessionStorage.getItem(draftKey(kind,id))||'null')}catch{return null}}
+function writeDraft(kind,id,value){try{sessionStorage.setItem(draftKey(kind,id),JSON.stringify(value))}catch{}}
+function removeDraft(kind,id){try{sessionStorage.removeItem(draftKey(kind,id))}catch{}}
+
+function updatePageMeta(){
+  const base=currentPageServerUpdatedAt
+    ?'D1 kaydı · '+currentPageServerUpdatedAt
+    :'Mevcut yayımlanan metin; ilk kayıtta D1 veritabanına alınır.';
+  $('pageMeta').textContent=base+(pageDirty?' · Kaydedilmemiş taslak bu sekmede korunuyor.':'');
+}
+function pagePayload(){
+  return{titleTr:pageFields.titleTr.value,titleEn:pageFields.titleEn.value,bodyTr:pageFields.bodyTr.value,bodyEn:pageFields.bodyEn.value,expectedUpdatedAt:currentPageExpectedUpdatedAt};
+}
+function savePageDraft(){
+  if(!pageDirty)return;
+  writeDraft('page',currentPageKey,{payload:pagePayload(),baseUpdatedAt:currentPageExpectedUpdatedAt,savedAt:new Date().toISOString()});
+  updatePageMeta();
+}
+function clearPageDraft(pageKey=currentPageKey){removeDraft('page',pageKey)}
+function markPageDirty(){pageDirty=true;savePageDraft()}
+function showEditorMode(mode){
+  const wasPages=!$('pageWorkspace').hidden;
+  if(wasPages)savePageDraft();else saveTermDraft();
+  const pages=mode==='pages';
+  sessionStorage.setItem('ats-editor-mode',pages?'pages':'terms');
+  $('termWorkspace').hidden=pages;
+  $('pageWorkspace').hidden=!pages;
+  $('searchForm').hidden=pages;
+  $('newBtn').hidden=pages;
+  $('termModeBtn').classList.toggle('primary',!pages);
+  $('pageModeBtn').classList.toggle('primary',pages);
+  $('sourceSyncReport').hidden=true;
+}
+async function openPage(pageKey,{preserveCurrent=true}={}){
+  if(preserveCurrent)savePageDraft();
+  currentPageKey=pageKey||'publication-note';
+  sessionStorage.setItem('ats-editor-page',currentPageKey);
+  const data=await api('/api/editor/pages/'+encodeURIComponent(currentPageKey));
+  const page=data.page||{};
+  $('pageKey').value=currentPageKey;
+  pageFields.titleTr.value=page.titleTr||'';
+  pageFields.titleEn.value=page.titleEn||'';
+  pageFields.bodyTr.value=page.bodyTr||'';
+  pageFields.bodyEn.value=page.bodyEn||'';
+  currentPageServerUpdatedAt=page.updatedAt||null;
+  currentPageExpectedUpdatedAt=currentPageServerUpdatedAt;
+  pageDirty=false;
+  const draft=readDraft('page',currentPageKey);
+  if(draft?.payload){
+    pageFields.titleTr.value=draft.payload.titleTr||'';
+    pageFields.titleEn.value=draft.payload.titleEn||'';
+    pageFields.bodyTr.value=draft.payload.bodyTr||'';
+    pageFields.bodyEn.value=draft.payload.bodyEn||'';
+    currentPageExpectedUpdatedAt=draft.baseUpdatedAt||null;
+    pageDirty=true;
+  }
+  updatePageMeta();
+}
+
 function lines(value){return String(value||'').split(/\r?\n/).map(x=>x.trim()).filter(Boolean)}
-function errorText(error){return error.message==='invalid_source_url'?'Kaynak bağlantısı geçerli bir https:// adresi olmalıdır.':error.message==='source_citation_required'?'Bağlantı eklenen kaynak için kaynak adı da yazılmalıdır.':error.message}
-function resetForm(){currentSlug='';$('termForm').reset();fields.status.value='draft';$('formTitle').textContent='Yeni madde';$('recordMeta').textContent='';$('recordStatus').textContent='Taslak';$('deleteBtn').hidden=true;document.querySelectorAll('.term-item.active').forEach(x=>x.classList.remove('active'))}
-function fillForm(term){currentSlug=term.slug;fields.headword.value=term.headword_en||'';fields.slug.value=term.slug||'';fields.ottoman.value=term.ottoman_period_term||'';fields.modern.value=term.modern_equivalent_tr||'';fields.category.value=term.category||'';fields.status.value=term.status||'draft';fields.explanationTr.value=term.explanation_tr||'';fields.explanationEn.value=term.explanation_en||'';fields.variants.value=(term.variants||[]).map(x=>x.variant).join('\n');sourceRows.forEach((row,index)=>{const source=(term.sources||[])[index]||{};row.citation.value=source.citation||'';row.url.value=source.url||''});fields.changeNote.value='';$('formTitle').textContent=term.headword_en||'Madde';$('recordStatus').textContent=term.status||'draft';$('recordMeta').textContent='Sürüm '+(term.version||1)+' · '+(term.updated_at||'');$('deleteBtn').hidden=false}
-function payload(){return{headword_en:fields.headword.value,slug:fields.slug.value,ottoman_period_term:fields.ottoman.value,modern_equivalent_tr:fields.modern.value,category:fields.category.value,status:fields.status.value,explanation_tr:fields.explanationTr.value,explanation_en:fields.explanationEn.value,variants:lines(fields.variants.value),sources:sourceRows.map(row=>({citation:row.citation.value.trim(),url:row.url.value.trim()})).filter(source=>source.citation||source.url),change_note:fields.changeNote.value}}
-async function loadList(q=''){const data=await api('/api/editor/terms?limit=100&q='+encodeURIComponent(q));const box=$('termList');if(!data.items.length){box.innerHTML='<div class="empty">Madde bulunamadı.</div>';return}box.innerHTML=data.items.map(item=>'<button type="button" class="term-item" data-slug="'+escapeAttr(item.slug)+'"><strong>'+escapeHtml(item.headword_en)+'</strong><small>'+escapeHtml(item.status)+' · '+escapeHtml(item.modern_equivalent_tr||'')+'</small></button>').join('');}
+function errorText(error){
+  const messages={
+    invalid_source_url:'Kaynak bağlantısı geçerli bir https:// adresi olmalıdır.',
+    source_citation_required:'Bağlantı eklenen kaynak için kaynak adı da yazılmalıdır.',
+    version_conflict:'Bu kayıt başka bir işlemde güncellendi. Taslağınız korunuyor; kaydedilen son sürümü açıp karşılaştırın.',
+    save_verification_failed:'Kayıt D1 üzerinde doğrulanamadı. Aynı kaydı tekrar göndermeden önce maddeyi yeniden açın.',
+    delete_verification_failed:'Silme işlemi bütün bağlı satırlarda doğrulanamadı.',
+    d1_authoritative:'Son kaydedilmiş D1 verisi yetkilidir; kaynak dosyasından yazma işlemi kapalıdır.'
+  };
+  return messages[error.message]||error.message;
+}
+function updateRecordMeta(){
+  let text=currentServerVersion?'Sürüm '+currentServerVersion+' · '+(currentTermUpdatedAt||''):'Henüz D1\'e kaydedilmedi';
+  if(termDirty)text+=' · Kaydedilmemiş taslak bu sekmede korunuyor';
+  if(termDirty&&currentTermVersion&&currentServerVersion&&currentTermVersion!==currentServerVersion)text+=' · Taslak tabanı: sürüm '+currentTermVersion;
+  $('recordMeta').textContent=text;
+}
+function applyTermValues(term){
+  fields.headword.value=term.headword_en||'';
+  fields.slug.value=term.slug||'';
+  fields.ottoman.value=term.ottoman_period_term||'';
+  fields.modern.value=term.modern_equivalent_tr||'';
+  fields.category.value=term.category||'';
+  fields.status.value=term.status||'draft';
+  fields.explanationTr.value=term.explanation_tr||'';
+  fields.explanationEn.value=term.explanation_en||'';
+  fields.variants.value=(term.variants||[]).map(item=>typeof item==='string'?item:item.variant).filter(Boolean).join('\n');
+  sourceRows.forEach((row,index)=>{const source=(term.sources||[])[index]||{};row.citation.value=source.citation||'';row.url.value=source.url||''});
+  fields.changeNote.value=term.change_note||'';
+}
+function payload(){return{headword_en:fields.headword.value,slug:fields.slug.value,ottoman_period_term:fields.ottoman.value,modern_equivalent_tr:fields.modern.value,category:fields.category.value,status:fields.status.value,explanation_tr:fields.explanationTr.value,explanation_en:fields.explanationEn.value,variants:lines(fields.variants.value),sources:sourceRows.map(row=>({citation:row.citation.value.trim(),url:row.url.value.trim()})).filter(source=>source.citation||source.url),change_note:fields.changeNote.value,expected_version:currentTermVersion}}
+function saveTermDraft(){
+  if(!termDirty)return;
+  writeDraft('term',currentSlug||'new',{payload:payload(),baseVersion:currentTermVersion,savedAt:new Date().toISOString()});
+  updateRecordMeta();
+}
+function clearTermDraft(slug=currentSlug||'new'){removeDraft('term',slug||'new')}
+function markTermDirty(){termDirty=true;saveTermDraft()}
+function startNewForm({restoreDraft=true}={}){
+  currentSlug='';sessionStorage.setItem('ats-editor-term','new');currentTermVersion=0;currentServerVersion=0;currentTermUpdatedAt='';termDirty=false;
+  $('termForm').reset();fields.status.value='draft';$('formTitle').textContent='Yeni madde';$('recordStatus').textContent='Taslak';$('deleteBtn').hidden=true;
+  document.querySelectorAll('.term-item.active').forEach(x=>x.classList.remove('active'));
+  const draft=restoreDraft?readDraft('term','new'):null;
+  if(draft?.payload){applyTermValues(draft.payload);currentTermVersion=Number(draft.baseVersion||0);termDirty=true;$('recordStatus').textContent=fields.status.value}
+  updateRecordMeta();
+}
+function fillForm(term,{restoreDraft=true}={}){
+  currentSlug=term.slug;sessionStorage.setItem('ats-editor-term',currentSlug);currentServerVersion=Number(term.version||1);currentTermVersion=currentServerVersion;currentTermUpdatedAt=term.updated_at||'';termDirty=false;
+  applyTermValues(term);fields.changeNote.value='';
+  const draft=restoreDraft?readDraft('term',currentSlug):null;
+  if(draft?.payload){applyTermValues(draft.payload);currentTermVersion=Number(draft.baseVersion||currentServerVersion);termDirty=true}
+  $('formTitle').textContent=fields.headword.value||term.headword_en||'Madde';
+  $('recordStatus').textContent=fields.status.value||'draft';$('deleteBtn').hidden=false;updateRecordMeta();
+}
+async function loadList(q=''){
+  const data=await api('/api/editor/terms?limit=100&q='+encodeURIComponent(q));
+  const box=$('termList'),filtered=Number(data.filteredTotal??data.total??0),total=Number(data.total??0),published=Number(data.counts?.published??0);
+  $('termCount').textContent=q.trim()?filtered+' sonuç · toplam '+total+' madde':total+' madde · '+published+' yayında';
+  if(!data.items.length){box.innerHTML='<div class="empty">Madde bulunamadı.</div>';return data}
+  box.innerHTML=data.items.map(item=>'<button type="button" class="term-item" data-slug="'+escapeAttr(item.slug)+'"><strong>'+escapeHtml(item.headword_en)+'</strong><small>'+escapeHtml(item.status)+' · '+escapeHtml(item.modern_equivalent_tr||'')+'</small></button>').join('');
+  document.querySelectorAll('.term-item').forEach(x=>x.classList.toggle('active',x.dataset.slug===currentSlug));
+  return data;
+}
 function escapeHtml(value){return String(value||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function escapeAttr(value){return escapeHtml(value)}
-async function openTerm(slug){const data=await api('/api/editor/terms/'+encodeURIComponent(slug));fillForm(data.term);document.querySelectorAll('.term-item').forEach(x=>x.classList.toggle('active',x.dataset.slug===slug))}
-async function boot(){try{const data=await api('/api/editor/session');if(!data.authenticated){location.replace('/editor/');return}csrf=data.csrfToken;await loadList()}catch{location.replace('/editor/')}}
+async function openTerm(slug,{preserveCurrent=true}={}){
+  if(preserveCurrent)saveTermDraft();
+  const data=await api('/api/editor/terms/'+encodeURIComponent(slug));
+  fillForm(data.term,{restoreDraft:true});
+  document.querySelectorAll('.term-item').forEach(x=>x.classList.toggle('active',x.dataset.slug===slug));
+}
 
-$('logoutBtn').addEventListener('click',async()=>{try{await api('/api/editor/logout',{method:'POST'});}catch{}csrf='';location.replace('/editor/')});
-$('newBtn').addEventListener('click',resetForm);$('resetBtn').addEventListener('click',resetForm);
-$('searchForm').addEventListener('submit',event=>{event.preventDefault();loadList($('search').value).catch(error=>message(error.message,true))});
+function renderSourceSync(data){
+  const summary=data.summary||{};
+  $('sourceSyncReport').hidden=false;
+  $('syncRemove').textContent=summary.invalidSourcesToRemove||0;
+  $('syncAdd').textContent=summary.missingSourcesToAdd||0;
+  $('syncLink').textContent=summary.sourceLinksToActivate||0;
+  $('syncMissingTerms').textContent=summary.sourceTermsMissingFromDatabase||0;
+  $('sourceSyncText').textContent='Kaynak Dosyadaki Karşılık alanı hariç tutularak Künye/Kaynak ve Künye alanları karşılaştırıldı. D1 kaynak sayısı: '+(summary.databaseSources||0)+'.';
+  $('sourceSyncWarning').textContent='Salt okunur denetim: son kaydedilmiş D1 verisi yetkilidir; kaynak dosyasından ekleme, silme veya kaynakça üzerine yazma kapalıdır.';
+  $('sourceApplyBtn').hidden=true;
+  $('missingTermsApplyBtn').hidden=true;
+}
+async function auditBibliography(){
+  const button=$('sourceAuditBtn');
+  button.disabled=true;
+  try{
+    const data=await api('/api/editor/bibliography-sync',{method:'POST',body:JSON.stringify({action:'audit'})});
+    renderSourceSync(data);
+  }catch(error){
+    message('Kaynakça denetimi başarısız: '+error.message,true);
+  }finally{button.disabled=false}
+}
+async function applyBibliographyRepair(){
+  const remove=Number($('syncRemove').textContent)||0;
+  const add=Number($('syncAdd').textContent)||0;
+  const link=Number($('syncLink').textContent)||0;
+  if(!confirm(remove+' yanlış kaynak kaldırılacak, '+add+' eksik kaynak eklenecek ve '+link+' bağlantı tıklanabilir yapılacak. Devam edilsin mi?'))return;
+  const button=$('sourceApplyBtn');
+  button.disabled=true;
+  try{
+    const applied=await api('/api/editor/bibliography-sync',{method:'POST',body:JSON.stringify({action:'apply'})});
+    const verified=await api('/api/editor/bibliography-sync',{method:'POST',body:JSON.stringify({action:'audit'})});
+    renderSourceSync(verified);
+    message((applied.applied?.removed||0)+' yanlış kaynak kaldırıldı, '+(applied.applied?.added||0)+' eksik kaynak eklendi, '+(applied.applied?.linked||0)+' bağlantı etkinleştirildi.');
+  }catch(error){
+    message('Kaynakça düzeltmesi başarısız: '+error.message,true);
+  }finally{button.disabled=false}
+}
+async function applyMissingTerms(){
+  const count=Number($('syncMissingTerms').textContent)||0;
+  if(!count||!confirm(count+' eksik madde güncel kaynaktan D1 veritabanına eklenecek. Mevcut maddeler değiştirilmeyecek. Devam edilsin mi?'))return;
+  const button=$('missingTermsApplyBtn');
+  button.disabled=true;
+  try{
+    const applied=await api('/api/editor/bibliography-sync',{method:'POST',body:JSON.stringify({action:'apply_missing_terms'})});
+    const verified=await api('/api/editor/bibliography-sync',{method:'POST',body:JSON.stringify({action:'audit'})});
+    renderSourceSync(verified);
+    message((applied.applied?.terms||0)+' eksik madde, '+(applied.applied?.variants||0)+' varyant ve '+(applied.applied?.sources||0)+' kaynak eklendi.');
+    await loadList($('search').value);
+  }catch(error){
+    message('Eksik madde eşitlemesi başarısız: '+error.message,true);
+  }finally{button.disabled=false}
+}
+async function boot(){
+  try{
+    const data=await api('/api/editor/session');
+    if(!data.authenticated){location.replace('/editor/');return}
+    csrf=data.csrfToken;
+    const mode=sessionStorage.getItem('ats-editor-mode')==='pages'?'pages':'terms';
+    showEditorMode(mode);
+    await loadList();
+    if(mode==='pages'){
+      await openPage(currentPageKey,{preserveCurrent:false});
+    }else{
+      const savedTerm=sessionStorage.getItem('ats-editor-term')||'new';
+      if(savedTerm!=='new'){
+        try{await openTerm(savedTerm,{preserveCurrent:false})}catch{startNewForm({restoreDraft:true})}
+      }else startNewForm({restoreDraft:true});
+    }
+  }catch{location.replace('/editor/')}
+}
+
+$('termModeBtn').addEventListener('click',()=>showEditorMode('terms'));
+$('pageModeBtn').addEventListener('click',async()=>{showEditorMode('pages');try{await openPage(currentPageKey)}catch(error){message('Sayfa yüklenemedi: '+errorText(error),true)}});
+$('pageKey').addEventListener('change',()=>openPage($('pageKey').value).catch(error=>message('Sayfa yüklenemedi: '+errorText(error),true)));
+$('pageReloadBtn').addEventListener('click',()=>{if(pageDirty&&!confirm('Kaydedilmemiş sayfa taslağı silinip D1\'deki son kayıt yüklensin mi?'))return;pageDirty=false;clearPageDraft();openPage(currentPageKey,{preserveCurrent:false}).catch(error=>message('Sayfa yüklenemedi: '+errorText(error),true))});
+$('pageForm').addEventListener('input',markPageDirty);
+$('pageForm').addEventListener('submit',async event=>{
+  event.preventDefault();const button=event.submitter;if(button)button.disabled=true;
+  try{
+    const data=await api('/api/editor/pages/'+encodeURIComponent(currentPageKey),{method:'PUT',body:JSON.stringify(pagePayload())});
+    pageDirty=false;clearPageDraft(currentPageKey);
+    await openPage(data.page?.key||currentPageKey,{preserveCurrent:false});
+    message('Sayfa metni kaydedildi ve D1 üzerinde doğrulandı.');
+  }catch(error){savePageDraft();message('Sayfa kaydedilemedi: '+errorText(error),true)}
+  finally{if(button)button.disabled=false}
+});
+sourceRows.forEach(row=>{
+  row.citation.addEventListener('input',()=>{clearTimeout(sourceSuggestionTimer);sourceSuggestionTimer=setTimeout(()=>loadSourceSuggestions(row.citation.value).then(()=>applyRememberedSource(row)).catch(()=>{}),180)});
+  row.citation.addEventListener('change',()=>applyRememberedSource(row));
+});
+$('sourceAuditBtn').addEventListener('click',auditBibliography);
+$('sourceApplyBtn').addEventListener('click',applyBibliographyRepair);
+$('missingTermsApplyBtn').addEventListener('click',applyMissingTerms);
+$('sourceReportCloseBtn').addEventListener('click',()=>$('sourceSyncReport').hidden=true);
+$('logoutBtn').addEventListener('click',async()=>{saveTermDraft();savePageDraft();try{await api('/api/editor/logout',{method:'POST'});}catch{}csrf='';location.replace('/editor/')});
+$('newBtn').addEventListener('click',()=>{saveTermDraft();startNewForm({restoreDraft:true})});
+$('resetBtn').addEventListener('click',()=>{if(termDirty&&!confirm('Kaydedilmemiş taslak silinip D1\'deki son kayıt yüklensin mi?'))return;const slug=currentSlug;termDirty=false;clearTermDraft(slug||'new');if(slug)openTerm(slug,{preserveCurrent:false}).catch(error=>message(errorText(error),true));else startNewForm({restoreDraft:false})});
+$('searchForm').addEventListener('submit',event=>{event.preventDefault();saveTermDraft();loadList($('search').value).catch(error=>message(errorText(error),true))});
 $('search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>$('searchForm').requestSubmit(),300)});
-$('termList').addEventListener('click',event=>{const button=event.target.closest('[data-slug]');if(button)openTerm(button.dataset.slug).catch(error=>message(error.message,true))});
-$('termForm').addEventListener('submit',async event=>{event.preventDefault();try{const body=JSON.stringify(payload());const data=currentSlug?await api('/api/editor/terms/'+encodeURIComponent(currentSlug),{method:'PUT',body}):await api('/api/editor/terms',{method:'POST',body});fillForm(data.term);await loadList($('search').value);message('Madde kaydedildi.')}catch(error){message('Kaydetme başarısız: '+errorText(error),true)}});
-$('deleteBtn').addEventListener('click',async()=>{if(!currentSlug||!confirm('Bu madde kalıcı olarak silinecek. Devam edilsin mi?'))return;try{await api('/api/editor/terms/'+encodeURIComponent(currentSlug),{method:'DELETE'});resetForm();await loadList($('search').value);message('Madde kalıcı olarak silindi.')}catch(error){message('Silme başarısız: '+error.message,true)}});
+$('termList').addEventListener('click',event=>{const button=event.target.closest('[data-slug]');if(button)openTerm(button.dataset.slug).catch(error=>message(errorText(error),true))});
+$('termForm').addEventListener('input',markTermDirty);
+$('termForm').addEventListener('submit',async event=>{
+  event.preventDefault();const button=event.submitter;if(button)button.disabled=true;
+  const originalSlug=currentSlug||'new';
+  try{
+    const body=JSON.stringify(payload());
+    const data=currentSlug
+      ?await api('/api/editor/terms/'+encodeURIComponent(currentSlug),{method:'PUT',body})
+      :await api('/api/editor/terms',{method:'POST',body});
+    termDirty=false;clearTermDraft(originalSlug);clearTermDraft(data.term.slug);
+    fillForm(data.term,{restoreDraft:false});
+    const list=await loadList($('search').value);
+    message('Madde sürüm '+data.term.version+' olarak doğrulandı. Toplam '+Number(list.total||data.counts?.total||0)+' madde.');
+  }catch(error){termDirty=true;saveTermDraft();message('Kaydetme başarısız: '+errorText(error),true)}
+  finally{if(button)button.disabled=false}
+});
+$('deleteBtn').addEventListener('click',async()=>{
+  if(!currentSlug)return;
+  const warning=termDirty?'Kaydedilmemiş taslakla birlikte madde ve bağlı bütün kaynak, varyant ve revizyon satırları kalıcı olarak silinecek. Devam edilsin mi?':'Madde ve bağlı bütün kaynak, varyant ve revizyon satırları kalıcı olarak silinecek. Devam edilsin mi?';
+  if(!confirm(warning))return;
+  const slug=currentSlug;
+  try{
+    const data=await api('/api/editor/terms/'+encodeURIComponent(slug),{method:'DELETE'});
+    termDirty=false;clearTermDraft(slug);startNewForm({restoreDraft:false});
+    const list=await loadList($('search').value);
+    message('Madde ve bağlı tüm satırlar silindi. Toplam '+Number(list.total||data.counts?.total||0)+' madde kaldı.');
+  }catch(error){message('Silme başarısız: '+errorText(error),true)}
+});
+window.addEventListener('beforeunload',()=>{saveTermDraft();savePageDraft()});
 boot();
 </script>
 </body>

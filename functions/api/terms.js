@@ -15,6 +15,27 @@ function normalizeSearch(value) {
     .trim();
 }
 
+function fieldScore(value, needle, weight) {
+  const text = normalizeSearch(value);
+  if (!text || !needle) return 0;
+  if (text === needle) return 1000 + weight;
+  const wholePhrase = text.startsWith(needle + ' ') || text.endsWith(' ' + needle) || text.includes(' ' + needle + ' ');
+  if (wholePhrase) return 800 + weight - Math.min(text.split(' ').length, 40);
+  if (text.startsWith(needle)) return 600 + weight;
+  if (text.includes(needle)) return 300 + weight;
+  return 0;
+}
+
+function searchScore(row, needle) {
+  return Math.max(
+    fieldScore(row.headword_en, needle, 80),
+    fieldScore(row.ottoman_period_term, needle, 70),
+    fieldScore(row.modern_equivalent_tr, needle, 60),
+    fieldScore(row.variants_search, needle, 40),
+    fieldScore(row.category, needle, 10)
+  );
+}
+
 export async function onRequest(context) {
   if (context.request.method !== 'GET') return methodNotAllowed(['GET']);
   if (!context.env.DB) return json({ ok: false, error: 'database_not_configured' }, { status: 503 });
@@ -39,16 +60,13 @@ export async function onRequest(context) {
       `).all();
 
       const needle = normalizeSearch(q);
-      const matches = (allRows.results || []).filter(row => normalizeSearch([
-        row.headword_en,
-        row.ottoman_period_term,
-        row.modern_equivalent_tr,
-        row.category,
-        row.variants_search
-      ].filter(Boolean).join(' ')).includes(needle));
+      const matches = (allRows.results || [])
+        .map(row => ({ ...row, search_score: searchScore(row, needle) }))
+        .filter(row => row.search_score > 0)
+        .sort((left, right) => right.search_score - left.search_score || Number(left.id) - Number(right.id));
 
       const total = matches.length;
-      const items = matches.slice(offset, offset + limit).map(({ variants_search, ...row }) => row);
+      const items = matches.slice(offset, offset + limit).map(({ variants_search, search_score, ...row }) => row);
       return json({
         ok: true,
         items,

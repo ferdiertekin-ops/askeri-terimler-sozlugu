@@ -1,5 +1,20 @@
 import { handleEditorApi, hasEditorSession } from './_lib/editor.js';
-import { renderRobots, renderSitemap, renderTermPage, renderTermsIndex } from './_lib/site.js';
+import { renderEditablePage, renderEditablePageJson, renderRobots, renderSitemap, renderTermPage, renderTermsIndex } from './_lib/site.js';
+
+const EDITABLE_ROUTES = new Map([
+  ['/yayin-notu/', ['publication-note', 'tr']],
+  ['/en/publication-note/', ['publication-note', 'en']],
+  ['/kaynakca/', ['bibliography', 'tr']],
+  ['/en/bibliography/', ['bibliography', 'en']],
+  ['/gizlilik-politikasi/', ['privacy', 'tr']],
+  ['/en/privacy-policy/', ['privacy', 'en']],
+  ['/cerez-politikasi/', ['cookies', 'tr']],
+  ['/en/cookie-policy/', ['cookies', 'en']],
+  ['/kullanim-sartlari/', ['terms-of-use', 'tr']],
+  ['/en/terms-of-use/', ['terms-of-use', 'en']],
+  ['/iletisim/', ['contact', 'tr']],
+  ['/en/contact/', ['contact', 'en']]
+]);
 
 function redirect(url, pathname, status = 308) {
   const target = new URL(url);
@@ -21,6 +36,11 @@ export async function onRequest(context) {
 
   if (path.startsWith('/api/editor/')) return handleEditorApi(context, path);
 
+  const publicPageApi = path.match(/^\/api\/site-pages\/([^/]+)$/);
+  if (getOrHead && publicPageApi && context.env.DB) {
+    return renderEditablePageJson(context.env.DB, decodeURIComponent(publicPageApi[1]));
+  }
+
   const editorPanelRequest = path === '/editor/panel' || path === '/editor/panel/' || path === '/editor/panel/index.html';
   const privatePanelAsset = path === '/editor-panel-private' || path === '/editor-panel-private.html';
   if (getOrHead && (editorPanelRequest || privatePanelAsset)) {
@@ -39,6 +59,12 @@ export async function onRequest(context) {
   }
 
   if (getOrHead && path === '/editor') return redirect(url, '/editor/');
+
+  const editableRoute = EDITABLE_ROUTES.get(path);
+  if (getOrHead && editableRoute && context.env.DB) {
+    const rendered = await renderEditablePage(context.env.DB, editableRoute[0], editableRoute[1]);
+    if (rendered) return rendered;
+  }
 
   if (getOrHead && path === '/terimler') return redirect(url, '/terimler/');
   if (getOrHead && path === '/terimler/') {

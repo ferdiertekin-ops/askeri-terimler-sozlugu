@@ -69,6 +69,38 @@ function unique(values) {
   return [...new Set(values.map(clean).filter(Boolean))];
 }
 
+function sourceFingerprint(value) {
+  return clean(value)
+    .toLocaleLowerCase('tr-TR')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ı/g, 'i')
+    .replace(/\b(?:s|sf|sayfa)\.?\s*\d+(?:\s*[–—-]\s*\d+)?\b/g, ' ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
+function sameSource(left, right) {
+  const a = sourceFingerprint(left);
+  const b = sourceFingerprint(right);
+  return Boolean(a && b && (a === b || a.includes(b) || b.includes(a)));
+}
+
+function mergeBibliographySources(primaryValue, legacyValue) {
+  const merged = parseLines(primaryValue);
+  for (const candidate of parseLines(legacyValue)) {
+    if (!merged.some(existing => sameSource(existing, candidate))) merged.push(candidate);
+  }
+  return unique(merged);
+}
+
+function bareSourceUrl(value) {
+  const citation = clean(value);
+  if (!/^https:\/\/\S+$/i.test(citation) || /^https:\/\/[^/\s]*@/i.test(citation)) return null;
+  return citation;
+}
+
 function resolvedSlug(baseSlug, category) {
   const normalizedCategory = clean(category).toLocaleLowerCase('tr-TR');
   if (baseSlug === 'captain') return normalizedCategory.includes('deniz') ? 'captain-naval' : 'captain-army';
@@ -112,6 +144,11 @@ export function buildMigrationDataset(snapshot) {
       const headword = clean(row.madde_basi);
       if (!headword) return;
       const category = clean(row.kategori);
+      const primarySources = parseLines(row.kunye_kaynak);
+      const legacySources = parseLines(row.kunye);
+      const invalidFallbackSources = primarySources.length || legacySources.length
+        ? []
+        : parseLines(row.kaynak_dosyadaki_karsilik);
       const baseSlug = slugify(headword);
       sourceRows.push({
         sourceOrder: sourceRows.length,
@@ -126,7 +163,8 @@ export function buildMigrationDataset(snapshot) {
         explanation_en: '',
         status,
         variants: parseLines(row.varyant_kisaltma),
-        sources: parseLines(row.kunye_kaynak || row.kunye || row.kaynak_dosyadaki_karsilik)
+        sources: mergeBibliographySources(primarySources, legacySources),
+        invalidFallbackSources
       });
     });
   });
@@ -135,7 +173,7 @@ export function buildMigrationDataset(snapshot) {
   for (const row of sourceRows) {
     const existing = groups.get(row.slug);
     if (!existing) {
-      groups.set(row.slug, { ...row, variants: [...row.variants], sources: [...row.sources] });
+      groups.set(row.slug, { ...row, variants: [...row.variants], sources: [...row.sources], invalidFallbackSources: [...row.invalidFallbackSources] });
       continue;
     }
     existing.ottoman_period_term ||= row.ottoman_period_term;
@@ -145,6 +183,7 @@ export function buildMigrationDataset(snapshot) {
     existing.explanation_en ||= row.explanation_en;
     existing.variants.push(...row.variants);
     existing.sources.push(...row.sources);
+    existing.invalidFallbackSources.push(...row.invalidFallbackSources);
   }
 
   const records = [...groups.values()]
@@ -153,14 +192,20 @@ export function buildMigrationDataset(snapshot) {
       ...record,
       id: index + 1,
       variants: unique(record.variants),
-      sources: unique(record.sources)
+      sources: unique(record.sources),
+      invalidFallbackSources: unique(record.invalidFallbackSources)
     }));
+
+  const removeCandidates = records
+    .filter(record => record.invalidFallbackSources.length)
+    .map(record => ({ slug: record.slug, citations: record.invalidFallbackSources }));
 
   let variantId = 1;
   let sourceId = 1;
   records.forEach(record => {
     record.variants = record.variants.map(variant => ({ id: variantId++, variant }));
-    record.sources = record.sources.map((citation, sortOrder) => ({ id: sourceId++, citation, sortOrder }));
+    record.sources = record.sources.map((citation, sortOrder) => ({ id: sourceId++, citation, url: bareSourceUrl(citation), sortOrder }));
+    delete record.invalidFallbackSources;
   });
 
   const statusCounts = records.reduce((acc, record) => {
@@ -175,6 +220,11 @@ export function buildMigrationDataset(snapshot) {
     variantCount: variantId - 1,
     sourceCount: sourceId - 1,
     statusCounts,
+    bibliographyRepair: {
+      affectedTermCount: removeCandidates.length,
+      invalidFallbackSourceCount: removeCandidates.reduce((sum, item) => sum + item.citations.length, 0),
+      removeCandidates
+    },
     collisionPolicy: {
       merged: ['artillery-artilleryman', 'gun-cotton'],
       separated: ['captain-naval', 'captain-army', 'lieutenant-naval', 'lieutenant-army']

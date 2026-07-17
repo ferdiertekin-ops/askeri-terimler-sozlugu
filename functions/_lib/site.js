@@ -1,3 +1,5 @@
+import { loadEditablePage } from './editable-pages.js';
+
 const SITE_ORIGIN = 'https://askeriterimlersozlugu.com';
 
 const HTML_HEADERS = {
@@ -91,7 +93,7 @@ ${structured}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-weight:600}.brand img{width:52px;height:52px;object-fit:contain}.langs{display:flex;gap:6px}.langs a{padding:6px 10px;border:1px solid var(--line);border-radius:7px;color:var(--navy);text-decoration:none;font-size:12px;font-weight:700}.langs a[aria-current]{background:var(--navy);color:#fff}
 .nav{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;padding:16px 8px;border-bottom:1px solid var(--line)}.nav a{color:var(--navy);text-decoration:none;font-size:12px;letter-spacing:.06em;text-transform:uppercase}.nav a:hover{text-decoration:underline}
 main{margin-top:34px}.page-title{text-align:center;margin:0 0 8px;font:600 clamp(34px,5vw,58px)/1.08 "Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif}.lead{max-width:780px;margin:0 auto 30px;text-align:center;color:var(--muted);font-size:16px;line-height:1.65}
-.paper{background:rgba(251,250,247,.95);border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 44px -34px rgba(35,28,22,.5);padding:26px}.term-list{columns:3 250px;column-gap:32px;margin:0;padding-left:22px}.term-list li{break-inside:avoid;margin:0 0 7px}.term-list a{color:var(--navy);text-decoration:none}.term-list a:hover{color:var(--red);text-decoration:underline}
+.paper{background:rgba(251,250,247,.95);border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 44px -34px rgba(35,28,22,.5);padding:26px}.editorial-page{font-family:"EB Garamond",Garamond,"Palatino Linotype",serif;font-size:18px;line-height:1.72;text-align:justify;text-justify:inter-word;hyphens:auto;color:#302d29}.editorial-page p{margin:0 0 1.05em}.editorial-page p:last-child{margin-bottom:0}.editorial-page a{color:var(--navy);text-underline-offset:2px}.page-updated{margin:14px 2px 0;text-align:right;color:var(--muted);font-size:12px}.term-list{columns:3 250px;column-gap:32px;margin:0;padding-left:22px}.term-list li{break-inside:avoid;margin:0 0 7px}.term-list a{color:var(--navy);text-decoration:none}.term-list a:hover{color:var(--red);text-decoration:underline}
 .term-head{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:start}.term-head h1{margin:0;font:600 clamp(34px,5vw,56px)/1.08 "Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif}.badge{border:1px solid #d8c7b8;border-radius:999px;background:#f4ebe6;color:#67453b;padding:6px 11px;font-size:11px;text-transform:uppercase;letter-spacing:.08em}
 .term-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}.field{background:#fff;border:1px solid var(--line);border-radius:9px;padding:15px}.field.full{grid-column:1/-1}.label{display:block;margin-bottom:6px;color:var(--brass);font:600 10px/1.2 Calibri,"Segoe UI",sans-serif;text-transform:uppercase;letter-spacing:.12em}.value{font:15.5px/1.55 Cambria,Georgia,serif;white-space:pre-line;overflow-wrap:anywhere}.field.ottoman .value{font:italic 17px/1.55 "EB Garamond",Garamond,serif}.field.explanation .value{font:14.5px/1.65 "Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;color:#514c45}.sources{margin:0;padding-left:20px}.sources li{margin:6px 0}.back{display:inline-flex;margin-top:22px;color:var(--navy)}
 .empty{text-align:center;padding:38px;color:var(--muted)}footer{margin-top:28px;text-align:center;color:var(--muted);font-size:13px}
@@ -117,6 +119,70 @@ async function publishedTerms(db) {
     ORDER BY headword_en COLLATE NOCASE, id
   `).all();
   return result.results || [];
+}
+
+function inlinePlainText(value) {
+  const text = String(value || '');
+  const pattern = /(https:\/\/[^\s<]+|[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})/gi;
+  let cursor = 0;
+  let output = '';
+  for (const match of text.matchAll(pattern)) {
+    output += escapeHtml(text.slice(cursor, match.index));
+    const token = match[0];
+    if (token.includes('@') && !token.toLowerCase().startsWith('https://')) {
+      output += `<a href="mailto:${escapeHtml(token)}">${escapeHtml(token)}</a>`;
+    } else {
+      output += `<a href="${escapeHtml(token)}" target="_blank" rel="noopener noreferrer">${escapeHtml(token)}</a>`;
+    }
+    cursor = Number(match.index) + token.length;
+  }
+  return output + escapeHtml(text.slice(cursor));
+}
+
+function plainTextMarkup(value) {
+  const normalized = String(value || '').replace(/\r\n?/g, '\n').trim();
+  if (!normalized) return '<p>—</p>';
+  return normalized
+    .split(/\n{2,}/)
+    .map(paragraph => `<p>${paragraph.split('\n').map(inlinePlainText).join('<br>')}</p>`)
+    .join('');
+}
+
+export async function renderEditablePage(db, pageKey, lang = 'tr') {
+  const page = await loadEditablePage(db, pageKey);
+  if (!page || page.key === 'home-notice') return null;
+  const tr = lang !== 'en';
+  const title = tr ? page.titleTr : page.titleEn;
+  const body = tr ? page.bodyTr : page.bodyEn;
+  const canonical = canonicalPath(tr ? page.pathTr : page.pathEn);
+  const alternate = canonicalPath(tr ? page.pathEn : page.pathTr);
+  const description = String(body || title).replace(/\s+/g, ' ').slice(0, 155);
+  const content = `<h1 class="page-title">${escapeHtml(title)}</h1><article class="paper editorial-page">${plainTextMarkup(body)}</article>${page.updatedAt ? `<p class="page-updated">${tr ? 'Son düzenleme' : 'Last edited'}: ${escapeHtml(String(page.updatedAt).slice(0, 10))}</p>` : ''}`;
+  return responseHtml(shell({
+    lang,
+    title: `${title} · ${tr ? 'Askerî Terimler Sözlüğü' : 'Military Terms Dictionary'}`,
+    description,
+    canonical,
+    alternate,
+    content
+  }), 200, { 'Cache-Control': 'no-store' });
+}
+
+export async function renderEditablePageJson(db, pageKey) {
+  const page = await loadEditablePage(db, pageKey);
+  if (!page) {
+    return new Response(JSON.stringify({ ok: false, error: 'not_found' }), {
+      status: 404,
+      headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }
+    });
+  }
+  return new Response(JSON.stringify({ ok: true, page }), {
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'no-store',
+      'X-Content-Type-Options': 'nosniff'
+    }
+  });
 }
 
 export async function renderTermsIndex(db, lang = 'tr') {
