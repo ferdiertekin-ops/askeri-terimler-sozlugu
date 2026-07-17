@@ -29,3 +29,9 @@ export function requestId(request) {
 export function normalizeQuery(value, maxLength = 120) {
   return String(value || '').trim().slice(0, maxLength);
 }
+
+export function previewOnly(context) {
+  const url = new URL(context.request.url);
+  const branch = String(context.env.CF_PAGES_BRANCH || '');
+  return url.hostname.endsWith('.pages.dev') && branch !== 'main' && branch !== 'master';
+}
