@@ -875,7 +875,7 @@ body.search-active .results{padding-top:4px!important}
       <div class="search-shell">
         <div class="search-row">
           <svg class="search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"></circle><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
-          <input id="searchInput" type="search" autocomplete="off" placeholder="mülâzım, war office, topçu, mirliva…" aria-label="Terim ara">
+          <input id="searchInput" type="search" autocomplete="off" placeholder="Search term" aria-label="Search term">
           <button id="clearSearchBtn" class="clear-btn" title="Aramayı temizle">×</button>
         </div>
         <p class="search-meta"><span id="metricVisible" hidden>0</span><strong id="metricTotal">0</strong> entries<span id="metricSheet" hidden></span><span id="metricSave" hidden></span></p>
@@ -12941,7 +12941,7 @@ window.DICTIONARY_DATA = [
       if (beta) beta.textContent = "Beta Version";
       if (els && els.heroSubtitle) els.heroSubtitle.textContent = "";
       const search = document.getElementById("searchInput");
-      if (search) search.setAttribute("placeholder", "mülâzım, war office, artillery, mirliva…");
+      if (search) search.setAttribute("placeholder", "Search term");
       const clear = document.getElementById("clearSearchBtn");
       if (clear) clear.setAttribute("title", "Clear search");
       const compact = document.getElementById("compactViewBtn");
