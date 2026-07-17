@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Editör Paneli · Askerî Terimler Sözlüğü</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<style>
+:root{--bg:#f3efe6;--paper:#fbfaf7;--ink:#1e2732;--muted:#6c6861;--navy:#2f4e71;--red:#923c2c;--green:#28735d;--line:#d7d0c3}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#f7f4ec,var(--bg));color:var(--ink);font-family:Cambria,Georgia,serif}.shell{width:min(1180px,calc(100% - 28px));margin:auto;padding:22px 0 48px}
+header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:18px;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none;font-weight:700}.brand img{width:48px;height:48px}.back{color:var(--navy)}
+.card{background:rgba(251,250,247,.96);border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 44px -34px rgba(35,28,22,.5);padding:22px}.login{width:min(460px,100%);margin:70px auto}.login h1{margin-top:0}
+label{display:block;color:#715d36;font:600 11px/1.2 Calibri,"Segoe UI",sans-serif;letter-spacing:.08em;text-transform:uppercase}.input,textarea,select{width:100%;margin-top:6px;border:1px solid #bdb6aa;border-radius:8px;background:#fff;color:var(--ink);padding:10px 11px;font:15px/1.45 Cambria,Georgia,serif}textarea{min-height:94px;resize:vertical}.password{min-height:44px}
+button{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);padding:10px 15px;font-weight:700;cursor:pointer}button:hover{border-color:var(--navy)}button.primary{background:var(--navy);border-color:var(--navy);color:#fff}button.danger{color:#fff;background:var(--red);border-color:var(--red)}button.ghost{background:transparent}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.login button{width:100%;margin-top:14px}.error{color:var(--red);min-height:20px}.notice{position:fixed;right:18px;bottom:18px;max-width:360px;padding:12px 16px;border-radius:9px;background:#1e2732;color:#fff;box-shadow:0 12px 30px rgba(0,0,0,.25);display:none;z-index:20}.notice.show{display:block}.notice.error{background:var(--red)}
+.app[hidden],.login[hidden]{display:none}.toolbar{display:grid;grid-template-columns:1fr auto;gap:12px;margin:22px 0}.search-row{display:grid;grid-template-columns:1fr auto;gap:8px}.workspace{display:grid;grid-template-columns:minmax(270px,.72fr) minmax(0,1.45fr);gap:16px}.list{max-height:75vh;overflow:auto;padding:0}.term-item{width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:12px 14px;background:transparent}.term-item:hover,.term-item.active{background:#efe9dd}.term-item strong{display:block;font:600 15px Cambria,Georgia,serif}.term-item small{color:var(--muted)}.empty{padding:24px;text-align:center;color:var(--muted)}
+.form-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:18px}.form-head h1{margin:0;font-size:26px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}.form-actions{display:flex;justify-content:space-between;gap:12px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}.status{display:inline-block;padding:3px 8px;border-radius:999px;background:#eee7da;color:#5f574b;font:700 10px Calibri,sans-serif;text-transform:uppercase}.meta{margin-top:8px;color:var(--muted);font-size:12px}
+@media(max-width:800px){.workspace{grid-template-columns:1fr}.list{max-height:300px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.toolbar{grid-template-columns:1fr}.form-actions{flex-direction:column}.form-actions .actions{width:100%}.form-actions button{flex:1}}
+</style>
+</head>
+<body><div class="shell">
+<header><a class="brand" href="/"><img src="/ats-logo-2026.svg" alt="ATS"><span>Askerî Terimler Sözlüğü · Editör</span></a><a class="back" href="/">Sözlüğe dön</a></header>
+
+
+<section id="app" class="app">
+  <div class="toolbar">
+    <form id="searchForm" class="search-row"><input id="search" class="input" type="search" placeholder="Madde ara"><button type="submit">Ara</button></form>
+    <div class="actions"><button id="newBtn" class="primary" type="button">+ Yeni madde</button><button id="logoutBtn" type="button">Çıkış</button></div>
+  </div>
+  <div class="workspace">
+    <aside id="termList" class="card list" aria-label="Maddeler"></aside>
+    <main class="card">
+      <div class="form-head"><div><h1 id="formTitle">Yeni madde</h1><div id="recordMeta" class="meta"></div></div><span id="recordStatus" class="status">Taslak</span></div>
+      <form id="termForm">
+        <div class="grid">
+          <label>Ana terim<input id="headword" class="input" required maxlength="300"></label>
+          <label>Kalıcı adres (slug)<input id="slug" class="input" maxlength="150" placeholder="Boş bırakılırsa otomatik oluşur"></label>
+          <label>Osmanlıca / dönem<textarea id="ottoman"></textarea></label>
+          <label>Günümüz karşılığı<textarea id="modern"></textarea></label>
+          <label>Kategori<input id="category" class="input" maxlength="200"></label>
+          <label>Yayın durumu<select id="status"><option value="draft">Taslak</option><option value="review">İnceleme</option><option value="published">Yayında</option><option value="suspended">Askıda</option></select></label>
+          <label class="full">Türkçe açıklama<textarea id="explanationTr"></textarea></label>
+          <label class="full">İngilizce açıklama<textarea id="explanationEn"></textarea></label>
+          <label>Varyantlar / kısaltmalar<textarea id="variants" placeholder="Her satıra bir değer"></textarea></label>
+          <label>Kaynaklar<textarea id="sources" placeholder="Her satıra bir kaynak"></textarea></label>
+          <label class="full">Değişiklik notu<input id="changeNote" class="input" maxlength="500" placeholder="Bu düzenlemede ne değişti?"></label>
+        </div>
+        <div class="form-actions"><div class="actions"><button id="saveBtn" class="primary" type="submit">Kaydet</button><button id="resetBtn" type="button">Temizle</button></div><button id="deleteBtn" class="danger" type="button" hidden>Kalıcı olarak sil</button></div>
+      </form>
+    </main>
+  </div>
+</section>
+</div><div id="notice" class="notice" role="status"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+let csrf='',currentSlug='',searchTimer=null;
+const fields={headword:$('headword'),slug:$('slug'),ottoman:$('ottoman'),modern:$('modern'),category:$('category'),status:$('status'),explanationTr:$('explanationTr'),explanationEn:$('explanationEn'),variants:$('variants'),sources:$('sources'),changeNote:$('changeNote')};
+
+function message(text,error=false){const box=$('notice');box.textContent=text;box.className='notice show'+(error?' error':'');clearTimeout(message.timer);message.timer=setTimeout(()=>box.className='notice',3500)}
+async function api(url,options={}){const headers={Accept:'application/json',...(options.headers||{})};if(options.body)headers['Content-Type']='application/json';if(csrf&&options.method&&options.method!=='GET')headers['X-CSRF-Token']=csrf;const response=await fetch(url,{credentials:'same-origin',...options,headers});let data={};try{data=await response.json()}catch{}if(!response.ok||!data.ok)throw new Error(data.error||('HTTP '+response.status));return data}
+function lines(value){return String(value||'').split(/\r?\n/).map(x=>x.trim()).filter(Boolean)}
+function resetForm(){currentSlug='';$('termForm').reset();fields.status.value='draft';$('formTitle').textContent='Yeni madde';$('recordMeta').textContent='';$('recordStatus').textContent='Taslak';$('deleteBtn').hidden=true;document.querySelectorAll('.term-item.active').forEach(x=>x.classList.remove('active'))}
+function fillForm(term){currentSlug=term.slug;fields.headword.value=term.headword_en||'';fields.slug.value=term.slug||'';fields.ottoman.value=term.ottoman_period_term||'';fields.modern.value=term.modern_equivalent_tr||'';fields.category.value=term.category||'';fields.status.value=term.status||'draft';fields.explanationTr.value=term.explanation_tr||'';fields.explanationEn.value=term.explanation_en||'';fields.variants.value=(term.variants||[]).map(x=>x.variant).join('\n');fields.sources.value=(term.sources||[]).map(x=>x.citation).join('\n');fields.changeNote.value='';$('formTitle').textContent=term.headword_en||'Madde';$('recordStatus').textContent=term.status||'draft';$('recordMeta').textContent='Sürüm '+(term.version||1)+' · '+(term.updated_at||'');$('deleteBtn').hidden=false}
+function payload(){return{headword_en:fields.headword.value,slug:fields.slug.value,ottoman_period_term:fields.ottoman.value,modern_equivalent_tr:fields.modern.value,category:fields.category.value,status:fields.status.value,explanation_tr:fields.explanationTr.value,explanation_en:fields.explanationEn.value,variants:lines(fields.variants.value),sources:lines(fields.sources.value),change_note:fields.changeNote.value}}
+async function loadList(q=''){const data=await api('/api/editor/terms?limit=100&q='+encodeURIComponent(q));const box=$('termList');if(!data.items.length){box.innerHTML='<div class="empty">Madde bulunamadı.</div>';return}box.innerHTML=data.items.map(item=>'<button type="button" class="term-item" data-slug="'+escapeAttr(item.slug)+'"><strong>'+escapeHtml(item.headword_en)+'</strong><small>'+escapeHtml(item.status)+' · '+escapeHtml(item.modern_equivalent_tr||'')+'</small></button>').join('');}
+function escapeHtml(value){return String(value||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function escapeAttr(value){return escapeHtml(value)}
+async function openTerm(slug){const data=await api('/api/editor/terms/'+encodeURIComponent(slug));fillForm(data.term);document.querySelectorAll('.term-item').forEach(x=>x.classList.toggle('active',x.dataset.slug===slug))}
+async function boot(){try{const data=await api('/api/editor/session');if(!data.authenticated){location.replace('/editor/');return}csrf=data.csrfToken;await loadList()}catch{location.replace('/editor/')}}
+
+$('logoutBtn').addEventListener('click',async()=>{try{await api('/api/editor/logout',{method:'POST'});}catch{}csrf='';location.replace('/editor/')});
+$('newBtn').addEventListener('click',resetForm);$('resetBtn').addEventListener('click',resetForm);
+$('searchForm').addEventListener('submit',event=>{event.preventDefault();loadList($('search').value).catch(error=>message(error.message,true))});
+$('search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>$('searchForm').requestSubmit(),300)});
+$('termList').addEventListener('click',event=>{const button=event.target.closest('[data-slug]');if(button)openTerm(button.dataset.slug).catch(error=>message(error.message,true))});
+$('termForm').addEventListener('submit',async event=>{event.preventDefault();try{const body=JSON.stringify(payload());const data=currentSlug?await api('/api/editor/terms/'+encodeURIComponent(currentSlug),{method:'PUT',body}):await api('/api/editor/terms',{method:'POST',body});fillForm(data.term);await loadList($('search').value);message('Madde kaydedildi.')}catch(error){message('Kaydetme başarısız: '+error.message,true)}});
+$('deleteBtn').addEventListener('click',async()=>{if(!currentSlug||!confirm('Bu madde kalıcı olarak silinecek. Devam edilsin mi?'))return;try{await api('/api/editor/terms/'+encodeURIComponent(currentSlug),{method:'DELETE'});resetForm();await loadList($('search').value);message('Madde kalıcı olarak silindi.')}catch(error){message('Silme başarısız: '+error.message,true)}});
+boot();
+</script>
+</body>
+</html>
