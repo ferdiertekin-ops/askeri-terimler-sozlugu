@@ -361,10 +361,15 @@ async function boot(){
     const data=await api('/api/editor/session');
     if(!data.authenticated){location.replace('/editor/');return}
     csrf=data.csrfToken;
-    const mode=sessionStorage.getItem('ats-editor-mode')==='pages'?'pages':'terms';
+    const requestedTerm=String(new URLSearchParams(location.search).get('term')||'').trim();
+    const requestedSlug=/^[a-z0-9-]{1,150}$/.test(requestedTerm)?requestedTerm:'';
+    const mode=requestedSlug?'terms':(sessionStorage.getItem('ats-editor-mode')==='pages'?'pages':'terms');
     showEditorMode(mode);
     await loadList();
-    if(mode==='pages'){
+    if(requestedSlug){
+      try{await openTerm(requestedSlug,{preserveCurrent:false})}
+      catch{startNewForm({restoreDraft:true});message('Düzenlenecek madde bulunamadı.',true)}
+    }else if(mode==='pages'){
       await openPage(currentPageKey,{preserveCurrent:false});
     }else{
       const savedTerm=sessionStorage.getItem('ats-editor-term')||'new';
