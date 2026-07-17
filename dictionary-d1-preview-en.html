@@ -116,7 +116,7 @@
 .preview-clear{width:52px;align-self:stretch;flex:none;border:0;border-radius:0 12px 12px 0;background:transparent;color:#9e998c;font-size:24px;line-height:1;padding:0;transition:color .12s ease,transform .1s ease}
 .preview-clear:hover,.preview-clear:focus-visible{color:#9a3d20}
 .preview-clear:active{transform:scale(.9)}
-.preview-result-meta{margin:4px 0 0;padding:14px 0 0;border-top:1px solid var(--line)}
+.preview-result-meta,.status:not(.error){position:absolute!important;width:1px;height:1px;padding:0!important;margin:-1px!important;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0!important}.status.error{min-height:0;margin:8px 0}
 @media(max-width:760px){
   .preview-brand__logo{width:52px;height:52px}
   .preview-brand__name{font-size:15px}
@@ -188,7 +188,7 @@
     </div>
   </form>
 </section>
-<div class="result-meta preview-result-meta"><span id="resultTitle" class="result-title">Results</span><span id="meta" class="result-count">Loading…</span></div>
+<div class="result-meta preview-result-meta" aria-live="polite"><span id="resultTitle" class="result-title">Results</span><span id="meta" class="result-count">Loading…</span></div>
 <p id="status" class="status" role="status"></p>
 <section class="list-shell">
 <div class="list-head" aria-hidden="true"><span>Headword</span><span>Ottoman / Period</span><span>Modern Turkish</span><span>Explanation</span><span class="head-actions"></span></div>
