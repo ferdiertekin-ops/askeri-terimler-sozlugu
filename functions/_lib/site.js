@@ -59,10 +59,10 @@ function siteNav(lang) {
   return links.map(([href, label]) => `<a href="${href}">${escapeHtml(label)}</a>`).join('');
 }
 
-function shell({ lang, title, description, canonical, content, jsonLd = null }) {
+function shell({ lang, title, description, canonical, alternate, content, jsonLd = null }) {
   const tr = lang !== 'en';
   const dictionaryName = tr ? 'Askerî Terimler Sözlüğü' : 'Military Terms Dictionary';
-  const alternate = tr ? canonical.replace(SITE_ORIGIN, `${SITE_ORIGIN}/en`) : canonical.replace(`${SITE_ORIGIN}/en`, SITE_ORIGIN);
+  const alternateUrl = alternate || (tr ? canonicalPath('/en/') : canonicalPath('/'));
   const structured = jsonLd
     ? `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, '\\u003c')}</script>`
     : '';
@@ -75,7 +75,7 @@ function shell({ lang, title, description, canonical, content, jsonLd = null }) 
 <meta name="description" content="${escapeHtml(description)}">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="${escapeHtml(canonical)}">
-<link rel="alternate" hreflang="${tr ? 'en' : 'tr'}" href="${escapeHtml(alternate)}">
+<link rel="alternate" hreflang="${tr ? 'en' : 'tr'}" href="${escapeHtml(alternateUrl)}">
 <link rel="alternate" hreflang="${tr ? 'tr' : 'en'}" href="${escapeHtml(canonical)}">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="/favicon-96.png" sizes="96x96">
@@ -134,6 +134,7 @@ export async function renderTermsIndex(db, lang = 'tr') {
     title: `${title} · ${tr ? 'Askerî Terimler Sözlüğü' : 'Military Terms Dictionary'}`,
     description,
     canonical: canonicalPath(tr ? '/terimler/' : '/en/terms/'),
+    alternate: canonicalPath(tr ? '/en/terms/' : '/terimler/'),
     content
   }));
 }
@@ -174,6 +175,7 @@ export async function renderTermPage(db, slug, lang = 'tr') {
       title,
       description: title,
       canonical: canonicalPath(tr ? `/terim/${encodeURIComponent(slug)}/` : `/en/term/${encodeURIComponent(slug)}/`),
+      alternate: canonicalPath(tr ? `/en/term/${encodeURIComponent(slug)}/` : `/terim/${encodeURIComponent(slug)}/`),
       content: `<section class="paper empty"><h1>${title}</h1><p>${tr ? 'İstenen sözlük maddesi yayımlanmamış veya kaldırılmış olabilir.' : 'The requested entry may be unpublished or removed.'}</p></section>`
     }), 404, { 'Cache-Control': 'no-store' });
   }
@@ -212,6 +214,7 @@ export async function renderTermPage(db, slug, lang = 'tr') {
     title: `${term.headword_en} · ${tr ? 'Askerî Terimler Sözlüğü' : 'Military Terms Dictionary'}`,
     description,
     canonical,
+    alternate: canonicalPath(tr ? `/en/term/${encodeURIComponent(term.slug)}/` : `/terim/${encodeURIComponent(term.slug)}/`),
     content,
     jsonLd
   }));
