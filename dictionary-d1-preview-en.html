@@ -177,9 +177,68 @@
   .preview-clear{width:44px}
 }
 
+
+/* ---------- Yan yayın vitrini ---------- */
+.book-showcase{
+  position:absolute;
+  top:190px;
+  z-index:1;
+  display:none;
+  width:112px;
+  flex-direction:column;
+  gap:15px;
+}
+.book-showcase--left{right:calc(50% + 608px)}
+.book-showcase--right{left:calc(50% + 608px)}
+.book-promo{
+  display:block;
+  width:112px;
+  margin:0 auto;
+  border-radius:4px;
+  opacity:.84;
+  filter:saturate(.88);
+  text-decoration:none;
+  transition:opacity .16s ease,filter .16s ease,transform .16s ease;
+}
+.book-promo img{
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:174px;
+  object-fit:contain;
+  border:1px solid rgba(47,78,113,.20);
+  border-radius:4px;
+  background:rgba(255,254,250,.72);
+  box-shadow:0 5px 14px -8px rgba(30,39,50,.40);
+}
+.book-promo:hover,.book-promo:focus-visible{
+  opacity:1;
+  filter:none;
+  transform:translateY(-2px);
+}
+.book-promo:focus-visible{outline:2px solid #2f4e71;outline-offset:3px}
+@media(min-width:1500px){.book-showcase{display:flex}}
+
 </style>
 </head>
 <body>
+<aside class="book-showcase book-showcase--left" aria-label="Books by Ferdi Ertekin" data-nosnippet>
+  <a class="book-promo" href="https://www.kitapyurdu.com/kitap/ingiliz-istihbarat-raporlarinda-turk-ordusu/750529.html" target="_blank" rel="noopener noreferrer" title="View on Kitapyurdu: İngiliz Askerî İstihbarat Raporlarında Türk Ordusu">
+    <img src="/assets/books/turk-ordusu.svg" alt="İngiliz Askerî İstihbarat Raporlarında Türk Ordusu book cover" loading="eager" decoding="async">
+  </a>
+  <a class="book-promo" href="https://www.kitapyurdu.com/kitap/ingiliz-istihbarati-ve-osmanli-imparatorlugu/630212.html" target="_blank" rel="noopener noreferrer" title="View on Kitapyurdu: İngiliz İstihbaratı ve Osmanlı İmparatorluğu">
+    <img src="/assets/books/ingiliz-istihbarati-osmanli.svg" alt="İngiliz İstihbaratı ve Osmanlı İmparatorluğu book cover" loading="lazy" decoding="async">
+  </a>
+</aside>
+<aside class="book-showcase book-showcase--right" aria-label="Books by Ferdi Ertekin and Işık Eğrioğlu Ertekin" data-nosnippet>
+  <a class="book-promo" href="https://www.kitapyurdu.com/kitap/din-harp-futbol/596880.html" target="_blank" rel="noopener noreferrer" title="View on Kitapyurdu: Din, Harp, Futbol">
+    <img src="/assets/books/din-harp-futbol.svg" alt="Din, Harp, Futbol book cover" loading="eager" decoding="async">
+  </a>
+  <a class="book-promo" href="https://www.kitapyurdu.com/kitap/napolyonun-elcileri-devrim-sonrasi-osmanlifransiz-iliskilerinden-bir-kesit-17921809/745329.html" target="_blank" rel="noopener noreferrer" title="View on Kitapyurdu: Napolyon’un Elçileri">
+    <img src="/assets/books/napolyonun-elcileri.svg" alt="Napolyon’un Elçileri book cover" loading="lazy" decoding="async">
+  </a>
+</aside>
+
 <div class="wrap">
 <header class="preview-topbar">
   <a class="preview-brand" href="/en/" aria-label="Military Terms Dictionary">
