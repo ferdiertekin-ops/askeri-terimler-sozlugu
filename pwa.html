@@ -2,27 +2,157 @@
 <html lang="tr">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#2F4E71">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#20395A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Askerî Sözlük">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="icon" href="/favicon.ico" sizes="any">
   <title>Askerî Terimler Sözlüğü</title>
   <style>
-    body{margin:0;min-height:100vh;display:grid;place-items:center;background:#F7F4EC;color:#2F4E71;font-family:Cambria,Georgia,serif}
-    p{font-size:18px;letter-spacing:.02em}
+    :root{
+      color-scheme:light;
+      --bg:#F7F4EC;
+      --bg2:#ECE7DB;
+      --card:#FFFEFA;
+      --ink:#1E2732;
+      --soft:#5D6672;
+      --navy:#20395A;
+      --gold:#8F702F;
+      --line:#C8C2B1;
+    }
+    *{box-sizing:border-box}
+    html,body{min-height:100%}
+    body{
+      margin:0;
+      min-height:100svh;
+      display:grid;
+      place-items:center;
+      padding:max(24px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom));
+      background:
+        radial-gradient(700px 340px at 50% -40px,rgba(47,78,113,.13),transparent 70%),
+        linear-gradient(180deg,var(--bg),var(--bg2));
+      color:var(--ink);
+      font-family:Cambria,Georgia,serif;
+    }
+    main{
+      width:min(420px,100%);
+      text-align:center;
+      padding:34px 28px 30px;
+      border:1px solid rgba(143,112,47,.30);
+      border-radius:22px;
+      background:rgba(255,254,250,.92);
+      box-shadow:0 24px 70px -45px rgba(30,39,50,.72);
+      backdrop-filter:blur(10px);
+    }
+    img{
+      display:block;
+      width:112px;
+      height:112px;
+      margin:0 auto 20px;
+      border-radius:24px;
+      box-shadow:0 13px 30px -18px rgba(32,57,90,.72);
+    }
+    h1{
+      margin:0;
+      color:var(--navy);
+      font-family:"Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;
+      font-size:27px;
+      font-weight:600;
+      line-height:1.18;
+      letter-spacing:-.01em;
+    }
+    .period{
+      margin:9px 0 0;
+      color:var(--gold);
+      font-size:12px;
+      font-weight:600;
+      letter-spacing:.24em;
+    }
+    .status{
+      margin:24px 0 0;
+      color:var(--soft);
+      font-size:15px;
+      line-height:1.55;
+    }
+    .progress{
+      width:170px;
+      height:3px;
+      margin:18px auto 0;
+      overflow:hidden;
+      border-radius:99px;
+      background:#DED8C9;
+    }
+    .progress::after{
+      content:"";
+      display:block;
+      width:48%;
+      height:100%;
+      border-radius:inherit;
+      background:linear-gradient(90deg,var(--gold),var(--navy));
+      animation:loading 1.25s ease-in-out infinite;
+    }
+    .fallback{
+      display:inline-block;
+      margin-top:22px;
+      color:var(--navy);
+      font-size:14px;
+      text-underline-offset:3px;
+    }
+    @keyframes loading{
+      0%{transform:translateX(-110%)}
+      100%{transform:translateX(315%)}
+    }
+    @media (prefers-reduced-motion:reduce){
+      .progress::after{animation:none;width:100%}
+    }
   </style>
 </head>
 <body>
-  <p>Sözlük açılıyor…</p>
+  <main>
+    <img src="/icons/ats-icon-192.png" alt="" width="112" height="112">
+    <h1>Askerî Terimler Sözlüğü</h1>
+    <p class="period">1876–1918</p>
+    <p class="status" id="status" role="status" aria-live="polite">Sözlük hazırlanıyor…</p>
+    <div class="progress" aria-hidden="true"></div>
+    <noscript><a class="fallback" href="/">Sözlüğü aç</a></noscript>
+  </main>
   <script>
     (async function () {
+      const status = document.getElementById("status");
+      const destination = "/?source=pwa";
+      let redirected = false;
+
+      function openDictionary(delay) {
+        if (redirected) return;
+        redirected = true;
+        window.setTimeout(() => location.replace(destination), delay);
+      }
+
+      window.setTimeout(() => openDictionary(0), 4500);
+
+      if (!("serviceWorker" in navigator)) {
+        status.textContent = "Sözlük açılıyor…";
+        openDictionary(350);
+        return;
+      }
+
       try {
-        if ("serviceWorker" in navigator) {
-          await navigator.serviceWorker.register("/sw.js", { scope: "/" });
-          await navigator.serviceWorker.ready;
-        }
+        status.textContent = "Çevrimdışı kullanım hazırlanıyor…";
+        await navigator.serviceWorker.register("/sw.js", {
+          scope: "/",
+          updateViaCache: "none"
+        });
+        await navigator.serviceWorker.ready;
+        status.textContent = "Sözlük açılıyor…";
+        openDictionary(180);
       } catch (error) {
         console.error("Service worker kaydı başarısız:", error);
-      } finally {
-        location.replace("/");
+        status.textContent = "Sözlük çevrimiçi olarak açılıyor…";
+        openDictionary(450);
       }
     })();
   </script>

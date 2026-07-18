@@ -8,27 +8,45 @@
   "start_url": "/pwa.html?source=pwa",
   "scope": "/",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
   "orientation": "any",
-  "theme_color": "#2F4E71",
+  "theme_color": "#20395A",
   "background_color": "#F7F4EC",
-  "categories": ["education", "reference", "books"],
+  "categories": [
+    "education",
+    "reference",
+    "books"
+  ],
+  "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/favicon-96.png",
-      "sizes": "96x96",
-      "type": "image/png"
-    },
-    {
-      "src": "/apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png"
-    },
-    {
-      "src": "/apple-touch-icon.png",
-      "sizes": "180x180",
+      "src": "/icons/ats-icon-192.png",
+      "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/ats-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/ats-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/ats-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/ats-monochrome.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "monochrome"
     }
   ],
   "shortcuts": [
@@ -36,13 +54,27 @@
       "name": "Sözlükte Ara",
       "short_name": "Ara",
       "description": "Askerî terimler sözlüğünde arama yap",
-      "url": "/?source=shortcut"
+      "url": "/?source=shortcut",
+      "icons": [
+        {
+          "src": "/icons/ats-icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "Terimler Dizini",
       "short_name": "Dizin",
       "description": "Terimleri alfabetik dizinde görüntüle",
-      "url": "/terimler-dizini/"
+      "url": "/terimler/",
+      "icons": [
+        {
+          "src": "/icons/ats-icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     }
   ]
 }

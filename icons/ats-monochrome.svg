@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <circle cx="256" cy="256" r="190" fill="#000"/>
+  <circle cx="256" cy="256" r="172" fill="#fff"/>
+  <path fill="#000" d="M225 130a48 48 0 1 0 0 72 41 41 0 1 1 0-72Z"/>
+  <path fill="#000" d="M302 133l8 17 19 2-14 13 4 19-17-9-17 9 4-19-14-13 19-2Z"/>
+  <text x="256" y="326" text-anchor="middle" font-family="serif" font-size="142" font-weight="700" fill="#000">ATS</text>
+  <rect x="174" y="355" width="164" height="9" rx="4.5" fill="#000"/>
+  <circle cx="256" cy="359.5" r="14" fill="#000"/>
+</svg>
