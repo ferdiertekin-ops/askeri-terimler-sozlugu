@@ -7,6 +7,6 @@
   "scripts": {
     "build": "node -e \"console.log('Cloudflare Pages statik dosyaları ve Functions hazır.')\"",
     "dev": "npx wrangler pages dev .",
-    "check": "node --check functions/_middleware.js && node --check functions/_lib/http.js && node --check functions/_lib/site.js && node --check functions/_lib/editor.js"
+    "check": "node --check functions/_middleware.js && node --check functions/_lib/http.js && node --check functions/_lib/site.js && node --check functions/_lib/editor.js && node --check functions/_lib/term-letter.js"
   }
 }

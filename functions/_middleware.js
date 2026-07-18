@@ -1,6 +1,8 @@
 import { handleEditorApi, hasEditorSession } from './_lib/editor.js';
 import { renderEditablePage, renderEditablePageJson, renderRobots, renderSitemap, renderTermPage, renderTermsIndex } from './_lib/site.js';
 
+const CANONICAL_HOST = 'askeriterimlersozlugu.com';
+
 const EDITABLE_ROUTES = new Map([
   ['/yayin-notu/', ['publication-note', 'tr']],
   ['/en/publication-note/', ['publication-note', 'en']],
@@ -33,6 +35,12 @@ export async function onRequest(context) {
   const url = new URL(context.request.url);
   const path = url.pathname;
   const getOrHead = context.request.method === 'GET' || context.request.method === 'HEAD';
+
+  if (url.hostname === `www.${CANONICAL_HOST}`) {
+    url.protocol = 'https:';
+    url.hostname = CANONICAL_HOST;
+    return Response.redirect(url.toString(), 301);
+  }
 
   if (path.startsWith('/api/editor/')) return handleEditorApi(context, path);
 
