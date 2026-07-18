@@ -25,6 +25,10 @@
   Cache-Control: no-cache, must-revalidate
   X-Robots-Tag: noindex, nofollow, noarchive
 
+/uygulama/*
+  Cache-Control: no-cache, must-revalidate
+  X-Robots-Tag: noindex, nofollow, noarchive
+
 /offline.html
   Cache-Control: public, max-age=86400
   X-Robots-Tag: noindex, nofollow, noarchive
