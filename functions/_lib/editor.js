@@ -1,6 +1,7 @@
 import { json, methodNotAllowed, normalizeQuery, requestId } from './http.js';
 import { editablePageDefinition, listEditablePages, loadEditablePage } from './editable-pages.js';
 import { buildMigrationDataset, fetchMigrationSnapshot } from './migration-data.js';
+import { termLetter } from './term-letter.js';
 
 const COOKIE_NAME = 'ats_editor_session';
 const SESSION_TTL_SECONDS = 4 * 60 * 60;
@@ -246,7 +247,7 @@ async function fullTerm(db, slug, publishedOnly = false) {
     db.prepare('SELECT variant, variant_type, language FROM term_variants WHERE term_id = ?1 ORDER BY id').bind(term.id).all(),
     db.prepare('SELECT citation, url, source_type, page_reference, sort_order FROM term_sources WHERE term_id = ?1 ORDER BY sort_order, id').bind(term.id).all()
   ]);
-  return { ...term, variants: variants.results || [], sources: sources.results || [] };
+  return { ...term, letter: termLetter(term.headword_en), variants: variants.results || [], sources: sources.results || [] };
 }
 
 function savedTermMatches(saved, value, expectedVersion) {
@@ -596,7 +597,7 @@ async function termsCollection(context) {
     ]);
     return json({
       ok: true,
-      items: rows.results || [],
+      items: (rows.results || []).map(term => ({ ...term, letter: termLetter(term.headword_en) })),
       total: counts.total,
       filteredTotal: Number(filteredCount?.count || 0),
       counts,

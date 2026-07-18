@@ -1,4 +1,5 @@
 import { json, methodNotAllowed, normalizeQuery, requestId } from '../_lib/http.js';
+import { termLetter } from '../_lib/term-letter.js';
 
 function normalizeSearch(value) {
   return String(value || '')
@@ -66,7 +67,10 @@ export async function onRequest(context) {
         .sort((left, right) => right.search_score - left.search_score || Number(left.id) - Number(right.id));
 
       const total = matches.length;
-      const items = matches.slice(offset, offset + limit).map(({ variants_search, search_score, ...row }) => row);
+      const items = matches.slice(offset, offset + limit).map(({ variants_search, search_score, ...row }) => ({
+        ...row,
+        letter: termLetter(row.headword_en)
+      }));
       return json({
         ok: true,
         items,
@@ -98,7 +102,7 @@ export async function onRequest(context) {
     const total = Number(countRow?.count || 0);
     return json({
       ok: true,
-      items: rows.results || [],
+      items: (rows.results || []).map(term => ({ ...term, letter: termLetter(term.headword_en) })),
       total,
       limit,
       offset,

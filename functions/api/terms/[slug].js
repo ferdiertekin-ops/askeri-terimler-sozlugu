@@ -1,4 +1,5 @@
 import { json, methodNotAllowed, requestId } from '../../_lib/http.js';
+import { termLetter } from '../../_lib/term-letter.js';
 
 export async function onRequest(context) {
   if (context.request.method !== 'GET') return methodNotAllowed(['GET']);
@@ -38,6 +39,7 @@ export async function onRequest(context) {
       ok: true,
       term: {
         ...term,
+        letter: termLetter(term.headword_en),
         variants: variants.results || [],
         sources: sources.results || []
       },

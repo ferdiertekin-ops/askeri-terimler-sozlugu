@@ -1,6 +1,7 @@
 import { loadEditablePage } from './editable-pages.js';
 
 const SITE_ORIGIN = 'https://askeriterimlersozlugu.com';
+const NOINDEX_PAGE_KEYS = new Set(['privacy', 'cookies', 'terms-of-use', 'contact']);
 
 const HTML_HEADERS = {
   'Content-Type': 'text/html; charset=utf-8',
@@ -61,7 +62,7 @@ function siteNav(lang) {
   return links.map(([href, label]) => `<a href="${href}">${escapeHtml(label)}</a>`).join('');
 }
 
-function shell({ lang, title, description, canonical, alternate, content, jsonLd = null }) {
+function shell({ lang, title, description, canonical, alternate, content, jsonLd = null, robots = 'index,follow,max-image-preview:large' }) {
   const tr = lang !== 'en';
   const dictionaryName = tr ? 'Askerî Terimler Sözlüğü' : 'Military Terms Dictionary';
   const alternateUrl = alternate || (tr ? canonicalPath('/en/') : canonicalPath('/'));
@@ -75,7 +76,7 @@ function shell({ lang, title, description, canonical, alternate, content, jsonLd
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${escapeHtml(title)}</title>
 <meta name="description" content="${escapeHtml(description)}">
-<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="robots" content="${escapeHtml(robots)}">
 <link rel="canonical" href="${escapeHtml(canonical)}">
 <link rel="alternate" hreflang="${tr ? 'en' : 'tr'}" href="${escapeHtml(alternateUrl)}">
 <link rel="alternate" hreflang="${tr ? 'tr' : 'en'}" href="${escapeHtml(canonical)}">
@@ -164,7 +165,8 @@ export async function renderEditablePage(db, pageKey, lang = 'tr') {
     description,
     canonical,
     alternate,
-    content
+    content,
+    robots: NOINDEX_PAGE_KEYS.has(page.key) ? 'noindex,follow' : 'index,follow,max-image-preview:large'
   }), 200, { 'Cache-Control': 'no-store' });
 }
 
@@ -287,21 +289,34 @@ export async function renderTermPage(db, slug, lang = 'tr') {
 }
 
 export async function renderSitemap(db) {
-  const rows = await publishedTerms(db);
-  const staticPaths = [
-    '/', '/en/', '/terimler/', '/en/terms/', '/yayin-notu/', '/en/publication-note/',
-    '/kaynakca/', '/en/bibliography/', '/gizlilik-politikasi/', '/en/privacy-policy/',
-    '/cerez-politikasi/', '/en/cookie-policy/', '/kullanim-sartlari/', '/en/terms-of-use/',
-    '/iletisim/', '/en/contact/'
+  const [rows, homeNotice, publicationNote, bibliography] = await Promise.all([
+    publishedTerms(db),
+    loadEditablePage(db, 'home-notice'),
+    loadEditablePage(db, 'publication-note'),
+    loadEditablePage(db, 'bibliography')
+  ]);
+  const validDate = value => {
+    const date = String(value || '').slice(0, 10);
+    return /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : '';
+  };
+  const latestTermDate = rows.map(row => validDate(row.updated_at)).filter(Boolean).sort().at(-1) || '';
+  const homeLastmod = [latestTermDate, validDate(homeNotice?.updatedAt)].filter(Boolean).sort().at(-1) || '';
+  const urls = [
+    { loc: canonicalPath('/'), lastmod: homeLastmod },
+    { loc: canonicalPath('/en/'), lastmod: homeLastmod },
+    { loc: canonicalPath('/terimler/'), lastmod: latestTermDate },
+    { loc: canonicalPath('/en/terms/'), lastmod: latestTermDate },
+    { loc: canonicalPath('/yayin-notu/'), lastmod: validDate(publicationNote?.updatedAt) },
+    { loc: canonicalPath('/en/publication-note/'), lastmod: validDate(publicationNote?.updatedAt) },
+    { loc: canonicalPath('/kaynakca/'), lastmod: validDate(bibliography?.updatedAt) },
+    { loc: canonicalPath('/en/bibliography/'), lastmod: validDate(bibliography?.updatedAt) }
   ];
-  const now = new Date().toISOString().slice(0, 10);
-  const urls = staticPaths.map(path => ({ loc: canonicalPath(path), lastmod: now }));
   for (const row of rows) {
-    const lastmod = String(row.updated_at || now).slice(0, 10);
+    const lastmod = validDate(row.updated_at);
     urls.push({ loc: canonicalPath(`/terim/${encodeURIComponent(row.slug)}/`), lastmod });
     urls.push({ loc: canonicalPath(`/en/term/${encodeURIComponent(row.slug)}/`), lastmod });
   }
-  const body = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(item => `  <url><loc>${xml(item.loc)}</loc><lastmod>${xml(item.lastmod)}</lastmod></url>`).join('\n')}\n</urlset>\n`;
+  const body = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(item => `  <url><loc>${xml(item.loc)}</loc>${item.lastmod ? `<lastmod>${xml(item.lastmod)}</lastmod>` : ''}</url>`).join('\n')}\n</urlset>\n`;
   return new Response(body, {
     headers: {
       'Content-Type': 'application/xml; charset=utf-8',

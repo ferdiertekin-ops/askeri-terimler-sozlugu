@@ -11,7 +11,7 @@
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#f7f4ec,var(--bg));color:var(--ink);font-family:Cambria,Georgia,serif}.shell{width:min(1180px,calc(100% - 28px));margin:auto;padding:22px 0 48px}
 header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:18px;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none;font-weight:700}.brand img{width:48px;height:48px}.back{color:var(--navy)}
 .card{background:rgba(251,250,247,.96);border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 44px -34px rgba(35,28,22,.5);padding:22px}.login{width:min(460px,100%);margin:70px auto}.login h1{margin-top:0}
-label{display:block;color:#715d36;font:600 11px/1.2 Calibri,"Segoe UI",sans-serif;letter-spacing:.08em;text-transform:uppercase}.input,textarea,select{width:100%;margin-top:6px;border:1px solid #bdb6aa;border-radius:8px;background:#fff;color:var(--ink);padding:10px 11px;font:15px/1.45 Cambria,Georgia,serif}textarea{min-height:94px;resize:vertical}.password{min-height:44px}
+label{display:block;color:#715d36;font:600 11px/1.2 Calibri,"Segoe UI",sans-serif;letter-spacing:.08em;text-transform:uppercase}.input,textarea,select{width:100%;margin-top:6px;border:1px solid #bdb6aa;border-radius:8px;background:#fff;color:var(--ink);padding:10px 11px;font:15px/1.45 Cambria,Georgia,serif}.input[readonly]{background:#f1eee7;color:var(--navy);font-family:"EB Garamond",Garamond,"Palatino Linotype",serif;font-size:18px;font-weight:700;cursor:default}textarea{min-height:94px;resize:vertical}.password{min-height:44px}
 button{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);padding:10px 15px;font-weight:700;cursor:pointer}button:hover{border-color:var(--navy)}button.primary{background:var(--navy);border-color:var(--navy);color:#fff}button.danger{color:#fff;background:var(--red);border-color:var(--red)}button.ghost{background:transparent}
 .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.login button{width:100%;margin-top:14px}.error{color:var(--red);min-height:20px}.notice{position:fixed;right:18px;bottom:18px;max-width:360px;padding:12px 16px;border-radius:9px;background:#1e2732;color:#fff;box-shadow:0 12px 30px rgba(0,0,0,.25);display:none;z-index:20}.notice.show{display:block}.notice.error{background:var(--red)}
 .app[hidden],.login[hidden]{display:none}.toolbar{display:grid;grid-template-columns:1fr auto;gap:12px;margin:22px 0}.search-row{display:grid;grid-template-columns:minmax(180px,1fr) auto auto;gap:8px;align-items:center}.term-count{min-width:150px;color:var(--muted);font:600 12px Cambria,Georgia,serif;text-align:right;white-space:nowrap}.workspace{display:grid;grid-template-columns:minmax(270px,.72fr) minmax(0,1.45fr);gap:16px}.page-workspace{margin-top:16px}.page-workspace[hidden],.workspace[hidden],.search-row[hidden],button[hidden]{display:none!important}.page-editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.page-editor-grid .full{grid-column:1/-1}.page-body-editor{min-height:300px;font-family:"EB Garamond",Garamond,"Palatino Linotype",serif;font-size:17px;line-height:1.65;text-align:justify}.page-help{display:block;margin-top:7px;color:var(--muted);font:12px/1.5 Calibri,"Segoe UI",sans-serif}.list{max-height:75vh;overflow:auto;padding:0}.term-item{width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:12px 14px;background:transparent}.term-item:hover,.term-item.active{background:#efe9dd}.term-item strong{display:block;font:600 15px Cambria,Georgia,serif}.term-item small{color:var(--muted)}.empty{padding:24px;text-align:center;color:var(--muted)}
@@ -47,14 +47,15 @@ button{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(
       <form id="termForm">
         <div class="grid">
           <label>Ana terim<input id="headword" class="input" required maxlength="300"></label>
+          <label>Harf (otomatik)<input id="letter" class="input" readonly aria-readonly="true" placeholder="Ana terimden oluşturulur"></label>
           <label>Kalıcı adres (slug)<input id="slug" class="input" maxlength="150" placeholder="Boş bırakılırsa otomatik oluşur"></label>
+          <label>Kategori<input id="category" class="input" maxlength="200"></label>
           <label>Osmanlıca / dönem<textarea id="ottoman"></textarea></label>
           <label>Günümüz karşılığı<textarea id="modern"></textarea></label>
-          <label>Kategori<input id="category" class="input" maxlength="200"></label>
           <label>Yayın durumu<select id="status"><option value="draft">Taslak</option><option value="review">İnceleme</option><option value="published">Yayında</option><option value="suspended">Askıda</option></select></label>
+          <label>Varyantlar / kısaltmalar<textarea id="variants" placeholder="Her satıra bir değer"></textarea></label>
           <label class="full">Türkçe açıklama<textarea id="explanationTr"></textarea></label>
           <label class="full">İngilizce açıklama<textarea id="explanationEn"></textarea></label>
-          <label>Varyantlar / kısaltmalar<textarea id="variants" placeholder="Her satıra bir değer"></textarea></label>
           <fieldset class="full source-field">
             <legend>Kaynaklar</legend>
             <div class="source-head" aria-hidden="true"><span></span><span>Kaynak adı / künye</span><span>Bağlantı (isteğe bağlı)</span></div>
@@ -150,7 +151,7 @@ button{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(
 const $=id=>document.getElementById(id);
 let csrf='',currentSlug='',searchTimer=null,sourceSuggestionTimer=null,currentPageKey=sessionStorage.getItem('ats-editor-page')||'publication-note',currentTermVersion=0,currentServerVersion=0,currentTermUpdatedAt='',currentPageExpectedUpdatedAt=null,currentPageServerUpdatedAt=null,termDirty=false,pageDirty=false;
 const DRAFT_PREFIX='ats-editor-draft-v2:';
-const fields={headword:$('headword'),slug:$('slug'),ottoman:$('ottoman'),modern:$('modern'),category:$('category'),status:$('status'),explanationTr:$('explanationTr'),explanationEn:$('explanationEn'),variants:$('variants'),changeNote:$('changeNote')};
+const fields={headword:$('headword'),letter:$('letter'),slug:$('slug'),ottoman:$('ottoman'),modern:$('modern'),category:$('category'),status:$('status'),explanationTr:$('explanationTr'),explanationEn:$('explanationEn'),variants:$('variants'),changeNote:$('changeNote')};
 const pageFields={titleTr:$('pageTitleTr'),titleEn:$('pageTitleEn'),bodyTr:$('pageBodyTr'),bodyEn:$('pageBodyEn')};
 const sourceRows=[...document.querySelectorAll('.source-row')].map(row=>({citation:row.querySelector('.source-citation'),url:row.querySelector('.source-url')}));
 const sourceSuggestionMap=new Map();
@@ -248,8 +249,16 @@ function updateRecordMeta(){
   if(termDirty&&currentTermVersion&&currentServerVersion&&currentTermVersion!==currentServerVersion)text+=' · Taslak tabanı: sürüm '+currentTermVersion;
   $('recordMeta').textContent=text;
 }
+function automaticTermLetter(value){
+  const normalized=String(value||'').trim().normalize('NFKD').replace(/[\u0300-\u036f]/g,'');
+  const initial=normalized.match(/[\p{L}\p{N}]/u)?.[0]||'';
+  if(!initial||/\p{N}/u.test(initial))return'#';
+  return initial.toLocaleUpperCase('en-US');
+}
+function updateAutomaticLetter(){fields.letter.value=fields.headword.value.trim()?automaticTermLetter(fields.headword.value):''}
 function applyTermValues(term){
   fields.headword.value=term.headword_en||'';
+  fields.letter.value=term.letter||automaticTermLetter(term.headword_en);
   fields.slug.value=term.slug||'';
   fields.ottoman.value=term.ottoman_period_term||'';
   fields.modern.value=term.modern_equivalent_tr||'';
@@ -409,6 +418,7 @@ $('resetBtn').addEventListener('click',()=>{if(termDirty&&!confirm('Kaydedilmemi
 $('searchForm').addEventListener('submit',event=>{event.preventDefault();saveTermDraft();loadList($('search').value).catch(error=>message(errorText(error),true))});
 $('search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>$('searchForm').requestSubmit(),300)});
 $('termList').addEventListener('click',event=>{const button=event.target.closest('[data-slug]');if(button)openTerm(button.dataset.slug).catch(error=>message(errorText(error),true))});
+$('headword').addEventListener('input',updateAutomaticLetter);
 $('termForm').addEventListener('input',markTermDirty);
 $('termForm').addEventListener('submit',async event=>{
   event.preventDefault();const button=event.submitter;if(button)button.disabled=true;
