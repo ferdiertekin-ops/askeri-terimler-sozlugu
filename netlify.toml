@@ -7,20 +7,53 @@
   node_bundler = "esbuild"
 
 [[redirects]]
+  from = "/"
+  to = "/dictionary-d1-preview.html"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/en"
-  to = "/index.html"
+  to = "/dictionary-d1-preview-en.html"
   status = 200
   force = true
 
 [[redirects]]
   from = "/en/"
-  to = "/index.html"
+  to = "/dictionary-d1-preview-en.html"
   status = 200
   force = true
 
 [[redirects]]
   from = "/api/content"
   to = "/.netlify/functions/content"
+  status = 200
+  force = true
+
+# Deploy Preview sayfaları Cloudflare D1 API'sini doğrudan çalıştıramaz.
+# Aşağıdaki uçlar yalnızca genel GET/HEAD isteklerini canlı API'ye taşıyan,
+# kimlik bilgilerini aktarmayan salt-okunur önizleme vekiline yönlendirilir.
+[[redirects]]
+  from = "/api/terms"
+  to = "/.netlify/functions/preview-terms"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/terms/:slug"
+  to = "/.netlify/functions/preview-term/:slug"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/site-pages/:key"
+  to = "/.netlify/functions/preview-site-page/:key"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/editor/session"
+  to = "/.netlify/functions/preview-editor-session"
   status = 200
   force = true
 

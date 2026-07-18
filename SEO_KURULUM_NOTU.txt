@@ -1,15 +1,45 @@
-Askerî Terimler Sözlüğü — SEO ve Canlı Kayıt Notu
+Askerî Terimler Sözlüğü — Teknik SEO İşleyişi
 
-Bu sürümde statik ZIP mantığı korunmakla birlikte canlı düzenleme için Netlify Functions + Netlify Blobs katmanı eklenmiştir.
+Canlı mimari Cloudflare Pages + Pages Functions + D1 tabanlıdır. SEO için tek
+kaynak, functions/_lib/site.js ve functions/_middleware.js dosyalarıdır.
 
-Google tarafı için önemli teknik noktalar:
-1. /robots.txt dinamik üretilir ve /sitemap.xml adresini gösterir.
-2. /sitemap.xml canlı sözlük maddelerinden üretilir.
-3. /terimler/ canlı terimler dizinidir.
-4. /terim/<slug>/ adresleri tek tek sözlük maddeleri için HTML üretir.
-5. /kaynakca/, /yayin-notu/, /iletisim/, /gizlilik-politikasi/, /cerez-politikasi/, /kullanim-sartlari/ sayfaları canlı sayfa metinlerinden HTML olarak üretilir.
+Kalıcı kurallar
 
-Bu yapı, Google’ın yalnızca JavaScript çalıştırmasına bağlı kalmadan temel içerikleri HTML olarak görmesini sağlar.
+1. Ana alan adı https://askeriterimlersozlugu.com adresidir. www, index.html,
+   önizleme dosyaları, eğik çizgisiz sayfalar ve bilinen eski yollar 301 ile
+   tek kanonik adrese yönlendirilir.
+2. /robots.txt herkese açık sayfaların taranmasına izin verir; editör ve yönetim
+   API yollarını engeller ve /sitemap.xml adresini bildirir.
+3. /sitemap.xml yalnızca indekslenmesi istenen kanonik sayfaları D1 verisinden
+   üretir. lastmod yalnızca gerçek içerik tarihlerinden alınır.
+4. /terimler/ ve /en/terms/ yayımlanmış tüm maddeleri sunucu taraflı, harflere
+   ayrılmış ve taranabilir bağlantılarla listeler.
+5. /terim/<slug>/ ve /en/term/<slug>/ sayfaları benzersiz başlık, açıklama,
+   canonical, karşılıklı hreflang, x-default, breadcrumb ve DefinedTerm verisi
+   üretir.
+6. Gizlilik, çerez, kullanım şartları ve iletişim sayfaları noindex,follow olur
+   ve sitemap'e eklenmez. Editör ve bütün API yanıtları X-Robots-Tag ile noindex
+   olarak işaretlenir.
+7. ?q= içeren dahili arama sonuçları kullanılabilir kalır ancak ayrı sayfalar
+   gibi indekslenmez.
+8. D1 geçici olarak kullanılamazsa eski veya eksik statik içerik 200 dönmez;
+   503 + Retry-After + noindex yanıtı verilir.
 
-Kurulum uyarısı:
-Netlify manuel Drop/drag-drop deploy yöntemi build command çalıştırmadığı için @netlify/blobs bağımlılığı ve functions katmanı için ideal değildir. Bu paket GitHub bağlantılı Netlify deploy veya Netlify CLI ile yayımlanmalıdır.
+Her değişiklikten önce ve sonra
+
+  npm run check
+
+komutu çalıştırılır. Bu komut sözdizimine ek olarak canonical, hreflang,
+yönlendirme, noindex, sitemap, yapılandırılmış veri ve 404 davranışlarını da
+otomatik sınar.
+
+Canlıya alma sonrası Search Console
+
+1. https://askeriterimlersozlugu.com/sitemap.xml yeniden gönderilir.
+2. Ana sayfa, /terimler/, /en/terms/ ve birkaç güçlü madde URL Denetimi ile
+   kontrol edilip yeniden tarama istenir.
+3. 404 ve “Tarandı, şu anda dizine eklenmiş değil” örnek URL'leri incelenir.
+   Eski gerçek yollar 301'e bağlanır; zayıf maddeler özgün açıklama ve kaynakla
+   güçlendirilir.
+4. Sıralama ve kapsam değişiklikleri günlük değil, 2–8 haftalık dönemlerde
+   değerlendirilir.

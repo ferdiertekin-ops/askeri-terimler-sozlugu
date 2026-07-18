@@ -1,6 +1,7 @@
 const SECURITY_HEADERS = {
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
+  'X-Robots-Tag': 'noindex, nofollow, noarchive',
   'Referrer-Policy': 'no-referrer',
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
   'Cache-Control': 'no-store, max-age=0'

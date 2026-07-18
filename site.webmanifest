@@ -1,6 +1,11 @@
 {
   "name": "Askerî Terimler Sözlüğü",
   "short_name": "ATS",
+  "description": "1876–1918 dönemi için İngilizce–Türkçe askerî terimler sözlüğü.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
   "icons": [
     {
       "src": "/favicon-96.png",

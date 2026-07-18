@@ -2,6 +2,7 @@ import { handleEditorApi, hasEditorSession } from './_lib/editor.js';
 import { renderEditablePage, renderEditablePageJson, renderRobots, renderSitemap, renderTermPage, renderTermsIndex } from './_lib/site.js';
 
 const CANONICAL_HOST = 'askeriterimlersozlugu.com';
+const SEARCH_NOINDEX = { 'X-Robots-Tag': 'noindex, follow' };
 
 const EDITABLE_ROUTES = new Map([
   ['/yayin-notu/', ['publication-note', 'tr']],
@@ -18,17 +19,47 @@ const EDITABLE_ROUTES = new Map([
   ['/en/contact/', ['contact', 'en']]
 ]);
 
+const LEGACY_REDIRECTS = new Map([
+  ['/gizlilik', '/gizlilik-politikasi/'],
+  ['/gizlilik/', '/gizlilik-politikasi/'],
+  ['/cerezler', '/cerez-politikasi/'],
+  ['/cerezler/', '/cerez-politikasi/'],
+  ['/en/privacy', '/en/privacy-policy/'],
+  ['/en/privacy/', '/en/privacy-policy/'],
+  ['/en/cookies', '/en/cookie-policy/'],
+  ['/en/cookies/', '/en/cookie-policy/']
+]);
+
 function redirect(url, pathname, status = 308) {
   const target = new URL(url);
   target.pathname = pathname;
   return Response.redirect(target.toString(), status);
 }
 
-function assetRequest(context, pathname) {
+async function assetRequest(context, pathname, extraHeaders = {}) {
   const target = new URL(context.request.url);
   target.pathname = pathname;
   target.search = '';
-  return context.env.ASSETS.fetch(new Request(target, context.request));
+  const response = await context.env.ASSETS.fetch(new Request(target, context.request));
+  if (!Object.keys(extraHeaders).length) return response;
+  const headers = new Headers(response.headers);
+  for (const [key, value] of Object.entries(extraHeaders)) headers.set(key, value);
+  return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+}
+
+function unavailable(type = 'text/html; charset=utf-8') {
+  let body = '<!doctype html><html lang="tr"><meta charset="utf-8"><meta name="robots" content="noindex,follow"><title>Geçici olarak kullanılamıyor</title><p>Hizmet kısa süre içinde yeniden denenecektir.</p></html>';
+  if (type.startsWith('application/json')) body = JSON.stringify({ ok: false, error: 'service_unavailable' });
+  if (type.startsWith('application/xml')) body = '<?xml version="1.0" encoding="UTF-8"?><error>service_unavailable</error>';
+  return new Response(body, {
+    status: 503,
+    headers: {
+      'Content-Type': type,
+      'Cache-Control': 'no-store',
+      'Retry-After': '300',
+      'X-Robots-Tag': 'noindex, follow'
+    }
+  });
 }
 
 export async function onRequest(context) {
@@ -42,10 +73,33 @@ export async function onRequest(context) {
     return Response.redirect(url.toString(), 301);
   }
 
+  if (getOrHead && path.endsWith('/index.html')) {
+    const canonicalDirectory = path.slice(0, -'index.html'.length) || '/';
+    return redirect(url, canonicalDirectory, 301);
+  }
+
+  if (getOrHead && (path === '/dictionary-d1-preview' || path === '/dictionary-d1-preview.html')) {
+    return redirect(url, '/', 301);
+  }
+  if (getOrHead && (path === '/dictionary-d1-preview-en' || path === '/dictionary-d1-preview-en.html')) {
+    return redirect(url, '/en/', 301);
+  }
+
+  const legacyTarget = LEGACY_REDIRECTS.get(path);
+  if (getOrHead && legacyTarget) return redirect(url, legacyTarget, 301);
+
+  if (getOrHead && !path.endsWith('/')) {
+    const slashPath = `${path}/`;
+    if (EDITABLE_ROUTES.has(slashPath) || slashPath === '/en/' || slashPath === '/terimler/' || slashPath === '/en/terms/' || slashPath === '/editor/') {
+      return redirect(url, slashPath, 301);
+    }
+  }
+
   if (path.startsWith('/api/editor/')) return handleEditorApi(context, path);
 
   const publicPageApi = path.match(/^\/api\/site-pages\/([^/]+)$/);
-  if (getOrHead && publicPageApi && context.env.DB) {
+  if (getOrHead && publicPageApi) {
+    if (!context.env.DB) return unavailable('application/json; charset=utf-8');
     return renderEditablePageJson(context.env.DB, decodeURIComponent(publicPageApi[1]));
   }
 
@@ -57,50 +111,49 @@ export async function onRequest(context) {
     return assetRequest(context, '/editor-panel-private');
   }
 
-  if (getOrHead && (path === '/' || path === '/index.html')) {
-    return assetRequest(context, '/dictionary-d1-preview');
+  if (getOrHead && path === '/') {
+    return assetRequest(context, '/dictionary-d1-preview', url.searchParams.has('q') ? SEARCH_NOINDEX : {});
   }
 
-  if (getOrHead && path === '/en') return redirect(url, '/en/');
-  if (getOrHead && (path === '/en/' || path === '/en/index.html')) {
-    return assetRequest(context, '/dictionary-d1-preview-en');
+  if (getOrHead && path === '/en/') {
+    return assetRequest(context, '/dictionary-d1-preview-en', url.searchParams.has('q') ? SEARCH_NOINDEX : {});
   }
-
-  if (getOrHead && path === '/editor') return redirect(url, '/editor/');
 
   const editableRoute = EDITABLE_ROUTES.get(path);
-  if (getOrHead && editableRoute && context.env.DB) {
+  if (getOrHead && editableRoute) {
+    if (!context.env.DB) return unavailable();
     const rendered = await renderEditablePage(context.env.DB, editableRoute[0], editableRoute[1]);
     if (rendered) return rendered;
   }
 
-  if (getOrHead && path === '/terimler') return redirect(url, '/terimler/');
   if (getOrHead && path === '/terimler/') {
-    if (!context.env.DB) return context.next();
+    if (!context.env.DB) return unavailable();
     return renderTermsIndex(context.env.DB, 'tr');
   }
 
-  if (getOrHead && path === '/en/terms') return redirect(url, '/en/terms/');
   if (getOrHead && path === '/en/terms/') {
-    if (!context.env.DB) return context.next();
+    if (!context.env.DB) return unavailable();
     return renderTermsIndex(context.env.DB, 'en');
   }
 
   const trTerm = path.match(/^\/terim\/([^/]+)(\/?)$/);
   if (getOrHead && trTerm) {
-    if (!trTerm[2]) return redirect(url, `/terim/${trTerm[1]}/`);
-    if (!context.env.DB) return context.next();
+    if (!trTerm[2]) return redirect(url, `/terim/${trTerm[1]}/`, 301);
+    if (!context.env.DB) return unavailable();
     return renderTermPage(context.env.DB, decodeURIComponent(trTerm[1]), 'tr');
   }
 
   const enTerm = path.match(/^\/en\/term\/([^/]+)(\/?)$/);
   if (getOrHead && enTerm) {
-    if (!enTerm[2]) return redirect(url, `/en/term/${enTerm[1]}/`);
-    if (!context.env.DB) return context.next();
+    if (!enTerm[2]) return redirect(url, `/en/term/${enTerm[1]}/`, 301);
+    if (!context.env.DB) return unavailable();
     return renderTermPage(context.env.DB, decodeURIComponent(enTerm[1]), 'en');
   }
 
-  if (getOrHead && path === '/sitemap.xml' && context.env.DB) return renderSitemap(context.env.DB);
+  if (getOrHead && path === '/sitemap.xml') {
+    if (!context.env.DB) return unavailable('application/xml; charset=utf-8');
+    return renderSitemap(context.env.DB);
+  }
   if (getOrHead && path === '/robots.txt') return renderRobots();
 
   return context.next();
