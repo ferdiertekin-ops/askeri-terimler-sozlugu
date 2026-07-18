@@ -1,11 +1,18 @@
 {
+  "id": "/",
   "name": "Askerî Terimler Sözlüğü",
-  "short_name": "ATS",
-  "description": "1876–1918 dönemi için İngilizce–Türkçe askerî terimler sözlüğü.",
+  "short_name": "Askerî Sözlük",
+  "description": "1876–1918 dönemi için İngilizce–Türkçe ve Türkçe–İngilizce askerî terimler sözlüğü.",
   "lang": "tr",
   "dir": "ltr",
-  "start_url": "/",
+  "start_url": "/pwa.html?source=pwa",
   "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "theme_color": "#2F4E71",
+  "background_color": "#F7F4EC",
+  "categories": ["education", "reference", "books"],
   "icons": [
     {
       "src": "/favicon-96.png",
@@ -16,9 +23,26 @@
       "src": "/apple-touch-icon.png",
       "sizes": "180x180",
       "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
-  "theme_color": "#2b4460",
-  "background_color": "#F7F4EC",
-  "display": "standalone"
+  "shortcuts": [
+    {
+      "name": "Sözlükte Ara",
+      "short_name": "Ara",
+      "description": "Askerî terimler sözlüğünde arama yap",
+      "url": "/?source=shortcut"
+    },
+    {
+      "name": "Terimler Dizini",
+      "short_name": "Dizin",
+      "description": "Terimleri alfabetik dizinde görüntüle",
+      "url": "/terimler-dizini/"
+    }
+  ]
 }
