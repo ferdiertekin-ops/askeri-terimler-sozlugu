@@ -7,14 +7,20 @@
   node_bundler = "esbuild"
 
 [[redirects]]
+  from = "/"
+  to = "/dictionary-d1-preview.html"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/en"
-  to = "/index.html"
+  to = "/dictionary-d1-preview-en.html"
   status = 200
   force = true
 
 [[redirects]]
   from = "/en/"
-  to = "/index.html"
+  to = "/dictionary-d1-preview-en.html"
   status = 200
   force = true
 
