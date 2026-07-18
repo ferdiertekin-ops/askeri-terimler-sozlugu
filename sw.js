@@ -1,4 +1,4 @@
-const CACHE_VERSION = "ats-pwa-v2";
+const CACHE_VERSION = "ats-pwa-v3";
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 const DATA_CACHE = `${CACHE_VERSION}-data`;
@@ -7,6 +7,7 @@ const APP_SHELL = [
   "/",
   "/index.html",
   "/pwa.html",
+  "/uygulama/",
   "/offline.html",
   "/site.webmanifest",
   "/favicon.ico",
