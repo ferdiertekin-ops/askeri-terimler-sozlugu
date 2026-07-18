@@ -41,13 +41,13 @@
 
 [[redirects]]
   from = "/api/terms/:slug"
-  to = "/.netlify/functions/preview-term?slug=:slug"
+  to = "/.netlify/functions/preview-term/:slug"
   status = 200
   force = true
 
 [[redirects]]
   from = "/api/site-pages/:key"
-  to = "/.netlify/functions/preview-site-page?key=:key"
+  to = "/.netlify/functions/preview-site-page/:key"
   status = 200
   force = true
 

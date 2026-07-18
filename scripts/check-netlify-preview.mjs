@@ -30,8 +30,8 @@ function loadHandlers(fetchImpl) {
   };
 }
 
-async function call(handler, queryStringParameters = {}, httpMethod = 'GET') {
-  return handler({ httpMethod, queryStringParameters });
+async function call(handler, queryStringParameters = {}, httpMethod = 'GET', extra = {}) {
+  return handler({ httpMethod, queryStringParameters, headers: {}, ...extra });
 }
 
 function parsed(result) {
@@ -81,7 +81,7 @@ function parsed(result) {
     requestUrl = String(url);
     return response({ status: 404, body: '{"ok":false,"error":"not_found"}' });
   }).term;
-  const result = await call(handler, { slug: 'absolute-government' });
+  const result = await call(handler, {}, 'GET', { path: '/api/terms/absolute-government' });
   assert.equal(requestUrl, 'https://askeriterimlersozlugu.com/api/terms/absolute-government');
   assert.equal(result.statusCode, 404, 'JSON upstream status must be preserved');
 }
@@ -102,7 +102,9 @@ function parsed(result) {
     requestUrl = String(url);
     return response({ body: '{"ok":true,"page":{"bodyTr":"Duyuru"}}' });
   }).sitePage;
-  const result = await call(handler, { key: 'home-notice' });
+  const result = await call(handler, {}, 'GET', {
+    rawUrl: 'https://deploy-preview.example/.netlify/functions/preview-site-page/home-notice'
+  });
   assert.equal(requestUrl, 'https://askeriterimlersozlugu.com/api/site-pages/home-notice');
   assert.equal(result.statusCode, 200);
 }

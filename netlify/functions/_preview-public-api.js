@@ -34,9 +34,39 @@ function addListQuery(target, event) {
   }
 }
 
-function upstreamUrl(event, route) {
-  const params = event.queryStringParameters || {};
+function requestPaths(event) {
+  const values = [
+    event.path,
+    event.rawUrl,
+    event.headers && event.headers['x-nf-original-url'],
+    event.headers && event.headers['x-original-uri']
+  ].filter(Boolean);
 
+  return values.map(value => {
+    try {
+      return new URL(String(value), LIVE_ORIGIN).pathname;
+    } catch {
+      return '';
+    }
+  }).filter(Boolean);
+}
+
+function routeToken(event, queryName, prefixes) {
+  const params = event.queryStringParameters || {};
+  const direct = safeToken(params[queryName]);
+  if (direct) return direct;
+
+  for (const path of requestPaths(event)) {
+    for (const prefix of prefixes) {
+      if (!path.startsWith(prefix)) continue;
+      const token = safeToken(path.slice(prefix.length).split('/')[0]);
+      if (token) return token;
+    }
+  }
+  return '';
+}
+
+function upstreamUrl(event, route) {
   if (route === 'terms') {
     const target = new URL('/api/terms', LIVE_ORIGIN);
     addListQuery(target, event);
@@ -44,12 +74,12 @@ function upstreamUrl(event, route) {
   }
 
   if (route === 'term') {
-    const slug = safeToken(params.slug);
+    const slug = routeToken(event, 'slug', ['/api/terms/', '/.netlify/functions/preview-term/']);
     return slug ? new URL(`/api/terms/${encodeURIComponent(slug)}`, LIVE_ORIGIN) : null;
   }
 
   if (route === 'site-page') {
-    const key = safeToken(params.key);
+    const key = routeToken(event, 'key', ['/api/site-pages/', '/.netlify/functions/preview-site-page/']);
     return key ? new URL(`/api/site-pages/${encodeURIComponent(key)}`, LIVE_ORIGIN) : null;
   }
 
