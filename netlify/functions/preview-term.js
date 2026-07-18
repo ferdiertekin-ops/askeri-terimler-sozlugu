@@ -1,3 +1,3 @@
-const { createHandler } = require('./preview-public-api');
+const { createHandler } = require('./_preview-public-api');
 
 exports.handler = createHandler('term');

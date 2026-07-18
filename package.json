@@ -7,7 +7,7 @@
   "scripts": {
     "build": "node -e \"console.log('Cloudflare Pages statik dosyaları ve Functions hazır.')\"",
     "dev": "npx wrangler pages dev .",
-    "check:syntax": "node --check functions/_middleware.js && node --check functions/_lib/http.js && node --check functions/_lib/site.js && node --check functions/_lib/editor.js && node --check functions/_lib/term-letter.js && node --check netlify/functions/preview-public-api.js && node --check netlify/functions/preview-terms.js && node --check netlify/functions/preview-term.js && node --check netlify/functions/preview-site-page.js && node --check netlify/functions/preview-editor-session.js && node --check scripts/check-seo.mjs && node --check scripts/check-netlify-preview.mjs",
+    "check:syntax": "node --check functions/_middleware.js && node --check functions/_lib/http.js && node --check functions/_lib/site.js && node --check functions/_lib/editor.js && node --check functions/_lib/term-letter.js && node --check netlify/functions/_preview-public-api.js && node --check netlify/functions/preview-terms.js && node --check netlify/functions/preview-term.js && node --check netlify/functions/preview-site-page.js && node --check netlify/functions/preview-editor-session.js && node --check scripts/check-seo.mjs && node --check scripts/check-netlify-preview.mjs",
     "check:seo": "node scripts/check-seo.mjs",
     "check:preview": "node scripts/check-netlify-preview.mjs",
     "check": "npm run check:syntax && npm run check:seo && npm run check:preview"

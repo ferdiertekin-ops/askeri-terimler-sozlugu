@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 
-const source = await readFile(new URL('../netlify/functions/preview-public-api.js', import.meta.url), 'utf8');
+const source = await readFile(new URL('../netlify/functions/_preview-public-api.js', import.meta.url), 'utf8');
 
 function response({ status = 200, contentType = 'application/json', body = '{"ok":true}' } = {}) {
   return {
@@ -21,7 +21,7 @@ function loadHandlers(fetchImpl) {
     setTimeout,
     clearTimeout
   };
-  vm.runInNewContext(source, sandbox, { filename: 'preview-public-api.js' });
+  vm.runInNewContext(source, sandbox, { filename: '_preview-public-api.js' });
   return {
     terms: sandbox.exports.createHandler('terms'),
     term: sandbox.exports.createHandler('term'),

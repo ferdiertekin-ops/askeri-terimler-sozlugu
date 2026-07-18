@@ -137,7 +137,3 @@ async function handlePreviewRequest(event, route) {
 exports.createHandler = function createHandler(route) {
   return event => handlePreviewRequest(event, route);
 };
-
-// Bu dosya paylaşılan uygulamayı da taşır. Doğrudan çağrılırsa güvenli biçimde
-// geçersiz rota yanıtı verir; gerçek yollar aşağıdaki dar kapsamlı sarmalayıcılardır.
-exports.handler = event => handlePreviewRequest(event, 'invalid');
