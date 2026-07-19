@@ -56,18 +56,18 @@ async function dictionaryAssetRequest(context, pathname, lang, extraHeaders = {}
 
   const tr = lang !== 'en';
   const installHref = tr ? '/uygulama/' : '/uygulama/?lang=en';
-  const installLabel = tr ? 'Uygulamayı Kur' : 'Install App';
+  const installLabel = tr ? 'Uygulamayı İndir' : 'Download App';
   const contactHref = tr ? '/iletisim/' : '/en/contact/';
   const contactLabel = tr ? 'İletişim' : 'Contact';
   let html = await response.text();
 
   if (!html.includes(`href="${installHref}"`)) {
     const navContact = `  <a href="${contactHref}">${contactLabel}</a>`;
-    const navInstall = `  <a href="${installHref}">${installLabel}</a>`;
+    const navInstall = `  <a class="install-app-link" href="${installHref}">${installLabel}</a>`;
     html = html.replace(navContact, `${navInstall}\n${navContact}`);
 
     const footerContact = `<a href="${contactHref}">${contactLabel}</a></p>`;
-    const footerInstall = `<a href="${installHref}">${installLabel}</a> · `;
+    const footerInstall = `<a class="install-app-link" href="${installHref}">${installLabel}</a> · `;
     html = html.replace(footerContact, `${footerInstall}${footerContact}`);
   }
 
@@ -190,3 +190,4 @@ export async function onRequest(context) {
 
   return context.next();
 }
+
