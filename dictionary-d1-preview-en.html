@@ -178,67 +178,74 @@
 }
 
 
-/* ---------- Yan yayın vitrini ---------- */
-.book-showcase{
-  position:absolute;
-  top:190px;
-  z-index:1;
-  display:none;
-  width:112px;
-  flex-direction:column;
-  gap:15px;
+/* ---------- Editörlerin eserleri ---------- */
+.editor-works{
+  margin:38px 0 0;
+  padding:28px 0 0;
+  border-top:1px solid var(--line);
+  text-align:center;
 }
-.book-showcase--left{right:calc(50% + 608px)}
-.book-showcase--right{left:calc(50% + 608px)}
-.book-promo{
-  display:block;
-  width:112px;
+.editor-works__title{
+  margin:0 0 20px;
+  color:var(--accent);
+  font:600 18px/1.3 Cambria,Georgia,serif;
+  letter-spacing:.055em;
+}
+.editor-works__grid{
+  width:min(720px,100%);
   margin:0 auto;
-  border-radius:4px;
-  opacity:.84;
-  filter:saturate(.88);
+  display:grid;
+  grid-template-columns:repeat(4,148px);
+  align-items:end;
+  justify-content:center;
+  gap:22px;
+}
+.editor-work{
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  width:148px;
+  height:194px;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
   text-decoration:none;
-  transition:opacity .16s ease,filter .16s ease,transform .16s ease;
+  opacity:.94;
+  transition:opacity .16s ease,transform .16s ease;
 }
-.book-promo img{
+.editor-work img{
   display:block;
-  width:100%;
-  height:auto;
-  max-height:174px;
+  width:auto;
+  height:194px;
+  max-width:148px;
   object-fit:contain;
-  border:1px solid rgba(47,78,113,.20);
-  border-radius:4px;
-  background:rgba(255,254,250,.72);
-  box-shadow:0 5px 14px -8px rgba(30,39,50,.40);
+  border:1px solid rgba(24,29,34,.62);
+  border-radius:1px;
+  background:transparent;
+  box-shadow:0 6px 15px -8px rgba(20,24,29,.48);
+  transition:border-color .16s ease,box-shadow .16s ease;
 }
-.book-promo:hover,.book-promo:focus-visible{
+.editor-work:hover,.editor-work:focus-visible{
   opacity:1;
-  filter:none;
   transform:translateY(-2px);
 }
-.book-promo:focus-visible{outline:2px solid #2f4e71;outline-offset:3px}
-@media(min-width:1500px){.book-showcase{display:flex}}
+.editor-work:hover img,.editor-work:focus-visible img{
+  border-color:rgba(20,24,29,.82);
+  box-shadow:0 10px 20px -10px rgba(20,24,29,.58);
+}
+.editor-work:focus-visible{outline:2px solid #2f4e71;outline-offset:4px}
+@media(max-width:680px){
+  .editor-works{margin-top:30px;padding-top:24px}
+  .editor-works__grid{width:min(304px,100%);grid-template-columns:repeat(2,140px);gap:16px 20px}
+  .editor-work{width:140px;height:184px}
+  .editor-work img{height:184px;max-width:140px}
+}
 
 </style>
 </head>
 <body>
-<aside class="book-showcase book-showcase--left" aria-label="Books by Ferdi Ertekin" data-nosnippet>
-  <a class="book-promo" href="https://www.kitapyurdu.com/kitap/ingiliz-istihbarat-raporlarinda-turk-ordusu/750529.html" target="_blank" rel="noopener noreferrer" title="View on Kitapyurdu: İngiliz Askerî İstihbarat Raporlarında Türk Ordusu">
-    <img src="/assets/books/turk-ordusu.svg" alt="İngiliz Askerî İstihbarat Raporlarında Türk Ordusu book cover" loading="eager" decoding="async">
-  </a>
-  <a class="book-promo" href="https://www.kitapyurdu.com/kitap/ingiliz-istihbarati-ve-osmanli-imparatorlugu/630212.html" target="_blank" rel="noopener noreferrer" title="View on Kitapyurdu: İngiliz İstihbaratı ve Osmanlı İmparatorluğu">
-    <img src="/assets/books/ingiliz-istihbarati-osmanli.svg" alt="İngiliz İstihbaratı ve Osmanlı İmparatorluğu book cover" loading="lazy" decoding="async">
-  </a>
-</aside>
-<aside class="book-showcase book-showcase--right" aria-label="Books by Ferdi Ertekin and Işık Eğrioğlu Ertekin" data-nosnippet>
-  <a class="book-promo" href="https://www.kitapyurdu.com/kitap/din-harp-futbol/596880.html" target="_blank" rel="noopener noreferrer" title="View on Kitapyurdu: Din, Harp, Futbol">
-    <img src="/assets/books/din-harp-futbol.svg" alt="Din, Harp, Futbol book cover" loading="eager" decoding="async">
-  </a>
-  <a class="book-promo" href="https://www.kitapyurdu.com/kitap/napolyonun-elcileri-devrim-sonrasi-osmanlifransiz-iliskilerinden-bir-kesit-17921809/745329.html" target="_blank" rel="noopener noreferrer" title="View on Kitapyurdu: Napolyon’un Elçileri">
-    <img src="/assets/books/napolyonun-elcileri.svg" alt="Napolyon’un Elçileri book cover" loading="lazy" decoding="async">
-  </a>
-</aside>
-
 <div class="wrap">
 <header class="preview-topbar">
   <a class="preview-brand" href="/en/" aria-label="Military Terms Dictionary">
@@ -292,6 +299,23 @@
       <footer class="footnote">
         <p id="editableHomeNotice">NOTICE: THIS DICTIONARY IS A BETA PUBLICATION UNDER ACTIVE DEVELOPMENT. The entries are compiled from English official documents dated 1876–1918 and aligned with Ottoman institutional, rank, and period terminology. Ottoman and modern Turkish equivalents should be treated as scholarly working equivalents rather than definitive translations.</p>
       </footer>
+<section class="editor-works" aria-labelledby="editorWorksTitle" data-nosnippet>
+  <h2 id="editorWorksTitle" class="editor-works__title">Editors’ Publications</h2>
+  <div class="editor-works__grid">
+    <a class="editor-work" href="https://www.kitapyurdu.com/kitap/ingiliz-istihbarat-raporlarinda-turk-ordusu/750529.html" target="_blank" rel="noopener noreferrer" title="View on Kitapyurdu: İngiliz Askerî İstihbarat Raporlarında Türk Ordusu" aria-label="View on Kitapyurdu: İngiliz Askerî İstihbarat Raporlarında Türk Ordusu">
+      <img src="/assets/books/turk-ordusu.svg" alt="İngiliz Askerî İstihbarat Raporlarında Türk Ordusu book cover" loading="lazy" decoding="async">
+    </a>
+    <a class="editor-work" href="https://www.kitapyurdu.com/kitap/ingiliz-istihbarati-ve-osmanli-imparatorlugu/630212.html" target="_blank" rel="noopener noreferrer" title="View on Kitapyurdu: İngiliz İstihbaratı ve Osmanlı İmparatorluğu" aria-label="View on Kitapyurdu: İngiliz İstihbaratı ve Osmanlı İmparatorluğu">
+      <img src="/assets/books/ingiliz-istihbarati-osmanli.svg" alt="İngiliz İstihbaratı ve Osmanlı İmparatorluğu book cover" loading="lazy" decoding="async">
+    </a>
+    <a class="editor-work" href="https://www.kitapyurdu.com/kitap/din-harp-futbol/596880.html" target="_blank" rel="noopener noreferrer" title="View on Kitapyurdu: Din, Harp, Futbol" aria-label="View on Kitapyurdu: Din, Harp, Futbol">
+      <img src="/assets/books/din-harp-futbol.svg" alt="Din, Harp, Futbol book cover" loading="lazy" decoding="async">
+    </a>
+    <a class="editor-work" href="https://www.kitapyurdu.com/kitap/napolyonun-elcileri-devrim-sonrasi-osmanlifransiz-iliskilerinden-bir-kesit-17921809/745329.html" target="_blank" rel="noopener noreferrer" title="View on Kitapyurdu: Napolyon’un Elçileri" aria-label="View on Kitapyurdu: Napolyon’un Elçileri">
+      <img src="/assets/books/napolyonun-elcileri.svg" alt="Napolyon’un Elçileri book cover" loading="lazy" decoding="async">
+    </a>
+  </div>
+</section>
 <footer class="site-footer" aria-label="Footer links">
       <p>© 2026 [Beta Version] English–Turkish Military Terms Dictionary</p>
       <p><a href="/en/">Dictionary</a> · <a href="/en/terms/">Terms Index</a> · <a href="/en/publication-note/">Publication Note</a> · <a href="/en/bibliography/">Bibliography</a> · <a href="/en/privacy-policy/">Privacy</a> · <a href="/en/cookie-policy/">Cookies</a> · <a href="/en/terms-of-use/">Terms of Use</a> · <a href="/en/contact/">Contact</a></p>
