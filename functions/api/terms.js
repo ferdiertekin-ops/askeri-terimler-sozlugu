@@ -43,6 +43,8 @@ export async function onRequest(context) {
 
   const url = new URL(context.request.url);
   const q = normalizeQuery(url.searchParams.get('q'));
+  const requestedLetter = String(url.searchParams.get('letter') || '').trim().toUpperCase();
+  const letter = /^[A-Z]$/.test(requestedLetter) ? requestedLetter : '';
   const limit = Math.min(Math.max(Number(url.searchParams.get('limit')) || 50, 1), 100);
   const offset = Math.max(Number(url.searchParams.get('offset')) || 0, 0);
   const id = requestId(context.request);
@@ -62,6 +64,7 @@ export async function onRequest(context) {
 
       const needle = normalizeSearch(q);
       const matches = (allRows.results || [])
+        .filter(row => !letter || termLetter(row.headword_en) === letter)
         .map(row => ({ ...row, search_score: searchScore(row, needle) }))
         .filter(row => row.search_score > 0)
         .sort((left, right) => right.search_score - left.search_score || Number(left.id) - Number(right.id));
@@ -80,24 +83,39 @@ export async function onRequest(context) {
         hasPrevious: offset > 0,
         hasNext: offset + limit < total,
         query: q,
+        letter,
         normalizedQuery: needle,
         requestId: id
       });
     }
 
-    const [rows, countRow] = await Promise.all([
-      context.env.DB.prepare(`
-        SELECT id, slug, headword_en, ottoman_period_term, modern_equivalent_tr, category,
-               explanation_tr, explanation_en, updated_at, version
-        FROM terms
-        WHERE status = 'published'
-        ORDER BY headword_en COLLATE NOCASE, id
-        LIMIT ?1 OFFSET ?2
-      `).bind(limit, offset).all(),
-      context.env.DB.prepare(`
-        SELECT COUNT(*) AS count FROM terms WHERE status = 'published'
-      `).first()
-    ]);
+    const rowsStatement = letter
+      ? context.env.DB.prepare(`
+          SELECT id, slug, headword_en, ottoman_period_term, modern_equivalent_tr, category,
+                 explanation_tr, explanation_en, updated_at, version
+          FROM terms
+          WHERE status = 'published' AND UPPER(SUBSTR(LTRIM(headword_en), 1, 1)) = ?1
+          ORDER BY headword_en COLLATE NOCASE, id
+          LIMIT ?2 OFFSET ?3
+        `).bind(letter, limit, offset)
+      : context.env.DB.prepare(`
+          SELECT id, slug, headword_en, ottoman_period_term, modern_equivalent_tr, category,
+                 explanation_tr, explanation_en, updated_at, version
+          FROM terms
+          WHERE status = 'published'
+          ORDER BY headword_en COLLATE NOCASE, id
+          LIMIT ?1 OFFSET ?2
+        `).bind(limit, offset);
+    const countStatement = letter
+      ? context.env.DB.prepare(`
+          SELECT COUNT(*) AS count
+          FROM terms
+          WHERE status = 'published' AND UPPER(SUBSTR(LTRIM(headword_en), 1, 1)) = ?1
+        `).bind(letter)
+      : context.env.DB.prepare(`
+          SELECT COUNT(*) AS count FROM terms WHERE status = 'published'
+        `);
+    const [rows, countRow] = await Promise.all([rowsStatement.all(), countStatement.first()]);
 
     const total = Number(countRow?.count || 0);
     return json({
@@ -109,6 +127,7 @@ export async function onRequest(context) {
       hasPrevious: offset > 0,
       hasNext: offset + limit < total,
       query: q,
+      letter,
       requestId: id
     });
   } catch (error) {
