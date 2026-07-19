@@ -1,6 +1,6 @@
 const LIVE_ORIGIN = 'https://askeriterimlersozlugu.com';
 const UPSTREAM_TIMEOUT_MS = 10000;
-const SAFE_LIST_PARAMS = ['limit', 'offset', 'q'];
+const SAFE_LIST_PARAMS = ['limit', 'offset', 'q', 'letter'];
 
 function jsonResponse(statusCode, payload, extraHeaders = {}) {
   return {
