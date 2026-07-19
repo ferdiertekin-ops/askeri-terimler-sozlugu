@@ -1,4 +1,4 @@
-const CACHE_VERSION = "ats-pwa-v3";
+const CACHE_VERSION = "ats-pwa-v4";
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 const DATA_CACHE = `${CACHE_VERSION}-data`;
@@ -148,3 +148,4 @@ function isStaticAsset(pathname) {
 function isCacheable(response) {
   return response && response.ok && response.type === "basic";
 }
+
