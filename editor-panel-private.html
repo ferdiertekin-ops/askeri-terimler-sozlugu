@@ -17,10 +17,13 @@ button{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(
 .app[hidden],.login[hidden]{display:none}.toolbar{display:grid;grid-template-columns:1fr auto;gap:12px;margin:22px 0}.search-row{display:grid;grid-template-columns:minmax(180px,1fr) auto auto;gap:8px;align-items:center}.term-count{min-width:150px;color:var(--muted);font:600 12px Cambria,Georgia,serif;text-align:right;white-space:nowrap}.workspace{display:grid;grid-template-columns:minmax(270px,.72fr) minmax(0,1.45fr);gap:16px}.page-workspace{margin-top:16px}.page-workspace[hidden],.workspace[hidden],.search-row[hidden],button[hidden]{display:none!important}.page-editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.page-editor-grid .full{grid-column:1/-1}.page-body-editor{min-height:300px;font-family:"EB Garamond",Garamond,"Palatino Linotype",serif;font-size:17px;line-height:1.65;text-align:justify}.page-help{display:block;margin-top:7px;color:var(--muted);font:12px/1.5 Calibri,"Segoe UI",sans-serif}.list{max-height:75vh;overflow:auto;padding:0}.term-item{width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:12px 14px;background:transparent}.term-item:hover,.term-item.active{background:#efe9dd}.term-item strong{display:block;font:600 15px Cambria,Georgia,serif}.term-item small{color:var(--muted)}.empty{padding:24px;text-align:center;color:var(--muted)}
 .form-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:18px}.form-head h1{margin:0;font-size:26px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}.source-field{margin:0;padding:0;border:0}.source-field legend{padding:0;color:#715d36;font:600 11px/1.2 Calibri,"Segoe UI",sans-serif;letter-spacing:.08em;text-transform:uppercase}.source-head,.source-row{display:grid;grid-template-columns:34px minmax(0,1fr) minmax(0,1fr);gap:8px;align-items:center}.source-head{margin:7px 0 5px;color:var(--muted);font:600 10px/1.2 Calibri,"Segoe UI",sans-serif;letter-spacing:.06em;text-transform:uppercase}.source-list{display:grid;gap:7px}.source-row .input{margin-top:0}.source-number{display:grid;place-items:center;width:28px;height:28px;border:1px solid var(--line);border-radius:50%;color:var(--muted);font:700 11px Calibri,"Segoe UI",sans-serif}.source-help{display:block;margin-top:7px;color:var(--muted);font:12px/1.45 Calibri,"Segoe UI",sans-serif}.sync-report{margin:0 0 16px;border-left:3px solid var(--navy)}.sync-report h2{margin:0 0 6px;font-size:20px}.sync-report p{margin:6px 0;color:var(--muted);line-height:1.5}.sync-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:14px 0}.sync-stat{padding:10px;border:1px solid var(--line);border-radius:8px;background:#f7f3eb;text-align:center}.sync-stat strong{display:block;color:var(--navy);font-size:22px}.sync-warning{color:var(--red)!important;font-weight:700}.form-actions{display:flex;justify-content:space-between;gap:12px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}.status{display:inline-block;padding:3px 8px;border-radius:999px;background:#eee7da;color:#5f574b;font:700 10px Calibri,sans-serif;text-transform:uppercase}.meta{margin-top:8px;color:var(--muted);font-size:12px}
 @media(max-width:800px){.sync-stats{grid-template-columns:1fr}.page-editor-grid{grid-template-columns:1fr}.page-editor-grid .full{grid-column:auto}.workspace{grid-template-columns:1fr}.list{max-height:300px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.toolbar{grid-template-columns:1fr}.form-actions{flex-direction:column}.form-actions .actions{width:100%}.form-actions button{flex:1}}@media(max-width:560px){.source-head{display:none}.source-row{grid-template-columns:34px minmax(0,1fr)}.source-row .source-url{grid-column:2}}
+.editor-card{min-width:0}.editor-savebar{position:sticky;top:8px;z-index:8;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-5px -6px 16px;padding:9px 10px;border:1px solid rgba(47,78,113,.22);border-radius:10px;background:rgba(251,250,247,.96);box-shadow:0 10px 24px -20px rgba(30,39,50,.7);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}.save-hint{color:var(--muted);font:12px/1.35 Calibri,"Segoe UI",sans-serif}.editor-savebar .primary{min-width:104px}.editor-savebar .actions{flex-wrap:nowrap}.grid{gap:12px 14px}.grid textarea{min-height:82px}.grid .explanation-area{min-height:108px}.source-field{margin-top:2px;padding-top:12px;border-top:1px solid var(--line)}.source-head,.source-row{grid-template-columns:30px minmax(0,1.7fr) minmax(170px,1fr) 34px}.source-row[hidden]{display:none}.source-open{display:grid;place-items:center;width:32px;height:32px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--navy);text-decoration:none;font:700 17px/1 Cambria,Georgia,serif}.source-open:hover,.source-open:focus-visible{border-color:var(--navy);background:#f0f4f8}.source-open[hidden]{display:none}.source-controls{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:9px}.source-add{padding:8px 12px;color:var(--navy);border-color:#9aaabd;background:#f8fafc}.form-actions{align-items:center}.form-safety{color:var(--muted);font:11.5px/1.4 Calibri,"Segoe UI",sans-serif}.back{white-space:nowrap}
+@media(max-width:800px){.editor-savebar{top:5px}.save-hint{display:none}.editor-savebar{justify-content:flex-end}.grid{grid-template-columns:1fr}.source-head,.source-row{grid-template-columns:30px minmax(0,1fr) 34px}.source-head span:nth-child(3){display:none}.source-row .source-url{grid-column:2}.source-row .source-open{grid-column:3;grid-row:1/3}.source-controls{align-items:flex-start;flex-direction:column}.form-actions{align-items:stretch}}
+@media(max-width:560px){.shell{width:min(100% - 16px,1180px);padding-top:10px}.card{padding:15px}.form-head{margin-bottom:12px}.form-head h1{font-size:23px}.editor-savebar{margin:0 0 13px}.editor-savebar .actions{width:100%}.editor-savebar button{flex:1}.source-row{grid-template-columns:26px minmax(0,1fr) 32px;gap:6px}.source-number{width:24px;height:24px}.source-open{width:30px;height:30px}}
 </style>
 </head>
 <body><div class="shell">
-<header><a class="brand" href="/"><img src="/ats-logo-2026.svg" alt="ATS"><span>Askerî Terimler Sözlüğü · Editör</span></a><a class="back" href="/">Sözlüğe dön</a></header>
+<header><a class="brand" href="/"><img src="/ats-logo-2026.svg" alt="ATS"><span>Askerî Terimler Sözlüğü · Editör</span></a><a id="backToDictionary" class="back" href="/">Sözlüğe dön</a></header>
 
 
 <section id="app" class="app">
@@ -42,23 +45,25 @@ button{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(
   </section>
   <div id="termWorkspace" class="workspace">
     <aside id="termList" class="card list" aria-label="Maddeler"></aside>
-    <main class="card">
+    <main class="card editor-card">
       <div class="form-head"><div><h1 id="formTitle">Yeni madde</h1><div id="recordMeta" class="meta"></div></div><span id="recordStatus" class="status">Taslak</span></div>
+      <div class="editor-savebar" role="region" aria-label="Kayıt işlemleri"><span id="saveHint" class="save-hint">Değişiklikleriniz bu sekmede taslak olarak korunur.</span><div class="actions"><button id="saveBtn" class="primary" type="submit" form="termForm">Kaydet</button><button id="resetBtn" type="button">Kaydedilene dön</button></div></div>
       <form id="termForm">
         <div class="grid">
-          <label>Ana terim<input id="headword" class="input" required maxlength="300"></label>
-          <label>Harf (otomatik)<input id="letter" class="input" readonly aria-readonly="true" placeholder="Ana terimden oluşturulur"></label>
           <label>Kalıcı adres (slug)<input id="slug" class="input" maxlength="150" placeholder="Boş bırakılırsa otomatik oluşur"></label>
           <label>Kategori<input id="category" class="input" maxlength="200"></label>
+          <label>Ana terim<input id="headword" class="input" required maxlength="300"></label>
+          <label>Harf (otomatik)<input id="letter" class="input" readonly aria-readonly="true" placeholder="Ana terimden oluşturulur"></label>
           <label>Osmanlıca / dönem<textarea id="ottoman"></textarea></label>
           <label>Günümüz karşılığı<textarea id="modern"></textarea></label>
-          <label>Yayın durumu<select id="status"><option value="draft">Taslak</option><option value="review">İnceleme</option><option value="published">Yayında</option><option value="suspended">Askıda</option></select></label>
+          <label>Türkçe açıklama<textarea id="explanationTr" class="explanation-area"></textarea></label>
+          <label>İngilizce açıklama<textarea id="explanationEn" class="explanation-area"></textarea></label>
           <label>Varyantlar / kısaltmalar<textarea id="variants" placeholder="Her satıra bir değer"></textarea></label>
-          <label class="full">Türkçe açıklama<textarea id="explanationTr"></textarea></label>
-          <label class="full">İngilizce açıklama<textarea id="explanationEn"></textarea></label>
+          <label>Yayın durumu<select id="status"><option value="draft">Taslak</option><option value="review">İnceleme</option><option value="published">Yayında</option><option value="suspended">Askıda</option></select></label>
+          <label class="full">Değişiklik notu<input id="changeNote" class="input" maxlength="500" placeholder="Bu düzenlemede ne değişti?"></label>
           <fieldset class="full source-field">
             <legend>Kaynaklar</legend>
-            <div class="source-head" aria-hidden="true"><span></span><span>Kaynak adı / künye</span><span>Bağlantı (isteğe bağlı)</span></div>
+            <div class="source-head" aria-hidden="true"><span></span><span>Kaynak adı / künye</span><span>Bağlantı</span><span></span></div>
             <div id="sourceRows" class="source-list">
             <div class="source-row">
               <span class="source-number">1</span>
@@ -112,11 +117,10 @@ button{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(
             </div>
             </div>
             <datalist id="sourceSuggestions"></datalist>
-            <small class="source-help">En fazla 10 kaynak eklenebilir. Bağlantı girilen kaynak adı, yayımlanan maddede tıklanabilir olur.</small>
+            <div class="source-controls"><button id="addSourceBtn" class="source-add" type="button">+ Kaynak ekle</button><small class="source-help">Dolu kaynaklar daima korunur. Bağlantı eklediğinizde sağdaki ↗ düğmesi özgün sayfayı açar.</small></div>
           </fieldset>
-          <label class="full">Değişiklik notu<input id="changeNote" class="input" maxlength="500" placeholder="Bu düzenlemede ne değişti?"></label>
         </div>
-        <div class="form-actions"><div class="actions"><button id="saveBtn" class="primary" type="submit">Kaydet</button><button id="resetBtn" type="button">Kaydedilene dön</button></div><button id="deleteBtn" class="danger" type="button" hidden>Kalıcı olarak sil</button></div>
+        <div class="form-actions"><span class="form-safety">Kaydetmeden önce mevcut sürüm ve taslağınız korunur.</span><button id="deleteBtn" class="danger" type="button" hidden>Kalıcı olarak sil</button></div>
       </form>
     </main>
   </div>
@@ -153,8 +157,17 @@ let csrf='',currentSlug='',searchTimer=null,sourceSuggestionTimer=null,currentPa
 const DRAFT_PREFIX='ats-editor-draft-v2:';
 const fields={headword:$('headword'),letter:$('letter'),slug:$('slug'),ottoman:$('ottoman'),modern:$('modern'),category:$('category'),status:$('status'),explanationTr:$('explanationTr'),explanationEn:$('explanationEn'),variants:$('variants'),changeNote:$('changeNote')};
 const pageFields={titleTr:$('pageTitleTr'),titleEn:$('pageTitleEn'),bodyTr:$('pageBodyTr'),bodyEn:$('pageBodyEn')};
-const sourceRows=[...document.querySelectorAll('.source-row')].map(row=>({citation:row.querySelector('.source-citation'),url:row.querySelector('.source-url')}));
+const sourceRows=[...document.querySelectorAll('.source-row')].map((element,index)=>{
+  const open=document.createElement('a');
+  open.className='source-open';open.href='#';open.target='_blank';open.rel='noopener noreferrer';open.title='Özgün bağlantıyı aç';open.setAttribute('aria-label','Kaynak '+(index+1)+' bağlantısını yeni sekmede aç');open.textContent='↗';open.hidden=true;element.appendChild(open);
+  return{element,citation:element.querySelector('.source-citation'),url:element.querySelector('.source-url'),open};
+});
+let visibleSourceCount=1;
 const sourceSuggestionMap=new Map();
+
+function safeReturnPath(value){try{const target=new URL(String(value||'/'),location.origin);return target.origin===location.origin?target.pathname+target.search+target.hash:'/'}catch{return'/'}}
+const returnPath=safeReturnPath(new URLSearchParams(location.search).get('return'));
+$('backToDictionary').href=returnPath;
 
 function message(text,error=false){const box=$('notice');box.textContent=text;box.className='notice show'+(error?' error':'');clearTimeout(message.timer);message.timer=setTimeout(()=>box.className='notice',3500)}
 async function api(url,options={}){const headers={Accept:'application/json',...(options.headers||{})};if(options.body)headers['Content-Type']='application/json';if(csrf&&options.method&&options.method!=='GET')headers['X-CSRF-Token']=csrf;const response=await fetch(url,{credentials:'same-origin',cache:'no-store',...options,headers});let data={};try{data=await response.json()}catch{}if(!response.ok||!data.ok){const error=new Error(data.error||('HTTP '+response.status));error.data=data;throw error}return data}
@@ -169,8 +182,18 @@ async function loadSourceSuggestions(value){
 }
 function applyRememberedSource(row){
   const remembered=sourceSuggestionMap.get(sourceSuggestionKey(row.citation.value));
-  if(remembered?.url&&!row.url.value){row.url.value=remembered.url;markTermDirty()}
+  if(remembered?.url&&!row.url.value){row.url.value=remembered.url;syncSourceLink(row);markTermDirty()}
 }
+function sourceUrl(value){try{const url=new URL(String(value||'').trim());return url.protocol==='https:'&&!url.username&&!url.password?url.toString():''}catch{return''}}
+function syncSourceLink(row){const href=sourceUrl(row.url.value);row.open.hidden=!href;row.open.href=href||'#'}
+function syncSourceVisibility(){
+  const lastFilled=sourceRows.reduce((last,row,index)=>row.citation.value.trim()||row.url.value.trim()?index:last,-1);
+  visibleSourceCount=Math.min(sourceRows.length,Math.max(1,visibleSourceCount,lastFilled+1));
+  sourceRows.forEach((row,index)=>{row.element.hidden=index>=visibleSourceCount;syncSourceLink(row)});
+  $('addSourceBtn').hidden=visibleSourceCount>=sourceRows.length;
+}
+function revealSourceRow(){if(visibleSourceCount>=sourceRows.length)return;visibleSourceCount+=1;syncSourceVisibility();sourceRows[visibleSourceCount-1].citation.focus()}
+syncSourceVisibility();
 function draftKey(kind,id){return DRAFT_PREFIX+kind+':'+String(id||'new')}
 function readDraft(kind,id){try{return JSON.parse(sessionStorage.getItem(draftKey(kind,id))||'null')}catch{return null}}
 function writeDraft(kind,id,value){try{sessionStorage.setItem(draftKey(kind,id),JSON.stringify(value))}catch{}}
@@ -248,6 +271,7 @@ function updateRecordMeta(){
   if(termDirty)text+=' · Kaydedilmemiş taslak bu sekmede korunuyor';
   if(termDirty&&currentTermVersion&&currentServerVersion&&currentTermVersion!==currentServerVersion)text+=' · Taslak tabanı: sürüm '+currentTermVersion;
   $('recordMeta').textContent=text;
+  $('saveHint').textContent=termDirty?'Kaydedilmemiş değişiklikleriniz taslak olarak korunuyor.':'Form, D1 üzerindeki son kaydedilmiş sürümü gösteriyor.';
 }
 function automaticTermLetter(value){
   const normalized=String(value||'').trim().normalize('NFKD').replace(/[\u0300-\u036f]/g,'');
@@ -268,6 +292,7 @@ function applyTermValues(term){
   fields.explanationEn.value=term.explanation_en||'';
   fields.variants.value=(term.variants||[]).map(item=>typeof item==='string'?item:item.variant).filter(Boolean).join('\n');
   sourceRows.forEach((row,index)=>{const source=(term.sources||[])[index]||{};row.citation.value=source.citation||'';row.url.value=source.url||''});
+  visibleSourceCount=Math.max(1,Math.min(sourceRows.length,(term.sources||[]).length));syncSourceVisibility();
   fields.changeNote.value=term.change_note||'';
 }
 function payload(){return{headword_en:fields.headword.value,slug:fields.slug.value,ottoman_period_term:fields.ottoman.value,modern_equivalent_tr:fields.modern.value,category:fields.category.value,status:fields.status.value,explanation_tr:fields.explanationTr.value,explanation_en:fields.explanationEn.value,variants:lines(fields.variants.value),sources:sourceRows.map(row=>({citation:row.citation.value.trim(),url:row.url.value.trim()})).filter(source=>source.citation||source.url),change_note:fields.changeNote.value,expected_version:currentTermVersion}}
@@ -281,6 +306,7 @@ function markTermDirty(){termDirty=true;saveTermDraft()}
 function startNewForm({restoreDraft=true}={}){
   currentSlug='';sessionStorage.setItem('ats-editor-term','new');currentTermVersion=0;currentServerVersion=0;currentTermUpdatedAt='';termDirty=false;
   $('termForm').reset();fields.status.value='draft';$('formTitle').textContent='Yeni madde';$('recordStatus').textContent='Taslak';$('deleteBtn').hidden=true;
+  visibleSourceCount=1;syncSourceVisibility();
   document.querySelectorAll('.term-item.active').forEach(x=>x.classList.remove('active'));
   const draft=restoreDraft?readDraft('term','new'):null;
   if(draft?.payload){applyTermValues(draft.payload);currentTermVersion=Number(draft.baseVersion||0);termDirty=true;$('recordStatus').textContent=fields.status.value}
@@ -294,13 +320,15 @@ function fillForm(term,{restoreDraft=true}={}){
   $('formTitle').textContent=fields.headword.value||term.headword_en||'Madde';
   $('recordStatus').textContent=fields.status.value||'draft';$('deleteBtn').hidden=false;updateRecordMeta();
 }
-async function loadList(q=''){
+async function loadList(q='',{preserveScroll=false}={}){
+  const box=$('termList'),previousScroll=preserveScroll?box.scrollTop:0;
   const data=await api('/api/editor/terms?limit=100&q='+encodeURIComponent(q));
-  const box=$('termList'),filtered=Number(data.filteredTotal??data.total??0),total=Number(data.total??0),published=Number(data.counts?.published??0);
+  const filtered=Number(data.filteredTotal??data.total??0),total=Number(data.total??0),published=Number(data.counts?.published??0);
   $('termCount').textContent=q.trim()?filtered+' sonuç · toplam '+total+' madde':total+' madde · '+published+' yayında';
   if(!data.items.length){box.innerHTML='<div class="empty">Madde bulunamadı.</div>';return data}
   box.innerHTML=data.items.map(item=>'<button type="button" class="term-item" data-slug="'+escapeAttr(item.slug)+'"><strong>'+escapeHtml(item.headword_en)+'</strong><small>'+escapeHtml(item.status)+' · '+escapeHtml(item.modern_equivalent_tr||'')+'</small></button>').join('');
   document.querySelectorAll('.term-item').forEach(x=>x.classList.toggle('active',x.dataset.slug===currentSlug));
+  if(preserveScroll)box.scrollTop=previousScroll;
   return data;
 }
 function escapeHtml(value){return String(value||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -407,7 +435,9 @@ $('pageForm').addEventListener('submit',async event=>{
 sourceRows.forEach(row=>{
   row.citation.addEventListener('input',()=>{clearTimeout(sourceSuggestionTimer);sourceSuggestionTimer=setTimeout(()=>loadSourceSuggestions(row.citation.value).then(()=>applyRememberedSource(row)).catch(()=>{}),180)});
   row.citation.addEventListener('change',()=>applyRememberedSource(row));
+  row.url.addEventListener('input',()=>syncSourceLink(row));
 });
+$('addSourceBtn').addEventListener('click',revealSourceRow);
 $('sourceAuditBtn').addEventListener('click',auditBibliography);
 $('sourceApplyBtn').addEventListener('click',applyBibliographyRepair);
 $('missingTermsApplyBtn').addEventListener('click',applyMissingTerms);
@@ -430,7 +460,7 @@ $('termForm').addEventListener('submit',async event=>{
       :await api('/api/editor/terms',{method:'POST',body});
     termDirty=false;clearTermDraft(originalSlug);clearTermDraft(data.term.slug);
     fillForm(data.term,{restoreDraft:false});
-    const list=await loadList($('search').value);
+    const list=await loadList($('search').value,{preserveScroll:true});
     message('Madde sürüm '+data.term.version+' olarak doğrulandı. Toplam '+Number(list.total||data.counts?.total||0)+' madde.');
   }catch(error){termDirty=true;saveTermDraft();message('Kaydetme başarısız: '+errorText(error),true)}
   finally{if(button)button.disabled=false}
