@@ -29,7 +29,7 @@ button{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(
 <section id="app" class="app">
   <div class="toolbar">
     <form id="searchForm" class="search-row"><input id="search" class="input" type="search" placeholder="Madde ara"><button type="submit">Ara</button><span id="termCount" class="term-count" aria-live="polite">Madde sayısı yükleniyor…</span></form>
-    <div class="actions"><button id="termModeBtn" class="primary" type="button">Maddeler</button><button id="pageModeBtn" type="button">Sayfalar ve alt açıklama</button><button id="newBtn" type="button">+ Yeni madde</button><button id="sourceAuditBtn" type="button">Kaynakçayı denetle</button><button id="logoutBtn" type="button">Çıkış</button></div>
+    <div class="actions"><button id="termModeBtn" class="primary" type="button">Maddeler</button><button id="pageModeBtn" type="button">Sayfalar ve alt açıklama</button><button id="newBtn" type="button">+ Yeni madde</button><button id="sourceAuditBtn" type="button">Kaynakçayı denetle</button><button id="admiraltyImportBtn" type="button">1920 sözlüğünü aktar</button><button id="logoutBtn" type="button">Çıkış</button></div>
   </div>
   <section id="sourceSyncReport" class="card sync-report" hidden>
     <h2>Kaynakça aktarım denetimi</h2>
@@ -42,6 +42,18 @@ button{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(
     </div>
     <p id="sourceSyncWarning" class="sync-warning"></p>
     <div class="actions"><button id="sourceApplyBtn" class="primary" type="button" hidden>Kaynak düzeltmelerini uygula</button><button id="missingTermsApplyBtn" type="button" hidden>Eksik maddeleri D1'e ekle</button><button id="sourceReportCloseBtn" type="button">Kapat</button></div>
+  </section>
+  <section id="admiraltyImportReport" class="card sync-report" hidden>
+    <h2>1920 Admiralty sözlüğü aktarım raporu</h2>
+    <p id="admiraltyImportText">Henüz aktarım yapılmadı.</p>
+    <div class="sync-stats">
+      <div class="sync-stat"><strong id="admiraltyAdded">0</strong><span>yeni madde</span></div>
+      <div class="sync-stat"><strong id="admiraltyUpdated">0</strong><span>kaynak eklenen / genişletilen</span></div>
+      <div class="sync-stat"><strong id="admiraltyPublished">0</strong><span>yayına alınan eski kayıt</span></div>
+      <div class="sync-stat"><strong id="admiraltySkipped">0</strong><span>tartışmalı / belirsiz, eklenmeyen</span></div>
+    </div>
+    <p id="admiraltyImportWarning" class="sync-warning"></p>
+    <div class="actions"><button id="admiraltyReportCloseBtn" type="button">Kapat</button></div>
   </section>
   <div id="termWorkspace" class="workspace">
     <aside id="termList" class="card list" aria-label="Maddeler"></aside>
@@ -393,6 +405,37 @@ async function applyMissingTerms(){
     message('Eksik madde eşitlemesi başarısız: '+error.message,true);
   }finally{button.disabled=false}
 }
+function renderAdmiraltyReport(data){
+  const summary=data.summary||{};
+  $('admiraltyImportReport').hidden=false;
+  $('admiraltyAdded').textContent=summary.added??summary.newTerms??0;
+  $('admiraltyUpdated').textContent=(Number(summary.enriched||0)+Number(summary.sourceOnly||0))||summary.existingMatches||0;
+  $('admiraltyPublished').textContent=summary.publishedExisting??summary.unpublishedBefore??0;
+  $('admiraltySkipped').textContent=Number(summary.excludedAsUnreliable||0)+Number(summary.ambiguousSkipped||0);
+  const after=summary.countsAfter||summary.countsBefore||{};
+  $('admiraltyImportText').textContent=data.action==='apply'
+    ?'Aktarım tamamlandı. Toplam '+(after.total||0)+' madde vardır; '+(after.published||0)+' maddenin tamamı yayındadır.'
+    :'Ön denetim tamamlandı: '+(summary.existingMatches||0)+' mevcut eşleşme, '+(summary.newTerms||0)+' yeni madde adayı bulundu.';
+  const excluded=(data.excluded||[]).map(item=>item.headword+' (s. '+item.page+'): '+item.reason);
+  const ambiguous=(data.ambiguous||[]).map(item=>item.headword+' (s. '+item.page+'): birden fazla mevcut maddeyle eşleşti.');
+  $('admiraltyImportWarning').textContent=[...excluded,...ambiguous].join(' · ');
+}
+async function importAdmiralty1920(){
+  const button=$('admiraltyImportBtn');button.disabled=true;
+  try{
+    const audit=await api('/api/editor/admiralty-1920-import',{method:'POST',body:JSON.stringify({action:'audit'})});
+    renderAdmiraltyReport(audit);
+    const summary=audit.summary||{};
+    const prompt=(summary.newTerms||0)+' yeni madde eklenecek; '+(summary.existingMatches||0)+' mevcut maddeye sayfalı kaynakça ve düzeltilmiş Türkçe yazılış eklenecek; '+(summary.unpublishedBefore||0)+' yayımlanmamış kayıt yayına alınacak. '+(summary.excludedAsUnreliable||0)+' tartışmalı madde dışarıda bırakılacak. Devam edilsin mi?';
+    if(!confirm(prompt))return;
+    const applied=await api('/api/editor/admiralty-1920-import',{method:'POST',body:JSON.stringify({action:'apply'})});
+    renderAdmiraltyReport(applied);
+    const report=JSON.stringify(applied,null,2);sessionStorage.setItem('ats-admiralty-1920-report',report);
+    message((applied.summary?.added||0)+' yeni madde eklendi; '+((applied.summary?.enriched||0)+(applied.summary?.sourceOnly||0))+' mevcut madde kaynaklandırıldı/güncellendi; bütün maddeler yayına alındı.');
+    await loadList($('search').value);
+  }catch(error){message('1920 sözlüğü aktarımı başarısız: '+errorText(error),true)}
+  finally{button.disabled=false}
+}
 async function boot(){
   try{
     const data=await api('/api/editor/session');
@@ -439,9 +482,11 @@ sourceRows.forEach(row=>{
 });
 $('addSourceBtn').addEventListener('click',revealSourceRow);
 $('sourceAuditBtn').addEventListener('click',auditBibliography);
+$('admiraltyImportBtn').addEventListener('click',importAdmiralty1920);
 $('sourceApplyBtn').addEventListener('click',applyBibliographyRepair);
 $('missingTermsApplyBtn').addEventListener('click',applyMissingTerms);
 $('sourceReportCloseBtn').addEventListener('click',()=>$('sourceSyncReport').hidden=true);
+$('admiraltyReportCloseBtn').addEventListener('click',()=>$('admiraltyImportReport').hidden=true);
 $('logoutBtn').addEventListener('click',async()=>{saveTermDraft();savePageDraft();try{await api('/api/editor/logout',{method:'POST'});}catch{}csrf='';location.replace('/editor/')});
 $('newBtn').addEventListener('click',()=>{saveTermDraft();startNewForm({restoreDraft:true})});
 $('resetBtn').addEventListener('click',()=>{if(termDirty&&!confirm('Kaydedilmemiş taslak silinip D1\'deki son kayıt yüklensin mi?'))return;const slug=currentSlug;termDirty=false;clearTermDraft(slug||'new');if(slug)openTerm(slug,{preserveCurrent:false}).catch(error=>message(errorText(error),true));else startNewForm({restoreDraft:false})});

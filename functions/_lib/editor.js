@@ -2,6 +2,11 @@ import { json, methodNotAllowed, normalizeQuery, requestId } from './http.js';
 import { editablePageDefinition, listEditablePages, loadEditablePage } from './editable-pages.js';
 import { buildMigrationDataset, fetchMigrationSnapshot } from './migration-data.js';
 import { termLetter } from './term-letter.js';
+import {
+  ADMIRALTY_1920_EXCLUDED,
+  ADMIRALTY_1920_MATCH_SLUGS,
+  ADMIRALTY_1920_TERMS
+} from './admiralty-1920-terms.js';
 
 const COOKIE_NAME = 'ats_editor_session';
 const SESSION_TTL_SECONDS = 4 * 60 * 60;
@@ -536,6 +541,276 @@ async function bibliographySync(context) {
   }
 }
 
+function importIdentity(value, { removeParenthetical = false } = {}) {
+  let text = String(value || '').toLocaleLowerCase('en-US').normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
+  if (removeParenthetical) text = text.replace(/\([^)]*\)/g, ' ');
+  return text.replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' ');
+}
+
+function mergeImportedValue(currentValue, importedValue) {
+  const current = clean(currentValue, 2000);
+  const imported = clean(importedValue, 2000);
+  if (!imported) return current;
+  if (!current) return imported;
+  const normalizedCurrent = importIdentity(current);
+  const normalizedImported = importIdentity(imported);
+  if (normalizedCurrent === normalizedImported || normalizedCurrent.includes(normalizedImported)) return current;
+  return `${current}; ${imported}`.slice(0, 2000);
+}
+
+function admiraltyImportPlan(termRows, variantRows, sourceRows) {
+  const terms = termRows || [];
+  const bySlug = new Map(terms.map(term => [term.slug, term]));
+  const exact = new Map();
+  const base = new Map();
+  const variantsByTerm = new Map();
+  const variantExact = new Map();
+  const variantBase = new Map();
+  const sourcesByTerm = new Map();
+
+  const addIndex = (map, key, term) => {
+    if (!key) return;
+    const list = map.get(key) || [];
+    if (!list.some(item => Number(item.id) === Number(term.id))) list.push(term);
+    map.set(key, list);
+  };
+  for (const term of terms) {
+    addIndex(exact, importIdentity(term.headword_en), term);
+    addIndex(base, importIdentity(term.headword_en, { removeParenthetical: true }), term);
+  }
+  for (const variant of variantRows || []) {
+    const term = terms.find(item => Number(item.id) === Number(variant.term_id));
+    if (!term) continue;
+    const list = variantsByTerm.get(term.id) || [];
+    list.push(variant);
+    variantsByTerm.set(term.id, list);
+    addIndex(variantExact, importIdentity(variant.variant), term);
+    addIndex(variantBase, importIdentity(variant.variant, { removeParenthetical: true }), term);
+  }
+  for (const source of sourceRows || []) {
+    const list = sourcesByTerm.get(source.term_id) || [];
+    list.push(source);
+    sourcesByTerm.set(source.term_id, list);
+  }
+
+  const existing = [];
+  const missing = [];
+  const ambiguous = [];
+  for (const record of ADMIRALTY_1920_TERMS) {
+    const explicitSlug = ADMIRALTY_1920_MATCH_SLUGS[record.headword];
+    if (explicitSlug) {
+      const term = bySlug.get(explicitSlug);
+      if (term) {
+        existing.push({ record, term, variants: variantsByTerm.get(term.id) || [], sources: sourcesByTerm.get(term.id) || [], matchedBy: 'explicit-slug' });
+        continue;
+      }
+    }
+
+    const labels = [record.headword, ...(record.aliases || [])];
+    const candidateMap = new Map();
+    const collect = map => {
+      for (const label of labels) {
+        for (const term of map.get(label) || []) candidateMap.set(term.id, term);
+      }
+    };
+    collect(new Map(labels.map(label => [label, exact.get(importIdentity(label)) || []])));
+    collect(new Map(labels.map(label => [label, variantExact.get(importIdentity(label)) || []])));
+    if (!candidateMap.size) {
+      collect(new Map(labels.map(label => [label, base.get(importIdentity(label, { removeParenthetical: true })) || []])));
+      collect(new Map(labels.map(label => [label, variantBase.get(importIdentity(label, { removeParenthetical: true })) || []])));
+    }
+    const candidates = [...candidateMap.values()];
+    if (candidates.length === 1) {
+      const term = candidates[0];
+      existing.push({ record, term, variants: variantsByTerm.get(term.id) || [], sources: sourcesByTerm.get(term.id) || [], matchedBy: 'normalized' });
+    } else if (candidates.length > 1) {
+      ambiguous.push({ record, candidates: candidates.map(term => ({ id: term.id, slug: term.slug, headword: term.headword_en })) });
+    } else {
+      const slug = slugify(record.headword);
+      if (bySlug.has(slug)) {
+        const term = bySlug.get(slug);
+        existing.push({ record, term, variants: variantsByTerm.get(term.id) || [], sources: sourcesByTerm.get(term.id) || [], matchedBy: 'generated-slug' });
+      } else {
+        missing.push({ record, slug });
+      }
+    }
+  }
+  return { existing, missing, ambiguous };
+}
+
+async function admiralty1920Import(context) {
+  if (!context.env.DB) return json({ ok: false, error: 'database_not_configured' }, { status: 503 });
+  if (context.request.method !== 'POST') return methodNotAllowed(['POST']);
+  const auth = await authorize(context, { csrf: true });
+  if (auth.response) return auth.response;
+  const id = requestId(context.request);
+  let body;
+  try {
+    body = await bodyJson(context.request);
+  } catch {
+    return json({ ok: false, error: 'invalid_json', requestId: id }, { status: 400 });
+  }
+  const action = String(body?.action || 'audit');
+  if (!['audit', 'apply'].includes(action)) return json({ ok: false, error: 'invalid_action', requestId: id }, { status: 400 });
+
+  try {
+    const [termsResult, variantsResult, sourcesResult, countsBefore] = await Promise.all([
+      context.env.DB.prepare(`
+        SELECT id, slug, headword_en, ottoman_period_term, modern_equivalent_tr, category,
+               explanation_tr, explanation_en, status, version, updated_at
+        FROM terms ORDER BY id
+      `).all(),
+      context.env.DB.prepare('SELECT id, term_id, variant FROM term_variants ORDER BY id').all(),
+      context.env.DB.prepare('SELECT id, term_id, citation, url, page_reference, sort_order FROM term_sources ORDER BY term_id, sort_order, id').all(),
+      termCounts(context.env.DB)
+    ]);
+    const plan = admiraltyImportPlan(termsResult.results || [], variantsResult.results || [], sourcesResult.results || []);
+    const summary = {
+      acceptedSourceTerms: ADMIRALTY_1920_TERMS.length,
+      excludedAsUnreliable: ADMIRALTY_1920_EXCLUDED.length,
+      existingMatches: plan.existing.length,
+      newTerms: plan.missing.length,
+      ambiguousSkipped: plan.ambiguous.length,
+      unpublishedBefore: countsBefore.total - countsBefore.published,
+      countsBefore
+    };
+    if (action === 'audit') {
+      return json({
+        ok: true,
+        action,
+        writePerformed: false,
+        summary,
+        newTerms: plan.missing.map(item => ({ headword: item.record.headword, slug: item.slug, page: item.record.page })),
+        existingTerms: plan.existing.map(item => ({ headword: item.record.headword, matchedHeadword: item.term.headword_en, slug: item.term.slug, page: item.record.page, matchedBy: item.matchedBy })),
+        ambiguous: plan.ambiguous.map(item => ({ headword: item.record.headword, page: item.record.page, candidates: item.candidates })),
+        excluded: ADMIRALTY_1920_EXCLUDED,
+        requestId: id
+      });
+    }
+
+    const statements = [];
+    const enriched = [];
+    const sourceOnly = [];
+    const unchanged = [];
+    for (const item of plan.existing) {
+      const { record, term, variants, sources } = item;
+      const period = mergeImportedValue(term.ottoman_period_term, record.period);
+      const modern = mergeImportedValue(term.modern_equivalent_tr, record.modern);
+      const category = term.category || record.category;
+      const fieldsChanged = period !== String(term.ottoman_period_term || '') || modern !== String(term.modern_equivalent_tr || '') || category !== String(term.category || '') || term.status !== 'published';
+      const sourceExists = sources.some(source => source.citation === record.citation || (sameBibliographySource(source.citation, record.citation) && String(source.page_reference || '') === String(record.page)));
+      const existingVariants = new Set(variants.map(variant => importIdentity(variant.variant)));
+      const aliases = (record.aliases || []).filter(alias => !existingVariants.has(importIdentity(alias)));
+      if (fieldsChanged) {
+        statements.push(context.env.DB.prepare(`
+          UPDATE terms SET ottoman_period_term=?1, modern_equivalent_tr=?2, category=?3,
+            status='published', published_at=COALESCE(published_at,strftime('%Y-%m-%dT%H:%M:%fZ','now')),
+            updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now'), version=COALESCE(version,1)+1
+          WHERE id=?4
+        `).bind(period || null, modern || null, category || null, term.id));
+      } else if (!sourceExists || aliases.length) {
+        statements.push(context.env.DB.prepare("UPDATE terms SET updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id=?1").bind(term.id));
+      }
+      if (!sourceExists) {
+        const sortOrder = sources.reduce((max, source) => Math.max(max, Number(source.sort_order) || 0), -1) + 1;
+        statements.push(context.env.DB.prepare(`
+          INSERT INTO term_sources (term_id, citation, url, source_type, page_reference, sort_order)
+          SELECT ?1, ?2, ?3, 'admiralty-1920', ?4, ?5
+          WHERE NOT EXISTS (SELECT 1 FROM term_sources WHERE term_id=?1 AND citation=?2)
+        `).bind(term.id, record.citation, 'https://archive.org/details/vocabulariesengl00grearich', String(record.page), sortOrder));
+      }
+      for (const alias of aliases) {
+        statements.push(context.env.DB.prepare(`
+          INSERT INTO term_variants (term_id, variant, variant_type, language)
+          SELECT ?1, ?2, 'source_variant', 'en'
+          WHERE NOT EXISTS (SELECT 1 FROM term_variants WHERE term_id=?1 AND variant=?2)
+        `).bind(term.id, alias));
+      }
+      const reportItem = { headword: record.headword, slug: term.slug, page: record.page, sourceAdded: !sourceExists };
+      if (fieldsChanged) enriched.push(reportItem);
+      else if (!sourceExists || aliases.length) sourceOnly.push(reportItem);
+      else unchanged.push(reportItem);
+    }
+
+    for (const item of plan.missing) {
+      const { record, slug } = item;
+      const explanation = `1920 tarihli Admiralty sözlüğünde “${record.headword}” terimi için “${record.period}” karşılığı verilmiştir. Düzeltilmiş Türkçe yazılışı: “${record.modern}”.`;
+      statements.push(context.env.DB.prepare(`
+        INSERT INTO terms (slug, headword_en, ottoman_period_term, modern_equivalent_tr, category,
+          explanation_tr, explanation_en, status, published_at, version)
+        SELECT ?1, ?2, ?3, ?4, ?5, ?6, NULL, 'published', strftime('%Y-%m-%dT%H:%M:%fZ','now'), 1
+        WHERE NOT EXISTS (SELECT 1 FROM terms WHERE slug=?1)
+      `).bind(slug, record.headword, record.period, record.modern, record.category, explanation));
+    }
+    if (statements.length) await runBatches(context.env.DB, statements);
+
+    if (plan.missing.length) {
+      const insertedRows = await context.env.DB.prepare('SELECT id, slug FROM terms').all();
+      const insertedBySlug = new Map((insertedRows.results || []).map(term => [term.slug, term]));
+      const children = [];
+      for (const item of plan.missing) {
+        const term = insertedBySlug.get(item.slug);
+        if (!term) continue;
+        children.push(context.env.DB.prepare(`
+          INSERT INTO term_sources (term_id, citation, url, source_type, page_reference, sort_order)
+          SELECT ?1, ?2, ?3, 'admiralty-1920', ?4, 0
+          WHERE NOT EXISTS (SELECT 1 FROM term_sources WHERE term_id=?1 AND citation=?2)
+        `).bind(term.id, item.record.citation, 'https://archive.org/details/vocabulariesengl00grearich', String(item.record.page)));
+        for (const alias of item.record.aliases || []) {
+          children.push(context.env.DB.prepare(`
+            INSERT INTO term_variants (term_id, variant, variant_type, language)
+            SELECT ?1, ?2, 'source_variant', 'en'
+            WHERE NOT EXISTS (SELECT 1 FROM term_variants WHERE term_id=?1 AND variant=?2)
+          `).bind(term.id, alias));
+        }
+      }
+      if (children.length) await runBatches(context.env.DB, children);
+    }
+
+    const publishResult = await context.env.DB.prepare(`
+      UPDATE terms SET status='published',
+        published_at=COALESCE(published_at,strftime('%Y-%m-%dT%H:%M:%fZ','now')),
+        updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now'), version=COALESCE(version,1)+1
+      WHERE status <> 'published'
+    `).run();
+    const countsAfter = await termCounts(context.env.DB);
+    await audit(context.env.DB, 'admiralty_1920_imported', 'dataset', 'admiralty-1920', id, {
+      newTerms: plan.missing.length,
+      enriched: enriched.length,
+      sourceOnly: sourceOnly.length,
+      unchanged: unchanged.length,
+      ambiguousSkipped: plan.ambiguous.length,
+      excluded: ADMIRALTY_1920_EXCLUDED.length,
+      publishedExisting: Number(publishResult.meta?.changes || 0),
+      countsBefore,
+      countsAfter
+    });
+    return json({
+      ok: true,
+      action,
+      writePerformed: true,
+      summary: {
+        ...summary,
+        added: plan.missing.length,
+        enriched: enriched.length,
+        sourceOnly: sourceOnly.length,
+        unchanged: unchanged.length,
+        publishedExisting: Number(publishResult.meta?.changes || 0),
+        countsAfter
+      },
+      added: plan.missing.map(item => ({ headword: item.record.headword, slug: item.slug, page: item.record.page })),
+      enriched,
+      sourceOnly,
+      unchanged,
+      ambiguous: plan.ambiguous.map(item => ({ headword: item.record.headword, page: item.record.page, candidates: item.candidates })),
+      excluded: ADMIRALTY_1920_EXCLUDED,
+      requestId: id
+    });
+  } catch (error) {
+    return json({ ok: false, error: 'admiralty_import_failed', message: String(error?.message || error), requestId: id }, { status: 500 });
+  }
+}
+
 async function login(context) {
   if (context.request.method !== 'POST') return methodNotAllowed(['POST']);
   if (!sameOrigin(context.request)) return json({ ok: false, error: 'invalid_origin' }, { status: 403 });
@@ -848,6 +1123,7 @@ export async function handleEditorApi(context, pathname) {
   if (pathname === '/api/editor/terms') return termsCollection(context);
   if (pathname === '/api/editor/source-suggestions') return sourceSuggestions(context);
   if (pathname === '/api/editor/bibliography-sync') return bibliographySync(context);
+  if (pathname === '/api/editor/admiralty-1920-import') return admiralty1920Import(context);
   const termMatch = pathname.match(/^\/api\/editor\/terms\/([^/]+)$/);
   if (termMatch) return termItem(context, decodeURIComponent(termMatch[1]));
   if (pathname === '/api/editor/pages') return pagesCollection(context);
