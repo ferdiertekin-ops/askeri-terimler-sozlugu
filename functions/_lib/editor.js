@@ -590,6 +590,11 @@ function admiraltyRepairField(currentValue, legacyValues, correctedValue) {
   if (current === corrected) return { value: current, state: 'already-correct' };
   if (!current && corrected) return { value: corrected, state: 'filled-empty' };
   if (legacy.includes(current)) return { value: corrected, state: 'replaced-exact' };
+  const currentIdentity = importIdentity(current);
+  if (currentIdentity && (currentIdentity === importIdentity(corrected) ||
+      legacy.some(value => currentIdentity === importIdentity(value)))) {
+    return { value: corrected, state: 'replaced-normalized-equivalent' };
+  }
 
   for (const legacyValue of legacy.sort((left, right) => right.length - left.length)) {
     const suffix = `; ${legacyValue}`;
