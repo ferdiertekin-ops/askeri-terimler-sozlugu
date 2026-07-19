@@ -192,47 +192,56 @@
   letter-spacing:.055em;
 }
 .editor-works__grid{
-  width:min(660px,100%);
+  width:min(720px,100%);
   margin:0 auto;
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,132px));
+  grid-template-columns:repeat(4,148px);
+  align-items:end;
   justify-content:center;
   gap:22px;
 }
 .editor-work{
   display:flex;
-  align-items:center;
+  align-items:flex-end;
   justify-content:center;
-  width:100%;
+  width:148px;
   height:194px;
-  padding:7px;
-  border:1px solid rgba(47,78,113,.22);
-  border-radius:6px;
-  background:rgba(255,254,250,.72);
-  box-shadow:0 6px 16px -10px rgba(30,39,50,.42);
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
   text-decoration:none;
-  opacity:.93;
-  transition:opacity .16s ease,transform .16s ease,box-shadow .16s ease,border-color .16s ease;
+  opacity:.94;
+  transition:opacity .16s ease,transform .16s ease;
 }
 .editor-work img{
   display:block;
-  width:100%;
-  height:100%;
+  width:auto;
+  height:194px;
+  max-width:148px;
   object-fit:contain;
+  border:1px solid rgba(24,29,34,.62);
+  border-radius:1px;
+  background:transparent;
+  box-shadow:0 6px 15px -8px rgba(20,24,29,.48);
+  transition:border-color .16s ease,box-shadow .16s ease;
 }
 .editor-work:hover,.editor-work:focus-visible{
   opacity:1;
   transform:translateY(-2px);
-  border-color:rgba(47,78,113,.42);
-  box-shadow:0 10px 22px -13px rgba(30,39,50,.48);
 }
-.editor-work:focus-visible{outline:2px solid #2f4e71;outline-offset:3px}
+.editor-work:hover img,.editor-work:focus-visible img{
+  border-color:rgba(20,24,29,.82);
+  box-shadow:0 10px 20px -10px rgba(20,24,29,.58);
+}
+.editor-work:focus-visible{outline:2px solid #2f4e71;outline-offset:4px}
 @media(max-width:680px){
   .editor-works{margin-top:30px;padding-top:24px}
-  .editor-works__grid{width:min(320px,100%);grid-template-columns:repeat(2,minmax(0,132px));gap:16px}
-  .editor-work{height:190px}
+  .editor-works__grid{width:min(304px,100%);grid-template-columns:repeat(2,140px);gap:16px 20px}
+  .editor-work{width:140px;height:184px}
+  .editor-work img{height:184px;max-width:140px}
 }
-
 
 </style>
 </head>
