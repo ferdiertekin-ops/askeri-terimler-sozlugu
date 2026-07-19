@@ -558,6 +558,76 @@ function mergeImportedValue(currentValue, importedValue) {
   return `${current}; ${imported}`.slice(0, 2000);
 }
 
+function admiraltyLegacyExplanation(record) {
+  return `1920 tarihli Admiralty sözlüğünde “${record.headword}” terimi için “${record.legacyPeriod}” karşılığı verilmiştir. Düzeltilmiş Türkçe yazılışı: “${record.legacyModern}”.`;
+}
+
+function admiraltyMergeCorrectedValue(baseValue, correctedValue) {
+  const kept = clean(baseValue, 2000)
+    .split(';')
+    .map(value => value.trim())
+    .filter(Boolean);
+  const seen = new Set(kept.map(importIdentity));
+  for (const value of clean(correctedValue, 2000).split(';').map(item => item.trim()).filter(Boolean)) {
+    const identity = importIdentity(value);
+    const contained = kept.some(existing => {
+      const existingIdentity = importIdentity(existing);
+      return existingIdentity === identity || existingIdentity.includes(identity) || identity.includes(existingIdentity);
+    });
+    if (!identity || contained || seen.has(identity)) continue;
+    kept.push(value);
+    seen.add(identity);
+  }
+  return kept.join('; ').slice(0, 2000);
+}
+
+function admiraltyRepairField(currentValue, legacyValue, correctedValue) {
+  const current = clean(currentValue, 2000);
+  const legacy = clean(legacyValue, 2000);
+  const corrected = clean(correctedValue, 2000);
+  if (current === corrected) return { value: current, state: 'already-correct' };
+  if (!current && corrected) return { value: corrected, state: 'filled-empty' };
+  if (current === legacy) return { value: corrected, state: 'replaced-exact' };
+
+  const suffix = `; ${legacy}`;
+  if (legacy && current.endsWith(suffix)) {
+    const base = current.slice(0, -suffix.length).trim();
+    return {
+      value: admiraltyMergeCorrectedValue(base, corrected),
+      state: 'replaced-imported-suffix'
+    };
+  }
+
+  return { value: current, state: 'protected-current-value' };
+}
+
+function admiraltyRepairPlan(plan) {
+  return plan.existing.map(item => {
+    const { record, term, sources } = item;
+    const period = admiraltyRepairField(term.ottoman_period_term, record.legacyPeriod, record.period);
+    const modern = admiraltyRepairField(term.modern_equivalent_tr, record.legacyModern, record.modern);
+    const legacyExplanation = admiraltyLegacyExplanation(record);
+    const explanationWasGenerated = clean(term.explanation_tr, 10000) === legacyExplanation;
+    const explanation = explanationWasGenerated ? '' : clean(term.explanation_tr, 10000);
+    const sourceExists = sources.some(source => source.citation === record.citation ||
+      (sameBibliographySource(source.citation, record.citation) && String(source.page_reference || '') === String(record.page)));
+    const changed = period.value !== String(term.ottoman_period_term || '') ||
+      modern.value !== String(term.modern_equivalent_tr || '') ||
+      explanation !== String(term.explanation_tr || '');
+    return {
+      record,
+      term,
+      period,
+      modern,
+      explanation,
+      explanationWasGenerated,
+      sourceExists,
+      sources,
+      changed
+    };
+  });
+}
+
 function admiraltyImportPlan(termRows, variantRows, sourceRows) {
   const terms = termRows || [];
   const bySlug = new Map(terms.map(term => [term.slug, term]));
@@ -651,7 +721,7 @@ async function admiralty1920Import(context) {
     return json({ ok: false, error: 'invalid_json', requestId: id }, { status: 400 });
   }
   const action = String(body?.action || 'audit');
-  if (!['audit', 'apply'].includes(action)) return json({ ok: false, error: 'invalid_action', requestId: id }, { status: 400 });
+  if (!['audit', 'apply', 'repair-audit', 'repair-apply'].includes(action)) return json({ ok: false, error: 'invalid_action', requestId: id }, { status: 400 });
 
   try {
     const [termsResult, variantsResult, sourcesResult, countsBefore] = await Promise.all([
@@ -665,6 +735,120 @@ async function admiralty1920Import(context) {
       termCounts(context.env.DB)
     ]);
     const plan = admiraltyImportPlan(termsResult.results || [], variantsResult.results || [], sourcesResult.results || []);
+    if (action === 'repair-audit' || action === 'repair-apply') {
+      const repairItems = admiraltyRepairPlan(plan);
+      const changedItems = repairItems.filter(item => item.changed);
+      const repairSummary = {
+        acceptedSourceTerms: ADMIRALTY_1920_TERMS.length,
+        matchedTerms: plan.existing.length,
+        missingTerms: plan.missing.length,
+        ambiguousSkipped: plan.ambiguous.length,
+        termsToChange: changedItems.length,
+        periodFieldsToChange: changedItems.filter(item => item.period.value !== String(item.term.ottoman_period_term || '')).length,
+        modernFieldsToChange: changedItems.filter(item => item.modern.value !== String(item.term.modern_equivalent_tr || '')).length,
+        generatedExplanationsToRemove: changedItems.filter(item => item.explanationWasGenerated).length,
+        sourcesToAdd: repairItems.filter(item => !item.sourceExists).length,
+        protectedPeriodFields: repairItems.filter(item => item.period.state === 'protected-current-value').length,
+        protectedModernFields: repairItems.filter(item => item.modern.state === 'protected-current-value').length
+      };
+      const details = repairItems.map(item => ({
+        headword: item.record.headword,
+        slug: item.term.slug,
+        page: item.record.page,
+        changed: item.changed,
+        period: {
+          before: item.term.ottoman_period_term || '',
+          after: item.period.value,
+          state: item.period.state
+        },
+        modern: {
+          before: item.term.modern_equivalent_tr || '',
+          after: item.modern.value,
+          state: item.modern.state
+        },
+        explanation: item.explanationWasGenerated ? 'remove-generated' : 'preserve',
+        source: item.sourceExists ? 'preserve' : 'add'
+      }));
+
+      if (action === 'repair-audit') {
+        return json({
+          ok: true,
+          action,
+          writePerformed: false,
+          summary: repairSummary,
+          changes: details.filter(item => item.changed),
+          protected: details.filter(item => item.period.state === 'protected-current-value' || item.modern.state === 'protected-current-value'),
+          requestId: id
+        });
+      }
+
+      const statements = changedItems.map(item => context.env.DB.prepare(`
+        UPDATE terms SET ottoman_period_term=?1, modern_equivalent_tr=?2, explanation_tr=?3,
+          status='published', published_at=COALESCE(published_at,strftime('%Y-%m-%dT%H:%M:%fZ','now')),
+          updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now'), version=COALESCE(version,1)+1
+        WHERE id=?4
+          AND COALESCE(ottoman_period_term,'')=?5
+          AND COALESCE(modern_equivalent_tr,'')=?6
+          AND COALESCE(explanation_tr,'')=?7
+      `).bind(
+        item.period.value || null,
+        item.modern.value || null,
+        item.explanation || null,
+        item.term.id,
+        String(item.term.ottoman_period_term || ''),
+        String(item.term.modern_equivalent_tr || ''),
+        String(item.term.explanation_tr || '')
+      ));
+      for (const item of repairItems.filter(repairItem => !repairItem.sourceExists)) {
+        const sortOrder = item.sources.reduce((max, source) => Math.max(max, Number(source.sort_order) || 0), -1) + 1;
+        statements.push(context.env.DB.prepare(`
+          INSERT INTO term_sources (term_id, citation, url, source_type, page_reference, sort_order)
+          SELECT ?1, ?2, ?3, 'admiralty-1920', ?4, ?5
+          WHERE NOT EXISTS (SELECT 1 FROM term_sources WHERE term_id=?1 AND citation=?2)
+        `).bind(item.term.id, item.record.citation, 'https://archive.org/details/vocabulariesengl00grearich', String(item.record.page), sortOrder));
+      }
+      if (statements.length) await runBatches(context.env.DB, statements);
+
+      const verifyRows = await context.env.DB.prepare(`
+        SELECT id, slug, ottoman_period_term, modern_equivalent_tr, explanation_tr
+        FROM terms ORDER BY id
+      `).all();
+      const verifiedById = new Map((verifyRows.results || []).map(term => [Number(term.id), term]));
+      const conflicts = [];
+      let verifiedChanges = 0;
+      for (const item of changedItems) {
+        const saved = verifiedById.get(Number(item.term.id));
+        if (saved && String(saved.ottoman_period_term || '') === item.period.value &&
+            String(saved.modern_equivalent_tr || '') === item.modern.value &&
+            String(saved.explanation_tr || '') === item.explanation) {
+          verifiedChanges += 1;
+        } else {
+          conflicts.push({ headword: item.record.headword, slug: item.term.slug, reason: 'concurrent-or-manual-edit-protected' });
+        }
+      }
+      const verifiedSourcesResult = await context.env.DB.prepare(`
+        SELECT term_id, citation FROM term_sources
+        WHERE citation LIKE ?1
+      `).bind('Great Britain, Admiralty, Naval Staff, Naval Intelligence Division, Geographical Section, Vocabularies:%').all();
+      const verifiedSourceKeys = new Set((verifiedSourcesResult.results || []).map(source => `${source.term_id}\n${source.citation}`));
+      const verifiedSources = repairItems.filter(item => verifiedSourceKeys.has(`${item.term.id}\n${item.record.citation}`)).length;
+      await audit(context.env.DB, 'admiralty_1920_presentation_repaired', 'dataset', 'admiralty-1920', id, {
+        ...repairSummary,
+        verifiedChanges,
+        verifiedSources,
+        conflicts: conflicts.length
+      });
+      return json({
+        ok: true,
+        action,
+        writePerformed: verifiedChanges > 0 || repairSummary.sourcesToAdd > 0,
+        summary: { ...repairSummary, verifiedChanges, verifiedSources, conflicts: conflicts.length },
+        changed: details.filter(item => item.changed),
+        conflicts,
+        requestId: id
+      });
+    }
+
     const summary = {
       acceptedSourceTerms: ADMIRALTY_1920_TERMS.length,
       excludedAsUnreliable: ADMIRALTY_1920_EXCLUDED.length,
@@ -734,13 +918,12 @@ async function admiralty1920Import(context) {
 
     for (const item of plan.missing) {
       const { record, slug } = item;
-      const explanation = `1920 tarihli Admiralty sözlüğünde “${record.headword}” terimi için “${record.period}” karşılığı verilmiştir. Düzeltilmiş Türkçe yazılışı: “${record.modern}”.`;
       statements.push(context.env.DB.prepare(`
         INSERT INTO terms (slug, headword_en, ottoman_period_term, modern_equivalent_tr, category,
           explanation_tr, explanation_en, status, published_at, version)
-        SELECT ?1, ?2, ?3, ?4, ?5, ?6, NULL, 'published', strftime('%Y-%m-%dT%H:%M:%fZ','now'), 1
+        SELECT ?1, ?2, ?3, ?4, ?5, NULL, NULL, 'published', strftime('%Y-%m-%dT%H:%M:%fZ','now'), 1
         WHERE NOT EXISTS (SELECT 1 FROM terms WHERE slug=?1)
-      `).bind(slug, record.headword, record.period, record.modern, record.category, explanation));
+      `).bind(slug, record.headword, record.period, record.modern, record.category));
     }
     if (statements.length) await runBatches(context.env.DB, statements);
 
