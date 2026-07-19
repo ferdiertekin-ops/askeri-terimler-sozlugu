@@ -581,21 +581,25 @@ function admiraltyMergeCorrectedValue(baseValue, correctedValue) {
   return kept.join('; ').slice(0, 2000);
 }
 
-function admiraltyRepairField(currentValue, legacyValue, correctedValue) {
+function admiraltyRepairField(currentValue, legacyValues, correctedValue) {
   const current = clean(currentValue, 2000);
-  const legacy = clean(legacyValue, 2000);
+  const legacy = [...new Set((Array.isArray(legacyValues) ? legacyValues : [legacyValues])
+    .map(value => clean(value, 2000))
+    .filter(Boolean))];
   const corrected = clean(correctedValue, 2000);
   if (current === corrected) return { value: current, state: 'already-correct' };
   if (!current && corrected) return { value: corrected, state: 'filled-empty' };
-  if (current === legacy) return { value: corrected, state: 'replaced-exact' };
+  if (legacy.includes(current)) return { value: corrected, state: 'replaced-exact' };
 
-  const suffix = `; ${legacy}`;
-  if (legacy && current.endsWith(suffix)) {
-    const base = current.slice(0, -suffix.length).trim();
-    return {
-      value: admiraltyMergeCorrectedValue(base, corrected),
-      state: 'replaced-imported-suffix'
-    };
+  for (const legacyValue of legacy.sort((left, right) => right.length - left.length)) {
+    const suffix = `; ${legacyValue}`;
+    if (current.endsWith(suffix)) {
+      const base = current.slice(0, -suffix.length).trim();
+      return {
+        value: admiraltyMergeCorrectedValue(base, corrected),
+        state: 'replaced-imported-suffix'
+      };
+    }
   }
 
   return { value: current, state: 'protected-current-value' };
@@ -604,7 +608,7 @@ function admiraltyRepairField(currentValue, legacyValue, correctedValue) {
 function admiraltyRepairPlan(plan) {
   return plan.existing.map(item => {
     const { record, term, sources } = item;
-    const period = admiraltyRepairField(term.ottoman_period_term, record.legacyPeriod, record.period);
+    const period = admiraltyRepairField(term.ottoman_period_term, [record.legacyPeriod, record.legacyModern], record.period);
     const modern = admiraltyRepairField(term.modern_equivalent_tr, record.legacyModern, record.modern);
     const legacyExplanation = admiraltyLegacyExplanation(record);
     const explanationWasGenerated = clean(term.explanation_tr, 10000) === legacyExplanation;
