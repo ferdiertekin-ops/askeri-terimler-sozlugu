@@ -258,20 +258,21 @@
 .letter-jump:hover,.letter-jump:focus-visible{border-color:#2f4e71}
 .preview-search-tools.is-stuck .letter-jump{height:34px}
 .preview-beta{text-transform:none;letter-spacing:.08em}
-.shared-explanation{
-  margin:0;
-  padding:8px 15px;
-  border-bottom:1px solid var(--line-soft);
-  background:rgba(231,237,244,.42);
-  color:#53657a;
-  font:italic 13px/1.5 Cambria,Georgia,serif;
-}
+.list-head,.row{column-gap:0}
+.explanation{text-align:justify;text-align-last:left;text-justify:inter-word;word-spacing:normal;hyphens:auto}
+.preview-search-tools{grid-template-columns:minmax(120px,1fr) minmax(0,620px) minmax(120px,1fr);justify-content:stretch;gap:14px;margin-top:8px}
+.preview-letter-action{grid-column:1;grid-row:1;display:flex;align-items:center;justify-self:end}
+.preview-search-shell{grid-column:2;grid-row:1}
+.preview-search-actions{grid-column:3;grid-row:1;justify-self:start}
+.preview-search-tools.is-stuck{grid-template-columns:minmax(110px,1fr) minmax(0,560px) minmax(110px,1fr);gap:12px}
 @media(max-width:760px){
-  .preview-search-tools{grid-template-columns:1fr auto}
+  .preview-search-tools{grid-template-columns:1fr 1fr;gap:8px 12px}
   .preview-search-shell{grid-column:1/-1;grid-row:1}
-  .preview-search-actions{grid-column:2;grid-row:2}
-  .preview-search-tools.is-stuck{grid-template-columns:1fr}
+  .preview-letter-action{grid-column:1;grid-row:2;justify-self:start}
+  .preview-search-actions{grid-column:2;grid-row:2;justify-self:end}
+  .preview-search-tools.is-stuck{grid-template-columns:1fr;gap:0}
   .preview-search-tools.is-stuck .preview-search-shell{grid-column:1;grid-row:1}
+  .preview-search-tools.is-stuck .preview-letter-action{display:none}
 }
 /* ---------- Editörlerin eserleri ---------- */
 .editor-works{
@@ -372,6 +373,7 @@
   </h1>
   <p class="preview-beta">Beta version</p>
   <div class="preview-search-tools">
+    <div class="preview-letter-action"><select id="letterJump" class="letter-jump" aria-label="Jump to letter" title="Jump to letter"><option value="">Letter</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option><option value="I">I</option><option value="J">J</option><option value="K">K</option><option value="L">L</option><option value="M">M</option><option value="N">N</option><option value="O">O</option><option value="P">P</option><option value="Q">Q</option><option value="R">R</option><option value="S">S</option><option value="T">T</option><option value="U">U</option><option value="V">V</option><option value="W">W</option><option value="X">X</option><option value="Y">Y</option><option value="Z">Z</option></select></div>
     <form id="searchForm" class="preview-search-shell">
       <div class="preview-search-row">
         <button type="submit" class="preview-search-submit" aria-label="Search"><svg class="preview-search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"></circle><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>
@@ -381,7 +383,7 @@
       </div>
     </form>
     <div class="preview-search-actions">
-      <nav class="pager pager-top" aria-label="Top pagination"><select id="letterJump" class="letter-jump" aria-label="Jump to letter" title="Jump to letter"><option value="">Letter</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option><option value="I">I</option><option value="J">J</option><option value="K">K</option><option value="L">L</option><option value="M">M</option><option value="N">N</option><option value="O">O</option><option value="P">P</option><option value="Q">Q</option><option value="R">R</option><option value="S">S</option><option value="T">T</option><option value="U">U</option><option value="V">V</option><option value="W">W</option><option value="X">X</option><option value="Y">Y</option><option value="Z">Z</option></select><button id="prevTop" class="btn pager-arrow" type="button" aria-label="Previous page" title="Previous page">←</button><strong id="pageTop">1 / 1</strong><button id="nextTop" class="btn pager-arrow" type="button" aria-label="Next page" title="Next page">→</button></nav>
+      <nav class="pager pager-top" aria-label="Top pagination"><button id="prevTop" class="btn pager-arrow" type="button" aria-label="Previous page" title="Previous page">←</button><strong id="pageTop">1 / 1</strong><button id="nextTop" class="btn pager-arrow" type="button" aria-label="Next page" title="Next page">→</button></nav>
     </div>
   </div>
 </section>
@@ -453,7 +455,7 @@ function categoryClass(category){const c=String(category||'').toLocaleLowerCase(
 const commonArmyExplanation=/^Bağlama (?:ve|ya da) tarihe göre ordu \(bölgesel\) ya da kolordu\.\s*(?:Örneğin\s*)?/i;
 function compactExplanation(value){const text=String(value||'').trim();const compact=text.replace(commonArmyExplanation,'').trim();return compact||text}
 function itemHtml(x){const explanation=x.explanation_en||x.explanation_tr;return `<article class="row ${categoryClass(x.category)}" tabindex="0" data-slug="${esc(x.slug)}"><div class="cell" aria-label="Headword"><div class="cell-mainline"><h2>${esc(x.headword_en)||'—'}</h2>${speakButton(x.headword_en,'en-GB','Read headword aloud')}</div></div><div class="cell cell-ottoman" aria-label="Ottoman / Period Equivalent"><div class="cell-mainline"><div class="value">${esc(x.ottoman_period_term)||'—'}</div>${speakButton(x.ottoman_period_term,'tr-TR','Read Ottoman or period equivalent aloud')}</div></div><div class="cell cell-modern" aria-label="Modern Turkish"><div class="cell-mainline"><div class="value">${esc(x.modern_equivalent_tr)||'—'}</div>${speakButton(x.modern_equivalent_tr,'tr-TR','Read modern Turkish aloud')}</div></div><div class="cell cell-explanation" aria-label="Explanation"><div class="value explanation">${esc(compactExplanation(explanation))||'—'}</div></div><button type="button" class="open-entry" aria-label="Open entry">•••</button></article>`}
-function resultsHtml(items){if(!items.length)return'<div class="empty">No results found.</div>';const shared=items.some(item=>commonArmyExplanation.test(String(item.explanation_en||item.explanation_tr||'').trim()))?'<aside class="shared-explanation">Shared note for Corps/Army Corps entries: The equivalent varies by context and date between a territorial army and an army corps.</aside>':'';return shared+items.map(itemHtml).join('')}
+function resultsHtml(items){if(!items.length)return'<div class="empty">No results found.</div>';return items.map(itemHtml).join('')}
 async function load(){const token=++requestToken;if(loading)setStatus('Updating entries…');else setStatus('Loading entries…');loading=true;prev.disabled=prevTop.disabled=next.disabled=nextTop.disabled=true;try{const u=new URL('/api/terms',location.origin);u.searchParams.set('limit',LIMIT);u.searchParams.set('offset',offset);if(currentQuery)u.searchParams.set('q',currentQuery);if(currentLetter)u.searchParams.set('letter',currentLetter);const r=await fetch(u,{headers:{Accept:'application/json'}});const d=await r.json();if(token!==requestToken)return;if(!r.ok||!d.ok)throw new Error(d.error||`HTTP ${r.status}`);total=d.total;results.innerHTML=resultsHtml(d.items);const current=Math.floor(offset/LIMIT)+1,pages=Math.max(1,Math.ceil(total/LIMIT));page.textContent=pageTop.textContent=`${current} / ${pages}`;resultTitle.textContent=currentQuery?`Results for “${currentQuery}”`:currentLetter?`Letter ${currentLetter}`:'Results';meta.textContent=currentQuery?`${total} results`:currentLetter?`${total} entries`:`${total} entries`;prev.disabled=prevTop.disabled=!d.hasPrevious;next.disabled=nextTop.disabled=!d.hasNext;setStatus(d.items.length?`Showing ${offset+1}–${Math.min(offset+d.items.length,total)}.`:'');}catch(e){if(token!==requestToken)return;results.innerHTML='';resultTitle.textContent='Results';meta.textContent='—';setStatus(`Loading failed: ${e.message}`,true)}finally{if(token===requestToken)loading=false}}
 function sourceHtml(s){const citation=esc(s.citation||'');const url=String(s.url||'').trim();return url?`<li><a class="source-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${citation||esc(url)}</a></li>`:`<li>${citation||'—'}</li>`}
 async function detail(slug){setStatus('Loading entry details…');try{await ensureEditorSession();const r=await fetch(`/api/terms/${encodeURIComponent(slug)}`,{headers:{Accept:'application/json'}});const d=await r.json();if(!r.ok||!d.ok)throw new Error(d.error||`HTTP ${r.status}`);const t=d.term;el('detailTitle').textContent=t.headword_en;el('detail').innerHTML=`<div class="detail-grid"><div class="detail-card"><span class="label">Letter</span><div class="detail-value">${esc(t.letter)||'—'}</div></div><div class="detail-card">${labelHtml('Headword',t.headword_en,'en-GB')}<div class="detail-value">${esc(t.headword_en)||'—'}</div></div><div class="detail-card"><span class="label">Variant / Abbreviation</span><div class="detail-value">${t.variants?.length?t.variants.map(v=>esc(v.variant)).join(', '):'—'}</div></div><div class="detail-card ottoman">${labelHtml('Ottoman / Period Equivalent',t.ottoman_period_term,'tr-TR')}<div class="detail-value">${esc(t.ottoman_period_term)||'—'}</div></div><div class="detail-card modern">${labelHtml('Modern Turkish',t.modern_equivalent_tr,'tr-TR')}<div class="detail-value">${esc(t.modern_equivalent_tr)||'—'}</div></div><div class="detail-card"><span class="label">Category</span><div class="detail-value">${esc(t.category)||'—'}</div></div><div class="detail-card full description"><span class="label">Explanation</span><div class="detail-value">${esc(t.explanation_en||t.explanation_tr)||'—'}</div></div><div class="detail-card full"><span class="label">Citation / Source</span><div class="detail-value">${t.sources?.length?`<ol class="sources">${t.sources.map(sourceHtml).join('')}</ol>`:'—'}</div></div></div>${editorActionHtml(t.slug)}`;drawer.classList.add('open');drawer.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';setStatus('');}catch(e){setStatus(`Entry could not be loaded: ${e.message}`,true)}}
