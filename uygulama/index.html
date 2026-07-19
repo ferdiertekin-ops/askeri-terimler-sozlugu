@@ -12,7 +12,7 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="icon" href="/favicon.ico" sizes="any">
-  <title>Uygulamayı Kur | Askerî Terimler Sözlüğü</title>
+  <title>Uygulamayı İndir | Askerî Terimler Sözlüğü</title>
   <style>
     :root{
       color-scheme:light;
@@ -30,10 +30,12 @@
       --shadow:0 28px 80px -52px rgba(30,39,50,.78);
     }
     *{box-sizing:border-box}
-    html{min-height:100%;background:var(--bg2)}
+    html{min-height:100%;overflow-x:hidden;background:var(--bg2);-webkit-text-size-adjust:100%;text-size-adjust:100%}
     body{
       margin:0;
       min-height:100svh;
+      width:100%;
+      overflow-x:hidden;
       color:var(--ink);
       font-family:Cambria,Georgia,serif;
       background:
@@ -44,13 +46,16 @@
     button,a{font:inherit}
     button{cursor:pointer}
     :focus-visible{outline:2px solid var(--navy2);outline-offset:3px}
-    .page{width:min(760px,100%);margin:0 auto}
+    .page{width:100%;max-width:760px;min-width:0;margin:0 auto}
     .topline{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px}
     .back{color:var(--navy);text-decoration:none;font-size:14px;font-weight:600;text-underline-offset:4px}
     .langs{display:inline-flex;padding:3px;border:1px solid var(--line);border-radius:10px;background:rgba(255,254,250,.76)}
     .langs button{min-width:42px;min-height:32px;border:0;border-radius:7px;background:transparent;color:var(--soft);font-size:12px;font-weight:700;letter-spacing:.08em}
     .langs button[aria-pressed="true"]{background:var(--navy);color:#fff}
     .card{
+      width:100%;
+      max-width:100%;
+      min-width:0;
       overflow:hidden;
       border:1px solid rgba(143,112,47,.30);
       border-radius:24px;
@@ -83,13 +88,14 @@
     .primary[hidden]{display:none}
     .secondary{border:1px solid var(--line);background:var(--card);color:var(--navy)}
     .secondary:hover{border-color:var(--navy2)}
-    .details{padding:28px 34px 34px}
-    .panel{padding:22px;border:1px solid var(--line);border-radius:16px;background:#FBF9F3}
+    .details{min-width:0;padding:28px 34px 34px}
+    .panel{min-width:0;max-width:100%;padding:22px;border:1px solid var(--line);border-radius:16px;background:#FBF9F3}
     .panel[hidden]{display:none}
     .panel h2{margin:0 0 12px;color:var(--navy);font-family:"Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;font-size:22px;font-weight:600}
     .panel p{margin:0;color:var(--soft);font-size:15.5px;line-height:1.65}
     .steps{margin:16px 0 0;padding:0;list-style:none;counter-reset:step;display:grid;gap:11px}
-    .steps li{counter-increment:step;display:grid;grid-template-columns:31px 1fr;align-items:start;gap:11px;color:var(--ink);font-size:15px;line-height:1.52}
+    .steps li{counter-increment:step;display:grid;grid-template-columns:31px minmax(0,1fr);align-items:start;gap:11px;min-width:0;color:var(--ink);font-size:15px;line-height:1.52}
+    .step-text{display:block;min-width:0;overflow-wrap:anywhere;word-break:normal}
     .steps li::before{content:counter(step);display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;font-weight:700}
     .note{margin-top:18px;padding-top:17px;border-top:1px solid var(--line);color:var(--gold);font-size:13px;line-height:1.55}
     .benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
@@ -98,7 +104,28 @@
     .benefit span{display:block;margin-top:5px;color:var(--soft);font-size:12.5px;line-height:1.4}
     footer{padding:18px 10px 2px;text-align:center;color:var(--soft);font-size:12.5px;line-height:1.6}
     @media(max-width:620px){
-      .hero{padding:31px 21px 25px}.details{padding:22px 20px 25px}.panel{padding:19px}.benefits{grid-template-columns:1fr}.topline{padding:0 2px}
+      body{padding:max(14px,env(safe-area-inset-top)) 10px max(22px,env(safe-area-inset-bottom))}
+      .topline{padding:0 2px;gap:10px}
+      .card{border-radius:18px}
+      .hero{padding:27px 16px 23px}
+      .icon{width:96px;height:96px;margin-bottom:18px;border-radius:22px}
+      .lead{margin-top:18px;font-size:16px;line-height:1.58}
+      .status{max-width:100%;white-space:normal;text-align:left}
+      .details{padding:18px 12px 22px}
+      .panel{padding:17px 14px}
+      .panel h2{font-size:clamp(21px,7vw,25px);line-height:1.18;overflow-wrap:anywhere}
+      .panel p{font-size:15px;line-height:1.55}
+      .steps{gap:14px}
+      .steps li{grid-template-columns:32px minmax(0,1fr);gap:10px;font-size:16px;line-height:1.48}
+      .steps li::before{width:30px;height:30px}
+      .benefits{grid-template-columns:1fr}
+    }
+    @media(max-width:380px){
+      body{padding-right:8px;padding-left:8px}
+      .hero{padding-right:13px;padding-left:13px}
+      .details{padding-right:9px;padding-left:9px}
+      .panel{padding-right:12px;padding-left:12px}
+      .primary,.secondary{width:100%}
     }
     @media(prefers-reduced-motion:no-preference){
       .card{animation:enter .38s ease-out both}@keyframes enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -123,7 +150,7 @@
         <p class="lead" id="lead">Sözlüğü telefonunuza, tabletinize veya bilgisayarınıza uygulama olarak kurun. Tarayıcı çerçevesi olmadan açın ve daha önce eriştiğiniz içeriği bağlantı kesildiğinde de kullanın.</p>
         <div class="status" id="status" role="status" aria-live="polite"><span class="dot" aria-hidden="true"></span><span id="statusText">Kurulum desteği denetleniyor…</span></div>
         <div class="actions">
-          <button class="primary" type="button" id="installButton" hidden>Uygulamayı kur</button>
+          <button class="primary" type="button" id="installButton" hidden>Uygulamayı İndir</button>
           <a class="secondary" href="/?source=install-page" id="openButton">Sözlüğü aç</a>
         </div>
       </section>
@@ -131,11 +158,11 @@
       <section class="details">
         <div class="panel" id="iosPanel" hidden>
           <h2 id="iosTitle">iPhone veya iPad’e kurulum</h2>
-          <p id="iosIntro">Safari, uygulama kurulumunu Paylaş menüsü üzerinden tamamlar.</p>
+          <p id="iosIntro">iPhone ve iPad’de kurulum, tarayıcının Paylaş menüsünden tamamlanır.</p>
           <ol class="steps">
-            <li id="iosStep1">Safari’nin alt veya üst araç çubuğundaki <strong>Paylaş</strong> düğmesine dokunun.</li>
-            <li id="iosStep2"><strong>Ana Ekrana Ekle</strong> seçeneğini açın.</li>
-            <li id="iosStep3">Sağ üstteki <strong>Ekle</strong> düğmesine dokunun.</li>
+            <li><span class="step-text" id="iosStep1">Tarayıcının alt veya üst araç çubuğundaki <strong>Paylaş</strong> düğmesine dokunun.</span></li>
+            <li><span class="step-text" id="iosStep2"><strong>Ana Ekrana Ekle</strong> seçeneğini açın.</span></li>
+            <li><span class="step-text" id="iosStep3">Sağ üstteki <strong>Ekle</strong> düğmesine dokunun.</span></li>
           </ol>
         </div>
 
@@ -164,24 +191,24 @@
     (() => {
       const copy = {
         tr: {
-          htmlLang:"tr", pageTitle:"Uygulamayı Kur | Askerî Terimler Sözlüğü", back:"← Sözlüğe dön",
+          htmlLang:"tr", pageTitle:"Uygulamayı İndir | Askerî Terimler Sözlüğü", back:"← Sözlüğe dön",
           title:"Askerî Terimler Sözlüğü", lead:"Sözlüğü telefonunuza, tabletinize veya bilgisayarınıza uygulama olarak kurun. Tarayıcı çerçevesi olmadan açın ve daha önce eriştiğiniz içeriği bağlantı kesildiğinde de kullanın.",
           checking:"Kurulum desteği denetleniyor…", ready:"Kuruluma hazır", installed:"Bu cihazda kurulu", unavailable:"Tarayıcı menüsünden kurulabilir",
-          install:"Uygulamayı kur", open:"Sözlüğü aç", installing:"Kurulum penceresi açılıyor…", accepted:"Kurulum başlatıldı", dismissed:"Kurulum ertelendi",
-          iosTitle:"iPhone veya iPad’e kurulum", iosIntro:"Safari, uygulama kurulumunu Paylaş menüsü üzerinden tamamlar.",
-          ios1:"Safari’nin alt veya üst araç çubuğundaki <strong>Paylaş</strong> düğmesine dokunun.", ios2:"<strong>Ana Ekrana Ekle</strong> seçeneğini açın.", ios3:"Sağ üstteki <strong>Ekle</strong> düğmesine dokunun.",
+          install:"Uygulamayı İndir", open:"Sözlüğü aç", installing:"Kurulum penceresi açılıyor…", accepted:"Kurulum başlatıldı", dismissed:"Kurulum ertelendi",
+          iosTitle:"iPhone veya iPad’e kurulum", iosIntro:"iPhone ve iPad’de kurulum, tarayıcının Paylaş menüsünden tamamlanır.",
+          ios1:"Tarayıcının alt veya üst araç çubuğundaki <strong>Paylaş</strong> düğmesine dokunun.", ios2:"<strong>Ana Ekrana Ekle</strong> seçeneğini açın.", ios3:"Sağ üstteki <strong>Ekle</strong> düğmesine dokunun.",
           browserTitle:"Tarayıcı üzerinden kurulum", browserIntro:"Kurulum düğmesi görünmüyorsa tarayıcı menüsünü açarak “Uygulamayı yükle” veya “Ana ekrana ekle” seçeneğini kullanın.",
           installedTitle:"Uygulama kurulu", installedText:"Askerî Terimler Sözlüğü bu cihazda bağımsız uygulama olarak çalışıyor.",
           b1t:"Hızlı erişim", b1x:"Cihazınızdan tek dokunuşla açılır.", b2t:"Çevrimdışı destek", b2x:"Son alınan sözlük verilerini korur.", b3t:"Tek veri kaynağı", b3x:"Siteyle aynı güncel içeriği kullanır.",
           note:"Kurulum ücretsizdir; ayrıca üyelik açmanız gerekmez.", footer:"Askerî Terimler Sözlüğü · Ferdi Ertekin"
         },
         en: {
-          htmlLang:"en", pageTitle:"Install the App | Military Terms Dictionary", back:"← Back to the dictionary",
+          htmlLang:"en", pageTitle:"Download the App | Military Terms Dictionary", back:"← Back to the dictionary",
           title:"Military Terms Dictionary", lead:"Install the dictionary on your phone, tablet, or computer. Open it without browser chrome and retain access to previously retrieved content when your connection is interrupted.",
           checking:"Checking installation support…", ready:"Ready to install", installed:"Installed on this device", unavailable:"Installable from the browser menu",
-          install:"Install app", open:"Open dictionary", installing:"Opening the installation prompt…", accepted:"Installation started", dismissed:"Installation postponed",
-          iosTitle:"Install on iPhone or iPad", iosIntro:"Safari completes installation through the Share menu.",
-          ios1:"Tap the <strong>Share</strong> button in Safari’s toolbar.", ios2:"Select <strong>Add to Home Screen</strong>.", ios3:"Tap <strong>Add</strong> in the upper-right corner.",
+          install:"Download App", open:"Open dictionary", installing:"Opening the installation prompt…", accepted:"Installation started", dismissed:"Installation postponed",
+          iosTitle:"Install on iPhone or iPad", iosIntro:"On iPhone and iPad, installation is completed through the browser’s Share menu.",
+          ios1:"Tap the <strong>Share</strong> button in the browser toolbar.", ios2:"Select <strong>Add to Home Screen</strong>.", ios3:"Tap <strong>Add</strong> in the upper-right corner.",
           browserTitle:"Install through your browser", browserIntro:"If the install button is unavailable, open the browser menu and select “Install app” or “Add to Home screen”.",
           installedTitle:"App installed", installedText:"The Military Terms Dictionary is running as a standalone app on this device.",
           b1t:"Quick access", b1x:"Open it from the home screen with one tap.", b2t:"Offline support", b2x:"Retains the latest retrieved dictionary data.", b3t:"Single data source", b3x:"Uses the same current content as the website.",
