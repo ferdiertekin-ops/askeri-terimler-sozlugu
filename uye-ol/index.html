@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,follow">
+<title>Üye Ol · Askerî Terimler Sözlüğü</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/assets/community-account.css">
+</head>
+<body data-mode="signup" data-lang="tr">
+<div class="community-shell">
+<header class="community-topbar"><a class="community-brand" href="/"><img src="/ats-logo-2026.svg" alt="ATS"></a><a class="community-back" href="/">Sözlüğe dön</a></header>
+<main class="community-main narrow">
+<h1 class="community-title">Üye Ol</h1>
+<p class="community-lead">Favori maddelerinizi saklayın, kendi çalışma listenizi oluşturun ve editöre katkı/düzeltme önerileri gönderin.</p>
+<p class="public-good"><strong>Sözlük herkesindir.</strong> Üyelik hiçbir maddeyi okumak için zorunlu değildir; sözlüğün tamamı üyelik olmadan açık ve ücretsiz kalır.</p>
+<section class="community-card">
+<form id="signupForm">
+<div class="community-grid">
+<label class="community-field full">E-posta<input id="email" type="email" autocomplete="email" required maxlength="254"></label>
+<label class="community-field full">Parola<input id="password" type="password" autocomplete="new-password" required minlength="12" maxlength="128"><small>En az 12 karakter; en az bir harf ve bir rakam.</small></label>
+<label class="community-field">Ad / Soyad <small>İsteğe bağlı</small><input id="displayName" type="text" autocomplete="name" maxlength="120"></label>
+<label class="community-field">Kurum / Üniversite <small>İsteğe bağlı</small><input id="institution" type="text" autocomplete="organization" maxlength="200"></label>
+<label class="community-field full">İlgi / çalışma alanı <small>İsteğe bağlı</small><select id="interestArea"><option value="">Belirtmek istemiyorum</option><option value="history">Tarih</option><option value="military-history">Askerî Tarih</option><option value="ottoman-history">Osmanlı Tarihi</option><option value="language-terminology">Dil / Terminoloji</option><option value="undergraduate-graduate">Lisans / Lisansüstü Öğrenci</option><option value="academic">Akademisyen</option><option value="independent-researcher">Bağımsız Araştırmacı</option><option value="other">Diğer</option></select></label>
+</div>
+<div class="consent-box">
+<h2>İsteğe bağlı bildirim tercihleri</h2>
+<p>Aşağıdaki iki seçenek üyeliğin şartı değildir. Seçiminizi daha sonra hesabınızdan değiştirebilirsiniz.</p>
+<label class="community-check"><input id="notifyNewTerms" type="checkbox"><span>Yeni yayımlanan sözlük maddeleri hakkında e-posta almak istiyorum.</span></label>
+<label class="community-check"><input id="notifyUpdates" type="checkbox"><span>Güncellenen sözlük maddeleri hakkında e-posta almak istiyorum.</span></label>
+</div>
+<div class="notice-box">Kayıt sırasında e-posta adresiniz ve seçtiğiniz isteğe bağlı profil bilgileri üyelik hizmetinin yürütülmesi için işlenir. Ayrıntılar için <a href="/uyelik-aydinlatma/" target="_blank" rel="noopener">Üyelik Aydınlatma Metni</a> ve <a href="/gizlilik-politikasi/" target="_blank" rel="noopener">Gizlilik Politikası</a>na bakabilirsiniz. Aydınlatma, bildirim rızalarından ayrıdır.</div>
+<div id="turnstileSignup" class="community-turnstile"></div>
+<div class="community-actions"><button class="community-button primary" type="submit">Üyeliği oluştur</button><a class="community-button" href="/oturum-ac/">Zaten üyeyim</a></div>
+<p id="communityStatus" class="community-status" role="status"></p>
+</form>
+</section>
+</main>
+<footer class="community-footer">© 2026 Askerî Terimler Sözlüğü · Üyelik sözlüğe erişim şartı değildir.</footer>
+</div>
+<script src="/assets/community-account.js" defer></script>
+</body>
+</html>
