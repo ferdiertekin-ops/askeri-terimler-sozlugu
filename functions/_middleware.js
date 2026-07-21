@@ -4,6 +4,48 @@ import { renderEditablePage, renderEditablePageJson, renderRobots, renderSitemap
 const CANONICAL_HOST = 'askeriterimlersozlugu.com';
 const SEARCH_NOINDEX = { 'X-Robots-Tag': 'noindex, follow' };
 
+const DICTIONARY_VISUAL_POLISH = `
+<style id="ats-visual-polish">
+:root{
+  --claude-canvas:#f8f8f6;
+  --claude-surface:#ffffff;
+  --ats-navy:#2f4e71;
+  --ats-navy-deep:#20395a;
+}
+html,body{
+  background:#f8f8f6!important;
+}
+body{
+  background-image:none!important;
+  background-color:#f8f8f6!important;
+}
+.preview-search-tools.is-stuck{
+  background:rgba(248,248,246,.96)!important;
+}
+.preview-search-row{
+  background:#ffffff!important;
+  border-color:#deded8!important;
+  box-shadow:0 1px 2px rgba(30,39,50,.05),0 14px 32px -26px rgba(32,57,90,.34),inset 0 1px 0 rgba(255,255,255,.96)!important;
+}
+.preview-search-row:hover{
+  border-color:#b8c2cd!important;
+}
+.preview-search-row:focus-within{
+  border-color:#7f95ad!important;
+  box-shadow:0 0 0 3px rgba(47,78,113,.10),0 16px 34px -28px rgba(32,57,90,.34)!important;
+}
+.list-head{
+  background:linear-gradient(180deg,#2f4e71 0%,#294766 100%)!important;
+  border-top-color:#20395a!important;
+  border-bottom-color:#20395a!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 5px 14px -12px rgba(32,57,90,.58);
+}
+.list-head span{
+  color:#f8f8f6!important;
+  text-shadow:0 1px 0 rgba(0,0,0,.14);
+}
+</style>`;
+
 const EDITABLE_ROUTES = new Map([
   ['/yayin-notu/', ['publication-note', 'tr']],
   ['/en/publication-note/', ['publication-note', 'en']],
@@ -47,6 +89,18 @@ async function assetRequest(context, pathname, extraHeaders = {}) {
   return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
 }
 
+function stripInstallLinks(html) {
+  return html
+    .replace(/\s*<a class="install-app-link" href="[^"]*">[^<]*<\/a>\s*/gi, ' ')
+    .replace(/\s*·\s*·\s*/g, ' · ');
+}
+
+function applyDictionaryVisualPolish(html) {
+  const cleaned = stripInstallLinks(html);
+  if (cleaned.includes('id="ats-visual-polish"')) return cleaned;
+  return cleaned.replace('</head>', `${DICTIONARY_VISUAL_POLISH}\n</head>`);
+}
+
 async function dictionaryAssetRequest(context, pathname, extraHeaders = {}) {
   const response = await assetRequest(context, pathname, extraHeaders);
   if (context.request.method === 'HEAD' || !response.ok) return response;
@@ -54,7 +108,7 @@ async function dictionaryAssetRequest(context, pathname, extraHeaders = {}) {
   const contentType = response.headers.get('Content-Type') || '';
   if (!contentType.includes('text/html')) return response;
 
-  const html = await response.text();
+  const html = applyDictionaryVisualPolish(await response.text());
   const headers = new Headers(response.headers);
   headers.delete('Content-Length');
   headers.delete('Content-Encoding');
