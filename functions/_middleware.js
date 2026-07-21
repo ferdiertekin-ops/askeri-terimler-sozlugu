@@ -46,6 +46,8 @@ body{
 }
 </style>`;
 
+const TURKISH_TTS_CLIENT = '<script src="/assets/ats-tr-tts.js" defer></script>';
+
 const EDITABLE_ROUTES = new Map([
   ['/yayin-notu/', ['publication-note', 'tr']],
   ['/en/publication-note/', ['publication-note', 'en']],
@@ -107,9 +109,15 @@ function applyEditorShortcut(html, authenticated, lang) {
   );
 }
 
+function injectTurkishTtsClient(html) {
+  if (html.includes('/assets/ats-tr-tts.js')) return html;
+  return html.replace('</body>', `${TURKISH_TTS_CLIENT}\n</body>`);
+}
+
 function applyDictionaryVisualPolish(html, authenticated = false, lang = 'tr') {
   let cleaned = stripInstallLinks(html);
   cleaned = applyEditorShortcut(cleaned, authenticated, lang);
+  cleaned = injectTurkishTtsClient(cleaned);
   if (cleaned.includes('id="ats-visual-polish"')) return cleaned;
   return cleaned.replace('</head>', `${DICTIONARY_VISUAL_POLISH}\n</head>`);
 }
