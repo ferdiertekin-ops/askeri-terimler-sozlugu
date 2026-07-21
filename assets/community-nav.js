@@ -6,14 +6,24 @@
   const signInHref = tr ? '/oturum-ac/' : '/en/sign-in/';
   const signUpHref = tr ? '/uye-ol/' : '/en/sign-up/';
 
-  function escapeHtml(value) {
-    return String(value || '').replace(/[&<>"']/g, c => ({
-      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-    }[c]));
-  }
-
   function defaultNav() {
     return `<a class="community-login" href="${signInHref}">${tr ? 'Oturum Aç' : 'Sign in'}</a><a class="community-signup" href="${signUpHref}">${tr ? 'Üye Ol' : 'Join'}</a>`;
+  }
+
+  function ensureNav() {
+    if (document.querySelector('[data-community-nav]')) return;
+    const langs = document.querySelector('.langs');
+    if (!langs || !langs.parentElement) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'community-dynamic-actions';
+    langs.parentElement.insertBefore(wrapper, langs);
+    wrapper.appendChild(langs);
+    const nav = document.createElement('nav');
+    nav.className = 'community-auth-nav';
+    nav.dataset.communityNav = '';
+    nav.setAttribute('aria-label', tr ? 'Üyelik' : 'Membership');
+    nav.innerHTML = defaultNav();
+    wrapper.appendChild(nav);
   }
 
   function renderNav(session) {
@@ -30,16 +40,12 @@
   async function readSession() {
     try {
       const response = await fetch('/api/account/session', {
-        headers: { Accept: 'application/json' },
-        credentials: 'same-origin',
-        cache: 'no-store'
+        headers: { Accept: 'application/json' }, credentials: 'same-origin', cache: 'no-store'
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || !data.ok) return { authenticated: false };
       return data;
-    } catch {
-      return { authenticated: false };
-    }
+    } catch { return { authenticated: false }; }
   }
 
   function installStyle() {
@@ -47,6 +53,7 @@
     const style = document.createElement('style');
     style.id = 'ats-community-nav-style';
     style.textContent = `
+      .community-dynamic-actions{display:flex;align-items:center;justify-content:flex-end;gap:9px;flex-wrap:wrap}
       .community-auth-nav{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
       .community-auth-nav a{min-height:36px;display:inline-flex;align-items:center;justify-content:center;padding:0 11px;border-radius:8px;text-decoration:none;font:600 12px Cambria,Georgia,serif;letter-spacing:.01em}
       .community-login{border:1px solid #cfc7b8;background:#fffefa;color:#2f4e71}
@@ -57,7 +64,7 @@
       .community-term-favorite{display:inline-flex;align-items:center;gap:6px;margin:0;padding:7px 10px;border:1px solid #cfc7b8;border-radius:8px;background:#fffefa;color:#2f4e71;font:600 12px Cambria,Georgia,serif;cursor:pointer}
       .community-term-favorite[aria-pressed="true"]{background:#2f4e71;border-color:#2f4e71;color:#fff}
       .community-term-favorite:hover,.community-term-favorite:focus-visible{border-color:#2f4e71}
-      @media(max-width:700px){.community-auth-nav{gap:5px}.community-auth-nav a{min-height:32px;padding:0 8px;font-size:11px}}
+      @media(max-width:700px){.community-dynamic-actions{gap:6px}.community-auth-nav{gap:5px}.community-auth-nav a{min-height:32px;padding:0 8px;font-size:11px}}
     `;
     document.head.appendChild(style);
   }
@@ -76,8 +83,7 @@
       state = Boolean(data?.favorite);
     } catch {}
     const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'community-term-favorite';
+    button.type = 'button'; button.className = 'community-term-favorite';
     const sync = () => {
       button.setAttribute('aria-pressed', state ? 'true' : 'false');
       button.textContent = state ? (tr ? '★ Favorilerde' : '★ Favourite') : (tr ? '☆ Favorilere ekle' : '☆ Add to favourites');
@@ -100,12 +106,10 @@
   }
 
   installStyle();
-  document.querySelectorAll('[data-community-nav]').forEach(nav => {
-    if (!nav.children.length) nav.innerHTML = defaultNav();
-  });
+  ensureNav();
+  document.querySelectorAll('[data-community-nav]').forEach(nav => { if (!nav.children.length) nav.innerHTML = defaultNav(); });
   const sessionPromise = readSession().then(session => {
-    renderNav(session);
-    attachTermFavorite(session);
+    renderNav(session); attachTermFavorite(session);
     document.dispatchEvent(new CustomEvent('ats:community-session', { detail: session }));
     return session;
   });
