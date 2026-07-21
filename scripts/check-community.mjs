@@ -90,6 +90,15 @@ for (const required of [
   if (!community.includes(required)) fail(`Community API is missing expected control: ${required}`);
 }
 
+const headers = fs.readFileSync(path.join(root, '_headers'), 'utf8');
+const cspLine = headers.split(/\r?\n/).find(line => line.includes('Content-Security-Policy:')) || '';
+if (!/script-src[^;]*https:\/\/challenges\.cloudflare\.com/.test(cspLine)) {
+  fail('CSP script-src must allow https://challenges.cloudflare.com for Turnstile.');
+}
+if (!/frame-src[^;]*https:\/\/challenges\.cloudflare\.com/.test(cspLine)) {
+  fail('CSP frame-src must allow https://challenges.cloudflare.com for Turnstile.');
+}
+
 const registration = fs.readFileSync(path.join(root, 'uye-ol/index.html'), 'utf8');
 if (!registration.includes('Sözlük herkesindir')) fail('Turkish registration page must state the open-access principle.');
 if (/gizlilik[^<]{0,80}(kabul|onay)/i.test(registration)) fail('Registration must not force consent to the privacy notice.');
