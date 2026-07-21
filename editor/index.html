@@ -7,16 +7,12 @@
 <title>Editör · Askerî Terimler Sözlüğü</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <style>
-:root{--bg:#f3efe6;--paper:#fbfaf7;--ink:#1e2732;--muted:#6c6861;--navy:#2f4e71;--red:#923c2c;--green:#28735d;--line:#d7d0c3}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#f7f4ec,var(--bg));color:var(--ink);font-family:Cambria,Georgia,serif}.shell{width:min(1180px,calc(100% - 28px));margin:auto;padding:22px 0 48px}
-header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:18px;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none;font-weight:700}.brand img{width:48px;height:48px}.back{color:var(--navy)}
-.card{background:rgba(251,250,247,.96);border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 44px -34px rgba(35,28,22,.5);padding:22px}.login{width:min(460px,100%);margin:70px auto}.login h1{margin-top:0}
-label{display:block;color:#715d36;font:600 11px/1.2 Calibri,"Segoe UI",sans-serif;letter-spacing:.08em;text-transform:uppercase}.input,textarea,select{width:100%;margin-top:6px;border:1px solid #bdb6aa;border-radius:8px;background:#fff;color:var(--ink);padding:10px 11px;font:15px/1.45 Cambria,Georgia,serif}textarea{min-height:94px;resize:vertical}.password{min-height:44px}
-button{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);padding:10px 15px;font-weight:700;cursor:pointer}button:hover{border-color:var(--navy)}button.primary{background:var(--navy);border-color:var(--navy);color:#fff}button.danger{color:#fff;background:var(--red);border-color:var(--red)}button.ghost{background:transparent}
-.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.login button{width:100%;margin-top:14px}.error{color:var(--red);min-height:20px}.notice{position:fixed;right:18px;bottom:18px;max-width:360px;padding:12px 16px;border-radius:9px;background:#1e2732;color:#fff;box-shadow:0 12px 30px rgba(0,0,0,.25);display:none;z-index:20}.notice.show{display:block}.notice.error{background:var(--red)}
-.app[hidden],.login[hidden]{display:none}.toolbar{display:grid;grid-template-columns:1fr auto;gap:12px;margin:22px 0}.search-row{display:grid;grid-template-columns:1fr auto;gap:8px}.workspace{display:grid;grid-template-columns:minmax(270px,.72fr) minmax(0,1.45fr);gap:16px}.list{max-height:75vh;overflow:auto;padding:0}.term-item{width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:12px 14px;background:transparent}.term-item:hover,.term-item.active{background:#efe9dd}.term-item strong{display:block;font:600 15px Cambria,Georgia,serif}.term-item small{color:var(--muted)}.empty{padding:24px;text-align:center;color:var(--muted)}
-.form-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:18px}.form-head h1{margin:0;font-size:26px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}.form-actions{display:flex;justify-content:space-between;gap:12px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}.status{display:inline-block;padding:3px 8px;border-radius:999px;background:#eee7da;color:#5f574b;font:700 10px Calibri,sans-serif;text-transform:uppercase}.meta{margin-top:8px;color:var(--muted);font-size:12px}
-@media(max-width:800px){.workspace{grid-template-columns:1fr}.list{max-height:300px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.toolbar{grid-template-columns:1fr}.form-actions{flex-direction:column}.form-actions .actions{width:100%}.form-actions button{flex:1}}
+:root{--bg:#f8f8f6;--paper:#fff;--ink:#1e2732;--muted:#6c6861;--navy:#2f4e71;--red:#923c2c;--line:#deded8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Cambria,Georgia,serif}.shell{width:min(980px,calc(100% - 28px));margin:auto;padding:22px 0 48px}
+header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:16px;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none;font-weight:700}.brand img{width:46px;height:46px}.back{color:var(--navy)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 44px -36px rgba(35,28,22,.5);padding:24px}.login{width:min(460px,100%);margin:72px auto}.login h1{margin:0 0 8px;color:#20395a}.login p{color:var(--muted);line-height:1.55}
+label{display:block;color:#715d36;font:600 11px/1.2 Calibri,"Segoe UI",sans-serif;letter-spacing:.08em;text-transform:uppercase}.input{width:100%;margin-top:7px;border:1px solid #c8c8c2;border-radius:9px;background:#fff;color:var(--ink);padding:11px 12px;font:15px/1.45 Cambria,Georgia,serif}.input:focus{outline:0;border-color:#7f95ad;box-shadow:0 0 0 3px rgba(47,78,113,.09)}
+button{width:100%;margin-top:14px;border:1px solid var(--navy);border-radius:9px;background:var(--navy);color:#fff;padding:11px 15px;font-weight:700;cursor:pointer}button:hover{background:#20395a}.error{color:var(--red);min-height:20px;margin-bottom:0}
 </style>
 </head>
 <body><div class="shell">
@@ -24,57 +20,26 @@ button{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(
 
 <section id="loginPanel" class="card login">
   <h1>Editör girişi</h1>
-  <p>Cloudflare D1 sözlük verisini düzenlemek için editör parolanızı girin.</p>
+  <p>Girişten sonra ana sözlüğe döneceksiniz. Bir maddeyi açıp <strong>Düzenle</strong> seçeneğiyle doğrudan canlı kayıt formuna geçebilirsiniz.</p>
   <form id="loginForm">
-    <label>Parola<input id="password" class="input password" type="password" autocomplete="current-password" required></label>
-    <button class="primary" type="submit">Giriş yap</button>
+    <label>Parola<input id="password" class="input" type="password" autocomplete="current-password" required></label>
+    <button type="submit">Giriş yap ve sözlüğe dön</button>
     <p id="loginError" class="error" role="alert"></p>
   </form>
 </section>
-
-</div><div id="notice" class="notice" role="status"></div>
+</div>
 
 <script>
 const $=id=>document.getElementById(id);
-
-async function readJson(response){
-  let data={};
-  try{data=await response.json()}catch{}
-  if(!response.ok||!data.ok)throw new Error(data.error||('HTTP '+response.status));
-  return data;
-}
-
-async function checkSession(){
-  try{
-    const response=await fetch('/api/editor/session',{headers:{Accept:'application/json'},credentials:'same-origin'});
-    const data=await readJson(response);
-    if(data.authenticated)location.replace('/editor/panel/');
-  }catch{}
-}
-
+async function readJson(response){let data={};try{data=await response.json()}catch{}if(!response.ok||!data.ok)throw new Error(data.error||('HTTP '+response.status));return data}
+async function checkSession(){try{const response=await fetch('/api/editor/session',{headers:{Accept:'application/json'},credentials:'same-origin',cache:'no-store'});const data=await readJson(response);if(data.authenticated)location.replace('/')}catch{}}
 $('loginForm').addEventListener('submit',async event=>{
-  event.preventDefault();
-  const button=event.submitter;
-  $('loginError').textContent='';
-  if(button)button.disabled=true;
+  event.preventDefault();const button=event.submitter;$('loginError').textContent='';if(button)button.disabled=true;
   try{
-    const response=await fetch('/api/editor/login',{
-      method:'POST',
-      credentials:'same-origin',
-      headers:{Accept:'application/json','Content-Type':'application/json'},
-      body:JSON.stringify({password:$('password').value})
-    });
-    await readJson(response);
-    $('password').value='';
-    location.replace('/editor/panel/');
-  }catch(error){
-    $('loginError').textContent=error.message==='rate_limited'
-      ?'Çok fazla deneme yapıldı. Lütfen bekleyin.'
-      :'Parola doğrulanamadı.';
-    if(button)button.disabled=false;
-  }
+    const response=await fetch('/api/editor/login',{method:'POST',credentials:'same-origin',headers:{Accept:'application/json','Content-Type':'application/json'},body:JSON.stringify({password:$('password').value})});
+    await readJson(response);$('password').value='';location.replace('/');
+  }catch(error){$('loginError').textContent=error.message==='rate_limited'?'Çok fazla deneme yapıldı. Lütfen bekleyin.':'Parola doğrulanamadı.';if(button)button.disabled=false}
 });
-
 checkSession();
 </script>
 </body>
