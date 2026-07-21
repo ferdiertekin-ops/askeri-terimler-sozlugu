@@ -11,9 +11,15 @@ const DICTIONARY_VISUAL_POLISH = `
 :root{--claude-canvas:#f8f8f6;--claude-surface:#ffffff;--ats-navy:#2f4e71;--ats-navy-deep:#20395a}
 html,body{background:#f8f8f6!important}
 body{background-image:none!important;background-color:#f8f8f6!important}
-.preview-brand{gap:0!important}
+.wrap{padding-top:16px!important}
+.preview-topbar{display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;align-items:center!important;column-gap:22px!important;padding:2px 0 1px!important}
+.preview-brand{grid-column:1!important;justify-self:start!important;gap:0!important}
 .preview-brand__name{display:none!important}
-.preview-hero{padding:12px 0 8px!important}
+.preview-site-nav{grid-column:2!important;grid-row:1!important;display:flex!important;align-items:center!important;justify-content:center!important;justify-self:center!important;flex-wrap:nowrap!important;gap:0 13px!important;margin:0!important;padding:0!important;border:0!important;white-space:nowrap!important;line-height:1.2!important}
+.preview-site-nav a{margin:0!important;padding:4px 0!important;color:#474f58!important;font-size:10.5px!important;letter-spacing:.025em!important;text-transform:none!important}
+.preview-site-nav a:hover,.preview-site-nav a:focus-visible{color:#9a3d20!important;border-bottom-color:#b5965d!important}
+.preview-topbar__actions{grid-column:3!important;grid-row:1!important;justify-self:end!important;justify-content:flex-end!important;flex-wrap:nowrap!important}
+.preview-hero{padding:5px 0 6px!important}
 .preview-eyebrow{margin-bottom:7px!important;gap:14px!important;font-size:10px!important;letter-spacing:.21em!important}
 .preview-eyebrow::before,.preview-eyebrow::after{width:54px!important}
 .preview-title{gap:4px!important}
@@ -22,7 +28,7 @@ body{background-image:none!important;background-color:#f8f8f6!important}
 .preview-title__date{gap:18px!important;font-size:13px!important;letter-spacing:.24em!important;text-indent:.24em!important}
 .preview-title__date::before,.preview-title__date::after{width:52px!important}
 .preview-beta{margin-top:2px!important;font-size:10.5px!important;letter-spacing:.14em!important}
-.preview-search-tools{margin-top:6px!important}
+.preview-search-tools{margin-top:5px!important}
 .preview-search-tools.is-stuck{background:rgba(248,248,246,.96)!important}
 .preview-search-row{background:#ffffff!important;border-color:#deded8!important;box-shadow:0 1px 2px rgba(30,39,50,.05),0 14px 32px -26px rgba(32,57,90,.34),inset 0 1px 0 rgba(255,255,255,.96)!important}
 .preview-search-row:hover{border-color:#b8c2cd!important}
@@ -34,8 +40,22 @@ body{background-image:none!important;background-color:#f8f8f6!important}
 .community-auth-nav .community-login{border:1px solid #cfc7b8;background:#fffefa;color:#2f4e71}
 .community-auth-nav .community-signup{border:1px solid #2f4e71;background:#2f4e71;color:#fffefa}
 .community-editor-access{margin:8px 0 0;text-align:center;font:10px/1.2 Calibri,"Segoe UI",sans-serif}.community-editor-access a{color:#9b9994;text-decoration:none}
+@media(max-width:1040px){
+  .preview-topbar{column-gap:14px!important}
+  .preview-site-nav{gap:0 9px!important}
+  .preview-site-nav a{font-size:9.8px!important;letter-spacing:.01em!important}
+}
+@media(max-width:860px){
+  .preview-topbar{grid-template-columns:minmax(0,1fr) auto!important;row-gap:3px!important}
+  .preview-brand{grid-column:1!important;grid-row:1!important}
+  .preview-topbar__actions{grid-column:2!important;grid-row:1!important}
+  .preview-site-nav{grid-column:1/-1!important;grid-row:2!important;width:100%!important;gap:1px 12px!important;flex-wrap:wrap!important;padding:2px 0 1px!important}
+  .preview-site-nav a{font-size:10px!important}
+  .preview-hero{padding-top:7px!important}
+}
 @media(max-width:760px){
-  .preview-hero{padding:11px 0 7px!important}
+  .wrap{padding-top:14px!important}
+  .preview-hero{padding:8px 0 7px!important}
   .preview-eyebrow{font-size:9.5px!important;letter-spacing:.18em!important;gap:10px!important}
   .preview-eyebrow::before,.preview-eyebrow::after{width:32px!important}
   .preview-title__top{font-size:13px!important}
@@ -43,7 +63,12 @@ body{background-image:none!important;background-color:#f8f8f6!important}
   .preview-title__date{font-size:12px!important;gap:14px!important}
   .preview-title__date::before,.preview-title__date::after{width:36px!important}
 }
-@media(max-width:560px){.community-auth-nav{gap:5px}.community-auth-nav a{min-height:32px;padding:0 8px;font-size:10.5px}}
+@media(max-width:560px){
+  .preview-topbar{align-items:start!important;row-gap:4px!important}
+  .preview-site-nav{gap:1px 9px!important;padding-top:3px!important}
+  .preview-site-nav a{font-size:9.5px!important}
+  .community-auth-nav{gap:5px}.community-auth-nav a{min-height:32px;padding:0 8px;font-size:10.5px}
+}
 </style>`;
 
 const COMMUNITY_ROUTES = new Set([
@@ -105,6 +130,17 @@ function stripBrandName(html) {
   return html.replace(/\s*<span class="preview-brand__name">[^<]*<\/span>\s*/gi, '\n');
 }
 
+function moveSiteNavIntoTopbar(html) {
+  const navMatch = html.match(/\s*<nav class="preview-site-nav"[^>]*>[\s\S]*?<\/nav>\s*/i);
+  if (!navMatch) return html;
+  const nav = navMatch[0].trim();
+  const withoutNav = html.replace(navMatch[0], '\n');
+  return withoutNav.replace(
+    /(<a class="preview-brand"[\s\S]*?<\/a>)\s*(<div class="preview-topbar__actions">)/i,
+    `$1\n  ${nav}\n  $2`
+  );
+}
+
 function applyEditorShortcut(html, authenticated, lang) {
   if (!authenticated) return html;
   const tr = lang !== 'en';
@@ -143,6 +179,7 @@ function injectTurkishTtsClient(html) {
 function applyDictionaryVisualPolish(html, authenticated = false, lang = 'tr', features = {}) {
   let cleaned = stripInstallLinks(html);
   cleaned = stripBrandName(cleaned);
+  cleaned = moveSiteNavIntoTopbar(cleaned);
   cleaned = applyEditorShortcut(cleaned, authenticated, lang);
   if (features.community) cleaned = applyCommunityControls(cleaned, authenticated, lang);
   if (features.tts) cleaned = injectTurkishTtsClient(cleaned);
