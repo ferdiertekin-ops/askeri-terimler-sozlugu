@@ -95,20 +95,34 @@ function stripInstallLinks(html) {
     .replace(/\s*·\s*·\s*/g, ' · ');
 }
 
-function applyDictionaryVisualPolish(html) {
-  const cleaned = stripInstallLinks(html);
+function applyEditorShortcut(html, authenticated, lang) {
+  if (!authenticated) return html;
+  const tr = lang !== 'en';
+  const href = tr ? '/editor/panel/?new=1&return=%2F' : '/editor/panel/?new=1&return=%2Fen%2F';
+  const label = tr ? '＋ Yeni madde' : '＋ New entry';
+  const title = tr ? 'Yeni sözlük maddesi ekle' : 'Add a new dictionary entry';
+  return html.replace(
+    /<a class="preview-editor-link" href="\/editor\/"[^>]*>[^<]*<\/a>/i,
+    `<a class="preview-editor-link" href="${href}" title="${title}">${label}</a>`
+  );
+}
+
+function applyDictionaryVisualPolish(html, authenticated = false, lang = 'tr') {
+  let cleaned = stripInstallLinks(html);
+  cleaned = applyEditorShortcut(cleaned, authenticated, lang);
   if (cleaned.includes('id="ats-visual-polish"')) return cleaned;
   return cleaned.replace('</head>', `${DICTIONARY_VISUAL_POLISH}\n</head>`);
 }
 
-async function dictionaryAssetRequest(context, pathname, extraHeaders = {}) {
+async function dictionaryAssetRequest(context, pathname, lang, extraHeaders = {}) {
   const response = await assetRequest(context, pathname, extraHeaders);
   if (context.request.method === 'HEAD' || !response.ok) return response;
 
   const contentType = response.headers.get('Content-Type') || '';
   if (!contentType.includes('text/html')) return response;
 
-  const html = applyDictionaryVisualPolish(await response.text());
+  const authenticated = await hasEditorSession(context);
+  const html = applyDictionaryVisualPolish(await response.text(), authenticated, lang);
   const headers = new Headers(response.headers);
   headers.delete('Content-Length');
   headers.delete('Content-Encoding');
@@ -182,11 +196,11 @@ export async function onRequest(context) {
   }
 
   if (getOrHead && path === '/') {
-    return dictionaryAssetRequest(context, '/dictionary-d1-preview', url.searchParams.has('q') ? SEARCH_NOINDEX : {});
+    return dictionaryAssetRequest(context, '/dictionary-d1-preview', 'tr', url.searchParams.has('q') ? SEARCH_NOINDEX : {});
   }
 
   if (getOrHead && path === '/en/') {
-    return dictionaryAssetRequest(context, '/dictionary-d1-preview-en', url.searchParams.has('q') ? SEARCH_NOINDEX : {});
+    return dictionaryAssetRequest(context, '/dictionary-d1-preview-en', 'en', url.searchParams.has('q') ? SEARCH_NOINDEX : {});
   }
 
   const editableRoute = EDITABLE_ROUTES.get(path);
