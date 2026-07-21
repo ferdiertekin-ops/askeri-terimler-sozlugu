@@ -6,10 +6,14 @@ import { spawnSync } from 'node:child_process';
 const root = process.cwd();
 const jsFiles = [
   'functions/_lib/community.js',
+  'functions/_lib/tts.js',
   'functions/_middleware.js',
+  'functions/api/tts.js',
+  'functions/api/tts/preview.js',
   'assets/community-nav.js',
   'assets/community-dictionary.js',
-  'assets/community-account.js'
+  'assets/community-account.js',
+  'assets/ats-tr-tts.js'
 ];
 const htmlFiles = [
   'uye-ol/index.html',
@@ -70,7 +74,12 @@ for (const required of [
   "path.startsWith('/api/account/')",
   "'/editor/community/'",
   'sendCommunityNotification',
-  'communityRenderedResponse'
+  'communityRenderedResponse',
+  'COMMUNITY_FEATURE_ENABLED',
+  'TTS_FEATURE_ENABLED',
+  '/assets/ats-tr-tts.js',
+  'stripBrandName',
+  'preview-title__main'
 ]) {
   if (!middleware.includes(required)) fail(`Middleware is missing required integration: ${required}`);
 }
@@ -88,6 +97,19 @@ for (const required of [
   '/api/account/contributions'
 ]) {
   if (!community.includes(required)) fail(`Community API is missing expected control: ${required}`);
+}
+
+const tts = fs.readFileSync(path.join(root, 'functions/_lib/tts.js'), 'utf8');
+for (const required of [
+  'tr-TR-Chirp3-HD-Achird',
+  'GOOGLE_TTS_CLIENT_EMAIL',
+  'GOOGLE_TTS_PRIVATE_KEY',
+  'normalizeRomanOrdinals',
+  'PHONETIC_ENCODING_IPA',
+  "pathname === '/api/tts/preview'",
+  "pathname !== '/api/tts'"
+]) {
+  if (!tts.includes(required)) fail(`TTS API is missing expected control: ${required}`);
 }
 
 const headers = fs.readFileSync(path.join(root, '_headers'), 'utf8');
