@@ -1,0 +1,83 @@
+name: Release feature checks
+
+on:
+  pull_request:
+    paths:
+      - 'functions/_lib/community.js'
+      - 'functions/_lib/tts.js'
+      - 'functions/_middleware.js'
+      - 'functions/api/tts.js'
+      - 'functions/api/tts/**'
+      - 'assets/community-*.js'
+      - 'assets/community-*.css'
+      - 'assets/ats-tr-tts.js'
+      - 'uye-ol/**'
+      - 'oturum-ac/**'
+      - 'hesabim/**'
+      - 'parola-yenile/**'
+      - 'uyelik-aydinlatma/**'
+      - 'en/sign-up/**'
+      - 'en/sign-in/**'
+      - 'en/account/**'
+      - 'en/reset-password/**'
+      - 'en/membership-notice/**'
+      - 'editor-community-private.html'
+      - 'migrations/20260721_community_*.sql'
+      - 'scripts/check-community.mjs'
+      - '_headers'
+      - '.github/workflows/community-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: JavaScript and page checks
+        run: node scripts/check-community.mjs
+
+      - name: Validate D1 migration SQL with SQLite
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import sqlite3
+          from pathlib import Path
+
+          db = sqlite3.connect(':memory:')
+          db.execute('PRAGMA foreign_keys = ON')
+          for migration in [
+              Path('migrations/20260721_community_membership.sql'),
+              Path('migrations/20260721_community_password_reset.sql'),
+          ]:
+              db.executescript(migration.read_text(encoding='utf-8'))
+
+          expected = {
+              'community_users',
+              'community_sessions',
+              'community_verification_tokens',
+              'community_password_reset_tokens',
+              'community_favorites',
+              'community_contributions',
+              'community_consents',
+              'community_rate_limits',
+          }
+          found = {row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+          missing = sorted(expected - found)
+          if missing:
+              raise SystemExit(f'Missing tables: {missing}')
+          print('SQLite migration check passed:', ', '.join(sorted(expected)))
+          PY
+
+      - name: Build smoke check
+        run: npm run build
