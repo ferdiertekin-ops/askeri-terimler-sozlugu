@@ -39,9 +39,18 @@ Aşağıdaki değerler kod deposuna yazılmamalıdır.
 
 - `CF_ACCOUNT_ID`
 - `CF_EMAIL_API_TOKEN` — Cloudflare Email Sending için mümkün olan en dar yetkili API token
-- `COMMUNITY_EMAIL_FROM` — örn. `Askerî Terimler Sözlüğü <uyelik@askeriterimlersozlugu.com>`
+- `COMMUNITY_EMAIL_FROM` — örn. `uyelik@askeriterimlersozlugu.com`
 
 E-posta alan adı Cloudflare Email Sending tarafında doğrulanmalı ve gerekli SPF/DKIM kayıtları tamamlanmalıdır.
+
+## Turnstile ve CSP
+
+Sitenin genel Content Security Policy başlığı Turnstile için yalnız gerekli iki kaynağı ayrıca izinli kılar:
+
+- `script-src`: `https://challenges.cloudflare.com`
+- `frame-src`: `https://challenges.cloudflare.com`
+
+Bunun dışındaki mevcut CSP sınırlamaları korunur. `community-check` bu iki izni otomatik olarak denetler.
 
 ## Canlıya geçmeden önce zorunlu hukukî kapı
 
@@ -83,6 +92,7 @@ PR üzerinde `.github/workflows/community-check.yml` çalışır:
 - yeni JavaScript dosyalarının sözdizimi
 - üyelik sayfalarında yinelenen `id` kontrolü
 - noindex kontrolü
+- Turnstile CSP izinleri
 - temel güvenlik/entegrasyon kontrolleri
 - iki D1 migrasyonunun gerçek SQLite motorunda uygulanabilirliği
 - statik build smoke check
