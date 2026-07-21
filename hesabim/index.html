@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive">
+<title>Hesabım · Askerî Terimler Sözlüğü</title><link rel="icon" href="/favicon.ico" sizes="any"><link rel="stylesheet" href="/assets/community-account.css">
+</head>
+<body data-mode="account" data-lang="tr">
+<div class="community-shell">
+<header class="community-topbar"><a class="community-brand" href="/"><img src="/ats-logo-2026.svg" alt="ATS"></a><a class="community-back" href="/">Sözlüğe dön</a></header>
+<main class="community-main">
+<div class="account-head"><div><h1>Hesabım</h1><p id="accountEmail"></p></div><button id="logoutBtn" class="community-button" type="button">Oturumu kapat</button></div>
+<p class="public-good"><strong>Açık erişim ilkesi:</strong> Hesabınız kişisel çalışma araçları içindir. Sözlüğün içeriği üyelikten bağımsız olarak herkese açıktır.</p>
+<p id="communityStatus" class="community-status" role="status"></p>
+<div class="account-columns">
+<div>
+<section class="community-card"><h2 class="section-title">Profil ve bildirim tercihleri</h2><p class="section-note">Ad, kurum ve çalışma alanı isteğe bağlıdır. Bildirim rızalarınızı dilediğiniz anda kapatabilirsiniz.</p>
+<form id="profileForm"><div class="community-grid"><label class="community-field">Ad / Soyad<input id="displayName" type="text" maxlength="120"></label><label class="community-field">Kurum / Üniversite<input id="institution" type="text" maxlength="200"></label><label class="community-field full">İlgi / çalışma alanı<select id="interestArea"><option value="">Belirtmek istemiyorum</option><option value="history">Tarih</option><option value="military-history">Askerî Tarih</option><option value="ottoman-history">Osmanlı Tarihi</option><option value="language-terminology">Dil / Terminoloji</option><option value="undergraduate-graduate">Lisans / Lisansüstü Öğrenci</option><option value="academic">Akademisyen</option><option value="independent-researcher">Bağımsız Araştırmacı</option><option value="other">Diğer</option></select></label></div>
+<div class="consent-box"><h2>İsteğe bağlı e-posta bildirimleri</h2><p>Bu seçimler üyelikten ayrıdır ve açık rıza kaydı olarak tutulur.</p><label class="community-check"><input id="notifyNewTerms" type="checkbox"><span>Yeni yayımlanan maddeler hakkında e-posta almak istiyorum.</span></label><label class="community-check"><input id="notifyUpdates" type="checkbox"><span>Güncellenen maddeler hakkında e-posta almak istiyorum.</span></label></div><button class="community-button primary" type="submit">Profili kaydet</button></form></section>
+<section class="community-card"><h2 class="section-title">Katkı / düzeltme önerisi</h2><p class="section-note">Bir yanlışlık, ek kaynak veya yeni terim önerisini doğrudan editöre iletin.</p><form id="contributionForm"><label class="community-field">Madde kalıcı adresi <small>İsteğe bağlı; örn. first-corps-army-corps</small><input id="contributionTerm" type="text" maxlength="150"></label><label class="community-field" style="margin-top:12px">Öneri türü<select id="suggestionType"><option value="correction">Düzeltme</option><option value="source">Kaynak ekleme</option><option value="new-term">Yeni terim</option><option value="other">Diğer</option></select></label><label class="community-field" style="margin-top:12px">Açıklama<textarea id="contributionMessage" required maxlength="5000"></textarea></label><button class="community-button primary" type="submit">Editöre gönder</button></form><div id="contributionList" class="contribution-list"></div></section>
+</div>
+<div>
+<section class="community-card"><h2 class="section-title">Favori maddelerim</h2><p class="section-note">Sözlükte yıldızladığınız maddeler burada tutulur.</p><div id="favoriteList" class="favorite-list"></div></section>
+<section class="community-card"><h2 class="section-title">Parola değiştir</h2><form id="passwordForm"><label class="community-field">Mevcut parola<input id="currentPassword" type="password" autocomplete="current-password" required maxlength="128"></label><label class="community-field" style="margin-top:12px">Yeni parola<input id="newPassword" type="password" autocomplete="new-password" required minlength="12" maxlength="128"><small>En az 12 karakter; en az bir harf ve bir rakam.</small></label><button class="community-button" type="submit">Parolayı değiştir</button></form></section>
+<section class="community-card account-danger"><h2 class="section-title">Üyeliği sil</h2><p class="section-note">Hesabınız, favorileriniz ve üyelik kapsamında saklanan katkı kayıtlarınız silinir. Bu işlem geri alınamaz.</p><form id="deleteAccountForm"><label class="community-field">Parolanız<input id="deletePassword" type="password" autocomplete="current-password" required maxlength="128"></label><button class="community-button danger" type="submit">Üyeliğimi kalıcı olarak sil</button></form></section>
+<div class="notice-box"><a href="/uyelik-aydinlatma/">Üyelik Aydınlatma Metni</a> · <a href="/gizlilik-politikasi/">Gizlilik Politikası</a> · <a href="/iletisim/">İletişim</a></div>
+</div>
+</div>
+</main>
+<footer class="community-footer">© 2026 Askerî Terimler Sözlüğü</footer>
+</div><script src="/assets/community-account.js" defer></script>
+</body></html>
