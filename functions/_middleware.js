@@ -47,30 +47,14 @@ async function assetRequest(context, pathname, extraHeaders = {}) {
   return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
 }
 
-async function dictionaryAssetRequest(context, pathname, lang, extraHeaders = {}) {
+async function dictionaryAssetRequest(context, pathname, extraHeaders = {}) {
   const response = await assetRequest(context, pathname, extraHeaders);
   if (context.request.method === 'HEAD' || !response.ok) return response;
 
   const contentType = response.headers.get('Content-Type') || '';
   if (!contentType.includes('text/html')) return response;
 
-  const tr = lang !== 'en';
-  const installHref = tr ? '/uygulama/' : '/uygulama/?lang=en';
-  const installLabel = tr ? 'Uygulamayı İndir' : 'Download App';
-  const contactHref = tr ? '/iletisim/' : '/en/contact/';
-  const contactLabel = tr ? 'İletişim' : 'Contact';
-  let html = await response.text();
-
-  if (!html.includes(`href="${installHref}"`)) {
-    const navContact = `  <a href="${contactHref}">${contactLabel}</a>`;
-    const navInstall = `  <a class="install-app-link" href="${installHref}">${installLabel}</a>`;
-    html = html.replace(navContact, `${navInstall}\n${navContact}`);
-
-    const footerContact = `<a href="${contactHref}">${contactLabel}</a></p>`;
-    const footerInstall = `<a class="install-app-link" href="${installHref}">${installLabel}</a> · `;
-    html = html.replace(footerContact, `${footerInstall}${footerContact}`);
-  }
-
+  const html = await response.text();
   const headers = new Headers(response.headers);
   headers.delete('Content-Length');
   headers.delete('Content-Encoding');
@@ -144,11 +128,11 @@ export async function onRequest(context) {
   }
 
   if (getOrHead && path === '/') {
-    return dictionaryAssetRequest(context, '/dictionary-d1-preview', 'tr', url.searchParams.has('q') ? SEARCH_NOINDEX : {});
+    return dictionaryAssetRequest(context, '/dictionary-d1-preview', url.searchParams.has('q') ? SEARCH_NOINDEX : {});
   }
 
   if (getOrHead && path === '/en/') {
-    return dictionaryAssetRequest(context, '/dictionary-d1-preview-en', 'en', url.searchParams.has('q') ? SEARCH_NOINDEX : {});
+    return dictionaryAssetRequest(context, '/dictionary-d1-preview-en', url.searchParams.has('q') ? SEARCH_NOINDEX : {});
   }
 
   const editableRoute = EDITABLE_ROUTES.get(path);
@@ -190,4 +174,3 @@ export async function onRequest(context) {
 
   return context.next();
 }
-
