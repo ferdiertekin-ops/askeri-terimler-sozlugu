@@ -19,6 +19,54 @@ body{
   background-image:none!important;
   background-color:#f8f8f6!important;
 }
+.preview-brand{
+  gap:0!important;
+}
+.preview-brand__name{
+  display:none!important;
+}
+.preview-hero{
+  padding:12px 0 8px!important;
+}
+.preview-eyebrow{
+  margin-bottom:7px!important;
+  gap:14px!important;
+  font-size:10px!important;
+  letter-spacing:.21em!important;
+}
+.preview-eyebrow::before,.preview-eyebrow::after{
+  width:54px!important;
+}
+.preview-title{
+  gap:4px!important;
+}
+.preview-title__top{
+  font-size:14px!important;
+  letter-spacing:.33em!important;
+  text-indent:.33em!important;
+}
+.preview-title__main{
+  font-size:clamp(42px,5vw,64px)!important;
+  line-height:1.02!important;
+  letter-spacing:-.02em!important;
+}
+.preview-title__date{
+  gap:18px!important;
+  font-size:13px!important;
+  letter-spacing:.24em!important;
+  text-indent:.24em!important;
+}
+.preview-title__date::before,.preview-title__date::after{
+  width:52px!important;
+}
+.preview-beta{
+  margin-top:2px!important;
+  font-size:10.5px!important;
+  letter-spacing:.14em!important;
+}
+.preview-search-tools{
+  margin-top:6px!important;
+}
 .preview-search-tools.is-stuck{
   background:rgba(248,248,246,.96)!important;
 }
@@ -43,6 +91,15 @@ body{
 .list-head span{
   color:#f8f8f6!important;
   text-shadow:0 1px 0 rgba(0,0,0,.14);
+}
+@media(max-width:760px){
+  .preview-hero{padding:11px 0 7px!important;}
+  .preview-eyebrow{font-size:9.5px!important;letter-spacing:.18em!important;gap:10px!important;}
+  .preview-eyebrow::before,.preview-eyebrow::after{width:32px!important;}
+  .preview-title__top{font-size:13px!important;}
+  .preview-title__main{font-size:clamp(36px,9vw,50px)!important;line-height:1.04!important;}
+  .preview-title__date{font-size:12px!important;gap:14px!important;}
+  .preview-title__date::before,.preview-title__date::after{width:36px!important;}
 }
 </style>`;
 
@@ -95,6 +152,10 @@ function stripInstallLinks(html) {
     .replace(/\s*·\s*·\s*/g, ' · ');
 }
 
+function stripBrandName(html) {
+  return html.replace(/\s*<span class="preview-brand__name">[^<]*<\/span>\s*/gi, '\n');
+}
+
 function applyEditorShortcut(html, authenticated, lang) {
   if (!authenticated) return html;
   const tr = lang !== 'en';
@@ -109,6 +170,7 @@ function applyEditorShortcut(html, authenticated, lang) {
 
 function applyDictionaryVisualPolish(html, authenticated = false, lang = 'tr') {
   let cleaned = stripInstallLinks(html);
+  cleaned = stripBrandName(cleaned);
   cleaned = applyEditorShortcut(cleaned, authenticated, lang);
   if (cleaned.includes('id="ats-visual-polish"')) return cleaned;
   return cleaned.replace('</head>', `${DICTIONARY_VISUAL_POLISH}\n</head>`);
