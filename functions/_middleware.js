@@ -11,6 +11,18 @@ const DICTIONARY_VISUAL_POLISH = `
 :root{--claude-canvas:#f8f8f6;--claude-surface:#ffffff;--ats-navy:#2f4e71;--ats-navy-deep:#20395a}
 html,body{background:#f8f8f6!important}
 body{background-image:none!important;background-color:#f8f8f6!important}
+.preview-brand{gap:0!important}
+.preview-brand__name{display:none!important}
+.preview-hero{padding:12px 0 8px!important}
+.preview-eyebrow{margin-bottom:7px!important;gap:14px!important;font-size:10px!important;letter-spacing:.21em!important}
+.preview-eyebrow::before,.preview-eyebrow::after{width:54px!important}
+.preview-title{gap:4px!important}
+.preview-title__top{font-size:14px!important;letter-spacing:.33em!important;text-indent:.33em!important}
+.preview-title__main{font-size:clamp(42px,5vw,64px)!important;line-height:1.02!important;letter-spacing:-.02em!important}
+.preview-title__date{gap:18px!important;font-size:13px!important;letter-spacing:.24em!important;text-indent:.24em!important}
+.preview-title__date::before,.preview-title__date::after{width:52px!important}
+.preview-beta{margin-top:2px!important;font-size:10.5px!important;letter-spacing:.14em!important}
+.preview-search-tools{margin-top:6px!important}
 .preview-search-tools.is-stuck{background:rgba(248,248,246,.96)!important}
 .preview-search-row{background:#ffffff!important;border-color:#deded8!important;box-shadow:0 1px 2px rgba(30,39,50,.05),0 14px 32px -26px rgba(32,57,90,.34),inset 0 1px 0 rgba(255,255,255,.96)!important}
 .preview-search-row:hover{border-color:#b8c2cd!important}
@@ -22,6 +34,15 @@ body{background-image:none!important;background-color:#f8f8f6!important}
 .community-auth-nav .community-login{border:1px solid #cfc7b8;background:#fffefa;color:#2f4e71}
 .community-auth-nav .community-signup{border:1px solid #2f4e71;background:#2f4e71;color:#fffefa}
 .community-editor-access{margin:8px 0 0;text-align:center;font:10px/1.2 Calibri,"Segoe UI",sans-serif}.community-editor-access a{color:#9b9994;text-decoration:none}
+@media(max-width:760px){
+  .preview-hero{padding:11px 0 7px!important}
+  .preview-eyebrow{font-size:9.5px!important;letter-spacing:.18em!important;gap:10px!important}
+  .preview-eyebrow::before,.preview-eyebrow::after{width:32px!important}
+  .preview-title__top{font-size:13px!important}
+  .preview-title__main{font-size:clamp(36px,9vw,50px)!important;line-height:1.04!important}
+  .preview-title__date{font-size:12px!important;gap:14px!important}
+  .preview-title__date::before,.preview-title__date::after{width:36px!important}
+}
 @media(max-width:560px){.community-auth-nav{gap:5px}.community-auth-nav a{min-height:32px;padding:0 8px;font-size:10.5px}}
 </style>`;
 
@@ -47,6 +68,22 @@ const LEGACY_REDIRECTS = new Map([
   ['/en/cookies', '/en/cookie-policy/'], ['/en/cookies/', '/en/cookie-policy/']
 ]);
 
+function enabled(value) {
+  return String(value || '').trim().toLowerCase() === 'true';
+}
+
+function communityEnabled(env) {
+  return enabled(env.COMMUNITY_FEATURE_ENABLED) &&
+    Boolean(env.DB) &&
+    String(env.COMMUNITY_SECURITY_SECRET || '').trim().length >= 32 &&
+    Boolean(env.TURNSTILE_SITE_KEY && env.TURNSTILE_SECRET_KEY) &&
+    Boolean(env.CF_ACCOUNT_ID && env.CF_EMAIL_API_TOKEN && env.COMMUNITY_EMAIL_FROM);
+}
+
+function ttsEnabled(env) {
+  return enabled(env.TTS_FEATURE_ENABLED) && Boolean(env.GOOGLE_TTS_CLIENT_EMAIL && env.GOOGLE_TTS_PRIVATE_KEY);
+}
+
 function redirect(url, pathname, status = 308) {
   const target = new URL(url); target.pathname = pathname; return Response.redirect(target.toString(), status);
 }
@@ -62,6 +99,10 @@ async function assetRequest(context, pathname, extraHeaders = {}) {
 
 function stripInstallLinks(html) {
   return html.replace(/\s*<a class="install-app-link" href="[^"]*">[^<]*<\/a>\s*/gi, ' ').replace(/\s*·\s*·\s*/g, ' · ');
+}
+
+function stripBrandName(html) {
+  return html.replace(/\s*<span class="preview-brand__name">[^<]*<\/span>\s*/gi, '\n');
 }
 
 function applyEditorShortcut(html, authenticated, lang) {
@@ -94,10 +135,17 @@ function applyCommunityControls(html, editorAuthenticated, lang) {
   return result;
 }
 
-function applyDictionaryVisualPolish(html, authenticated = false, lang = 'tr') {
+function injectTurkishTtsClient(html) {
+  if (html.includes('/assets/ats-tr-tts.js')) return html;
+  return html.replace('</body>', '<script src="/assets/ats-tr-tts.js" defer></script>\n</body>');
+}
+
+function applyDictionaryVisualPolish(html, authenticated = false, lang = 'tr', features = {}) {
   let cleaned = stripInstallLinks(html);
+  cleaned = stripBrandName(cleaned);
   cleaned = applyEditorShortcut(cleaned, authenticated, lang);
-  cleaned = applyCommunityControls(cleaned, authenticated, lang);
+  if (features.community) cleaned = applyCommunityControls(cleaned, authenticated, lang);
+  if (features.tts) cleaned = injectTurkishTtsClient(cleaned);
   if (cleaned.includes('id="ats-visual-polish"')) return cleaned;
   return cleaned.replace('</head>', `${DICTIONARY_VISUAL_POLISH}\n</head>`);
 }
@@ -108,25 +156,30 @@ async function dictionaryAssetRequest(context, pathname, lang, extraHeaders = {}
   const contentType = response.headers.get('Content-Type') || '';
   if (!contentType.includes('text/html')) return response;
   const authenticated = await hasEditorSession(context);
-  const html = applyDictionaryVisualPolish(await response.text(), authenticated, lang);
+  const html = applyDictionaryVisualPolish(await response.text(), authenticated, lang, {
+    community: communityEnabled(context.env),
+    tts: ttsEnabled(context.env)
+  });
   const headers = new Headers(response.headers);
   headers.delete('Content-Length'); headers.delete('Content-Encoding'); headers.delete('ETag');
   headers.set('Cache-Control', 'no-cache, must-revalidate');
   return new Response(html, { status: response.status, statusText: response.statusText, headers });
 }
 
-async function communityRenderedResponse(response, request) {
+async function communityRenderedResponse(response, request, env) {
   if (!response || request.method === 'HEAD' || !response.ok) return response;
   const contentType = response.headers.get('Content-Type') || '';
   if (!contentType.includes('text/html')) return response;
   let html = await response.text();
-  if (!html.includes('/assets/community-nav.js')) html = html.replace('</body>', '<script src="/assets/community-nav.js" defer></script>\n</body>');
+  if (communityEnabled(env) && !html.includes('/assets/community-nav.js')) html = html.replace('</body>', '<script src="/assets/community-nav.js" defer></script>\n</body>');
+  if (ttsEnabled(env)) html = injectTurkishTtsClient(html);
   const headers = new Headers(response.headers);
   headers.delete('Content-Length'); headers.delete('Content-Encoding'); headers.delete('ETag');
   return new Response(html, { status: response.status, statusText: response.statusText, headers });
 }
 
 async function editorCommunitySummary(context) {
+  if (!communityEnabled(context.env)) return json({ ok:false, error:'membership_not_enabled' }, { status:503 });
   if (context.request.method !== 'GET') return methodNotAllowed(['GET']);
   if (!(await hasEditorSession(context))) return json({ ok:false, error:'unauthorized' }, { status:401 });
   if (!context.env.DB) return json({ ok:false, error:'database_not_configured' }, { status:503 });
@@ -162,7 +215,7 @@ async function handleEditorApiWithNotifications(context, path) {
   const response = await handleEditorApi(context, path);
   const isCreate = path === '/api/editor/terms' && context.request.method === 'POST';
   const isUpdate = /^\/api\/editor\/terms\/[^/]+$/.test(path) && context.request.method === 'PUT';
-  if (!response.ok || (!isCreate && !isUpdate)) return response;
+  if (!response.ok || (!isCreate && !isUpdate) || !communityEnabled(context.env)) return response;
   try {
     const data = await response.clone().json();
     const term = data?.term;
@@ -190,6 +243,7 @@ export async function onRequest(context) {
   const url = new URL(context.request.url);
   const path = url.pathname;
   const getOrHead = context.request.method === 'GET' || context.request.method === 'HEAD';
+  const communityOn = communityEnabled(context.env);
 
   if (url.hostname === `www.${CANONICAL_HOST}`) { url.protocol='https:'; url.hostname=CANONICAL_HOST; return Response.redirect(url.toString(),301); }
   if (getOrHead && path.endsWith('/index.html')) return redirect(url, path.slice(0,-'index.html'.length)||'/',301);
@@ -203,7 +257,22 @@ export async function onRequest(context) {
     if (EDITABLE_ROUTES.has(slashPath) || COMMUNITY_ROUTES.has(slashPath) || slashPath==='/en/' || slashPath==='/terimler/' || slashPath==='/en/terms/' || slashPath==='/editor/') return redirect(url,slashPath,301);
   }
 
-  if (path.startsWith('/api/account/')) return handleCommunityApi(context,path);
+  if (path === '/api/account/config') {
+    if (communityOn) return handleCommunityApi(context,path);
+    return json({
+      ok:true,
+      featureEnabled:false,
+      turnstileSiteKey:'',
+      turnstileConfigured:false,
+      emailConfigured:false,
+      registrationReady:false,
+      consentVersion:'2026-07-21'
+    });
+  }
+  if (path.startsWith('/api/account/')) {
+    if (!communityOn) return json({ ok:false, error:'membership_not_enabled' }, { status:503 });
+    return handleCommunityApi(context,path);
+  }
   if (path === '/api/editor/community-summary') return editorCommunitySummary(context);
   if (path.startsWith('/api/editor/')) return handleEditorApiWithNotifications(context,path);
 
@@ -219,6 +288,7 @@ export async function onRequest(context) {
   const privateCommunityAsset = path==='/editor-community-private' || path==='/editor-community-private.html';
   if (getOrHead && (editorPanelRequest || privatePanelAsset || communityPanelRequest || privateCommunityAsset)) {
     if (!(await hasEditorSession(context))) return redirect(url,'/editor/',303);
+    if ((communityPanelRequest || privateCommunityAsset) && !communityOn) return redirect(url,'/',303);
     if (path==='/editor/panel') return redirect(url,'/editor/panel/');
     if (path==='/editor/community') return redirect(url,'/editor/community/');
     if (communityPanelRequest || privateCommunityAsset) return assetRequest(context,'/editor-community-private');
@@ -232,29 +302,29 @@ export async function onRequest(context) {
   if (getOrHead && editableRoute) {
     if (!context.env.DB) return unavailable();
     const rendered = await renderEditablePage(context.env.DB,editableRoute[0],editableRoute[1]);
-    if (rendered) return communityRenderedResponse(rendered,context.request);
+    if (rendered) return communityRenderedResponse(rendered,context.request,context.env);
   }
 
   if (getOrHead && path==='/terimler/') {
     if (!context.env.DB) return unavailable();
-    return communityRenderedResponse(await renderTermsIndex(context.env.DB,'tr'),context.request);
+    return communityRenderedResponse(await renderTermsIndex(context.env.DB,'tr'),context.request,context.env);
   }
   if (getOrHead && path==='/en/terms/') {
     if (!context.env.DB) return unavailable();
-    return communityRenderedResponse(await renderTermsIndex(context.env.DB,'en'),context.request);
+    return communityRenderedResponse(await renderTermsIndex(context.env.DB,'en'),context.request,context.env);
   }
 
   const trTerm = path.match(/^\/terim\/([^/]+)(\/?)$/);
   if (getOrHead && trTerm) {
     if (!trTerm[2]) return redirect(url,`/terim/${trTerm[1]}/`,301);
     if (!context.env.DB) return unavailable();
-    return communityRenderedResponse(await renderTermPage(context.env.DB,decodeURIComponent(trTerm[1]),'tr'),context.request);
+    return communityRenderedResponse(await renderTermPage(context.env.DB,decodeURIComponent(trTerm[1]),'tr'),context.request,context.env);
   }
   const enTerm = path.match(/^\/en\/term\/([^/]+)(\/?)$/);
   if (getOrHead && enTerm) {
     if (!enTerm[2]) return redirect(url,`/en/term/${enTerm[1]}/`,301);
     if (!context.env.DB) return unavailable();
-    return communityRenderedResponse(await renderTermPage(context.env.DB,decodeURIComponent(enTerm[1]),'en'),context.request);
+    return communityRenderedResponse(await renderTermPage(context.env.DB,decodeURIComponent(enTerm[1]),'en'),context.request,context.env);
   }
 
   if (getOrHead && path==='/sitemap.xml') {
