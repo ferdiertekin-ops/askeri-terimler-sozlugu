@@ -1,4 +1,5 @@
 import { handleEditorApi, hasEditorSession } from './_lib/editor.js';
+import { handleCommunityApi } from './_lib/community.js';
 import { renderEditablePage, renderEditablePageJson, renderRobots, renderSitemap, renderTermPage, renderTermsIndex } from './_lib/site.js';
 
 const CANONICAL_HOST = 'askeriterimlersozlugu.com';
@@ -12,39 +13,27 @@ const DICTIONARY_VISUAL_POLISH = `
   --ats-navy:#2f4e71;
   --ats-navy-deep:#20395a;
 }
-html,body{
-  background:#f8f8f6!important;
-}
-body{
-  background-image:none!important;
-  background-color:#f8f8f6!important;
-}
-.preview-search-tools.is-stuck{
-  background:rgba(248,248,246,.96)!important;
-}
-.preview-search-row{
-  background:#ffffff!important;
-  border-color:#deded8!important;
-  box-shadow:0 1px 2px rgba(30,39,50,.05),0 14px 32px -26px rgba(32,57,90,.34),inset 0 1px 0 rgba(255,255,255,.96)!important;
-}
-.preview-search-row:hover{
-  border-color:#b8c2cd!important;
-}
-.preview-search-row:focus-within{
-  border-color:#7f95ad!important;
-  box-shadow:0 0 0 3px rgba(47,78,113,.10),0 16px 34px -28px rgba(32,57,90,.34)!important;
-}
-.list-head{
-  background:linear-gradient(180deg,#2f4e71 0%,#294766 100%)!important;
-  border-top-color:#20395a!important;
-  border-bottom-color:#20395a!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 5px 14px -12px rgba(32,57,90,.58);
-}
-.list-head span{
-  color:#f8f8f6!important;
-  text-shadow:0 1px 0 rgba(0,0,0,.14);
-}
+html,body{background:#f8f8f6!important}
+body{background-image:none!important;background-color:#f8f8f6!important}
+.preview-search-tools.is-stuck{background:rgba(248,248,246,.96)!important}
+.preview-search-row{background:#ffffff!important;border-color:#deded8!important;box-shadow:0 1px 2px rgba(30,39,50,.05),0 14px 32px -26px rgba(32,57,90,.34),inset 0 1px 0 rgba(255,255,255,.96)!important}
+.preview-search-row:hover{border-color:#b8c2cd!important}
+.preview-search-row:focus-within{border-color:#7f95ad!important;box-shadow:0 0 0 3px rgba(47,78,113,.10),0 16px 34px -28px rgba(32,57,90,.34)!important}
+.list-head{background:linear-gradient(180deg,#2f4e71 0%,#294766 100%)!important;border-top-color:#20395a!important;border-bottom-color:#20395a!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 5px 14px -12px rgba(32,57,90,.58)}
+.list-head span{color:#f8f8f6!important;text-shadow:0 1px 0 rgba(0,0,0,.14)}
+.community-auth-nav{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.community-auth-nav a{min-height:36px;display:inline-flex;align-items:center;justify-content:center;padding:0 11px;border-radius:8px;text-decoration:none;font:600 12px Cambria,Georgia,serif}
+.community-auth-nav .community-login{border:1px solid #cfc7b8;background:#fffefa;color:#2f4e71}
+.community-auth-nav .community-signup{border:1px solid #2f4e71;background:#2f4e71;color:#fffefa}
+.community-editor-access{margin:8px 0 0;text-align:center;font:10px/1.2 Calibri,"Segoe UI",sans-serif}
+.community-editor-access a{color:#9b9994;text-decoration:none}
+@media(max-width:560px){.community-auth-nav{gap:5px}.community-auth-nav a{min-height:32px;padding:0 8px;font-size:10.5px}}
 </style>`;
+
+const COMMUNITY_ROUTES = new Set([
+  '/uye-ol/','/oturum-ac/','/hesabim/','/parola-yenile/','/uyelik-aydinlatma/',
+  '/en/sign-up/','/en/sign-in/','/en/account/','/en/reset-password/','/en/membership-notice/'
+]);
 
 const EDITABLE_ROUTES = new Map([
   ['/yayin-notu/', ['publication-note', 'tr']],
@@ -107,9 +96,34 @@ function applyEditorShortcut(html, authenticated, lang) {
   );
 }
 
+function communityNav(lang) {
+  const tr = lang !== 'en';
+  return `<nav class="community-auth-nav" data-community-nav data-lang="${tr ? 'tr' : 'en'}" aria-label="${tr ? 'Üyelik' : 'Membership'}"><a class="community-login" href="${tr ? '/oturum-ac/' : '/en/sign-in/'}">${tr ? 'Oturum Aç' : 'Sign in'}</a><a class="community-signup" href="${tr ? '/uye-ol/' : '/en/sign-up/'}">${tr ? 'Üye Ol' : 'Join'}</a></nav>`;
+}
+
+function applyCommunityControls(html, editorAuthenticated, lang) {
+  const nav = communityNav(lang);
+  const editorSpan = /<span data-nosnippet>\s*<a class="preview-editor-link"[^>]*>[^<]*<\/a>\s*<\/span>/i;
+  let result;
+  if (editorAuthenticated) {
+    result = html.replace(editorSpan, match => `${nav}${match}`);
+  } else {
+    result = html.replace(editorSpan, nav);
+    const label = lang === 'en' ? 'Editor' : 'Editör';
+    if (!result.includes('community-editor-access')) {
+      result = result.replace('</footer>', `<p class="community-editor-access" data-nosnippet><a href="/editor/">${label}</a></p></footer>`);
+    }
+  }
+  if (!result.includes('/assets/community-nav.js')) {
+    result = result.replace('</body>', '<script src="/assets/community-nav.js" defer></script>\n<script src="/assets/community-dictionary.js" defer></script>\n</body>');
+  }
+  return result;
+}
+
 function applyDictionaryVisualPolish(html, authenticated = false, lang = 'tr') {
   let cleaned = stripInstallLinks(html);
   cleaned = applyEditorShortcut(cleaned, authenticated, lang);
+  cleaned = applyCommunityControls(cleaned, authenticated, lang);
   if (cleaned.includes('id="ats-visual-polish"')) return cleaned;
   return cleaned.replace('</head>', `${DICTIONARY_VISUAL_POLISH}\n</head>`);
 }
@@ -117,10 +131,8 @@ function applyDictionaryVisualPolish(html, authenticated = false, lang = 'tr') {
 async function dictionaryAssetRequest(context, pathname, lang, extraHeaders = {}) {
   const response = await assetRequest(context, pathname, extraHeaders);
   if (context.request.method === 'HEAD' || !response.ok) return response;
-
   const contentType = response.headers.get('Content-Type') || '';
   if (!contentType.includes('text/html')) return response;
-
   const authenticated = await hasEditorSession(context);
   const html = applyDictionaryVisualPolish(await response.text(), authenticated, lang);
   const headers = new Headers(response.headers);
@@ -135,15 +147,7 @@ function unavailable(type = 'text/html; charset=utf-8') {
   let body = '<!doctype html><html lang="tr"><meta charset="utf-8"><meta name="robots" content="noindex,follow"><title>Geçici olarak kullanılamıyor</title><p>Hizmet kısa süre içinde yeniden denenecektir.</p></html>';
   if (type.startsWith('application/json')) body = JSON.stringify({ ok: false, error: 'service_unavailable' });
   if (type.startsWith('application/xml')) body = '<?xml version="1.0" encoding="UTF-8"?><error>service_unavailable</error>';
-  return new Response(body, {
-    status: 503,
-    headers: {
-      'Content-Type': type,
-      'Cache-Control': 'no-store',
-      'Retry-After': '300',
-      'X-Robots-Tag': 'noindex, follow'
-    }
-  });
+  return new Response(body, { status: 503, headers: { 'Content-Type': type, 'Cache-Control': 'no-store', 'Retry-After': '300', 'X-Robots-Tag': 'noindex, follow' } });
 }
 
 export async function onRequest(context) {
@@ -162,23 +166,20 @@ export async function onRequest(context) {
     return redirect(url, canonicalDirectory, 301);
   }
 
-  if (getOrHead && (path === '/dictionary-d1-preview' || path === '/dictionary-d1-preview.html')) {
-    return redirect(url, '/', 301);
-  }
-  if (getOrHead && (path === '/dictionary-d1-preview-en' || path === '/dictionary-d1-preview-en.html')) {
-    return redirect(url, '/en/', 301);
-  }
+  if (getOrHead && (path === '/dictionary-d1-preview' || path === '/dictionary-d1-preview.html')) return redirect(url, '/', 301);
+  if (getOrHead && (path === '/dictionary-d1-preview-en' || path === '/dictionary-d1-preview-en.html')) return redirect(url, '/en/', 301);
 
   const legacyTarget = LEGACY_REDIRECTS.get(path);
   if (getOrHead && legacyTarget) return redirect(url, legacyTarget, 301);
 
   if (getOrHead && !path.endsWith('/')) {
     const slashPath = `${path}/`;
-    if (EDITABLE_ROUTES.has(slashPath) || slashPath === '/en/' || slashPath === '/terimler/' || slashPath === '/en/terms/' || slashPath === '/editor/') {
+    if (EDITABLE_ROUTES.has(slashPath) || COMMUNITY_ROUTES.has(slashPath) || slashPath === '/en/' || slashPath === '/terimler/' || slashPath === '/en/terms/' || slashPath === '/editor/') {
       return redirect(url, slashPath, 301);
     }
   }
 
+  if (path.startsWith('/api/account/')) return handleCommunityApi(context, path);
   if (path.startsWith('/api/editor/')) return handleEditorApi(context, path);
 
   const publicPageApi = path.match(/^\/api\/site-pages\/([^/]+)$/);
@@ -195,13 +196,8 @@ export async function onRequest(context) {
     return assetRequest(context, '/editor-panel-private');
   }
 
-  if (getOrHead && path === '/') {
-    return dictionaryAssetRequest(context, '/dictionary-d1-preview', 'tr', url.searchParams.has('q') ? SEARCH_NOINDEX : {});
-  }
-
-  if (getOrHead && path === '/en/') {
-    return dictionaryAssetRequest(context, '/dictionary-d1-preview-en', 'en', url.searchParams.has('q') ? SEARCH_NOINDEX : {});
-  }
+  if (getOrHead && path === '/') return dictionaryAssetRequest(context, '/dictionary-d1-preview', 'tr', url.searchParams.has('q') ? SEARCH_NOINDEX : {});
+  if (getOrHead && path === '/en/') return dictionaryAssetRequest(context, '/dictionary-d1-preview-en', 'en', url.searchParams.has('q') ? SEARCH_NOINDEX : {});
 
   const editableRoute = EDITABLE_ROUTES.get(path);
   if (getOrHead && editableRoute) {
@@ -214,7 +210,6 @@ export async function onRequest(context) {
     if (!context.env.DB) return unavailable();
     return renderTermsIndex(context.env.DB, 'tr');
   }
-
   if (getOrHead && path === '/en/terms/') {
     if (!context.env.DB) return unavailable();
     return renderTermsIndex(context.env.DB, 'en');
@@ -226,7 +221,6 @@ export async function onRequest(context) {
     if (!context.env.DB) return unavailable();
     return renderTermPage(context.env.DB, decodeURIComponent(trTerm[1]), 'tr');
   }
-
   const enTerm = path.match(/^\/en\/term\/([^/]+)(\/?)$/);
   if (getOrHead && enTerm) {
     if (!enTerm[2]) return redirect(url, `/en/term/${enTerm[1]}/`, 301);
