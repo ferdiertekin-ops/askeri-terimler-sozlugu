@@ -16,9 +16,27 @@ Bu özellik, Askerî Terimler Sözlüğü'nün açık erişim ilkesini değişti
 - Editör için salt-okunur Topluluk paneli
 - Üyelik ve editör kimlik doğrulaması birbirinden tamamen ayrıdır
 
+## Üretim kill switch'i
+
+Üyelik kodunun repoda ve canlı deploy içinde bulunması, üyeliğin otomatik olarak etkinleşmesi anlamına gelmez.
+
+Üretimde üyelik ancak aşağıdaki değişken ayrıca açıkça tanımlanırsa görünür ve API yazma işlemleri kabul edilir:
+
+- `COMMUNITY_FEATURE_ENABLED=true`
+
+Bu bayrak kapalı veya tanımsızken:
+
+- ana sözlükte `Oturum Aç / Üye Ol` bağlantıları gösterilmez,
+- üyelik API'leri kişisel veri kabul etmez,
+- bildirim e-postaları gönderilmez,
+- editör Topluluk paneli açılmaz,
+- `/api/account/config` üyeliği `registrationReady:false` olarak bildirir.
+
+Bayrağın tek başına açılması da yeterli değildir. D1, güvenlik secret'ı, Turnstile ve e-posta yapılandırmasının tamamı hazır değilse sistem yine kapalı kalır.
+
 ## D1 migrasyonları
 
-Canlıya geçmeden önce önce ayrı bir Preview/Test D1 üzerinde, sonra üretim D1 üzerinde sırasıyla uygulanmalıdır:
+Etkinleştirmeden önce ayrı bir Preview/Test D1 üzerinde, sonra üretim D1 üzerinde sırasıyla uygulanmalıdır:
 
 1. `migrations/20260721_community_membership.sql`
 2. `migrations/20260721_community_password_reset.sql`
@@ -29,8 +47,9 @@ Migrasyonlar mevcut `terms` veya editör tablolarına dokunmaz; yalnız `communi
 
 Aşağıdaki değerler kod deposuna yazılmamalıdır.
 
-### Üyelik güvenliği
+### Özellik bayrağı ve üyelik güvenliği
 
+- `COMMUNITY_FEATURE_ENABLED=true` — yalnız bütün teknik ve hukukî kapılar tamamlandıktan sonra
 - `COMMUNITY_SECURITY_SECRET` — en az 32 karakterlik güçlü, rastgele secret
 - `TURNSTILE_SITE_KEY`
 - `TURNSTILE_SECRET_KEY` — secret olarak saklanmalı
@@ -41,7 +60,7 @@ Aşağıdaki değerler kod deposuna yazılmamalıdır.
 - `CF_EMAIL_API_TOKEN` — Cloudflare Email Sending için mümkün olan en dar yetkili API token
 - `COMMUNITY_EMAIL_FROM` — örn. `uyelik@askeriterimlersozlugu.com`
 
-E-posta alan adı Cloudflare Email Sending tarafında doğrulanmalı ve gerekli SPF/DKIM kayıtları tamamlanmalıdır.
+E-posta alan adı Cloudflare Email Sending tarafında doğrulanmalı ve gerekli DNS kimlik doğrulama kayıtları tamamlanmalıdır.
 
 ## Turnstile ve CSP
 
@@ -52,13 +71,15 @@ Sitenin genel Content Security Policy başlığı Turnstile için yalnız gerekl
 
 Bunun dışındaki mevcut CSP sınırlamaları korunur. `community-check` bu iki izni otomatik olarak denetler.
 
-## Canlıya geçmeden önce zorunlu hukukî kapı
+## D1 veri konumu ve zorunlu hukukî kapı
 
-Üyelik e-posta ve profil verisi topladığı için, Cloudflare altyapısında kişisel verilerin yurt dışında işlenmesi/aktarılması ihtimali bulunmaktadır.
+Cloudflare D1'in güncel yargı alanı kısıtları Türkiye seçeneği sunmamaktadır; desteklenen jurisdiction seçenekleri `eu` ve `fedramp` ile sınırlıdır ve bu tercih veritabanı oluşturulurken yapılır. Bu nedenle D1 üzerinde üyelik verisi tutulması, Türkiye bakımından yurt dışı aktarım değerlendirmesini ortadan kaldırmaz.
 
-**Üretim üyeliği, 6698 sayılı Kanun'un 9. maddesine uygun yurt dışına veri aktarım mekanizması somut olarak doğrulanıp tesis edilmeden etkinleştirilmemelidir.** Gerekli durumda standart sözleşme veya uygulanabilir başka uygun güvence mekanizması kullanılmalı ve ilgili bildirim yükümlülükleri yerine getirilmelidir.
+**Üretim üyeliği, 6698 sayılı Kanun'un 9. maddesine uygun yurt dışına veri aktarım mekanizması somut olarak doğrulanıp tesis edilmeden etkinleştirilmemelidir.** Gerekli durumda KVKK kapsamındaki standart sözleşme veya uygulanabilir başka uygun güvence mekanizması kullanılmalı ve ilgili bildirim yükümlülükleri yerine getirilmelidir.
 
-Bu nedenle bu özellik, teknik olarak hazır olsa bile söz konusu hukukî kontrol tamamlanıncaya kadar pilot/preview durumunda tutulmalıdır.
+Cloudflare'ın genel Data Processing Addendum'ındaki AB/İngiltere standart sözleşme hükümleri, Türkiye'deki KVKK standart sözleşmesi yerine kendiliğinden geçmez. Türkiye bakımından uygulanabilir mekanizma ayrıca kurulmalıdır.
+
+Bu nedenle `COMMUNITY_FEATURE_ENABLED` hukukî kontrol tamamlanıncaya kadar kapalı tutulur.
 
 ## KVKK tasarım ilkeleri
 
@@ -75,24 +96,37 @@ Bu nedenle bu özellik, teknik olarak hazır olsa bile söz konusu hukukî kontr
 1. Preview D1 binding'ini bağla ve iki migrasyonu uygula.
 2. Preview için Turnstile anahtarlarını ekle; preview alan adını Turnstile host listesinde doğrula.
 3. E-posta gönderim ayarlarını ekle.
-4. `/uye-ol/` üzerinden test hesabı oluştur.
-5. Doğrulama e-postasını aç ve hesabı etkinleştir.
-6. `/oturum-ac/` ile giriş yap.
-7. Bir maddeyi favoriye ekle ve `/hesabim/` içinde doğrula.
-8. Katkı/düzeltme önerisi gönder; editör oturumunda `/editor/community/` panelinde göründüğünü doğrula.
-9. Bildirim tercihlerini aç/kapat ve `community_consents` kaydını denetle.
-10. Parola sıfırlama ve kalıcı hesap silme akışlarını test et.
-11. Mobil görünümü ve TR/EN sayfalarını kontrol et.
-12. Ancak bütün teknik ve hukukî kontroller tamamlandıktan sonra `main` ile birleştir.
+4. Preview ortamında `COMMUNITY_FEATURE_ENABLED=true` yap.
+5. `/uye-ol/` üzerinden test hesabı oluştur.
+6. Doğrulama e-postasını aç ve hesabı etkinleştir.
+7. `/oturum-ac/` ile giriş yap.
+8. Bir maddeyi favoriye ekle ve `/hesabim/` içinde doğrula.
+9. Katkı/düzeltme önerisi gönder; editör oturumunda `/editor/community/` panelinde göründüğünü doğrula.
+10. Bildirim tercihlerini aç/kapat ve `community_consents` kaydını denetle.
+11. Parola sıfırlama ve kalıcı hesap silme akışlarını test et.
+12. Mobil görünümü ve TR/EN sayfalarını kontrol et.
+13. Türkiye bakımından yurt dışı aktarım mekanizmasını tamamla.
+14. Ancak bütün teknik ve hukukî kontroller tamamlandıktan sonra üretimde `COMMUNITY_FEATURE_ENABLED=true` yap.
+
+## TTS özellik bayrağı
+
+Türkçe/Osmanlıca seslendirme kodu aynı yayında bulunabilir. Ses düğmeleri ancak şu şartlar birlikte sağlanırsa görünür:
+
+- `TTS_FEATURE_ENABLED=true`
+- `GOOGLE_TTS_CLIENT_EMAIL` tanımlı
+- `GOOGLE_TTS_PRIVATE_KEY` tanımlı
+
+İsteğe bağlı olarak `GOOGLE_TTS_VOICE` ve `GOOGLE_CLOUD_PROJECT_ID` tanımlanabilir. Bayrak kapalıyken sözlüğün mevcut seslendirme davranışı bozulmaz ve yeni TTS istemcisi sayfaya enjekte edilmez.
 
 ## Otomatik kontroller
 
 PR üzerinde `.github/workflows/community-check.yml` çalışır:
 
-- yeni JavaScript dosyalarının sözdizimi
+- üyelik ve TTS JavaScript dosyalarının sözdizimi
 - üyelik sayfalarında yinelenen `id` kontrolü
 - noindex kontrolü
 - Turnstile CSP izinleri
-- temel güvenlik/entegrasyon kontrolleri
+- açık erişim ve özellik bayrağı entegrasyon kontrolleri
+- Roma rakamı / IPA TTS altyapısının temel statik kontrolleri
 - iki D1 migrasyonunun gerçek SQLite motorunda uygulanabilirliği
 - statik build smoke check
