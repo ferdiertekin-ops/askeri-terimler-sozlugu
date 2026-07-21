@@ -1,12 +1,16 @@
-name: Community membership checks
+name: Release feature checks
 
 on:
   pull_request:
     paths:
       - 'functions/_lib/community.js'
+      - 'functions/_lib/tts.js'
       - 'functions/_middleware.js'
+      - 'functions/api/tts.js'
+      - 'functions/api/tts/**'
       - 'assets/community-*.js'
       - 'assets/community-*.css'
+      - 'assets/ats-tr-tts.js'
       - 'uye-ol/**'
       - 'oturum-ac/**'
       - 'hesabim/**'
@@ -20,6 +24,7 @@ on:
       - 'editor-community-private.html'
       - 'migrations/20260721_community_*.sql'
       - 'scripts/check-community.mjs'
+      - '_headers'
       - '.github/workflows/community-check.yml'
   workflow_dispatch:
 
