@@ -6,6 +6,7 @@ const AUTHOR_NAME = 'Ferdi Ertekin';
 const SITE_NAME_TR = 'Askerî Terimler Sözlüğü';
 const SITE_NAME_EN = 'Military Terms Dictionary';
 const NOINDEX_PAGE_KEYS = new Set(['privacy', 'cookies', 'terms-of-use', 'contact']);
+const CLOUDFLARE_WEB_ANALYTICS = `<!-- Cloudflare Web Analytics --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"1b08f2d1b3634f90bd6c9eb51467970e"}'></script><!-- End Cloudflare Web Analytics -->`;
 
 const HTML_HEADERS = {
   'Content-Type': 'text/html; charset=utf-8',
@@ -174,7 +175,9 @@ body{background:radial-gradient(ellipse at 50% -8%,rgba(255,255,255,.98) 0,rgba(
 <nav class="nav" aria-label="${tr ? 'Site bağlantıları' : 'Site navigation'}">${siteNav(lang)}</nav>
 <main>${content}</main>
 <footer>© 2026 ${escapeHtml(dictionaryName)} · 1876–1918</footer>
-</div></body></html>`;
+</div>
+${CLOUDFLARE_WEB_ANALYTICS}
+</body></html>`;
 }
 
 async function publishedTerms(db) {
