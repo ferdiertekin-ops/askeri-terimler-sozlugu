@@ -27,6 +27,8 @@ The dictionary consists of terms compiled during archival research, particularly
 
 The dictionary is continuously updated as new sources are identified. Term equivalents should be assessed together with the context and date of the relevant document.`;
 
+let fullPublicationMigrationPromise = null;
+
 const DICTIONARY_VISUAL_POLISH = `
 <style id="ats-visual-polish">
 :root{--claude-canvas:#f8f8f6;--claude-surface:#ffffff;--ats-navy:#2f4e71;--ats-navy-deep:#20395a}
@@ -137,6 +139,58 @@ function releaseBody(pageKey, lang = 'tr') {
   return '';
 }
 
+function legacyReleaseText(value) {
+  return /\bbeta\b|\btrial\b|\btest\)?\s+version\b|1880[–-]1918|yapım aşamas|geliştirilme aşamas|under (?:active )?development/i.test(String(value || ''));
+}
+
+async function ensureFullPublicationPages(db) {
+  if (!db) return;
+  if (!fullPublicationMigrationPromise) {
+    fullPublicationMigrationPromise = (async () => {
+      const rows = await db.prepare(`
+        SELECT page_key, title_tr, title_en, body_tr, body_en
+        FROM site_pages
+        WHERE page_key IN ('home-notice','publication-note')
+      `).all();
+      const byKey = new Map((rows.results || []).map(row => [row.page_key, row]));
+      const definitions = [
+        { key:'home-notice', titleTr:'Ana sayfa alt açıklaması', titleEn:'Home-page notice', bodyTr:FULL_RELEASE_HOME_NOTICE_TR, bodyEn:FULL_RELEASE_HOME_NOTICE_EN },
+        { key:'publication-note', titleTr:'Yayın Notu', titleEn:'Publication Note', bodyTr:FULL_RELEASE_PUBLICATION_TR, bodyEn:FULL_RELEASE_PUBLICATION_EN }
+      ];
+      const statements = [];
+      for (const definition of definitions) {
+        const current = byKey.get(definition.key);
+        const currentText = `${current?.body_tr || ''}\n${current?.body_en || ''}`;
+        if (current && !legacyReleaseText(currentText)) continue;
+        statements.push(db.prepare(`
+          INSERT INTO site_pages (page_key, title_tr, title_en, body_tr, body_en, updated_at)
+          VALUES (?1, ?2, ?3, ?4, ?5, strftime('%Y-%m-%dT%H:%M:%fZ','now'))
+          ON CONFLICT(page_key) DO UPDATE SET
+            title_tr=excluded.title_tr, title_en=excluded.title_en,
+            body_tr=excluded.body_tr, body_en=excluded.body_en, updated_at=excluded.updated_at
+        `).bind(
+          definition.key,
+          current?.title_tr || definition.titleTr,
+          current?.title_en || definition.titleEn,
+          definition.bodyTr,
+          definition.bodyEn
+        ));
+      }
+      if (statements.length) {
+        statements.push(db.prepare(`
+          INSERT INTO audit_log (action, entity_type, entity_id, request_id, metadata_json)
+          VALUES ('full_publication_cleanup', 'site', 'publication-status', 'release-2026-07', ?1)
+        `).bind(JSON.stringify({ pages: statements.length, scope: 'beta-to-full-publication', period: '1876–1918' })));
+        await db.batch(statements);
+      }
+    })().catch(error => {
+      console.error('full_publication_cleanup_failed', error);
+      fullPublicationMigrationPromise = null;
+    });
+  }
+  return fullPublicationMigrationPromise;
+}
+
 function applyFullPublicationCleanup(html, lang = 'tr') {
   const tr = lang !== 'en';
   const homeNotice = releaseBody('home-notice', lang);
@@ -145,34 +199,19 @@ function applyFullPublicationCleanup(html, lang = 'tr') {
     .replace(/<([a-z][a-z0-9]*)\b[^>]*class="[^"]*(?:preview-beta|hero-beta|beta-label)[^"]*"[^>]*>[\s\S]*?<\/\1>\s*/gi, '')
     .replace(/<p id="editableHomeNotice">[\s\S]*?<\/p>/i, `<p id="editableHomeNotice">${homeNotice}</p>`)
     .replace(/© 2026\s*·\s*Beta(?:\s*\(Deneme\))?\s*sürümü\s*·\s*/gi, '© 2026 · ')
-    .replace(/© 2026\s*·\s*Beta version\s*·\s*/gi, '© 2026 · ')
+    .replace(/© 2026\s*·\s*Beta(?:\s*\(test\))?\s*version\s*·\s*/gi, '© 2026 · ')
     .replace(/\[Beta\/Deneme Sürümü\]/gi, '')
     .replace(/\[Beta\/Trial Version\]/gi, '')
     .replace(/Bu sözlük, kişisel ve mütevazı bir çabanın ürünü olup hâlen geliştirilmektedir\./gi, 'Bu sözlük sürekli geliştirilen ve yeni kaynaklar doğrultusunda güncellenen çevrimiçi bir akademik başvuru kaynağıdır.')
+    .replace(/Bu sözlük hâlen geliştirilme aşamasındadır\./gi, 'Bu sözlük sürekli geliştirilen ve yeni kaynaklar doğrultusunda güncellenen çevrimiçi bir akademik başvuru kaynağıdır.')
     .replace(/Site, beta \(deneme\) sürümündedir\./gi, 'Sözlük sürekli güncellenmektedir; madde karşılıkları ilgili belgenin bağlamı ve mevcut kaynaklarla birlikte değerlendirilmelidir.')
+    .replace(/This dictionary is still under development\./gi, 'The Military Terms Dictionary is a continuously developed online academic reference resource.')
     .replace(/The site is in beta \(trial\) version\./gi, 'The dictionary is continuously updated as new sources are identified. Term equivalents should be assessed together with the context and date of the relevant document.')
+    .replace(/The website is currently in beta \(test\) version\./gi, 'The dictionary is continuously updated as new sources are identified. Term equivalents should be assessed together with the context and date of the relevant document.')
     .replace(/This dictionary is in beta\/trial stage\./gi, 'This dictionary is continuously updated.');
   if (tr) cleaned = cleaned.replace(/Beta\s*\(Deneme\)\s*Sürümü/gi, '');
-  else cleaned = cleaned.replace(/Beta\s*(?:Version|version)/gi, '');
+  else cleaned = cleaned.replace(/Beta\s*(?:\([^)]*\)\s*)?(?:Version|version)/gi, '');
   return cleaned;
-}
-
-async function applyFullPublicationPageJson(response, pageKey) {
-  if (!response || !response.ok || !['home-notice', 'publication-note'].includes(pageKey)) return response;
-  try {
-    const data = await response.json();
-    if (!data?.page) return response;
-    data.page.bodyTr = releaseBody(pageKey, 'tr');
-    data.page.bodyEn = releaseBody(pageKey, 'en');
-    const headers = new Headers(response.headers);
-    headers.delete('Content-Length');
-    headers.delete('Content-Encoding');
-    headers.delete('ETag');
-    headers.set('Cache-Control', 'no-store');
-    return new Response(JSON.stringify(data), { status: response.status, statusText: response.statusText, headers });
-  } catch {
-    return response;
-  }
 }
 
 function redirect(url, pathname, status = 308) {
@@ -363,6 +402,11 @@ export async function onRequest(context) {
     if (EDITABLE_ROUTES.has(slashPath) || COMMUNITY_ROUTES.has(slashPath) || slashPath==='/en/' || slashPath==='/terimler/' || slashPath==='/en/terms/' || slashPath==='/editor/') return redirect(url,slashPath,301);
   }
 
+  if (getOrHead && context.env.DB && (
+      path==='/' || path==='/en/' || path==='/yayin-notu/' || path==='/en/publication-note/' || path.startsWith('/api/site-pages/'))) {
+    await ensureFullPublicationPages(context.env.DB);
+  }
+
   if (path === '/api/account/config') {
     if (communityOn) return handleCommunityApi(context,path);
     return json({
@@ -385,9 +429,7 @@ export async function onRequest(context) {
   const publicPageApi = path.match(/^\/api\/site-pages\/([^/]+)$/);
   if (getOrHead && publicPageApi) {
     if (!context.env.DB) return unavailable('application/json; charset=utf-8');
-    const pageKey = decodeURIComponent(publicPageApi[1]);
-    const rendered = await renderEditablePageJson(context.env.DB,pageKey);
-    return applyFullPublicationPageJson(rendered,pageKey);
+    return renderEditablePageJson(context.env.DB,decodeURIComponent(publicPageApi[1]));
   }
 
   const editorPanelRequest = path==='/editor/panel' || path==='/editor/panel/' || path==='/editor/panel/index.html';
