@@ -6,6 +6,27 @@ import { renderEditablePage, renderEditablePageJson, renderRobots, renderSitemap
 const CANONICAL_HOST = 'askeriterimlersozlugu.com';
 const SEARCH_NOINDEX = { 'X-Robots-Tag': 'noindex, follow' };
 
+const FULL_RELEASE_HOME_NOTICE_TR = `TERİMLER; 1876–1918 YILLARI ARASINDA RESMÎ İNGİLİZ BELGELERİNDE GEÇEN KURUM, RÜTBE VE YER ADLARININ KENARINA DÜŞÜLEN TÜRKÇE KARŞILIKLAR İLE MUHTELİF RAPORLARDA DAĞINIK HÂLDE BULUNAN İNGİLİZCE-TÜRKÇE KELİMELER ESAS ALINARAK, DÖNEMİN OSMANLI KURUM VE RÜTBE KARŞILIKLARIYLA EŞLEŞTİRİLEREK DERLENMEKTEDİR.
+
+SÖZLÜKTE TEKİL KARŞILIKLARDAN ZİYADE, SÖZ KONUSU DÖNEMİN İNGİLİZ BELGELERİNDE KAYDA GEÇMİŞ BİRLEŞİK TERİM VE TABİRLERE YER VERİLMEKTEDİR. İÇERİK YALNIZCA ASKERÎ TERİMLERLE SINIRLI OLMAYIP İDARÎ, COĞRAFÎ, LİSANÎ VE DİNÎ BİRLEŞİK TERİM VE İFADELERİ DE KAPSAMAKTADIR.
+
+SÖZLÜK SÜREKLİ GÜNCELLENMEKTEDİR. OSMANLICA VE TÜRKÇE KARŞILIKLAR, İLGİLİ BELGENİN BAĞLAMI VE DİĞER KAYNAKLARLA BİRLİKTE DEĞERLENDİRİLMELİDİR.`;
+const FULL_RELEASE_HOME_NOTICE_EN = `Entries are compiled from official British documents dated 1876–1918 and matched, where possible, with Ottoman institutional, rank, and period terminology. The dictionary includes compound terms and expressions found in contemporary documents as well as selected administrative, geographical, linguistic, and religious terminology.
+
+The dictionary is continuously updated. Ottoman and modern Turkish equivalents should be assessed together with the context of the relevant document and other available sources.`;
+const FULL_RELEASE_PUBLICATION_TR = `Bu sözlük sürekli geliştirilen ve yeni kaynaklar doğrultusunda güncellenen çevrimiçi bir akademik başvuru kaynağıdır. Askerî Terimler Sözlüğü; 1876–1918 dönemine ait askerî tarih, teşkilât, rütbe, idarî yapı ve belge terminolojisine odaklanmaktadır. Bu döneme ait İngiliz belgelerinde geçen pek çok terimin Türkçede yerleşik bir karşılığı bulunmadığından, maddeler tarihsel bağlam ve kaynak kullanımı gözetilerek hazırlanmaktadır.
+
+Çalışmanın amacı, 1876–1918 dönemini kapsayan çevrimiçi bir askerî terimler sözlüğünü alana kazandırmak ve askerî terminolojide tutarlı, denetlenebilir bir başvuru zemini oluşturmaktır.
+
+Maddeler, başta İngiliz askerî istihbarat raporları olmak üzere arşiv belgeleri ve dönem kaynakları üzerinde yürütülen araştırmalar sırasında derlenmektedir. Her madde; İngilizce terimi, Osmanlıca ya da dönem karşılığını, günümüz Türkçesindeki kullanımını ve gerektiğinde kısa bir editör notunu bir arada sunar.
+
+Sözlük sürekli güncellenmektedir; madde karşılıkları ilgili belgenin bağlamı ve mevcut kaynaklarla birlikte değerlendirilmelidir.`;
+const FULL_RELEASE_PUBLICATION_EN = `The Military Terms Dictionary is a continuously developed online academic reference resource focused on military history, organization, ranks, administrative structures, and document terminology in the period 1876–1918.
+
+The dictionary consists of terms compiled during archival research, particularly in British military intelligence reports and other period sources. Each entry presents the English term together with its Ottoman or period equivalent, its modern Turkish equivalent, and, where necessary, an editor’s note.
+
+The dictionary is continuously updated as new sources are identified. Term equivalents should be assessed together with the context and date of the relevant document.`;
+
 const DICTIONARY_VISUAL_POLISH = `
 <style id="ats-visual-polish">
 :root{--claude-canvas:#f8f8f6;--claude-surface:#ffffff;--ats-navy:#2f4e71;--ats-navy-deep:#20395a}
@@ -109,6 +130,51 @@ function ttsEnabled(env) {
   return enabled(env.TTS_FEATURE_ENABLED) && Boolean(env.GOOGLE_TTS_CLIENT_EMAIL && env.GOOGLE_TTS_PRIVATE_KEY);
 }
 
+function releaseBody(pageKey, lang = 'tr') {
+  const tr = lang !== 'en';
+  if (pageKey === 'home-notice') return tr ? FULL_RELEASE_HOME_NOTICE_TR : FULL_RELEASE_HOME_NOTICE_EN;
+  if (pageKey === 'publication-note') return tr ? FULL_RELEASE_PUBLICATION_TR : FULL_RELEASE_PUBLICATION_EN;
+  return '';
+}
+
+function applyFullPublicationCleanup(html, lang = 'tr') {
+  const tr = lang !== 'en';
+  const homeNotice = releaseBody('home-notice', lang);
+  let cleaned = String(html || '')
+    .replace(/1880[–-]1918/g, '1876–1918')
+    .replace(/<([a-z][a-z0-9]*)\b[^>]*class="[^"]*(?:preview-beta|hero-beta|beta-label)[^"]*"[^>]*>[\s\S]*?<\/\1>\s*/gi, '')
+    .replace(/<p id="editableHomeNotice">[\s\S]*?<\/p>/i, `<p id="editableHomeNotice">${homeNotice}</p>`)
+    .replace(/© 2026\s*·\s*Beta(?:\s*\(Deneme\))?\s*sürümü\s*·\s*/gi, '© 2026 · ')
+    .replace(/© 2026\s*·\s*Beta version\s*·\s*/gi, '© 2026 · ')
+    .replace(/\[Beta\/Deneme Sürümü\]/gi, '')
+    .replace(/\[Beta\/Trial Version\]/gi, '')
+    .replace(/Bu sözlük, kişisel ve mütevazı bir çabanın ürünü olup hâlen geliştirilmektedir\./gi, 'Bu sözlük sürekli geliştirilen ve yeni kaynaklar doğrultusunda güncellenen çevrimiçi bir akademik başvuru kaynağıdır.')
+    .replace(/Site, beta \(deneme\) sürümündedir\./gi, 'Sözlük sürekli güncellenmektedir; madde karşılıkları ilgili belgenin bağlamı ve mevcut kaynaklarla birlikte değerlendirilmelidir.')
+    .replace(/The site is in beta \(trial\) version\./gi, 'The dictionary is continuously updated as new sources are identified. Term equivalents should be assessed together with the context and date of the relevant document.')
+    .replace(/This dictionary is in beta\/trial stage\./gi, 'This dictionary is continuously updated.');
+  if (tr) cleaned = cleaned.replace(/Beta\s*\(Deneme\)\s*Sürümü/gi, '');
+  else cleaned = cleaned.replace(/Beta\s*(?:Version|version)/gi, '');
+  return cleaned;
+}
+
+async function applyFullPublicationPageJson(response, pageKey) {
+  if (!response || !response.ok || !['home-notice', 'publication-note'].includes(pageKey)) return response;
+  try {
+    const data = await response.json();
+    if (!data?.page) return response;
+    data.page.bodyTr = releaseBody(pageKey, 'tr');
+    data.page.bodyEn = releaseBody(pageKey, 'en');
+    const headers = new Headers(response.headers);
+    headers.delete('Content-Length');
+    headers.delete('Content-Encoding');
+    headers.delete('ETag');
+    headers.set('Cache-Control', 'no-store');
+    return new Response(JSON.stringify(data), { status: response.status, statusText: response.statusText, headers });
+  } catch {
+    return response;
+  }
+}
+
 function redirect(url, pathname, status = 308) {
   const target = new URL(url); target.pathname = pathname; return Response.redirect(target.toString(), status);
 }
@@ -193,10 +259,11 @@ async function dictionaryAssetRequest(context, pathname, lang, extraHeaders = {}
   const contentType = response.headers.get('Content-Type') || '';
   if (!contentType.includes('text/html')) return response;
   const authenticated = await hasEditorSession(context);
-  const html = applyDictionaryVisualPolish(await response.text(), authenticated, lang, {
+  let html = applyDictionaryVisualPolish(await response.text(), authenticated, lang, {
     community: communityEnabled(context.env),
     tts: ttsEnabled(context.env)
   });
+  html = applyFullPublicationCleanup(html, lang);
   const headers = new Headers(response.headers);
   headers.delete('Content-Length'); headers.delete('Content-Encoding'); headers.delete('ETag');
   headers.set('Cache-Control', 'no-cache, must-revalidate');
@@ -208,6 +275,8 @@ async function communityRenderedResponse(response, request, env) {
   const contentType = response.headers.get('Content-Type') || '';
   if (!contentType.includes('text/html')) return response;
   let html = await response.text();
+  const lang = new URL(request.url).pathname.startsWith('/en/') ? 'en' : 'tr';
+  html = applyFullPublicationCleanup(html, lang);
   if (communityEnabled(env) && !html.includes('/assets/community-nav.js')) html = html.replace('</body>', '<script src="/assets/community-nav.js" defer></script>\n</body>');
   if (ttsEnabled(env)) html = injectTurkishTtsClient(html);
   const headers = new Headers(response.headers);
@@ -316,7 +385,9 @@ export async function onRequest(context) {
   const publicPageApi = path.match(/^\/api\/site-pages\/([^/]+)$/);
   if (getOrHead && publicPageApi) {
     if (!context.env.DB) return unavailable('application/json; charset=utf-8');
-    return renderEditablePageJson(context.env.DB,decodeURIComponent(publicPageApi[1]));
+    const pageKey = decodeURIComponent(publicPageApi[1]);
+    const rendered = await renderEditablePageJson(context.env.DB,pageKey);
+    return applyFullPublicationPageJson(rendered,pageKey);
   }
 
   const editorPanelRequest = path==='/editor/panel' || path==='/editor/panel/' || path==='/editor/panel/index.html';
