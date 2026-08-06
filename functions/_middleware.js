@@ -252,7 +252,10 @@ function applyEditorShortcut(html, authenticated, lang) {
   const href = tr ? '/editor/panel/?new=1&return=%2F' : '/editor/panel/?new=1&return=%2Fen%2F';
   const label = tr ? '＋ Yeni madde' : '＋ New entry';
   const title = tr ? 'Yeni sözlük maddesi ekle' : 'Add a new dictionary entry';
-  return html.replace(/<a class="preview-editor-link" href="\/editor\/"[^>]*>[^<]*<\/a>/i, `<a class="preview-editor-link" href="${href}" title="${title}">${label}</a>`);
+  const exportLabel = tr ? '⬇ Dışa aktar' : '⬇ Export';
+  const exportTitle = tr ? 'Sözlük verilerini JSON veya CSV olarak dışa aktar' : 'Export dictionary data as JSON or CSV';
+  const controls = `<a class="preview-editor-link" href="${href}" title="${title}">${label}</a><a class="preview-editor-link" href="/editor/export/" title="${exportTitle}" style="margin-left:8px">${exportLabel}</a>`;
+  return html.replace(/<a class="preview-editor-link" href="\/editor\/"[^>]*>[^<]*<\/a>/i, controls);
 }
 
 function communityNav(lang) {

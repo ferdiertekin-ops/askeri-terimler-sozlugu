@@ -1206,6 +1206,162 @@ async function termItem(context, slug) {
   return methodNotAllowed(['GET', 'PUT', 'DELETE']);
 }
 
+
+function csvCell(value) {
+  const text = value === null || value === undefined
+    ? ''
+    : (typeof value === 'string' ? value : JSON.stringify(value));
+  return `"${String(text).replace(/"/g, '""')}"`;
+}
+
+function exportHeaders(contentType, filename) {
+  return {
+    'Content-Type': contentType,
+    'Content-Disposition': `attachment; filename="${filename}"`,
+    'Cache-Control': 'private, no-store, max-age=0',
+    'X-Content-Type-Options': 'nosniff',
+    'X-Robots-Tag': 'noindex, nofollow, noarchive',
+    'Referrer-Policy': 'no-referrer'
+  };
+}
+
+async function exportDataset(context) {
+  if (!context.env.DB) return json({ ok: false, error: 'database_not_configured' }, { status: 503 });
+  if (context.request.method !== 'GET') return methodNotAllowed(['GET']);
+  const auth = await authorize(context);
+  if (auth.response) return auth.response;
+
+  const id = requestId(context.request);
+  const url = new URL(context.request.url);
+  const format = String(url.searchParams.get('format') || 'json').trim().toLowerCase();
+  if (!['json', 'csv'].includes(format)) {
+    return json({ ok: false, error: 'unsupported_export_format', requestId: id }, { status: 400 });
+  }
+
+  try {
+    const [termRows, variantRows, sourceRows, revisionRows, pageRows, auditRows] = await Promise.all([
+      context.env.DB.prepare(`
+        SELECT id, slug, headword_en, ottoman_period_term, modern_equivalent_tr,
+               category, explanation_tr, explanation_en, status, created_at,
+               updated_at, published_at, version
+        FROM terms
+        ORDER BY headword_en COLLATE NOCASE, id
+      `).all(),
+      context.env.DB.prepare(`
+        SELECT id, term_id, variant, variant_type, language
+        FROM term_variants
+        ORDER BY term_id, id
+      `).all(),
+      context.env.DB.prepare(`
+        SELECT id, term_id, citation, url, source_type, page_reference, sort_order
+        FROM term_sources
+        ORDER BY term_id, sort_order, id
+      `).all(),
+      context.env.DB.prepare(`
+        SELECT id, term_id, revision_no, snapshot_json, change_note, created_at
+        FROM term_revisions
+        ORDER BY term_id, revision_no
+      `).all(),
+      context.env.DB.prepare(`
+        SELECT page_key, title_tr, title_en, body_tr, body_en, updated_at
+        FROM site_pages
+        ORDER BY page_key
+      `).all(),
+      context.env.DB.prepare(`
+        SELECT id, action, entity_type, entity_id, request_id, metadata_json, created_at
+        FROM audit_log
+        ORDER BY id
+      `).all()
+    ]);
+
+    const variants = variantRows.results || [];
+    const sources = sourceRows.results || [];
+    const revisions = revisionRows.results || [];
+    const variantsByTerm = new Map();
+    const sourcesByTerm = new Map();
+    const revisionsByTerm = new Map();
+
+    for (const item of variants) {
+      const list = variantsByTerm.get(item.term_id) || [];
+      list.push(item);
+      variantsByTerm.set(item.term_id, list);
+    }
+    for (const item of sources) {
+      const list = sourcesByTerm.get(item.term_id) || [];
+      list.push(item);
+      sourcesByTerm.set(item.term_id, list);
+    }
+    for (const item of revisions) {
+      const list = revisionsByTerm.get(item.term_id) || [];
+      list.push(item);
+      revisionsByTerm.set(item.term_id, list);
+    }
+
+    const terms = (termRows.results || []).map(term => ({
+      ...term,
+      variants: variantsByTerm.get(term.id) || [],
+      sources: sourcesByTerm.get(term.id) || [],
+      revisions: revisionsByTerm.get(term.id) || []
+    }));
+    const today = new Date().toISOString().slice(0, 10);
+
+    if (format === 'csv') {
+      const columns = [
+        'id', 'slug', 'headword_en', 'ottoman_period_term', 'modern_equivalent_tr',
+        'category', 'explanation_tr', 'explanation_en', 'status', 'created_at',
+        'updated_at', 'published_at', 'version', 'variants_json', 'sources_json',
+        'revisions_json'
+      ];
+      const rows = [columns.map(csvCell).join(',')];
+      for (const term of terms) {
+        const row = {
+          ...term,
+          variants_json: term.variants,
+          sources_json: term.sources,
+          revisions_json: term.revisions
+        };
+        rows.push(columns.map(column => csvCell(row[column])).join(','));
+      }
+      return new Response(`\uFEFF${rows.join('\r\n')}\r\n`, {
+        headers: exportHeaders(
+          'text/csv; charset=utf-8',
+          `askeri-terimler-sozlugu-arastirma-verisi-${today}.csv`
+        )
+      });
+    }
+
+    const payload = {
+      schema: 'ats-d1-export-v1',
+      exported_at: new Date().toISOString(),
+      request_id: id,
+      counts: {
+        terms: terms.length,
+        variants: variants.length,
+        sources: sources.length,
+        revisions: revisions.length,
+        pages: (pageRows.results || []).length,
+        audit_log: (auditRows.results || []).length
+      },
+      terms,
+      site_pages: pageRows.results || [],
+      audit_log: auditRows.results || []
+    };
+    return new Response(JSON.stringify(payload, null, 2), {
+      headers: exportHeaders(
+        'application/json; charset=utf-8',
+        `askeri-terimler-sozlugu-tam-yedek-${today}.json`
+      )
+    });
+  } catch (error) {
+    return json({
+      ok: false,
+      error: 'export_failed',
+      message: String(error?.message || error),
+      requestId: id
+    }, { status: 500 });
+  }
+}
+
 async function sourceSuggestions(context) {
   if (!context.env.DB) return json({ ok: false, error: 'database_not_configured' }, { status: 503 });
   if (context.request.method !== 'GET') return methodNotAllowed(['GET']);
@@ -1314,6 +1470,7 @@ export async function handleEditorApi(context, pathname) {
   if (pathname === '/api/editor/logout') return logout(context);
   if (pathname === '/api/editor/terms') return termsCollection(context);
   if (pathname === '/api/editor/source-suggestions') return sourceSuggestions(context);
+  if (pathname === '/api/editor/export') return exportDataset(context);
   if (pathname === '/api/editor/bibliography-sync') return bibliographySync(context);
   if (pathname === '/api/editor/admiralty-1920-import') return admiralty1920Import(context);
   const termMatch = pathname.match(/^\/api\/editor\/terms\/([^/]+)$/);

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Veriyi dışa aktar · Askerî Terimler Sözlüğü</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<style>
+:root{--bg:#f8f8f6;--paper:#fff;--ink:#1e2732;--muted:#6b6f73;--navy:#2f4e71;--navy-deep:#20395a;--line:#deded8;--brass:#8a6a32}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Cambria,Georgia,serif}.shell{width:min(820px,calc(100% - 28px));margin:auto;padding:20px 0 48px}header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:14px;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font-weight:700}.brand img{width:42px;height:42px}.back{color:var(--navy);text-underline-offset:3px}.card{margin-top:22px;padding:24px;background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 42px -36px rgba(30,39,50,.55)}h1{margin:0 0 8px;color:var(--navy-deep);font-size:30px}.lead{margin:0;color:var(--muted);line-height:1.6}.options{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}.option{display:flex;flex-direction:column;min-height:210px;padding:20px;border:1px solid var(--line);border-radius:12px;background:#fbfbf9}.option h2{margin:0 0 8px;color:var(--navy);font-size:21px}.option p{margin:0;color:var(--muted);line-height:1.55}.download{margin-top:auto;display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px 14px;border:1px solid var(--navy);border-radius:9px;background:var(--navy);color:#fff;text-decoration:none;font-weight:700}.download:hover{background:var(--navy-deep)}.note{margin-top:18px;padding-top:15px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;line-height:1.55}.status{min-height:22px;margin-top:14px;color:var(--brass);font-weight:700}@media(max-width:680px){.options{grid-template-columns:1fr}.card{padding:18px}}
+</style>
+</head>
+<body><div class="shell">
+<header><a class="brand" href="/"><img src="/ats-logo-2026.svg" alt="ATS"><span>Askerî Terimler Sözlüğü · Editör</span></a><a class="back" href="/editor/panel/">Editör paneline dön</a></header>
+<main class="card">
+  <h1>Veriyi dışa aktar</h1>
+  <p class="lead">Dışa aktarma yalnız açık editör oturumunda çalışır. Veritabanında herhangi bir değişiklik yapmaz.</p>
+  <div class="options">
+    <section class="option">
+      <h2>Tam JSON yedeği</h2>
+      <p>Maddeler, durumlar, kaynaklar, varyantlar, revizyonlar, sayfa metinleri ve denetim kayıtları yapılandırılmış biçimde korunur.</p>
+      <a class="download" href="/api/editor/export?format=json">JSON dosyasını indir</a>
+    </section>
+    <section class="option">
+      <h2>Araştırma CSV’si</h2>
+      <p>Her madde tek satırda verilir. Kaynak, varyant ve revizyon alanları kayıp oluşmaması için JSON dizileri hâlinde saklanır. Excel ile açılabilir.</p>
+      <a class="download" href="/api/editor/export?format=csv">CSV dosyasını indir</a>
+    </section>
+  </div>
+  <p class="note">Bu çıktı topluluk üyelerinin hesap veya parola verilerini içermez; yalnız sözlük ve editoryal kayıt tablolarını kapsar.</p>
+  <p id="status" class="status" role="status"></p>
+</main>
+</div>
+<script>
+(async()=>{const status=document.getElementById('status');try{const response=await fetch('/api/editor/session',{credentials:'same-origin',cache:'no-store',headers:{Accept:'application/json'}});const data=await response.json();if(!response.ok||!data.ok||!data.authenticated){location.replace('/editor/');return}status.textContent='Editör oturumu doğrulandı.'}catch{status.textContent='Oturum doğrulanamadı.';setTimeout(()=>location.replace('/editor/'),900)}})();
+</script>
+</body></html>
