@@ -22,16 +22,27 @@ jobs:
         shell: python
         run: |
           from pathlib import Path
-          old = '.preview-search-row:focus-within{border-color:#14213A;box-shadow:0 0 0 3px rgba(47,78,113,.14),0 16px 34px -28px rgba(32,57,90,.42);transform:translateY(-1px)}'
-          new = '.preview-search-row:focus-within{border-color:#C9A227;box-shadow:0 0 0 2px rgba(201,162,39,.18),0 16px 34px -28px rgba(32,57,90,.30);transform:translateY(-1px)}'
-          for filename in ['dictionary-d1-preview.html','dictionary-d1-preview-en.html','functions/_middleware.js']:
+
+          html_old = '.preview-search-row:focus-within{border-color:#14213A;box-shadow:0 0 0 3px rgba(47,78,113,.14),0 16px 34px -28px rgba(32,57,90,.42);transform:translateY(-1px)}'
+          html_new = '.preview-search-row:focus-within{border-color:#C9A227;box-shadow:0 0 0 2px rgba(201,162,39,.18),0 16px 34px -28px rgba(32,57,90,.30);transform:translateY(-1px)}'
+          for filename in ['dictionary-d1-preview.html','dictionary-d1-preview-en.html']:
               p = Path(filename)
               text = p.read_text(encoding='utf-8')
-              if old in text:
-                  text = text.replace(old, new)
+              if html_old in text:
+                  text = text.replace(html_old, html_new)
                   p.write_text(text, encoding='utf-8')
-              elif new not in text:
+              elif html_new not in text:
                   raise RuntimeError(f'{filename}: search focus rule not found')
+
+          p = Path('functions/_middleware.js')
+          text = p.read_text(encoding='utf-8')
+          mw_old = '.preview-search-row:focus-within{border-color:#7f95ad!important;box-shadow:0 0 0 3px rgba(47,78,113,.10),0 16px 34px -28px rgba(32,57,90,.34)!important}'
+          mw_new = '.preview-search-row:focus-within{border-color:#C9A227!important;box-shadow:0 0 0 2px rgba(201,162,39,.18),0 16px 34px -28px rgba(32,57,90,.30)!important}'
+          if mw_old in text:
+              text = text.replace(mw_old, mw_new)
+              p.write_text(text, encoding='utf-8')
+          elif mw_new not in text:
+              raise RuntimeError('functions/_middleware.js: search focus rule not found')
 
       - name: Commit main
         shell: bash
