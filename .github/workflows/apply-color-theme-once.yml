@@ -1,0 +1,63 @@
+name: Apply color theme once
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-color-theme-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-theme:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Link the new theme after existing styles
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          files = [Path('index.html'), Path('en/index.html')]
+          theme_link = '<link rel="stylesheet" href="/assets/renk-temasi.css">'
+          theme_meta = '<meta name="theme-color" content="#14213A">'
+
+          for path in files:
+              text = path.read_text(encoding='utf-8')
+
+              if re.search(r'<meta\s+name=["\']theme-color["\']\s+content=["\'][^"\']*["\']\s*/?>', text, flags=re.I):
+                  text = re.sub(
+                      r'<meta\s+name=["\']theme-color["\']\s+content=["\'][^"\']*["\']\s*/?>',
+                      theme_meta,
+                      text,
+                      count=1,
+                      flags=re.I,
+                  )
+              else:
+                  text = text.replace('<link rel="canonical"', theme_meta + '\n<link rel="canonical"', 1)
+
+              if '/assets/renk-temasi.css' not in text:
+                  if '</head>' not in text:
+                      raise RuntimeError(f'{path}: </head> bulunamadı')
+                  text = text.replace('</head>', theme_link + '\n</head>', 1)
+
+              path.write_text(text, encoding='utf-8')
+
+      - name: Commit theme integration
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html en/index.html; then
+            echo "Tema bağlantısı zaten mevcut; değişiklik yok."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html en/index.html
+          git commit -m "Integrate navy-burgundy-gold color theme"
+          git push origin HEAD:main
