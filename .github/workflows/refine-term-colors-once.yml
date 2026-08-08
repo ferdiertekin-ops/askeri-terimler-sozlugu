@@ -1,0 +1,83 @@
+name: Refine dictionary term colors once
+
+on:
+  push:
+    paths:
+      - '.github/workflows/refine-term-colors-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Refine main live styles
+        shell: python
+        run: |
+          from pathlib import Path
+
+          override = '''\n/* ATS TERM TONE REFINEMENT */\n.cell h2{color:#1E232A!important}\n.row:hover .cell h2,.row:focus-visible .cell h2{color:#7A2231!important}\n.cell-ottoman .value{font-style:normal!important;color:#4A4438!important}\n'''
+
+          for filename in ['dictionary-d1-preview.html','dictionary-d1-preview-en.html']:
+              p=Path(filename)
+              text=p.read_text(encoding='utf-8')
+              if 'ATS TERM TONE REFINEMENT' not in text:
+                  pos=text.find('</style>')
+                  if pos == -1:
+                      raise RuntimeError(f'{filename}: style kapanışı bulunamadı')
+                  text=text[:pos]+override+text[pos:]
+              p.write_text(text,encoding='utf-8')
+
+          p=Path('functions/_middleware.js')
+          text=p.read_text(encoding='utf-8')
+          if 'ATS TERM TONE REFINEMENT' not in text:
+              start=text.find('const DICTIONARY_VISUAL_POLISH = `')
+              if start == -1:
+                  raise RuntimeError('DICTIONARY_VISUAL_POLISH bulunamadı')
+              pos=text.find('</style>`;',start)
+              if pos == -1:
+                  raise RuntimeError('DICTIONARY_VISUAL_POLISH kapanışı bulunamadı')
+              text=text[:pos]+override+text[pos:]
+          p.write_text(text,encoding='utf-8')
+
+      - name: Commit main refinement
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add functions/_middleware.js dictionary-d1-preview.html dictionary-d1-preview-en.html
+          if ! git diff --cached --quiet; then
+            git commit -m "Refine headword and Ottoman term styling"
+            git push origin HEAD:main
+          fi
+
+      - name: Apply same refinement to Cloudflare migration branch
+        shell: bash
+        run: |
+          git fetch origin agent/cloudflare-migration
+          git checkout -B agent/cloudflare-migration origin/agent/cloudflare-migration
+          python - <<'PY'
+          from pathlib import Path
+          override='''\n/* ATS TERM TONE REFINEMENT */\n.cell h2{color:#1E232A!important}\n.row:hover .cell h2,.row:focus-visible .cell h2{color:#7A2231!important}\n.cell-ottoman .value{font-style:normal!important;color:#4A4438!important}\n'''
+          for filename in ['dictionary-d1-preview.html','dictionary-d1-preview-en.html']:
+              p=Path(filename)
+              text=p.read_text(encoding='utf-8')
+              if 'ATS TERM TONE REFINEMENT' not in text:
+                  pos=text.find('</style>')
+                  if pos == -1:
+                      raise RuntimeError(f'{filename}: style kapanışı bulunamadı')
+                  text=text[:pos]+override+text[pos:]
+              p.write_text(text,encoding='utf-8')
+          PY
+          git add dictionary-d1-preview.html dictionary-d1-preview-en.html
+          if ! git diff --cached --quiet; then
+            git commit -m "Refine headword and Ottoman term styling"
+            git push origin HEAD:agent/cloudflare-migration
+          fi
