@@ -97,6 +97,13 @@ body{background-image:none!important;background-color:#F7F3EA!important}
 .cell h2{color:#1E232A!important}
 .row:hover .cell h2,.row:focus-visible .cell h2{color:#7A2231!important}
 .cell-ottoman .value{font-style:normal!important;color:#4A4438!important}
+
+/* ATS WARM GREY ROW TONES */
+.list{background:transparent!important}
+.row{background:#F1EFE8!important;border-bottom-color:#D7D0C2!important}
+.row:nth-child(even){background:#E8E4DA!important}
+.row:hover,.row:focus-visible{background:#DDD6C8!important;border-bottom-color:#C7BDAA!important}
+.cell{border-right-color:#D5CEC0!important}
 </style>`;
 
 const COMMUNITY_ROUTES = new Set([
