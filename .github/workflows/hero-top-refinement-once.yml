@@ -1,0 +1,139 @@
+name: Hero top refinement once
+
+on:
+  push:
+    paths:
+      - '.github/workflows/hero-top-refinement-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  refine-hero:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Apply hero refinement to main
+        shell: python
+        run: |
+          from pathlib import Path
+
+          css = r'''
+/* ATS HERO TOP REFINEMENT */
+.preview-site-nav{display:none!important}
+.preview-topbar{grid-template-columns:auto 1fr auto!important;align-items:start!important;column-gap:14px!important;padding:4px 0 0!important;min-height:68px!important}
+.preview-brand{grid-column:1!important;grid-row:1!important;justify-self:start!important;align-self:start!important}
+.preview-brand img,.preview-brand__logo{width:58px!important;height:58px!important;max-width:none!important;object-fit:contain!important}
+.preview-topbar__actions{grid-column:3!important;grid-row:1!important;justify-self:end!important;align-self:start!important}
+.preview-hero{margin-top:-24px!important;padding:0 0 7px!important}
+.preview-eyebrow{color:#B3262E!important;font-weight:700!important;letter-spacing:.20em!important;margin-bottom:5px!important}
+.preview-eyebrow::before,.preview-eyebrow::after{background:#C9A227!important;border-color:#C9A227!important;opacity:.72!important}
+.preview-title__top{color:#9B7A17!important;letter-spacing:.28em!important}
+.preview-title__main{color:#1E232A!important;text-shadow:0 1px 0 rgba(201,162,39,.20)!important}
+.preview-title__date{color:#9B7A17!important;letter-spacing:.24em!important}
+.preview-title__date::before,.preview-title__date::after{border-color:#C9A227!important;background:transparent!important;opacity:.76!important}
+@media(max-width:860px){
+  .preview-topbar{min-height:62px!important}
+  .preview-brand img,.preview-brand__logo{width:52px!important;height:52px!important}
+  .preview-hero{margin-top:-12px!important}
+}
+@media(max-width:760px){
+  .preview-topbar{align-items:center!important;min-height:54px!important}
+  .preview-brand img,.preview-brand__logo{width:48px!important;height:48px!important}
+  .preview-hero{margin-top:0!important;padding-top:3px!important}
+}
+'''
+
+          def patch_html(path):
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              if 'ATS HERO TOP REFINEMENT' in text:
+                  return
+              marker = '</head>'
+              if marker not in text:
+                  raise RuntimeError(f'{path}: </head> not found')
+              text = text.replace(marker, f'<style id="ats-hero-top-refinement">{css}</style>\n{marker}', 1)
+              p.write_text(text, encoding='utf-8')
+
+          for path in ['dictionary-d1-preview.html','dictionary-d1-preview-en.html']:
+              patch_html(path)
+
+          p = Path('functions/_middleware.js')
+          text = p.read_text(encoding='utf-8')
+          if 'ATS HERO TOP REFINEMENT' not in text:
+              start = text.find('const DICTIONARY_VISUAL_POLISH = `')
+              if start < 0:
+                  raise RuntimeError('DICTIONARY_VISUAL_POLISH not found')
+              end = text.find('</style>', start)
+              if end < 0:
+                  raise RuntimeError('visual polish </style> not found')
+              text = text[:end] + css + '\n' + text[end:]
+              p.write_text(text, encoding='utf-8')
+
+      - name: Commit main
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dictionary-d1-preview.html dictionary-d1-preview-en.html functions/_middleware.js
+          if ! git diff --cached --quiet; then
+            git commit -m "Refine dictionary hero and remove duplicate top nav"
+            git push origin HEAD:main
+          fi
+
+      - name: Apply same refinement to Cloudflare migration branch
+        shell: bash
+        run: |
+          git fetch origin agent/cloudflare-migration
+          git checkout -B agent/cloudflare-migration origin/agent/cloudflare-migration
+          python - <<'PY'
+          from pathlib import Path
+
+          css = r'''
+          /* ATS HERO TOP REFINEMENT */
+          .preview-site-nav{display:none!important}
+          .preview-topbar{grid-template-columns:auto 1fr auto!important;align-items:start!important;column-gap:14px!important;padding:4px 0 0!important;min-height:68px!important}
+          .preview-brand{grid-column:1!important;grid-row:1!important;justify-self:start!important;align-self:start!important}
+          .preview-brand img,.preview-brand__logo{width:58px!important;height:58px!important;max-width:none!important;object-fit:contain!important}
+          .preview-topbar__actions{grid-column:3!important;grid-row:1!important;justify-self:end!important;align-self:start!important}
+          .preview-hero{margin-top:-24px!important;padding:0 0 7px!important}
+          .preview-eyebrow{color:#B3262E!important;font-weight:700!important;letter-spacing:.20em!important;margin-bottom:5px!important}
+          .preview-eyebrow::before,.preview-eyebrow::after{background:#C9A227!important;border-color:#C9A227!important;opacity:.72!important}
+          .preview-title__top{color:#9B7A17!important;letter-spacing:.28em!important}
+          .preview-title__main{color:#1E232A!important;text-shadow:0 1px 0 rgba(201,162,39,.20)!important}
+          .preview-title__date{color:#9B7A17!important;letter-spacing:.24em!important}
+          .preview-title__date::before,.preview-title__date::after{border-color:#C9A227!important;background:transparent!important;opacity:.76!important}
+          @media(max-width:860px){.preview-topbar{min-height:62px!important}.preview-brand img,.preview-brand__logo{width:52px!important;height:52px!important}.preview-hero{margin-top:-12px!important}}
+          @media(max-width:760px){.preview-topbar{align-items:center!important;min-height:54px!important}.preview-brand img,.preview-brand__logo{width:48px!important;height:48px!important}.preview-hero{margin-top:0!important;padding-top:3px!important}}
+          '''
+
+          for path in ['dictionary-d1-preview.html','dictionary-d1-preview-en.html']:
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              if 'ATS HERO TOP REFINEMENT' not in text:
+                  if '</head>' not in text:
+                      raise RuntimeError(f'{path}: </head> not found')
+                  text = text.replace('</head>', f'<style id="ats-hero-top-refinement">{css}</style>\n</head>', 1)
+                  p.write_text(text, encoding='utf-8')
+
+          p = Path('functions/_middleware.js')
+          if p.exists():
+              text = p.read_text(encoding='utf-8')
+              if 'ATS HERO TOP REFINEMENT' not in text:
+                  start = text.find('const DICTIONARY_VISUAL_POLISH = `')
+                  if start >= 0:
+                      end = text.find('</style>', start)
+                      if end >= 0:
+                          text = text[:end] + css + '\n' + text[end:]
+                          p.write_text(text, encoding='utf-8')
+          PY
+          git add dictionary-d1-preview.html dictionary-d1-preview-en.html functions/_middleware.js
+          if ! git diff --cached --quiet; then
+            git commit -m "Refine dictionary hero and remove duplicate top nav"
+            git push origin HEAD:agent/cloudflare-migration
+          fi
