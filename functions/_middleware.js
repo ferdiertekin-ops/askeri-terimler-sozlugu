@@ -299,6 +299,20 @@ body{background-image:none!important;background-color:#F7F3EA!important}
   outline:none!important;
 }
 
+
+/* ATS ROW HOVER TEXT EMPHASIS 2026-08-08 */
+.row:hover .cell-ottoman .value,
+.row:hover .cell-modern .value,
+.row:hover .cell-explanation .value,
+.row:focus-visible .cell-ottoman .value,
+.row:focus-visible .cell-modern .value,
+.row:focus-visible .cell-explanation .value,
+.row:active .cell-ottoman .value,
+.row:active .cell-modern .value,
+.row:active .cell-explanation .value{
+  font-weight:600!important;
+}
+
 </style>`;
 
 const COMMUNITY_ROUTES = new Set([
