@@ -19,68 +19,9 @@ jobs:
           fetch-depth: 0
 
       - name: Apply editor palette to main
-        shell: python
+        shell: bash
         run: |
-          from pathlib import Path
-
-          override = '''\n/* ATS EDITOR GREY-MUSTARD THEME */
-:root{
-  --bg:#E9E6DE!important;
-  --paper:#F4F1E9!important;
-  --paper-soft:#ECE8DE!important;
-  --ink:#1E1E1B!important;
-  --muted:#68635A!important;
-  --navy:#2B2B29!important;
-  --navy-deep:#1F1F1D!important;
-  --red:#7A2231!important;
-  --green:#3F6C57!important;
-  --line:#CFC8B9!important;
-  --mustard:#C9A227!important;
-  --mustard-dark:#8F741E!important;
-}
-body{background:#E9E6DE!important;color:#1E1E1B!important}
-header{border-bottom-color:#C9A227!important}
-.brand{color:#1E1E1B!important}
-.back{color:#2B2B29!important}
-.back:hover,.back:focus-visible{color:#8F741E!important}
-button,.button-link{background:#F4F1E9!important;border-color:#CFC8B9!important;color:#1E1E1B!important}
-button:hover,.button-link:hover{border-color:#C9A227!important;background:#ECE8DE!important}
-button.primary{background:#2B2B29!important;border-color:#2B2B29!important;color:#C9A227!important}
-button.primary:hover{background:#1F1F1D!important;border-color:#C9A227!important;color:#D6B43A!important}
-button.danger{background:#7A2231!important;border-color:#7A2231!important;color:#F4F1E9!important}
-button.danger:hover{background:#5E1926!important;border-color:#5E1926!important}
-.card{background:#F4F1E9!important;border-color:#CFC8B9!important;box-shadow:0 18px 42px -36px rgba(30,30,27,.45)!important}
-.form-head h1{color:#2B2B29!important}
-.meta{color:#68635A!important}
-.status{background:#E3EBE5!important;color:#3F6C57!important}
-.status::before{background:#3F6C57!important}
-.savebar{border-color:#CFC8B9!important;background:rgba(244,241,233,.96)!important;box-shadow:0 10px 24px -21px rgba(30,30,27,.55)!important}
-.save-hint,.safety,.source-help{color:#68635A!important}
-label,.field-label,legend{color:#8F741E!important}
-.input,textarea,select{background:#F8F5EE!important;border-color:#C7C0B2!important;color:#1E1E1B!important}
-.input:focus,textarea:focus,select:focus{border-color:#C9A227!important;box-shadow:0 0 0 3px rgba(201,162,39,.14)!important}
-.input[readonly]{background:#E7E3D8!important;color:#2B2B29!important}
-.source-field{border-top-color:#CFC8B9!important}
-.source-number{border-color:#CFC8B9!important;color:#68635A!important;background:#ECE8DE!important}
-.source-open{border-color:#CFC8B9!important;color:#2B2B29!important;background:#F4F1E9!important}
-.source-open:hover{border-color:#C9A227!important;background:#E8E2D4!important;color:#8F741E!important}
-.form-actions{border-top-color:#CFC8B9!important}
-.notice{background:#2B2B29!important;color:#F4F1E9!important}
-.notice.error{background:#7A2231!important}
-.audit{border-left-color:#C9A227!important}
-.audit-stat{background:#ECE8DE!important;border-color:#CFC8B9!important}
-.audit-stat strong{color:#2B2B29!important}
-::selection{background:#E4D6A2!important;color:#1E1E1B!important}
-'''
-
-          p=Path('editor-panel-private.html')
-          text=p.read_text(encoding='utf-8')
-          if 'ATS EDITOR GREY-MUSTARD THEME' not in text:
-              pos=text.find('</style>')
-              if pos == -1:
-                  raise RuntimeError('editor style kapanışı bulunamadı')
-              text=text[:pos]+override+text[pos:]
-          p.write_text(text,encoding='utf-8')
+          python -c "from pathlib import Path; p=Path('editor-panel-private.html'); t=p.read_text(encoding='utf-8'); o='/* ATS EDITOR GREY-MUSTARD THEME */:root{--bg:#E9E6DE!important;--paper:#F4F1E9!important;--paper-soft:#ECE8DE!important;--ink:#1E1E1B!important;--muted:#68635A!important;--navy:#2B2B29!important;--navy-deep:#1F1F1D!important;--red:#7A2231!important;--green:#3F6C57!important;--line:#CFC8B9!important;--mustard:#C9A227!important;--mustard-dark:#8F741E!important}body{background:#E9E6DE!important;color:#1E1E1B!important}header{border-bottom-color:#C9A227!important}.brand{color:#1E1E1B!important}.back{color:#2B2B29!important}.back:hover,.back:focus-visible{color:#8F741E!important}button,.button-link{background:#F4F1E9!important;border-color:#CFC8B9!important;color:#1E1E1B!important}button:hover,.button-link:hover{border-color:#C9A227!important;background:#ECE8DE!important}button.primary{background:#2B2B29!important;border-color:#2B2B29!important;color:#C9A227!important}button.primary:hover{background:#1F1F1D!important;border-color:#C9A227!important;color:#D6B43A!important}button.danger{background:#7A2231!important;border-color:#7A2231!important;color:#F4F1E9!important}button.danger:hover{background:#5E1926!important;border-color:#5E1926!important}.card{background:#F4F1E9!important;border-color:#CFC8B9!important;box-shadow:0 18px 42px -36px rgba(30,30,27,.45)!important}.form-head h1{color:#2B2B29!important}.meta{color:#68635A!important}.status{background:#E3EBE5!important;color:#3F6C57!important}.status::before{background:#3F6C57!important}.savebar{border-color:#CFC8B9!important;background:rgba(244,241,233,.96)!important;box-shadow:0 10px 24px -21px rgba(30,30,27,.55)!important}.save-hint,.safety,.source-help{color:#68635A!important}label,.field-label,legend{color:#8F741E!important}.input,textarea,select{background:#F8F5EE!important;border-color:#C7C0B2!important;color:#1E1E1B!important}.input:focus,textarea:focus,select:focus{border-color:#C9A227!important;box-shadow:0 0 0 3px rgba(201,162,39,.14)!important}.input[readonly]{background:#E7E3D8!important;color:#2B2B29!important}.source-field{border-top-color:#CFC8B9!important}.source-number{border-color:#CFC8B9!important;color:#68635A!important;background:#ECE8DE!important}.source-open{border-color:#CFC8B9!important;color:#2B2B29!important;background:#F4F1E9!important}.source-open:hover{border-color:#C9A227!important;background:#E8E2D4!important;color:#8F741E!important}.form-actions{border-top-color:#CFC8B9!important}.notice{background:#2B2B29!important;color:#F4F1E9!important}.notice.error{background:#7A2231!important}.audit{border-left-color:#C9A227!important}.audit-stat{background:#ECE8DE!important;border-color:#CFC8B9!important}.audit-stat strong{color:#2B2B29!important}::selection{background:#E4D6A2!important;color:#1E1E1B!important}'; p.write_text(t if 'ATS EDITOR GREY-MUSTARD THEME' in t else t.replace('</style>',o+'</style>',1),encoding='utf-8')"
 
       - name: Commit main editor palette
         shell: bash
@@ -98,31 +39,7 @@ label,.field-label,legend{color:#8F741E!important}
         run: |
           git fetch origin agent/cloudflare-migration
           git checkout -B agent/cloudflare-migration origin/agent/cloudflare-migration
-          python - <<'PY'
-          from pathlib import Path
-          override = '''\n/* ATS EDITOR GREY-MUSTARD THEME */
-:root{--bg:#E9E6DE!important;--paper:#F4F1E9!important;--paper-soft:#ECE8DE!important;--ink:#1E1E1B!important;--muted:#68635A!important;--navy:#2B2B29!important;--navy-deep:#1F1F1D!important;--red:#7A2231!important;--green:#3F6C57!important;--line:#CFC8B9!important;--mustard:#C9A227!important;--mustard-dark:#8F741E!important}
-body{background:#E9E6DE!important;color:#1E1E1B!important}
-header{border-bottom-color:#C9A227!important}.brand{color:#1E1E1B!important}.back{color:#2B2B29!important}.back:hover,.back:focus-visible{color:#8F741E!important}
-button,.button-link{background:#F4F1E9!important;border-color:#CFC8B9!important;color:#1E1E1B!important}button:hover,.button-link:hover{border-color:#C9A227!important;background:#ECE8DE!important}
-button.primary{background:#2B2B29!important;border-color:#2B2B29!important;color:#C9A227!important}button.primary:hover{background:#1F1F1D!important;border-color:#C9A227!important;color:#D6B43A!important}
-button.danger{background:#7A2231!important;border-color:#7A2231!important;color:#F4F1E9!important}button.danger:hover{background:#5E1926!important;border-color:#5E1926!important}
-.card{background:#F4F1E9!important;border-color:#CFC8B9!important;box-shadow:0 18px 42px -36px rgba(30,30,27,.45)!important}.form-head h1{color:#2B2B29!important}.meta{color:#68635A!important}
-.status{background:#E3EBE5!important;color:#3F6C57!important}.status::before{background:#3F6C57!important}.savebar{border-color:#CFC8B9!important;background:rgba(244,241,233,.96)!important;box-shadow:0 10px 24px -21px rgba(30,30,27,.55)!important}
-.save-hint,.safety,.source-help{color:#68635A!important}label,.field-label,legend{color:#8F741E!important}.input,textarea,select{background:#F8F5EE!important;border-color:#C7C0B2!important;color:#1E1E1B!important}
-.input:focus,textarea:focus,select:focus{border-color:#C9A227!important;box-shadow:0 0 0 3px rgba(201,162,39,.14)!important}.input[readonly]{background:#E7E3D8!important;color:#2B2B29!important}
-.source-field{border-top-color:#CFC8B9!important}.source-number{border-color:#CFC8B9!important;color:#68635A!important;background:#ECE8DE!important}.source-open{border-color:#CFC8B9!important;color:#2B2B29!important;background:#F4F1E9!important}.source-open:hover{border-color:#C9A227!important;background:#E8E2D4!important;color:#8F741E!important}
-.form-actions{border-top-color:#CFC8B9!important}.notice{background:#2B2B29!important;color:#F4F1E9!important}.notice.error{background:#7A2231!important}.audit{border-left-color:#C9A227!important}.audit-stat{background:#ECE8DE!important;border-color:#CFC8B9!important}.audit-stat strong{color:#2B2B29!important}::selection{background:#E4D6A2!important;color:#1E1E1B!important}
-'''
-          p=Path('editor-panel-private.html')
-          text=p.read_text(encoding='utf-8')
-          if 'ATS EDITOR GREY-MUSTARD THEME' not in text:
-              pos=text.find('</style>')
-              if pos == -1:
-                  raise RuntimeError('editor style kapanışı bulunamadı')
-              text=text[:pos]+override+text[pos:]
-          p.write_text(text,encoding='utf-8')
-          PY
+          python -c "from pathlib import Path; p=Path('editor-panel-private.html'); t=p.read_text(encoding='utf-8'); o='/* ATS EDITOR GREY-MUSTARD THEME */:root{--bg:#E9E6DE!important;--paper:#F4F1E9!important;--paper-soft:#ECE8DE!important;--ink:#1E1E1B!important;--muted:#68635A!important;--navy:#2B2B29!important;--navy-deep:#1F1F1D!important;--red:#7A2231!important;--green:#3F6C57!important;--line:#CFC8B9!important;--mustard:#C9A227!important;--mustard-dark:#8F741E!important}body{background:#E9E6DE!important;color:#1E1E1B!important}header{border-bottom-color:#C9A227!important}.brand{color:#1E1E1B!important}.back{color:#2B2B29!important}.back:hover,.back:focus-visible{color:#8F741E!important}button,.button-link{background:#F4F1E9!important;border-color:#CFC8B9!important;color:#1E1E1B!important}button:hover,.button-link:hover{border-color:#C9A227!important;background:#ECE8DE!important}button.primary{background:#2B2B29!important;border-color:#2B2B29!important;color:#C9A227!important}button.primary:hover{background:#1F1F1D!important;border-color:#C9A227!important;color:#D6B43A!important}button.danger{background:#7A2231!important;border-color:#7A2231!important;color:#F4F1E9!important}button.danger:hover{background:#5E1926!important;border-color:#5E1926!important}.card{background:#F4F1E9!important;border-color:#CFC8B9!important;box-shadow:0 18px 42px -36px rgba(30,30,27,.45)!important}.form-head h1{color:#2B2B29!important}.meta{color:#68635A!important}.status{background:#E3EBE5!important;color:#3F6C57!important}.status::before{background:#3F6C57!important}.savebar{border-color:#CFC8B9!important;background:rgba(244,241,233,.96)!important;box-shadow:0 10px 24px -21px rgba(30,30,27,.55)!important}.save-hint,.safety,.source-help{color:#68635A!important}label,.field-label,legend{color:#8F741E!important}.input,textarea,select{background:#F8F5EE!important;border-color:#C7C0B2!important;color:#1E1E1B!important}.input:focus,textarea:focus,select:focus{border-color:#C9A227!important;box-shadow:0 0 0 3px rgba(201,162,39,.14)!important}.input[readonly]{background:#E7E3D8!important;color:#2B2B29!important}.source-field{border-top-color:#CFC8B9!important}.source-number{border-color:#CFC8B9!important;color:#68635A!important;background:#ECE8DE!important}.source-open{border-color:#CFC8B9!important;color:#2B2B29!important;background:#F4F1E9!important}.source-open:hover{border-color:#C9A227!important;background:#E8E2D4!important;color:#8F741E!important}.form-actions{border-top-color:#CFC8B9!important}.notice{background:#2B2B29!important;color:#F4F1E9!important}.notice.error{background:#7A2231!important}.audit{border-left-color:#C9A227!important}.audit-stat{background:#ECE8DE!important;border-color:#CFC8B9!important}.audit-stat strong{color:#2B2B29!important}::selection{background:#E4D6A2!important;color:#1E1E1B!important}'; p.write_text(t if 'ATS EDITOR GREY-MUSTARD THEME' in t else t.replace('</style>',o+'</style>',1),encoding='utf-8')"
           git add editor-panel-private.html
           if ! git diff --cached --quiet; then
             git commit -m "Use grey mustard anthracite editor palette"
