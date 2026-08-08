@@ -31,16 +31,16 @@ let fullPublicationMigrationPromise = null;
 
 const DICTIONARY_VISUAL_POLISH = `
 <style id="ats-visual-polish">
-:root{--claude-canvas:#f8f8f6;--claude-surface:#ffffff;--ats-navy:#2f4e71;--ats-navy-deep:#20395a}
-html,body{background:#f8f8f6!important}
-body{background-image:none!important;background-color:#f8f8f6!important}
+:root{--claude-canvas:#F7F3EA;--claude-surface:#FFFDF8;--ats-navy:#14213A;--ats-navy-deep:#22405E}
+html,body{background:#F7F3EA!important}
+body{background-image:none!important;background-color:#F7F3EA!important}
 .wrap{padding-top:16px!important}
 .preview-topbar{display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;align-items:center!important;column-gap:22px!important;padding:2px 0 1px!important}
 .preview-brand{grid-column:1!important;justify-self:start!important;gap:0!important}
 .preview-brand__name{display:none!important}
 .preview-site-nav{grid-column:2!important;grid-row:1!important;display:flex!important;align-items:center!important;justify-content:center!important;justify-self:center!important;flex-wrap:nowrap!important;gap:0 13px!important;margin:0!important;padding:0!important;border:0!important;white-space:nowrap!important;line-height:1.2!important}
 .preview-site-nav a{margin:0!important;padding:4px 0!important;color:#474f58!important;font-size:10.5px!important;letter-spacing:.025em!important;text-transform:none!important}
-.preview-site-nav a:hover,.preview-site-nav a:focus-visible{color:#9a3d20!important;border-bottom-color:#b5965d!important}
+.preview-site-nav a:hover,.preview-site-nav a:focus-visible{color:#7A2231!important;border-bottom-color:#C9A227!important}
 .preview-topbar__actions{grid-column:3!important;grid-row:1!important;justify-self:end!important;justify-content:flex-end!important;flex-wrap:nowrap!important}
 .preview-hero{padding:5px 0 6px!important}
 .preview-eyebrow{margin-bottom:7px!important;gap:14px!important;font-size:10px!important;letter-spacing:.21em!important}
@@ -53,15 +53,15 @@ body{background-image:none!important;background-color:#f8f8f6!important}
 .preview-beta{margin-top:2px!important;font-size:10.5px!important;letter-spacing:.14em!important}
 .preview-search-tools{margin-top:5px!important}
 .preview-search-tools.is-stuck{background:rgba(248,248,246,.96)!important}
-.preview-search-row{background:#ffffff!important;border-color:#deded8!important;box-shadow:0 1px 2px rgba(30,39,50,.05),0 14px 32px -26px rgba(32,57,90,.34),inset 0 1px 0 rgba(255,255,255,.96)!important}
+.preview-search-row{background:#FFFDF8!important;border-color:#DED5C2!important;box-shadow:0 1px 2px rgba(30,39,50,.05),0 14px 32px -26px rgba(32,57,90,.34),inset 0 1px 0 rgba(255,255,255,.96)!important}
 .preview-search-row:hover{border-color:#b8c2cd!important}
 .preview-search-row:focus-within{border-color:#7f95ad!important;box-shadow:0 0 0 3px rgba(47,78,113,.10),0 16px 34px -28px rgba(32,57,90,.34)!important}
-.list-head{background:linear-gradient(180deg,#2f4e71 0%,#294766 100%)!important;border-top-color:#20395a!important;border-bottom-color:#20395a!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 5px 14px -12px rgba(32,57,90,.58)}
-.list-head span{color:#f8f8f6!important;text-shadow:0 1px 0 rgba(0,0,0,.14)}
+.list-head{background:linear-gradient(180deg,#14213A 0%,#294766 100%)!important;border-top-color:#22405E!important;border-bottom-color:#22405E!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 5px 14px -12px rgba(32,57,90,.58)}
+.list-head span{color:#C9A227!important;text-shadow:0 1px 0 rgba(0,0,0,.14)}
 .community-auth-nav{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
 .community-auth-nav a{min-height:36px;display:inline-flex;align-items:center;justify-content:center;padding:0 11px;border-radius:8px;text-decoration:none;font:600 12px Cambria,Georgia,serif}
-.community-auth-nav .community-login{border:1px solid #cfc7b8;background:#fffefa;color:#2f4e71}
-.community-auth-nav .community-signup{border:1px solid #2f4e71;background:#2f4e71;color:#fffefa}
+.community-auth-nav .community-login{border:1px solid #cfc7b8;background:#fffefa;color:#14213A}
+.community-auth-nav .community-signup{border:1px solid #14213A;background:#14213A;color:#fffefa}
 .community-editor-access{margin:8px 0 0;text-align:center;font:10px/1.2 Calibri,"Segoe UI",sans-serif}.community-editor-access a{color:#9b9994;text-decoration:none}
 @media(max-width:1040px){
   .preview-topbar{column-gap:14px!important}
