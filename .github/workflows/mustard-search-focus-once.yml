@@ -1,0 +1,69 @@
+name: Mustard search focus once
+
+on:
+  push:
+    paths:
+      - '.github/workflows/mustard-search-focus-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-focus:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Update search focus on main
+        shell: python
+        run: |
+          from pathlib import Path
+          old = '.preview-search-row:focus-within{border-color:#14213A;box-shadow:0 0 0 3px rgba(47,78,113,.14),0 16px 34px -28px rgba(32,57,90,.42);transform:translateY(-1px)}'
+          new = '.preview-search-row:focus-within{border-color:#C9A227;box-shadow:0 0 0 2px rgba(201,162,39,.18),0 16px 34px -28px rgba(32,57,90,.30);transform:translateY(-1px)}'
+          for filename in ['dictionary-d1-preview.html','dictionary-d1-preview-en.html','functions/_middleware.js']:
+              p = Path(filename)
+              text = p.read_text(encoding='utf-8')
+              if old in text:
+                  text = text.replace(old, new)
+                  p.write_text(text, encoding='utf-8')
+              elif new not in text:
+                  raise RuntimeError(f'{filename}: search focus rule not found')
+
+      - name: Commit main
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dictionary-d1-preview.html dictionary-d1-preview-en.html functions/_middleware.js
+          if ! git diff --cached --quiet; then
+            git commit -m "Use mustard search focus border"
+            git push origin HEAD:main
+          fi
+
+      - name: Update Cloudflare migration branch
+        shell: bash
+        run: |
+          git fetch origin agent/cloudflare-migration
+          git checkout -B agent/cloudflare-migration origin/agent/cloudflare-migration
+          python - <<'PY'
+          from pathlib import Path
+          old = '.preview-search-row:focus-within{border-color:#14213A;box-shadow:0 0 0 3px rgba(47,78,113,.14),0 16px 34px -28px rgba(32,57,90,.42);transform:translateY(-1px)}'
+          new = '.preview-search-row:focus-within{border-color:#C9A227;box-shadow:0 0 0 2px rgba(201,162,39,.18),0 16px 34px -28px rgba(32,57,90,.30);transform:translateY(-1px)}'
+          for filename in ['dictionary-d1-preview.html','dictionary-d1-preview-en.html']:
+              p = Path(filename)
+              text = p.read_text(encoding='utf-8')
+              if old in text:
+                  text = text.replace(old, new)
+                  p.write_text(text, encoding='utf-8')
+              elif new not in text:
+                  raise RuntimeError(f'{filename}: search focus rule not found')
+          PY
+          git add dictionary-d1-preview.html dictionary-d1-preview-en.html
+          if ! git diff --cached --quiet; then
+            git commit -m "Use mustard search focus border"
+            git push origin HEAD:agent/cloudflare-migration
+          fi
