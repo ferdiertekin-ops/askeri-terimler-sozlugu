@@ -1,0 +1,311 @@
+/* ============================================================
+   ASKERÎ TERİMLER SÖZLÜĞÜ — RENK TEMASI
+   Yalnızca renk katmanıdır. Yazı tipi, punto, boşluk, hizalama
+   ve yerleşim bu dosyada bilinçli olarak yer almaz.
+
+   Bu dosya, sayfadaki diğer bütün stil kurallarından SONRA
+   yüklenmelidir.
+   ============================================================ */
+
+:root {
+  --navy:        #14213A;
+  --navy-soft:   #22405E;
+  --bordo:       #7A2231;
+  --bordo-dark:  #5E1926;
+  --gold:        #C9A227;
+  --gold-soft:   #E4D6A2;
+
+  --paper:       #F7F3EA;
+  --row:         #FFFDF8;
+  --row-alt:     #F2ECDD;
+  --row-hover:   #EFE7D5;
+  --line:        #DED5C2;
+
+  --ink:         #14213A;
+  --ink-soft:    #4A4438;
+  --ink-muted:   #5C5646;
+  --ink-faint:   #8A8578;
+
+  --accent:      #7A2231;
+  --accent-dark: #5E1926;
+  --bg:          #F7F3EA;
+  --text:        #14213A;
+  --border:      #DED5C2;
+}
+
+html,
+body {
+  background: var(--paper) !important;
+  color: var(--ink) !important;
+}
+
+.site-nav a,
+.brand,
+.brand a {
+  color: var(--navy) !important;
+}
+
+.site-nav a:hover {
+  color: var(--bordo) !important;
+  border-bottom-color: var(--gold) !important;
+}
+
+.lang-switch {
+  border-color: var(--line) !important;
+  background: var(--row) !important;
+}
+
+.lang-switch a,
+.lang-switch .lang {
+  color: var(--navy) !important;
+}
+
+.lang-switch .active,
+.lang-switch a.active,
+.lang-switch [aria-current="true"] {
+  background: var(--navy) !important;
+  color: var(--paper) !important;
+}
+
+.editor-login,
+.editor-link,
+a[href*="/editor"] {
+  background: var(--row) !important;
+  border-color: var(--line) !important;
+  color: var(--bordo) !important;
+}
+
+.editor-login:hover,
+.editor-link:hover,
+a[href*="/editor"]:hover {
+  border-color: var(--bordo) !important;
+  color: var(--bordo-dark) !important;
+}
+
+.hero-label,
+.search-label,
+.eyebrow {
+  color: var(--bordo) !important;
+}
+
+.hero-kicker,
+.hero .cevrimici {
+  color: var(--navy) !important;
+}
+
+.hero h1,
+.hero-title {
+  color: var(--navy) !important;
+}
+
+.hero-dates,
+.hero-years,
+.date-range,
+.h1-date {
+  color: var(--navy-soft) !important;
+}
+
+.hero hr,
+.rule,
+.hero-rule,
+.hero-rule::before,
+.hero-rule::after,
+.h1-date::before,
+.h1-date::after {
+  background: var(--gold) !important;
+  border-color: var(--gold) !important;
+  color: var(--gold) !important;
+}
+
+input[type="search"],
+.search-box,
+.search-box input[type="text"],
+.letter-select,
+select,
+.pager,
+.pagination button,
+.pagination a {
+  background: var(--row) !important;
+  border-color: var(--line) !important;
+  color: var(--ink) !important;
+}
+
+input::placeholder,
+.search-box input::placeholder {
+  color: var(--ink-faint) !important;
+}
+
+.result-count,
+.count,
+.madde-sayisi {
+  color: var(--ink-faint) !important;
+}
+
+input:focus,
+select:focus,
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--bordo) !important;
+  outline-offset: 2px;
+  border-color: var(--bordo) !important;
+}
+
+.pagination .current,
+.pager .current,
+.page-indicator {
+  color: var(--bordo) !important;
+}
+
+.letters a.active,
+.letter.active,
+.harf.active {
+  background: var(--bordo) !important;
+  color: var(--row) !important;
+}
+
+thead,
+thead tr,
+thead th,
+.list-head,
+.col-labels,
+.column-labels,
+.table-head {
+  background: var(--navy) !important;
+  color: var(--gold) !important;
+  border-color: var(--navy) !important;
+}
+
+thead th {
+  border-right-color: rgba(201, 162, 39, 0.25) !important;
+}
+
+tbody tr,
+.row,
+.entry {
+  background: var(--row) !important;
+  border-color: var(--line) !important;
+}
+
+tbody tr:nth-child(even),
+.row:nth-child(even),
+.entry:nth-child(even) {
+  background: var(--row-alt) !important;
+}
+
+tbody tr:hover,
+.row:hover,
+.entry:hover {
+  background: var(--row-hover) !important;
+}
+
+tbody td:first-child,
+.term,
+.headword {
+  color: var(--navy) !important;
+}
+
+tbody tr:hover td:first-child,
+.row:hover .term,
+.entry:hover .headword {
+  color: var(--bordo) !important;
+}
+
+.ottoman,
+.osmanlica,
+.modern,
+tbody td:nth-child(2),
+tbody td:nth-child(3) {
+  color: var(--ink-soft) !important;
+}
+
+.description,
+.aciklama,
+tbody td:nth-child(4) {
+  color: var(--ink-muted) !important;
+}
+
+tbody td,
+thead th,
+td,
+th {
+  border-color: var(--line) !important;
+}
+
+a {
+  color: var(--bordo);
+}
+
+a:hover {
+  color: var(--bordo-dark);
+}
+
+.icon,
+.speak,
+.menu-btn {
+  color: var(--navy-soft) !important;
+}
+
+.icon svg,
+.speak svg,
+.menu-btn svg {
+  color: inherit !important;
+  fill: currentColor;
+}
+
+.speak:hover,
+.menu-btn:hover,
+.icon:hover {
+  color: var(--bordo) !important;
+}
+
+.drawer,
+.detail,
+.modal,
+.panel {
+  background: var(--row) !important;
+  border-color: var(--line) !important;
+  color: var(--ink) !important;
+}
+
+.drawer h2,
+.detail h2,
+.panel h2,
+.modal h2 {
+  color: var(--navy) !important;
+  border-bottom-color: var(--gold) !important;
+}
+
+.footnote {
+  color: var(--ink-faint) !important;
+}
+
+.beta,
+.beta-note,
+.beta-label {
+  color: var(--bordo) !important;
+}
+
+.site-footer {
+  background: var(--paper) !important;
+  border-top-color: var(--gold) !important;
+  color: var(--ink-muted) !important;
+}
+
+.site-footer a {
+  color: var(--navy) !important;
+}
+
+.site-footer a:hover {
+  color: var(--bordo) !important;
+}
+
+::selection {
+  background: var(--gold-soft);
+  color: var(--navy);
+}
+
+.lang-switch .active *,
+.lang-switch a.active *,
+.lang-switch [aria-current="true"] * {
+  color: inherit !important;
+}
