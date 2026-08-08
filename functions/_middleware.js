@@ -92,6 +92,11 @@ body{background-image:none!important;background-color:#F7F3EA!important}
   .preview-site-nav a{font-size:9.5px!important}
   .community-auth-nav{gap:5px}.community-auth-nav a{min-height:32px;padding:0 8px;font-size:10.5px}
 }
+
+/* ATS TERM TONE REFINEMENT */
+.cell h2{color:#1E232A!important}
+.row:hover .cell h2,.row:focus-visible .cell h2{color:#7A2231!important}
+.cell-ottoman .value{font-style:normal!important;color:#4A4438!important}
 </style>`;
 
 const COMMUNITY_ROUTES = new Set([
