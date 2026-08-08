@@ -1,0 +1,82 @@
+name: Refine row hover text once
+
+on:
+  push:
+    paths:
+      - '.github/workflows/refine-row-hover-text-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Apply hover text emphasis
+        shell: bash
+        run: |
+          cat > /tmp/patch_hover_text.py <<'PY'
+          from pathlib import Path
+          import sys
+
+          css = r'''
+          /* ATS ROW HOVER TEXT EMPHASIS 2026-08-08 */
+          .row:hover .cell-ottoman .value,
+          .row:hover .cell-modern .value,
+          .row:hover .cell-explanation .value,
+          .row:focus-visible .cell-ottoman .value,
+          .row:focus-visible .cell-modern .value,
+          .row:focus-visible .cell-explanation .value,
+          .row:active .cell-ottoman .value,
+          .row:active .cell-modern .value,
+          .row:active .cell-explanation .value{
+            font-weight:600!important;
+          }
+          '''
+
+          marker = 'ATS ROW HOVER TEXT EMPHASIS 2026-08-08'
+
+          for filename in ['dictionary-d1-preview.html','dictionary-d1-preview-en.html']:
+              p = Path(filename)
+              text = p.read_text(encoding='utf-8')
+              if marker not in text:
+                  if '</head>' not in text:
+                      raise RuntimeError(f'{filename}: </head> not found')
+                  text = text.replace('</head>', '<style id="ats-row-hover-text-emphasis-20260808">' + css + '</style>\n</head>', 1)
+                  p.write_text(text, encoding='utf-8')
+
+          if len(sys.argv) > 1 and sys.argv[1] == 'main':
+              p = Path('functions/_middleware.js')
+              if p.exists():
+                  text = p.read_text(encoding='utf-8')
+                  if marker not in text:
+                      start = text.find('const DICTIONARY_VISUAL_POLISH = `')
+                      if start >= 0:
+                          end = text.find('</style>', start)
+                          if end >= 0:
+                              text = text[:end] + css + '\n' + text[end:]
+                              p.write_text(text, encoding='utf-8')
+          PY
+
+          python3 /tmp/patch_hover_text.py main
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dictionary-d1-preview.html dictionary-d1-preview-en.html functions/_middleware.js
+          if ! git diff --cached --quiet; then
+            git commit -m "Emphasize secondary columns on row hover"
+            git push origin HEAD:main
+          fi
+
+          git fetch origin agent/cloudflare-migration
+          git checkout -B agent/cloudflare-migration origin/agent/cloudflare-migration
+          python3 /tmp/patch_hover_text.py branch
+          git add dictionary-d1-preview.html dictionary-d1-preview-en.html
+          if ! git diff --cached --quiet; then
+            git commit -m "Emphasize secondary columns on row hover"
+            git push origin HEAD:agent/cloudflare-migration
+          fi
