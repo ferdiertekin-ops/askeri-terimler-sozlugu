@@ -279,6 +279,26 @@ body{background-image:none!important;background-color:#F7F3EA!important}
   .preview-title__top{font-size:16px!important}
 }
 
+
+/* ATS ROW HOVER MUSTARD FRAME 2026-08-08 */
+.row:hover,
+.row:focus-visible,
+.row:active{
+  border-bottom-color:#C9A227!important;
+  box-shadow:
+    inset 3px 0 0 #C9A227,
+    inset 0 0 0 1px rgba(201,162,39,.82)!important;
+}
+.row:hover::before,
+.row:focus-visible::before,
+.row:active::before{
+  background:#C9A227!important;
+  border-color:#C9A227!important;
+}
+.row:focus-visible{
+  outline:none!important;
+}
+
 </style>`;
 
 const COMMUNITY_ROUTES = new Set([
