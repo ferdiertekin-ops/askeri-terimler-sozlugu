@@ -17,7 +17,7 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Apply to main
+      - name: Apply theme to main and Cloudflare branch
         shell: bash
         run: |
           cat > /tmp/apply_theme.py <<'PY'
@@ -37,7 +37,6 @@ jobs:
           .preview-title__main{color:#1E232A!important;text-shadow:0 1px 0 rgba(201,162,39,.20)!important}
           .preview-title__date{color:#9B7A17!important;letter-spacing:.24em!important}
           .preview-title__date::before,.preview-title__date::after{border-color:#C9A227!important;background:transparent!important;opacity:.76!important}
-
           .drawer{background:rgba(31,30,26,.46)!important}
           .dialog{background:#E9E6DE!important;border:1px solid #CFC6B5!important;box-shadow:0 30px 80px -28px rgba(0,0,0,.46)!important}
           .dialog-head{background:#F4F1E9!important;border-bottom:1px solid #C9A227!important}
@@ -59,13 +58,11 @@ jobs:
           .detail-editor-actions{background:transparent!important}
           .detail-edit-link{background:#2B2B29!important;border-color:#2B2B29!important;color:#C9A227!important;box-shadow:0 6px 14px -9px rgba(43,43,41,.52)!important}
           .detail-edit-link:hover,.detail-edit-link:focus-visible{background:#1F1F1D!important;border-color:#C9A227!important;color:#D7B643!important;box-shadow:0 0 0 2px rgba(201,162,39,.15),0 9px 18px -10px rgba(43,43,41,.56)!important}
-
           @media(max-width:860px){.preview-topbar{min-height:62px!important}.preview-brand img,.preview-brand__logo{width:52px!important;height:52px!important}.preview-hero{margin-top:-12px!important}}
           @media(max-width:760px){.preview-topbar{align-items:center!important;min-height:54px!important}.preview-brand img,.preview-brand__logo{width:48px!important;height:48px!important}.preview-hero{margin-top:0!important;padding-top:3px!important}}
           '''
 
           marker = 'ATS HERO AND DETAIL PALETTE 2026-08-08'
-
           for filename in ['dictionary-d1-preview.html','dictionary-d1-preview-en.html']:
               p = Path(filename)
               text = p.read_text(encoding='utf-8')
@@ -76,19 +73,18 @@ jobs:
                   p.write_text(text, encoding='utf-8')
 
           p = Path('functions/_middleware.js')
-          text = p.read_text(encoding='utf-8')
-          if marker not in text:
-              start = text.find('const DICTIONARY_VISUAL_POLISH = `')
-              if start < 0:
-                  raise RuntimeError('DICTIONARY_VISUAL_POLISH not found')
-              end = text.find('</style>', start)
-              if end < 0:
-                  raise RuntimeError('visual polish style close not found')
-              text = text[:end] + css + '\n' + text[end:]
-              p.write_text(text, encoding='utf-8')
+          if p.exists():
+              text = p.read_text(encoding='utf-8')
+              if marker not in text:
+                  start = text.find('const DICTIONARY_VISUAL_POLISH = `')
+                  if start >= 0:
+                      end = text.find('</style>', start)
+                      if end >= 0:
+                          text = text[:end] + css + '\n' + text[end:]
+                          p.write_text(text, encoding='utf-8')
           PY
-          python3 /tmp/apply_theme.py
 
+          python3 /tmp/apply_theme.py
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add dictionary-d1-preview.html dictionary-d1-preview-en.html functions/_middleware.js
@@ -97,9 +93,6 @@ jobs:
             git push origin HEAD:main
           fi
 
-      - name: Apply to Cloudflare branch
-        shell: bash
-        run: |
           git fetch origin agent/cloudflare-migration
           git checkout -B agent/cloudflare-migration origin/agent/cloudflare-migration
           python3 /tmp/apply_theme.py
