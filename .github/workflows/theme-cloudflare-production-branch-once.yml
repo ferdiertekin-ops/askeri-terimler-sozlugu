@@ -1,0 +1,57 @@
+name: Theme Cloudflare production branch once
+
+on:
+  push:
+    paths:
+      - '.github/workflows/theme-cloudflare-production-branch-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  theme-production-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Cloudflare migration branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/cloudflare-migration
+          fetch-depth: 0
+
+      - name: Apply palette
+        shell: bash
+        run: |
+          for f in dictionary-d1-preview.html dictionary-d1-preview-en.html; do
+            sed -i \
+              -e 's/#2f4e71/#14213A/g' \
+              -e 's/#2F4E71/#14213A/g' \
+              -e 's/#20395a/#22405E/g' \
+              -e 's/#20395A/#22405E/g' \
+              -e 's/#9a3d20/#7A2231/g' \
+              -e 's/#9A3D20/#7A2231/g' \
+              -e 's/#b5965d/#C9A227/g' \
+              -e 's/#B5965D/#C9A227/g' \
+              -e 's/#fbfaf7/#FFFDF8/g' \
+              -e 's/#f5f2ec/#F2ECDD/g' \
+              -e 's/#1b1916/#14213A/g' \
+              -e 's/#706b64/#5C5646/g' \
+              -e 's/#ddd9d2/#DED5C2/g' \
+              -e 's/#ebe8e2/#E7DFCF/g' \
+              -e 's/#f0ebe1/#EFE7D5/g' \
+              -e 's/#8a6a32/#7A2231/g' "$f"
+            sed -i 's/background:rgba(251,250,247,.42)/background:#FFFDF8/g' "$f"
+            sed -i 's/background:rgba(245,242,236,.58)/background:#F2ECDD/g' "$f"
+          done
+
+      - name: Commit production palette
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dictionary-d1-preview.html dictionary-d1-preview-en.html
+          if git diff --cached --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+          git commit -m "Apply navy-burgundy-gold palette to Cloudflare production branch"
+          git push origin HEAD:agent/cloudflare-migration
