@@ -20,17 +20,35 @@
   --row-alt:     #F2ECDD;
   --row-hover:   #EFE7D5;
   --line:        #DED5C2;
+  --line-strong: #CFC4AE;
 
   --ink:         #14213A;
   --ink-soft:    #4A4438;
   --ink-muted:   #5C5646;
   --ink-faint:   #8A8578;
 
-  --accent:      #7A2231;
-  --accent-dark: #5E1926;
+  /* Mevcut sitenin değişkenlerini yeni palete bağla. */
+  --bg-top:      #F7F3EA;
+  --bg-bottom:   #F2ECDD;
   --bg:          #F7F3EA;
+  --card:        #FFFDF8;
+  --panel:       #F2ECDD;
   --text:        #14213A;
   --border:      #DED5C2;
+
+  --accent:      #7A2231;
+  --accent-dark: #5E1926;
+  --accent-deep: #5E1926;
+  --accent-soft: #F0E3E6;
+
+  --brass:       #C9A227;
+  --brass-deep:  #806515;
+  --brass-soft:  #F3ECD1;
+
+  --ok:          #14213A;
+  --warn:        #C9A227;
+  --danger:      #7A2231;
+  --mark:        #E4D6A2;
 }
 
 html,
@@ -89,12 +107,14 @@ a[href*="/editor"]:hover {
 }
 
 .hero-kicker,
-.hero .cevrimici {
+.hero .cevrimici,
+.h1-top {
   color: var(--navy) !important;
 }
 
 .hero h1,
-.hero-title {
+.hero-title,
+.h1-main {
   color: var(--navy) !important;
 }
 
@@ -113,8 +133,14 @@ a[href*="/editor"]:hover {
 .h1-date::before,
 .h1-date::after {
   background: var(--gold) !important;
-  border-color: var(--gold) !important;
+  border: 0 !important;
+  height: 1px !important;
   color: var(--gold) !important;
+}
+
+.eyebrow::before,
+.eyebrow::after {
+  background: var(--gold) !important;
 }
 
 input[type="search"],
@@ -137,7 +163,9 @@ input::placeholder,
 
 .result-count,
 .count,
-.madde-sayisi {
+.madde-sayisi,
+#resultCount,
+#pageInfo {
   color: var(--ink-faint) !important;
 }
 
@@ -163,6 +191,7 @@ a:focus-visible {
   color: var(--row) !important;
 }
 
+/* Tablo kullanan görünümler için. */
 thead,
 thead tr,
 thead th,
@@ -229,6 +258,63 @@ thead th,
 td,
 th {
   border-color: var(--line) !important;
+}
+
+/* Güncel liste görünümü: ayrı sözlük kartları. */
+.term-list-row {
+  background: var(--row) !important;
+  border-color: var(--line) !important;
+}
+
+.term-list-row:nth-child(even) {
+  background: var(--row-alt) !important;
+}
+
+.term-list-row::before {
+  background: var(--navy) !important;
+  opacity: .9 !important;
+}
+
+.term-list-row:hover {
+  background: var(--row-hover) !important;
+  border-color: var(--gold) !important;
+}
+
+.term-list-cell {
+  border-color: var(--line) !important;
+}
+
+.term-list-label {
+  color: var(--bordo) !important;
+}
+
+.term-list-main strong {
+  color: var(--navy) !important;
+}
+
+.term-list-row:hover .term-list-main strong {
+  color: var(--bordo) !important;
+}
+
+.term-list-value {
+  color: var(--ink-soft) !important;
+}
+
+.term-list-value--soft,
+.term-list-example {
+  color: var(--ink-muted) !important;
+}
+
+.term-list-open {
+  color: var(--navy-soft) !important;
+  border-color: var(--line) !important;
+  background: var(--row) !important;
+}
+
+.term-list-open:hover {
+  color: var(--bordo) !important;
+  border-color: var(--bordo) !important;
+  background: var(--row-alt) !important;
 }
 
 a {
