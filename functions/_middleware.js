@@ -148,6 +148,90 @@ body{background-image:none!important;background-color:#F7F3EA!important}
 @media(max-width:860px){.preview-topbar{min-height:62px!important}.preview-brand img,.preview-brand__logo{width:52px!important;height:52px!important}.preview-hero{margin-top:-12px!important}}
 @media(max-width:760px){.preview-topbar{align-items:center!important;min-height:54px!important}.preview-brand img,.preview-brand__logo{width:48px!important;height:48px!important}.preview-hero{margin-top:0!important;padding-top:3px!important}}
 
+
+/* ATS TOPLINE REFINEMENT 2026-08-08 */
+.preview-topbar{
+  position:relative!important;
+  grid-template-columns:auto 1fr auto!important;
+  align-items:center!important;
+  min-height:72px!important;
+  padding:1px 0 0!important;
+}
+.preview-brand{
+  align-self:center!important;
+  justify-self:start!important;
+}
+.preview-brand img,.preview-brand__logo{
+  width:68px!important;
+  height:68px!important;
+  max-width:none!important;
+  object-fit:contain!important;
+}
+.preview-topbar__actions{
+  align-self:center!important;
+  justify-self:end!important;
+}
+.preview-hero{
+  position:relative!important;
+  margin-top:-8px!important;
+  padding-top:0!important;
+}
+.preview-eyebrow{
+  position:absolute!important;
+  left:50%!important;
+  top:-57px!important;
+  transform:translateX(-50%)!important;
+  width:max-content!important;
+  max-width:54vw!important;
+  margin:0!important;
+  color:#B3262E!important;
+  font-weight:700!important;
+  letter-spacing:.20em!important;
+  white-space:nowrap!important;
+  z-index:2!important;
+}
+.preview-eyebrow::before,.preview-eyebrow::after{
+  background:#C9A227!important;
+  border-color:#C9A227!important;
+  opacity:.78!important;
+}
+.preview-title__top{
+  color:#9B7A17!important;
+  font-family:Cambria,Georgia,serif!important;
+  font-size:17px!important;
+  line-height:1.05!important;
+  font-weight:700!important;
+  letter-spacing:.23em!important;
+  text-indent:.23em!important;
+}
+.preview-clear{
+  color:#1E232A!important;
+}
+.preview-clear:hover,.preview-clear:focus-visible{
+  color:#000!important;
+}
+.preview-search-row #query::-webkit-search-cancel-button{
+  filter:grayscale(1) brightness(0)!important;
+}
+@media(max-width:900px){
+  .preview-brand img,.preview-brand__logo{width:60px!important;height:60px!important}
+  .preview-eyebrow{top:-51px!important;max-width:52vw!important;font-size:9.5px!important;letter-spacing:.14em!important}
+}
+@media(max-width:760px){
+  .preview-topbar{min-height:54px!important}
+  .preview-brand img,.preview-brand__logo{width:50px!important;height:50px!important}
+  .preview-hero{margin-top:0!important;padding-top:3px!important}
+  .preview-eyebrow{
+    position:static!important;
+    transform:none!important;
+    width:auto!important;
+    max-width:none!important;
+    margin:0 0 5px!important;
+    white-space:normal!important;
+  }
+  .preview-title__top{font-size:15px!important}
+}
+
 </style>`;
 
 const COMMUNITY_ROUTES = new Set([
