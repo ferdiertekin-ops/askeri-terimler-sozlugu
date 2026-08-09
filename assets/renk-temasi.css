@@ -547,3 +547,20 @@ a:hover {
     padding-top: 30px !important;
   }
 }
+
+/* Editör açıkken üç işlem düğmesini tek sağ grup olarak tut;
+   orta başlık için ayrıca güvenli bir boşluk bırak. */
+@media (min-width: 981px) {
+  #addEntryBtn {
+    margin-left: 0 !important;
+  }
+
+  .site:has(#addEntryBtn:not([hidden])) .hero h1,
+  .site:has(#addEntryBtn:not([hidden])) body.search-active .hero h1 {
+    width: min(35vw, 440px) !important;
+  }
+
+  .site:has(#addEntryBtn:not([hidden])) .hero .h1-main {
+    font-size: clamp(25px, 2.25vw, 32px) !important;
+  }
+}
