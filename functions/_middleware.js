@@ -29,6 +29,34 @@ function assetRequest(context, pathname) {
   return context.env.ASSETS.fetch(new Request(target, context.request));
 }
 
+async function dictionaryAssetRequest(context, pathname) {
+  const response = await assetRequest(context, pathname);
+  if (!response.ok) return response;
+
+  const contentType = response.headers.get('content-type') || '';
+  if (!contentType.includes('text/html')) return response;
+
+  let html = await response.text();
+  const injection = [
+    '<link rel="stylesheet" href="/assets/topbar-layout-20260809.css?v=2">',
+    '<script defer src="/assets/topbar-layout-20260809.js?v=2"></script>'
+  ].join('\n');
+
+  if (html.includes('</head>')) {
+    html = html.replace('</head>', `${injection}\n</head>`);
+  }
+
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  headers.set('cache-control', 'no-cache');
+
+  return new Response(html, {
+    status: response.status,
+    statusText: response.statusText,
+    headers
+  });
+}
+
 export async function onRequest(context) {
   const url = new URL(context.request.url);
   const path = url.pathname;
@@ -50,12 +78,12 @@ export async function onRequest(context) {
   }
 
   if (getOrHead && (path === '/' || path === '/index.html')) {
-    return assetRequest(context, '/dictionary-d1-preview');
+    return dictionaryAssetRequest(context, '/dictionary-d1-preview');
   }
 
   if (getOrHead && path === '/en') return redirect(url, '/en/');
   if (getOrHead && (path === '/en/' || path === '/en/index.html')) {
-    return assetRequest(context, '/dictionary-d1-preview-en');
+    return dictionaryAssetRequest(context, '/dictionary-d1-preview-en');
   }
 
   if (getOrHead && path === '/editor') return redirect(url, '/editor/');
