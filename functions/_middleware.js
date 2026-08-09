@@ -148,7 +148,6 @@ body{background-image:none!important;background-color:#F7F3EA!important}
 @media(max-width:860px){.preview-topbar{min-height:62px!important}.preview-brand img,.preview-brand__logo{width:52px!important;height:52px!important}.preview-hero{margin-top:-12px!important}}
 @media(max-width:760px){.preview-topbar{align-items:center!important;min-height:54px!important}.preview-brand img,.preview-brand__logo{width:48px!important;height:48px!important}.preview-hero{margin-top:0!important;padding-top:3px!important}}
 
-
 /* ATS TOPLINE REFINEMENT 2026-08-08 */
 .preview-topbar{
   position:relative!important;
@@ -232,7 +231,6 @@ body{background-image:none!important;background-color:#F7F3EA!important}
   .preview-title__top{font-size:15px!important}
 }
 
-
 /* ATS HERO TYPOGRAPHY TIGHTEN 2026-08-08 */
 .preview-hero{
   margin-top:-18px!important;
@@ -279,7 +277,6 @@ body{background-image:none!important;background-color:#F7F3EA!important}
   .preview-title__top{font-size:16px!important}
 }
 
-
 /* ATS ROW HOVER MUSTARD FRAME 2026-08-08 */
 .row:hover,
 .row:focus-visible,
@@ -298,7 +295,6 @@ body{background-image:none!important;background-color:#F7F3EA!important}
 .row:focus-visible{
   outline:none!important;
 }
-
 
 /* ATS ROW HOVER TEXT EMPHASIS 2026-08-08 */
 .row:hover .cell-ottoman .value,
@@ -512,8 +508,16 @@ function applyDictionaryVisualPolish(html, authenticated = false, lang = 'tr', f
   cleaned = applyEditorShortcut(cleaned, authenticated, lang);
   if (features.community) cleaned = applyCommunityControls(cleaned, authenticated, lang);
   if (features.tts) cleaned = injectTurkishTtsClient(cleaned);
-  if (cleaned.includes('id="ats-visual-polish"')) return cleaned;
-  return cleaned.replace('</head>', `${DICTIONARY_VISUAL_POLISH}\n</head>`);
+  if (!cleaned.includes('id="ats-visual-polish"')) {
+    cleaned = cleaned.replace('</head>', `${DICTIONARY_VISUAL_POLISH}\n</head>`);
+  }
+  if (!cleaned.includes('/assets/topbar-layout-20260809.css')) {
+    cleaned = cleaned.replace('</head>', '<link rel="stylesheet" href="/assets/topbar-layout-20260809.css?v=3">\n</head>');
+  }
+  if (!cleaned.includes('/assets/topbar-layout-20260809.js')) {
+    cleaned = cleaned.replace('</body>', '<script defer src="/assets/topbar-layout-20260809.js?v=3"></script>\n</body>');
+  }
+  return cleaned;
 }
 
 async function dictionaryAssetRequest(context, pathname, lang, extraHeaders = {}) {
