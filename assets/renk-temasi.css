@@ -605,3 +605,78 @@ a:hover {
     margin-left: 0 !important;
   }
 }
+
+/* ============================================================
+   ARKA PLAN DENGESİ · 2026-08-10
+   Sarı/bej ağırlığı azaltıldı. İki ana yüzey tonu:
+   porselen kırık beyaz + çok açık mavi-gri.
+   ============================================================ */
+:root {
+  --paper:       #F3F4F2 !important;
+  --row:         #FBFAF7 !important;
+  --row-alt:     #E9EDF1 !important;
+  --row-hover:   #E2E8ED !important;
+  --line:        #D2D7DB !important;
+  --line-strong: #BEC6CC !important;
+
+  --bg-top:      #F4F5F3 !important;
+  --bg-bottom:   #ECEFF1 !important;
+  --bg:          #F3F4F2 !important;
+  --card:        #FBFAF7 !important;
+  --panel:       #E9EDF1 !important;
+  --border:      #D2D7DB !important;
+}
+
+html,
+body {
+  background: linear-gradient(180deg, #F4F5F3 0%, #ECEFF1 100%) !important;
+}
+
+/* Sözlük satırları: sıcak-soğuk nötr iki ton arasında açık ayrım. */
+tbody tr,
+.row,
+.entry,
+.term-list-row {
+  background: var(--row) !important;
+}
+
+tbody tr:nth-child(even),
+.row:nth-child(even),
+.entry:nth-child(even),
+.term-list-row:nth-child(even) {
+  background: var(--row-alt) !important;
+}
+
+tbody tr:hover,
+.row:hover,
+.entry:hover,
+.term-list-row:hover {
+  background: var(--row-hover) !important;
+}
+
+/* Arama, kart ve ayrıntı yüzeyleri de aynı iki tona bağlandı. */
+.search-row,
+.search-box,
+.lang-switch,
+.drawer__head,
+.detail-row,
+.term-list-open,
+.panel,
+.modal,
+.detail {
+  background: var(--row) !important;
+}
+
+.drawer__card {
+  background: linear-gradient(180deg, var(--row) 0%, var(--row-alt) 100%) !important;
+  border-left-color: var(--line-strong) !important;
+}
+
+.icon-btn,
+.term-list-open:hover {
+  background: var(--row-alt) !important;
+}
+
+.site-footer {
+  background: transparent !important;
+}
