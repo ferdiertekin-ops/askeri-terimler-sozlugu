@@ -145,3 +145,51 @@
   .preview-title--topbar .preview-title__main{font-size:clamp(28px,8.6vw,39px)!important;white-space:normal!important;text-align:center!important}
   .preview-title--topbar .preview-title__date{font-size:11.5px!important}
 }
+
+/* ============================================================
+   CANLI SÖZLÜK PALETİ · 2026-08-10
+   Bu dosya middleware tarafından en son yüklendiği için,
+   eski gömülü bej/gri satır kurallarını burada kesin olarak ezer.
+   ============================================================ */
+html body{
+  background:linear-gradient(180deg,#FBFAF7 0%,#F3F5F6 100%)!important;
+  background-attachment:fixed!important;
+}
+
+html body .preview-search-tools.is-stuck{
+  background:rgba(251,250,247,.96)!important;
+}
+
+html body .preview-search-row{
+  background:#FBFAF7!important;
+  border-color:#D2D7DB!important;
+}
+
+html body .preview-search-row #query,
+html body .preview-search-row #query::placeholder{
+  font-family:Cambria,Georgia,serif!important;
+}
+
+html body .list-shell{
+  background:#FBFAF7!important;
+  border-color:#D2D7DB!important;
+}
+
+html body .list .row{
+  background:#FBFAF7!important;
+  border-bottom-color:#D2D7DB!important;
+}
+
+html body .list .row:nth-child(even){
+  background:#E9EDF1!important;
+}
+
+html body .list .row:hover,
+html body .list .row:focus-visible,
+html body .list .row:active{
+  background:#E2E8ED!important;
+}
+
+html body .list .row .cell{
+  border-right-color:#D2D7DB!important;
+}
