@@ -680,3 +680,88 @@ tbody tr:hover,
 .site-footer {
   background: transparent !important;
 }
+
+/* ============================================================
+   ARKA PLAN DENGESİ · REVİZE · 2026-08-10
+   Daha açık, daha temiz nötr kademelendirme.
+   ============================================================ */
+:root {
+  --paper:       #F6F6F4 !important;
+  --row:         #FCFBF8 !important;
+  --row-alt:     #F1F3F5 !important;
+  --row-hover:   #E8EDF2 !important;
+  --line:        #D6DCE2 !important;
+  --line-strong: #C5CDD6 !important;
+
+  --bg-top:      #F7F8F8 !important;
+  --bg-bottom:   #EEF2F5 !important;
+  --bg:          #F6F6F4 !important;
+  --card:        #FCFBF8 !important;
+  --panel:       #F1F3F5 !important;
+  --border:      #D6DCE2 !important;
+}
+
+html,
+body {
+  background: linear-gradient(180deg, #F7F8F8 0%, #EEF2F5 100%) !important;
+}
+
+tbody tr,
+.row,
+.entry,
+.term-list-row {
+  background: var(--row) !important;
+}
+
+tbody tr:nth-child(even),
+.row:nth-child(even),
+.entry:nth-child(even),
+.term-list-row:nth-child(even) {
+  background: var(--row-alt) !important;
+}
+
+tbody tr:hover,
+.row:hover,
+.entry:hover,
+.term-list-row:hover {
+  background: var(--row-hover) !important;
+}
+
+.search-row,
+.search-box,
+.lang-switch,
+.drawer__head,
+.detail-row,
+.term-list-open,
+.panel,
+.modal,
+.detail {
+  background: var(--row) !important;
+}
+
+.drawer__card {
+  background: linear-gradient(180deg, var(--row) 0%, var(--row-alt) 100%) !important;
+  border-left-color: var(--line-strong) !important;
+}
+
+.icon-btn,
+.term-list-open:hover {
+  background: var(--row-alt) !important;
+}
+
+.site-footer {
+  background: transparent !important;
+}
+
+/* Arama kutusunda yazılan metin ve yer tutucu kesin olarak Cambria. */
+#searchInput,
+.search-row input,
+.search-box input {
+  font-family: Cambria, Georgia, serif !important;
+}
+
+#searchInput::placeholder,
+.search-row input::placeholder,
+.search-box input::placeholder {
+  font-family: Cambria, Georgia, serif !important;
+}
