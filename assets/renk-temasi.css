@@ -27,7 +27,6 @@
   --ink-muted:   #5C5646;
   --ink-faint:   #8A8578;
 
-  /* Mevcut sitenin değişkenlerini yeni palete bağla. */
   --bg-top:      #F7F3EA;
   --bg-bottom:   #F2ECDD;
   --bg:          #F7F3EA;
@@ -191,7 +190,6 @@ a:focus-visible {
   color: var(--row) !important;
 }
 
-/* Tablo kullanan görünümler için. */
 thead,
 thead tr,
 thead th,
@@ -260,7 +258,6 @@ th {
   border-color: var(--line) !important;
 }
 
-/* Güncel liste görünümü: ayrı sözlük kartları. */
 .term-list-row {
   background: var(--row) !important;
   border-color: var(--line) !important;
@@ -400,13 +397,10 @@ a:hover {
    ÜST BAŞLIK YERLEŞİMİ · 2026-08-09
    Logo + dil seçimi / ortada sözlük başlığı / sağda editör işlemleri
    ============================================================ */
-
-/* Arama yönü ibaresi artık arayüzde gösterilmiyor. */
 .hero > .eyebrow {
   display: none !important;
 }
 
-/* Çevrimiçi/Online ibaresini ana başlığın geri kalanından hafifçe ayır. */
 .h1-top {
   font-size: clamp(17px, 1.55vw, 21px) !important;
   font-weight: 600 !important;
@@ -424,12 +418,10 @@ a:hover {
     position: relative !important;
   }
 
-  /* Üst solda yalnız logo kalsın; sözlük adı ortadaki ana başlıkta zaten yer alıyor. */
   .topbar .brand__name {
     display: none !important;
   }
 
-  /* Action sarmalayıcısını görsel akıştan çıkararak dil düğmesini logonun yanına al. */
   .topbar__actions {
     display: contents !important;
   }
@@ -446,7 +438,6 @@ a:hover {
     flex: 0 0 auto !important;
   }
 
-  /* Editör işlemleri sağ kenara oturur; Yeni madde ve dışa aktar da bu grubu izler. */
   #editorLockBtn,
   #addEntryBtn,
   #downloadPublishBtn {
@@ -462,7 +453,6 @@ a:hover {
     margin-right: 2px !important;
   }
 
-  /* Ana başlığı logo/dil ve editör işlemleriyle aynı üst yatay eksene taşı. */
   .hero h1 {
     position: absolute !important;
     top: 17px !important;
@@ -495,12 +485,10 @@ a:hover {
     width: 38px !important;
   }
 
-  /* Başlık üst bara taşındığı için arama alanını gereksiz yere aşağı itme. */
   .hero {
     padding-top: 18px !important;
   }
 
-  /* Arama başladıktan sonra da yeni üst başlık düzeni korunur. */
   body.search-active .hero h1 {
     position: absolute !important;
     top: 17px !important;
@@ -528,8 +516,6 @@ a:hover {
   }
 }
 
-/* Tablet ve telefonda taşma olmaması için başlık normal akışta kalır;
-   dil düğmesi yine logo grubuna mümkün olduğunca yakın tutulur. */
 @media (max-width: 980px) {
   .topbar {
     gap: 10px !important;
@@ -548,8 +534,6 @@ a:hover {
   }
 }
 
-/* Editör açıkken üç işlem düğmesini tek sağ grup olarak tut;
-   orta başlık için ayrıca güvenli bir boşluk bırak. */
 @media (min-width: 981px) {
   #addEntryBtn {
     margin-left: 0 !important;
@@ -565,7 +549,6 @@ a:hover {
   }
 }
 
-/* Mobil/tablet: dil seçimi de gerçekten logo ile aynı üst akışta yer alır. */
 @media (max-width: 980px) {
   .topbar {
     justify-content: flex-start !important;
@@ -607,21 +590,21 @@ a:hover {
 }
 
 /* ============================================================
-   ARKA PLAN DENGESİ · 2026-08-10
-   Sarı/bej ağırlığı azaltıldı. İki ana yüzey tonu:
-   porselen kırık beyaz + çok açık mavi-gri.
+   SON PALET · 2026-08-10
+   Editör ekranındaki gerçek renkler sözlük satırlarına taşındı.
+   Açık satır: #FBFAF7 · Açık mavi satır: #E9EDF1
    ============================================================ */
 :root {
-  --paper:       #F3F4F2 !important;
+  --paper:       #FBFAF7 !important;
   --row:         #FBFAF7 !important;
   --row-alt:     #E9EDF1 !important;
   --row-hover:   #E2E8ED !important;
   --line:        #D2D7DB !important;
   --line-strong: #BEC6CC !important;
 
-  --bg-top:      #F4F5F3 !important;
-  --bg-bottom:   #ECEFF1 !important;
-  --bg:          #F3F4F2 !important;
+  --bg-top:      #FBFAF7 !important;
+  --bg-bottom:   #F3F5F6 !important;
+  --bg:          #FBFAF7 !important;
   --card:        #FBFAF7 !important;
   --panel:       #E9EDF1 !important;
   --border:      #D2D7DB !important;
@@ -629,102 +612,28 @@ a:hover {
 
 html,
 body {
-  background: linear-gradient(180deg, #F4F5F3 0%, #ECEFF1 100%) !important;
-}
-
-/* Sözlük satırları: sıcak-soğuk nötr iki ton arasında açık ayrım. */
-tbody tr,
-.row,
-.entry,
-.term-list-row {
-  background: var(--row) !important;
-}
-
-tbody tr:nth-child(even),
-.row:nth-child(even),
-.entry:nth-child(even),
-.term-list-row:nth-child(even) {
-  background: var(--row-alt) !important;
-}
-
-tbody tr:hover,
-.row:hover,
-.entry:hover,
-.term-list-row:hover {
-  background: var(--row-hover) !important;
-}
-
-/* Arama, kart ve ayrıntı yüzeyleri de aynı iki tona bağlandı. */
-.search-row,
-.search-box,
-.lang-switch,
-.drawer__head,
-.detail-row,
-.term-list-open,
-.panel,
-.modal,
-.detail {
-  background: var(--row) !important;
-}
-
-.drawer__card {
-  background: linear-gradient(180deg, var(--row) 0%, var(--row-alt) 100%) !important;
-  border-left-color: var(--line-strong) !important;
-}
-
-.icon-btn,
-.term-list-open:hover {
-  background: var(--row-alt) !important;
-}
-
-.site-footer {
-  background: transparent !important;
-}
-
-/* ============================================================
-   ARKA PLAN DENGESİ · REVİZE · 2026-08-10
-   Daha açık, daha temiz nötr kademelendirme.
-   ============================================================ */
-:root {
-  --paper:       #F6F6F4 !important;
-  --row:         #FCFBF8 !important;
-  --row-alt:     #F1F3F5 !important;
-  --row-hover:   #E8EDF2 !important;
-  --line:        #D6DCE2 !important;
-  --line-strong: #C5CDD6 !important;
-
-  --bg-top:      #F7F8F8 !important;
-  --bg-bottom:   #EEF2F5 !important;
-  --bg:          #F6F6F4 !important;
-  --card:        #FCFBF8 !important;
-  --panel:       #F1F3F5 !important;
-  --border:      #D6DCE2 !important;
-}
-
-html,
-body {
-  background: linear-gradient(180deg, #F7F8F8 0%, #EEF2F5 100%) !important;
+  background: linear-gradient(180deg, #FBFAF7 0%, #F3F5F6 100%) !important;
 }
 
 tbody tr,
 .row,
 .entry,
 .term-list-row {
-  background: var(--row) !important;
+  background: #FBFAF7 !important;
 }
 
 tbody tr:nth-child(even),
 .row:nth-child(even),
 .entry:nth-child(even),
 .term-list-row:nth-child(even) {
-  background: var(--row-alt) !important;
+  background: #E9EDF1 !important;
 }
 
 tbody tr:hover,
 .row:hover,
 .entry:hover,
 .term-list-row:hover {
-  background: var(--row-hover) !important;
+  background: #E2E8ED !important;
 }
 
 .search-row,
@@ -736,32 +645,35 @@ tbody tr:hover,
 .panel,
 .modal,
 .detail {
-  background: var(--row) !important;
+  background: #FBFAF7 !important;
 }
 
 .drawer__card {
-  background: linear-gradient(180deg, var(--row) 0%, var(--row-alt) 100%) !important;
-  border-left-color: var(--line-strong) !important;
+  background: linear-gradient(180deg, #FBFAF7 0%, #E9EDF1 100%) !important;
+  border-left-color: #BEC6CC !important;
 }
 
 .icon-btn,
 .term-list-open:hover {
-  background: var(--row-alt) !important;
+  background: #E9EDF1 !important;
 }
 
 .site-footer {
   background: transparent !important;
 }
 
-/* Arama kutusunda yazılan metin ve yer tutucu kesin olarak Cambria. */
 #searchInput,
 .search-row input,
-.search-box input {
+.search-box input,
+input[type="search"],
+input[type="text"] {
   font-family: Cambria, Georgia, serif !important;
 }
 
 #searchInput::placeholder,
 .search-row input::placeholder,
-.search-box input::placeholder {
+.search-box input::placeholder,
+input[type="search"]::placeholder,
+input[type="text"]::placeholder {
   font-family: Cambria, Georgia, serif !important;
 }
