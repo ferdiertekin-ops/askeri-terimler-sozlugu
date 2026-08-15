@@ -147,8 +147,8 @@
 }
 
 /* ============================================================
-   AÇIK VE SICAK CANLI SÖZLÜK PALETİ · 2026-08-15
-   Ana zemin: sıcak kırık beyaz. Tablo: beyaz + çok soluk toz mavi.
+   SICAK NÖTR CANLI SÖZLÜK PALETİ · 2026-08-15
+   Fildişi + sıcak taş grisi. Mavi bloklar kaldırıldı.
    Üst başlık ve klasik lacivert/altın kimlik korunur.
    ============================================================ */
 html body{
@@ -162,7 +162,7 @@ html body .preview-search-tools.is-stuck{
 
 html body .preview-search-row{
   background:#FFFDF8!important;
-  border-color:#DDD5C8!important;
+  border-color:#D9D2C7!important;
 }
 
 html body .preview-search-row #query,
@@ -172,24 +172,24 @@ html body .preview-search-row #query::placeholder{
 
 html body .list-shell{
   background:#FFFDF8!important;
-  border-color:#D8E0E7!important;
+  border-color:#D8D5CF!important;
 }
 
 html body .list .row{
   background:#FFFDF8!important;
-  border-bottom-color:#D8E0E7!important;
+  border-bottom-color:#DEDBD4!important;
 }
 
 html body .list .row:nth-child(even){
-  background:#F2F6FA!important;
+  background:#F2F1ED!important;
 }
 
 html body .list .row:hover,
 html body .list .row:focus-visible,
 html body .list .row:active{
-  background:#EAF1F7!important;
+  background:#EAE8E2!important;
 }
 
 html body .list .row .cell{
-  border-right-color:#D8E0E7!important;
+  border-right-color:#DEDBD4!important;
 }
