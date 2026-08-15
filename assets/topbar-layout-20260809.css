@@ -147,22 +147,22 @@
 }
 
 /* ============================================================
-   CANLI SÖZLÜK PALETİ · 2026-08-10
-   Bu dosya middleware tarafından en son yüklendiği için,
-   eski gömülü bej/gri satır kurallarını burada kesin olarak ezer.
+   AÇIK MAVİ CANLI SÖZLÜK PALETİ · 2026-08-15
+   Daha ferah akademik görünüm: kırık beyaz + açık mavi satırlar.
+   Middleware bu dosyayı en son yüklediği için gömülü eski renkleri ezer.
    ============================================================ */
 html body{
-  background:linear-gradient(180deg,#FBFAF7 0%,#F3F5F6 100%)!important;
+  background:linear-gradient(180deg,#F8FAFC 0%,#EEF3F8 100%)!important;
   background-attachment:fixed!important;
 }
 
 html body .preview-search-tools.is-stuck{
-  background:rgba(251,250,247,.96)!important;
+  background:rgba(248,250,252,.96)!important;
 }
 
 html body .preview-search-row{
-  background:#FBFAF7!important;
-  border-color:#D2D7DB!important;
+  background:#F7F9FC!important;
+  border-color:#CDD8E3!important;
 }
 
 html body .preview-search-row #query,
@@ -171,25 +171,25 @@ html body .preview-search-row #query::placeholder{
 }
 
 html body .list-shell{
-  background:#FBFAF7!important;
-  border-color:#D2D7DB!important;
+  background:#FBFCFE!important;
+  border-color:#CDD8E3!important;
 }
 
 html body .list .row{
-  background:#FBFAF7!important;
-  border-bottom-color:#D2D7DB!important;
+  background:#FBFCFE!important;
+  border-bottom-color:#CDD8E3!important;
 }
 
 html body .list .row:nth-child(even){
-  background:#E9EDF1!important;
+  background:#E8EEF5!important;
 }
 
 html body .list .row:hover,
 html body .list .row:focus-visible,
 html body .list .row:active{
-  background:#E2E8ED!important;
+  background:#DDE6F0!important;
 }
 
 html body .list .row .cell{
-  border-right-color:#D2D7DB!important;
+  border-right-color:#CDD8E3!important;
 }
