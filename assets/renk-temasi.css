@@ -677,3 +677,74 @@ input[type="search"]::placeholder,
 input[type="text"]::placeholder {
   font-family: Cambria, Georgia, serif !important;
 }
+
+/* ============================================================
+   AÇIK GRİ + BUZ MAVİSİ ARKA PLAN · 2026-08-16
+   Referans ekran görüntüsündeki ana tonlar:
+   #F3F3F3 · #FCFCFC · #ECF6FF
+   ============================================================ */
+:root {
+  --paper:       #F3F3F3 !important;
+  --row:         #FCFCFC !important;
+  --row-alt:     #ECF6FF !important;
+  --row-hover:   #E7F2FC !important;
+  --line:        #DDE4EA !important;
+  --line-strong: #CCD6DF !important;
+
+  --bg-top:      #F3F3F3 !important;
+  --bg-bottom:   #F3F3F3 !important;
+  --bg:          #F3F3F3 !important;
+  --card:        #FCFCFC !important;
+  --panel:       #ECF6FF !important;
+  --border:      #DDE4EA !important;
+}
+
+html,
+body {
+  background:
+    radial-gradient(1100px 540px at 50% 120px, rgba(236,246,255,.96) 0%, rgba(238,247,255,.66) 38%, rgba(243,243,243,0) 72%),
+    #F3F3F3 !important;
+}
+
+tbody tr,
+.row,
+.entry,
+.term-list-row {
+  background: #FCFCFC !important;
+}
+
+tbody tr:nth-child(even),
+.row:nth-child(even),
+.entry:nth-child(even),
+.term-list-row:nth-child(even) {
+  background: #ECF6FF !important;
+}
+
+tbody tr:hover,
+.row:hover,
+.entry:hover,
+.term-list-row:hover {
+  background: #E7F2FC !important;
+}
+
+.search-row,
+.search-box,
+.lang-switch,
+.drawer__head,
+.detail-row,
+.term-list-open,
+.panel,
+.modal,
+.detail {
+  background: #FCFCFC !important;
+}
+
+.drawer__card {
+  background: linear-gradient(180deg, #FCFCFC 0%, #ECF6FF 100%) !important;
+  border-left-color: #CCD6DF !important;
+}
+
+.icon-btn,
+.term-list-open:hover {
+  background: #ECF6FF !important;
+}
