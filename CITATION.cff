@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "Bu projeyi akademik çalışmanızda kullanıyorsanız lütfen aşağıdaki künyeyle atıf yapınız."
+title: "Askerî Terimler Sözlüğü / Military Terms Dictionary (1876–1918)"
+type: software
+authors:
+  - family-names: "Ertekin"
+    given-names: "Ferdi"
+year: 2026
+version: "1.0.0"
+url: "https://askeriterimlersozlugu.com"
+repository-code: "https://github.com/ferdiertekin-ops/askeri-terimler-sozlugu"
+license: MIT
+abstract: >-
+  A bilingual digital humanities project documenting English military,
+  administrative, and institutional terminology used between 1876 and 1918,
+  with period Ottoman Turkish equivalents, modern Turkish equivalents,
+  explanatory notes, and bibliographic references.
+keywords:
+  - Ottoman military history
+  - military terminology
+  - digital humanities
+  - historical dictionary
+  - Ottoman Turkish
+  - English-Turkish dictionary
