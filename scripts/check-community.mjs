@@ -104,6 +104,8 @@ for (const required of [
   'tr-TR-Chirp3-HD-Achird',
   'GOOGLE_TTS_CLIENT_EMAIL',
   'GOOGLE_TTS_PRIVATE_KEY',
+  'TTS_FEATURE_ENABLED',
+  'tts_not_enabled',
   'normalizeRomanOrdinals',
   'PHONETIC_ENCODING_IPA',
   "pathname === '/api/tts/preview'",

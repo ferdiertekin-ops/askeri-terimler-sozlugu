@@ -13,6 +13,10 @@ function clean(value, maxLength = MAX_TEXT_LENGTH) {
   return typeof value === 'string' ? value.trim().slice(0, maxLength) : '';
 }
 
+function enabled(value) {
+  return String(value || '').trim().toLowerCase() === 'true';
+}
+
 function base64Url(bytes) {
   let binary = '';
   for (const byte of bytes) binary += String.fromCharCode(byte);
@@ -313,6 +317,10 @@ async function synthesizeWithGoogle(env, plan, voiceName) {
 export async function handleTtsApi(context, pathname) {
   const request = context.request;
   const id = requestId(request);
+
+  if (!enabled(context.env.TTS_FEATURE_ENABLED)) {
+    return json({ ok: false, error: 'tts_not_enabled', requestId: id }, { status: 503 });
+  }
 
   if (pathname === '/api/tts/preview') {
     if (request.method !== 'POST') return methodNotAllowed(['POST']);

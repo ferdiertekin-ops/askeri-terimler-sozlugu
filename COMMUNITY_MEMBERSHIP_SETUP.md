@@ -116,7 +116,7 @@ Türkçe/Osmanlıca seslendirme kodu aynı yayında bulunabilir. Ses düğmeleri
 - `GOOGLE_TTS_CLIENT_EMAIL` tanımlı
 - `GOOGLE_TTS_PRIVATE_KEY` tanımlı
 
-İsteğe bağlı olarak `GOOGLE_TTS_VOICE` ve `GOOGLE_CLOUD_PROJECT_ID` tanımlanabilir. Bayrak kapalıyken sözlüğün mevcut seslendirme davranışı bozulmaz ve yeni TTS istemcisi sayfaya enjekte edilmez.
+İsteğe bağlı olarak `GOOGLE_TTS_VOICE` ve `GOOGLE_CLOUD_PROJECT_ID` tanımlanabilir. Bayrak kapalıyken sözlüğün mevcut seslendirme davranışı bozulmaz, yeni TTS istemcisi sayfaya enjekte edilmez ve `/api/tts` ile `/api/tts/preview` uçları `503 tts_not_enabled` yanıtı verir.
 
 ## Otomatik kontroller
 
