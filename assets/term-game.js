@@ -46,7 +46,7 @@ export function makeQuestion(pool, previousSlug, random = Math.random) {
     }
     if (alternatives.length === 3) return { term, options: shuffled([term, ...alternatives], random) };
   }
-  return null;
+  return previousSlug ? makeQuestion(pool, null, random) : null;
 }
 
 async function init(root) {
