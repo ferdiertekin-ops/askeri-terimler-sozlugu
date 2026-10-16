@@ -612,6 +612,91 @@ body{
   font-weight:600!important;
 }
 </style>
+
+<style id="ats-compact-entry-dialog-20261016">
+/* Compact, readable dictionary detail presentation. Scoped so listing and editor are unaffected. */
+#drawer .dialog{
+  width:min(820px,calc(100vw - 32px));
+  max-height:min(90dvh,860px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  border-radius:14px;
+}
+#drawer .dialog-head{
+  padding:14px 20px 13px;
+  gap:12px;
+}
+#drawer .dialog-kicker{margin-bottom:5px;letter-spacing:.12em}
+#drawer .dialog-title-row{display:flex;align-items:center;gap:10px;min-width:0}
+#drawer .dialog-title-row h2{font-size:clamp(23px,2.7vw,30px);line-height:1.17;overflow-wrap:anywhere}
+#drawer .dialog-speak-slot{display:inline-flex;flex:0 0 auto}
+#drawer .dialog-title-row .speak{
+  display:inline-grid;width:30px;height:30px;padding:0;
+  border:1px solid #d5ccbc;border-radius:50%;
+  background:#eae5da;color:#67563b;font-size:15px;opacity:1;
+}
+#drawer .dialog-title-row .speak:hover,
+#drawer .dialog-title-row .speak:focus-visible{background:#e0d6c2;color:#29231a;outline-offset:2px}
+#drawer .close{width:34px;height:34px;flex:0 0 auto}
+#drawer .detail-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px 12px;
+  padding:14px 18px 8px;
+}
+#drawer .detail-card{
+  padding:10px 13px 11px;
+  border-radius:9px;
+  overflow-wrap:anywhere;
+}
+#drawer .detail-card::before{display:none!important}
+#drawer .detail-card.ottoman,
+#drawer .detail-card.modern{
+  background:#F6F3EC!important;
+  border:1px solid #D5CEC0!important;
+  border-left:2px solid #B29A54!important;
+}
+#drawer .detail-card.full{grid-column:1/-1}
+#drawer .detail-card .label{margin-bottom:5px;font-size:10px;letter-spacing:.1em}
+#drawer .detail-card .label-row{margin-bottom:5px}
+#drawer .detail-card.ottoman .detail-value{font-size:17px;line-height:1.37}
+#drawer .detail-card.modern .detail-value{font-size:16px;line-height:1.4}
+#drawer .detail-card.description,
+#drawer .detail-card.sources-panel{
+  background:transparent!important;
+  border:0!important;
+  border-top:1px solid #D2CABC!important;
+  border-radius:0;
+  box-shadow:none!important;
+  padding:10px 2px 2px;
+  margin-top:1px;
+}
+#drawer .detail-card.description .detail-value{
+  font-family:Cambria,Georgia,serif;
+  font-size:15px;line-height:1.46;
+}
+#drawer .detail-card.sources-panel .detail-value{
+  font-family:Cambria,Georgia,serif;
+  font-size:14.5px;line-height:1.42;
+}
+#drawer .sources{margin:0;padding-left:20px}
+#drawer .sources li{margin:3px 0;line-height:1.42}
+#drawer .sources.single{padding-left:0;list-style:none}
+#drawer .detail-empty{padding:8px 20px 16px;font:15px/1.5 Cambria,Georgia,serif}
+#drawer .detail-editor-actions{padding:4px 18px 14px}
+@media(max-width:640px){
+  #drawer{padding:0}
+  #drawer .dialog{width:100%;max-height:100dvh;border:0!important;border-radius:0}
+  #drawer .dialog-head{padding:12px 15px 11px}
+  #drawer .dialog-title-row h2{font-size:clamp(22px,5.2vw,27px)}
+  #drawer .detail-grid{grid-template-columns:1fr;gap:7px;padding:11px 13px 6px}
+  #drawer .detail-card.full{grid-column:auto}
+  #drawer .detail-card{padding:10px 12px}
+  #drawer .detail-card.description,
+  #drawer .detail-card.sources-panel{padding:9px 2px 2px}
+  #drawer .detail-editor-actions{padding:4px 13px 15px}
+}
+</style>
+
 </head>
 <body>
 <div class="wrap">
@@ -691,7 +776,7 @@ body{
       <p><a href="/en/">Dictionary</a> · <a href="/en/terms/">Terms Index</a> · <a href="/en/publication-note/">Publication Note</a> · <a href="/en/bibliography/">Bibliography</a> · <a href="/en/privacy-policy/">Privacy</a> · <a href="/en/cookie-policy/">Cookies</a> · <a href="/en/terms-of-use/">Terms of Use</a> · <a class="install-app-link" href="/uygulama/?lang=en">Download App</a> · <a href="/en/contact/">Contact</a></p>
 </footer>
 </div>
-<div id="drawer" class="drawer" aria-hidden="true"><section class="dialog" role="dialog" aria-modal="true" aria-labelledby="detailTitle"><div class="dialog-head"><div><span class="dialog-kicker">Main Dictionary</span><h2 id="detailTitle">Entry</h2></div><button id="close" class="close" aria-label="Close">×</button></div><div id="detail"></div></section></div>
+<div id="drawer" class="drawer" aria-hidden="true"><section class="dialog" role="dialog" aria-modal="true" aria-labelledby="detailTitle"><div class="dialog-head"><div><span class="dialog-kicker">Main Dictionary</span><div class="dialog-title-row"><h2 id="detailTitle">Entry</h2><span id="detailSpeakSlot" class="dialog-speak-slot"></span></div></div><button id="close" class="close" aria-label="Close">×</button></div><div id="detail"></div></section></div>
 <script>
 (()=>{'use strict';
 const LIMIT=30;let offset=0,total=0,currentQuery='',currentLetter='',loading=false,searchTimer=null,requestToken=0,activeSpeakButton=null;let editorAuthenticated=false,editorSessionPromise=null;
@@ -729,7 +814,35 @@ function itemHtml(x){const explanation=x.explanation_en||x.explanation_tr;return
 function resultsHtml(items){if(!items.length)return'<div class="empty">No results found.</div>';return items.map(itemHtml).join('')}
 async function load(){const token=++requestToken;if(loading)setStatus('Updating entries…');else setStatus('Loading entries…');loading=true;prev.disabled=prevTop.disabled=next.disabled=nextTop.disabled=true;try{const u=new URL('/api/terms',location.origin);u.searchParams.set('limit',LIMIT);u.searchParams.set('offset',offset);if(currentQuery)u.searchParams.set('q',currentQuery);if(currentLetter)u.searchParams.set('letter',currentLetter);const r=await fetch(u,{headers:{Accept:'application/json'}});const d=await r.json();if(token!==requestToken)return;if(!r.ok||!d.ok)throw new Error(d.error||`HTTP ${r.status}`);total=d.total;results.innerHTML=resultsHtml(d.items);const current=Math.floor(offset/LIMIT)+1,pages=Math.max(1,Math.ceil(total/LIMIT));page.textContent=pageTop.textContent=`${current} / ${pages}`;resultTitle.textContent=currentQuery?`Results for “${currentQuery}”`:currentLetter?`Letter ${currentLetter}`:'Results';meta.textContent=currentQuery?`${total} results`:currentLetter?`${total} entries`:`${total} entries`;prev.disabled=prevTop.disabled=!d.hasPrevious;next.disabled=nextTop.disabled=!d.hasNext;setStatus(d.items.length?`Showing ${offset+1}–${Math.min(offset+d.items.length,total)}.`:'');}catch(e){if(token!==requestToken)return;results.innerHTML='';resultTitle.textContent='Results';meta.textContent='—';setStatus(`Loading failed: ${e.message}`,true)}finally{if(token===requestToken)loading=false}}
 function sourceHtml(s){const citation=esc(s.citation||'');const url=String(s.url||'').trim();return url?`<li><a class="source-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${citation||esc(url)}</a></li>`:`<li>${citation||'—'}</li>`}
-async function detail(slug){setStatus('Loading entry details…');try{await ensureEditorSession();const r=await fetch(`/api/terms/${encodeURIComponent(slug)}`,{headers:{Accept:'application/json'}});const d=await r.json();if(!r.ok||!d.ok)throw new Error(d.error||`HTTP ${r.status}`);const t=d.term;el('detailTitle').textContent=t.headword_en;el('detail').innerHTML=`<div class="detail-grid"><div class="detail-card full">${labelHtml('Headword',t.headword_en,'en-GB')}<div class="detail-value">${esc(t.headword_en)||'—'}</div></div><div class="detail-card ottoman">${labelHtml('Ottoman / Period Equivalent',t.ottoman_period_term,'tr-TR')}<div class="detail-value">${esc(t.ottoman_period_term)||'—'}</div></div><div class="detail-card modern">${labelHtml('Modern Turkish',t.modern_equivalent_tr,'tr-TR')}<div class="detail-value">${esc(t.modern_equivalent_tr)||'—'}</div></div><div class="detail-card full description"><span class="label">Explanation</span><div class="detail-value">${esc(t.explanation_en||t.explanation_tr)||'—'}</div></div><div class="detail-card full"><span class="label">Citation / Source</span><div class="detail-value">${t.sources?.length?`<ol class="sources">${t.sources.map(sourceHtml).join('')}</ol>`:'—'}</div></div></div>${editorActionHtml(t.slug)}`;drawer.classList.add('open');drawer.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';setStatus('');}catch(e){setStatus(`Entry could not be loaded: ${e.message}`,true)}}
+async function detail(slug) {
+  setStatus('Loading entry details…');
+  try {
+    await ensureEditorSession();
+    const r = await fetch(`/api/terms/${encodeURIComponent(slug)}`, { headers: { Accept: 'application/json' } });
+    const d = await r.json();
+    if (!r.ok || !d.ok) throw new Error(d.error || `HTTP ${r.status}`);
+    const t = d.term;
+    const ottoman = typeof t.ottoman_period_term === 'string' && t.ottoman_period_term.trim();
+    const modern = typeof t.modern_equivalent_tr === 'string' && t.modern_equivalent_tr.trim();
+    const explanation = t.explanation_en || t.explanation_tr;
+    const sources = Array.isArray(t.sources) ? t.sources : [];
+    el('detailTitle').textContent = t.headword_en;
+    el('detailSpeakSlot').innerHTML = speakButton(t.headword_en, 'en-GB', 'Read headword aloud');
+    const cards = [
+      ottoman ? `<section class="detail-card ottoman${modern ? '' : ' full'}"><span class="label">Ottoman / Period Equivalent</span><div class="detail-value">${esc(t.ottoman_period_term)}</div></section>` : '',
+      modern ? `<section class="detail-card modern${ottoman ? '' : ' full'}"><span class="label">Modern Turkish</span><div class="detail-value">${esc(t.modern_equivalent_tr)}</div></section>` : '',
+      typeof explanation === 'string' && explanation.trim() ? `<section class="detail-card full description"><span class="label">Explanation</span><div class="detail-value">${esc(explanation)}</div></section>` : '',
+      sources.length ? `<section class="detail-card full sources-panel"><span class="label">Citation / Source</span><div class="detail-value"><ol class="sources${sources.length === 1 ? ' single' : ''}">${sources.map(sourceHtml).join('')}</ol></div></section>` : ''
+    ].join('');
+    el('detail').innerHTML = (cards ? `<div class="detail-grid">${cards}</div>` : '<p class="detail-empty">No additional details are available for this entry.</p>') + editorActionHtml(t.slug);
+    drawer.classList.add('open');
+    drawer.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    setStatus('');
+  } catch (e) {
+    setStatus(`Entry could not be loaded: ${e.message}`, true);
+  }
+}
 function stopSpeech(){if(!speechSupported)return;window.speechSynthesis.cancel();if(activeSpeakButton){activeSpeakButton.setAttribute('aria-pressed','false');activeSpeakButton=null}}
 function speak(text,lang,button){if(!speechSupported||!text)return;stopSpeech();const utterance=new SpeechSynthesisUtterance(text);utterance.lang=lang;utterance.rate=lang==='en-GB'?.9:.92;utterance.pitch=1;if(lang==='en-GB'){const voice=pickMaleEnglishVoice();if(voice)utterance.voice=voice}utterance.onend=utterance.onerror=()=>{if(button)button.setAttribute('aria-pressed','false');if(activeSpeakButton===button)activeSpeakButton=null};activeSpeakButton=button;button.setAttribute('aria-pressed','true');window.speechSynthesis.speak(utterance)}
 function closeDrawer(){stopSpeech();drawer.classList.remove('open');drawer.setAttribute('aria-hidden','true');document.body.style.overflow=''}
