@@ -191,7 +191,7 @@ body{background:radial-gradient(ellipse at 50% -210px,rgba(255,255,255,.98),rgba
 @media(max-width:700px){body{background-attachment:scroll}.nav{gap:8px 14px}.nav a{font-size:12px}.paper{border-radius:11px}}
 
 </style>
-<link rel="stylesheet" href="/assets/ats-edition-20261016.css?v=5">
+<link rel="stylesheet" href="/assets/ats-edition-20261016.css?v=6">
 </head>
 <body><div class="site">
 <header class="topbar">
