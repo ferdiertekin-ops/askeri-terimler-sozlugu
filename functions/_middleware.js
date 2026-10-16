@@ -611,6 +611,9 @@ function applyDictionaryVisualPolish(html, authenticated = false, lang = 'tr', f
   if (!cleaned.includes('/assets/topbar-layout-20260809.css')) {
     cleaned = cleaned.replace('</head>', '<link rel="stylesheet" href="/assets/topbar-layout-20260809.css?v=3">\n</head>');
   }
+  if (!cleaned.includes('/assets/ats-edition-20261016.css')) {
+    cleaned = cleaned.replace('</head>', '<link rel="stylesheet" href="/assets/ats-edition-20261016.css?v=1">\n</head>');
+  }
   if (!cleaned.includes('/assets/topbar-layout-20260809.js')) {
     cleaned = cleaned.replace('</body>', '<script defer src="/assets/topbar-layout-20260809.js?v=3"></script>\n</body>');
   }
