@@ -102,6 +102,7 @@ async function init(root) {
       button.addEventListener('click', () => {
         if (answered) return;
         answered = true; totalCount++;
+        button.classList.add('is-selected');
         const correct = item.slug === question.term.slug;
         if (correct) correctCount++;
         [...choices.children].forEach((choice,i) => {

@@ -342,3 +342,7 @@ body{background:#f3f1eb!important;background-image:linear-gradient(180deg,#faf8f
 .term-game__choice.is-incorrect::after{content:"✕"}
 .term-game__feedback.is-correct{color:#246044;font-weight:700}
 .term-game__feedback.is-incorrect{color:#a22f36;font-weight:700}
+
+.term-game__choice.is-selected.is-correct{background:#276547;border-color:#276547;color:#fff}
+.term-game__choice.is-selected.is-incorrect{background:#ad343c;border-color:#ad343c;color:#fff}
+.term-game__choice.is-selected .term-game__letter{color:inherit}
