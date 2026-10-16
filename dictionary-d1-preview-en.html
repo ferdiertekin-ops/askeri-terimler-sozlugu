@@ -702,9 +702,14 @@ body{
 <div class="wrap">
 <header class="preview-topbar">
   <a class="preview-brand" href="/en/" aria-label="Military Terms Dictionary">
-    <img class="preview-brand__logo" src="/ats-logo-2026.svg" alt="Military Terms Dictionary">
+    <img class="preview-brand__logo" src="/assets/ats-monogram.svg?v=1" alt="Military Terms Dictionary">
     <span class="preview-brand__name">Military Terms Dictionary</span>
   </a>
+  <h1 class="preview-title">
+    <span class="preview-title__top">ONLINE</span>
+    <span class="preview-title__main">Military Terms Dictionary</span>
+    <span class="preview-title__date">1876–1918</span>
+  </h1>
   <div class="preview-topbar__actions">
     <nav class="preview-lang-switch" aria-label="Language"><a href="/" lang="tr">TR</a><a href="/en/" class="active" lang="en">ENG</a></nav>
     <span data-nosnippet><a class="preview-editor-link" href="/editor/" title="Open the Cloudflare D1 editor">🔒 Editor login</a></span>
@@ -723,11 +728,6 @@ body{
 </nav>
 <section class="preview-hero" role="search">
   <p class="preview-eyebrow">English–Turkish · Turkish–English Search</p>
-  <h1 class="preview-title">
-    <span class="preview-title__top">ONLINE</span>
-    <span class="preview-title__main">Military Terms Dictionary</span>
-    <span class="preview-title__date">1876–1918</span>
-  </h1>
   <p class="preview-beta">Beta version</p>
   <div class="preview-search-tools">
     <div class="preview-letter-action"><select id="letterJump" class="letter-jump" aria-label="Jump to letter" title="Jump to letter"><option value="">Letter</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option><option value="I">I</option><option value="J">J</option><option value="K">K</option><option value="L">L</option><option value="M">M</option><option value="N">N</option><option value="O">O</option><option value="P">P</option><option value="Q">Q</option><option value="R">R</option><option value="S">S</option><option value="T">T</option><option value="U">U</option><option value="V">V</option><option value="W">W</option><option value="X">X</option><option value="Y">Y</option><option value="Z">Z</option></select></div>
@@ -744,10 +744,11 @@ body{
     </div>
   </div>
 </section>
-<div class="ats-results-intro" aria-label="Dictionary results">
-  <div><p class="ats-results-eyebrow">DICTIONARY INDEX</p><h2 id="resultTitle" class="preview-result-title">Results</h2></div>
-  <p class="ats-results-hint">Select any term to view its details.</p>
-</div>
+<details class="term-game" data-term-game>
+  <summary><span class="term-game__intro"><span class="term-game__kicker">GUESS THE TERM</span><span class="term-game__subtitle">One question. Four choices.</span></span><span class="term-game__cta">Test yourself <span aria-hidden="true">↗</span></span></summary>
+  <div class="term-game__body"></div>
+</details>
+<h2 id="resultTitle" class="preview-result-title">Search results</h2>
 <p id="status" class="status" role="status"></p>
 <section class="list-shell">
 <div class="list-head" aria-hidden="true"><span>Headword</span><span>Ottoman / Period</span><span>Modern Turkish</span><span>Explanation</span><span class="head-actions"></span></div>
@@ -855,5 +856,6 @@ el('searchForm').addEventListener('submit',e=>{e.preventDefault();runSearch()});
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"1b08f2d1b3634f90bd6c9eb51467970e"}'></script><!-- End Cloudflare Web Analytics -->
+<script type="module" src="/assets/term-game.js?v=1"></script>
 </body>
 </html>

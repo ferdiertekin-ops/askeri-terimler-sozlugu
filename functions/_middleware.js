@@ -549,17 +549,6 @@ function stripBrandName(html) {
   return html.replace(/\s*<span class="preview-brand__name">[^<]*<\/span>\s*/gi, '\n');
 }
 
-function moveSiteNavIntoTopbar(html) {
-  const navMatch = html.match(/\s*<nav class="preview-site-nav"[^>]*>[\s\S]*?<\/nav>\s*/i);
-  if (!navMatch) return html;
-  const nav = navMatch[0].trim();
-  const withoutNav = html.replace(navMatch[0], '\n');
-  return withoutNav.replace(
-    /(<a class="preview-brand"[\s\S]*?<\/a>)\s*(<div class="preview-topbar__actions">)/i,
-    `$1\n  ${nav}\n  $2`
-  );
-}
-
 function applyEditorShortcut(html, authenticated, lang) {
   if (!authenticated) return html;
   const tr = lang !== 'en';
@@ -601,21 +590,16 @@ function injectTurkishTtsClient(html) {
 function applyDictionaryVisualPolish(html, authenticated = false, lang = 'tr', features = {}) {
   let cleaned = stripInstallLinks(html);
   cleaned = stripBrandName(cleaned);
-  cleaned = moveSiteNavIntoTopbar(cleaned);
   cleaned = applyEditorShortcut(cleaned, authenticated, lang);
   if (features.community) cleaned = applyCommunityControls(cleaned, authenticated, lang);
   if (features.tts) cleaned = injectTurkishTtsClient(cleaned);
   if (!cleaned.includes('id="ats-visual-polish"')) {
     cleaned = cleaned.replace('</head>', `${DICTIONARY_VISUAL_POLISH}\n</head>`);
   }
-  if (!cleaned.includes('/assets/topbar-layout-20260809.css')) {
-    cleaned = cleaned.replace('</head>', '<link rel="stylesheet" href="/assets/topbar-layout-20260809.css?v=3">\n</head>');
-  }
+  // The edition owns layout. Legacy CSS/JS moved the title and language picker
+  // into fixed grid cells, which collided with the responsive header.
   if (!cleaned.includes('/assets/ats-edition-20261016.css')) {
-    cleaned = cleaned.replace('</head>', '<link rel="stylesheet" href="/assets/ats-edition-20261016.css?v=1">\n</head>');
-  }
-  if (!cleaned.includes('/assets/topbar-layout-20260809.js')) {
-    cleaned = cleaned.replace('</body>', '<script defer src="/assets/topbar-layout-20260809.js?v=3"></script>\n</body>');
+    cleaned = cleaned.replace('</head>', '<link rel="stylesheet" href="/assets/ats-edition-20261016.css?v=2">\n</head>');
   }
   return cleaned;
 }
