@@ -165,6 +165,31 @@ main{margin-top:34px}.page-title{text-align:center;margin:0 0 8px;font:600 clamp
 body{background:radial-gradient(ellipse at 50% -8%,rgba(255,255,255,.98) 0,rgba(255,255,255,.54) 32%,rgba(255,255,255,0) 62%),linear-gradient(180deg,#fafaf8 0%,#f4f4f1 48%,#eeeeea 100%);background-attachment:fixed}
 .empty{text-align:center;padding:38px;color:var(--muted)}footer{margin-top:28px;text-align:center;color:var(--muted);font-size:13px}
 @media(max-width:700px){.site{width:min(100% - 22px,1120px)}.topbar{align-items:flex-start}.brand span{display:none}.nav{gap:13px}.paper{padding:18px}.term-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.term-list{columns:1}.term-head{grid-template-columns:1fr}.page-title,.term-head h1{font-size:34px}}
+/* ATS editorial polish · 2026-10-16 · dynamically rendered TR/EN pages */
+:root{--cream:#F9F7F2;--cream2:#F1EDE6;--paper:#FFFDF9;--ink:#25303B;--muted:#615A50;--navy:#304152;--red:#822D37;--brass:#8F7339;--line:#D9D0C1}
+body{background:radial-gradient(ellipse at 50% -210px,rgba(255,255,255,.98),rgba(255,255,255,0) 64%),linear-gradient(180deg,#F9F7F2,#F1EDE6);background-attachment:fixed}
+.topbar{border-bottom-color:#D7CCBB;padding-bottom:14px}
+.brand img{filter:drop-shadow(0 5px 11px rgba(51,48,41,.13))}
+.langs a{border-color:#D7CEBE;background:#FFFDF9;border-radius:9px;color:#304152}
+.langs a[aria-current]{background:#263240;border-color:#263240;color:#FCF8F0}
+.nav{border-bottom-color:#D9D0C1;gap:8px 22px;padding:15px 10px}
+.nav a{color:#4E5961;text-transform:none;font-size:12.5px;letter-spacing:.01em;padding-bottom:3px;border-bottom:1px solid transparent}
+.nav a:hover,.nav a:focus-visible{color:#822D37;border-bottom-color:#B79A57;text-decoration:none}
+.page-title,.term-head h1{color:#26323E;letter-spacing:-.02em}
+.lead{color:#625C53}
+.paper{background:rgba(255,253,249,.96);border-color:#D9D0C1;border-radius:14px;box-shadow:0 1px 2px rgba(55,49,41,.03),0 20px 38px -34px rgba(37,38,40,.28)}
+.editorial-page{color:#36332E}
+.letter-group + .letter-group{border-top-color:#DED5C7}
+.letter-group h2{color:#822D37}
+.term-list a{color:#304152;text-underline-offset:3px}
+.term-list a:hover{color:#822D37}
+.field{background:#F9F6EF;border-color:#D9D0C1;border-radius:10px}
+.field .label{color:#826B3E}
+.term-head .badge{background:#F0E7D7;color:#6C5840;border-color:#D9CBB4}
+.back{color:#7D2F37;text-underline-offset:4px}
+.brand:focus-visible,.langs a:focus-visible,.nav a:focus-visible,.term-list a:focus-visible,.back:focus-visible{outline:2px solid #97762F;outline-offset:3px}
+@media(max-width:700px){body{background-attachment:scroll}.nav{gap:8px 14px}.nav a{font-size:12px}.paper{border-radius:11px}}
+
 </style>
 </head>
 <body><div class="site">

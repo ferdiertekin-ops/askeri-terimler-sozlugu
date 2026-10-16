@@ -309,6 +309,103 @@ body{background-image:none!important;background-color:#F7F3EA!important}
   font-weight:600!important;
 }
 
+/* ATS editorial polish · 2026-10-16 · TR and EN dictionary landing pages */
+body{
+ background:radial-gradient(ellipse at 50% -210px,rgba(255,255,255,.98),rgba(255,255,255,0) 64%),linear-gradient(180deg,#F9F7F2,#F1EDE6)!important;
+ background-attachment:fixed!important;color:#25303B
+}
+.preview-brand img,.preview-brand__logo{filter:drop-shadow(0 5px 11px rgba(51,48,41,.13))!important}
+.preview-lang-switch{background:rgba(255,253,248,.92)!important;border-color:#D7CEBE!important;border-radius:10px!important}
+.preview-lang-switch a.active{background:#263240!important;color:#FCF8F0!important;border-radius:6px!important}
+.preview-editor-link{background:rgba(255,253,248,.86)!important;border-color:#D7CEBE!important;color:#34404C!important;border-radius:10px!important}
+.preview-editor-link:hover,.preview-editor-link:focus-visible{border-color:#AE9767!important;background:#FFFDF8!important}
+.preview-title__main{letter-spacing:-.018em!important;text-shadow:none!important}
+.preview-title__date{color:#8F7339!important}
+.preview-beta{color:#816E52!important}
+.preview-search-row{
+ background:#FFFDF9!important;border:1px solid #C6B69D!important;border-radius:14px!important;
+ box-shadow:0 2px 4px rgba(48,46,40,.04),0 14px 34px -27px rgba(41,47,55,.35)!important;
+ transition:border-color .18s ease,box-shadow .18s ease!important
+}
+.preview-search-row:hover{border-color:#AC9363!important}
+.preview-search-row:focus-within{border-color:#997735!important;background:#fff!important;box-shadow:0 0 0 3px rgba(182,151,85,.16),0 16px 35px -24px rgba(41,47,55,.33)!important;transform:none!important}
+.preview-search-row #query{color:#25303A!important}
+.preview-search-row #query::placeholder{color:#898277!important}
+.preview-search-tools.is-stuck{background:rgba(249,247,242,.96)!important;box-shadow:0 8px 20px -20px rgba(31,39,45,.45);backdrop-filter:blur(12px)}
+.letter-jump,.preview-search-actions .pager-arrow,.pager:not(.pager-top) .btn{
+ background:#FFFDF9!important;border:1px solid #D4CABB!important;color:#333B43!important;border-radius:10px!important;
+ box-shadow:0 2px 6px -5px rgba(49,44,36,.2);transition:background .16s ease,border-color .16s ease!important
+}
+.letter-jump:hover,.letter-jump:focus-visible,
+.preview-search-actions .pager-arrow:hover,.preview-search-actions .pager-arrow:focus-visible,
+.pager:not(.pager-top) .btn:hover,.pager:not(.pager-top) .btn:focus-visible{
+ background:#F0E8D9!important;border-color:#B19B6C!important
+}
+.letter-jump:focus-visible,.preview-search-actions .pager-arrow:focus-visible,
+.pager:not(.pager-top) .btn:focus-visible,.preview-editor-link:focus-visible,.preview-lang-switch a:focus-visible{
+ outline:2px solid #97762F!important;outline-offset:2px
+}
+.list-shell{
+ border:1px solid #D5CCBD!important;border-radius:14px!important;background:#FDFBF7!important;
+ box-shadow:0 1px 2px rgba(55,49,41,.03),0 22px 38px -35px rgba(37,38,40,.3)!important
+}
+.list-head{
+ min-height:44px!important;background:#29313B!important;border-color:#29313B!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important
+}
+.list-head span{color:#E3D0A4!important;font-size:10.5px!important;letter-spacing:.09em!important}
+.row{
+ min-height:78px;background:#FFFEFB!important;border-bottom:1px solid #E7E0D5!important;
+ transition:background .18s ease,border-color .18s ease,box-shadow .18s ease!important
+}
+.row:nth-child(even){background:#F6F2EB!important}
+.row:hover,.row:focus-visible,.row:focus-within{
+ background:#EEE8DE!important;border-bottom-color:#C4AF84!important;
+ box-shadow:inset 3px 0 0 #B79A57,inset 0 0 0 1px rgba(183,154,87,.35)!important
+}
+.row:focus-visible{outline:2px solid #987638!important;outline-offset:-3px!important}
+.row:hover::before,.row:focus-visible::before{background:#B79A57!important}
+.row:hover .cell-ottoman .value,.row:hover .cell-modern .value,.row:hover .cell-explanation .value,
+.row:focus-visible .cell-ottoman .value,.row:focus-visible .cell-modern .value,.row:focus-visible .cell-explanation .value,
+.row:active .cell-ottoman .value,.row:active .cell-modern .value,.row:active .cell-explanation .value{
+ font-weight:inherit!important
+}
+.cell{border-right-color:#E2DACC!important}
+.cell h2{font-size:16px;line-height:1.4;color:#25303B!important}
+.row:hover .cell h2,.row:focus-visible .cell h2{color:#822D37!important}
+.cell-ottoman .value{color:#4C453C!important;line-height:1.5}
+.cell-modern .value{color:#2C3540!important;line-height:1.5}
+.cell-explanation .value{color:#56514B!important;line-height:1.52}
+.term-category{padding:2px 6px;border-radius:20px;background:rgba(159,135,84,.1)}
+.row .open-entry{opacity:.72!important;border:1px solid rgba(128,115,91,.2);background:rgba(255,253,248,.65)}
+.row:hover .open-entry,.row:focus-within .open-entry{opacity:1!important;border-color:#AB9469}
+.pager:not(.pager-top){margin-top:19px;gap:12px}
+.footnote{
+ margin-top:24px;padding:17px 20px;background:rgba(255,253,247,.74);
+ border:1px solid #D9D0C1;border-left:3px solid #A78C57;border-radius:10px
+}
+.footnote p{color:#58544E;font-family:Cambria,Georgia,serif;font-size:13px;line-height:1.65;text-align:left}
+.editor-works{margin-top:34px;padding-top:27px;border-top:1px solid #D6CCBB}
+.editor-works__title{font-size:19px;letter-spacing:.035em;color:#303A42}
+.editor-work{opacity:1!important}
+.editor-work img{opacity:1!important;filter:none!important}
+.site-footer{border-top:1px solid #D6CCBB;padding-top:18px}
+.site-footer a{text-underline-offset:3px}
+.site-footer a:focus-visible,.editor-work:focus-visible{outline:2px solid #97762F;outline-offset:3px}
+@media(max-width:760px){
+ body{background-attachment:scroll!important}
+ .row{min-height:0}
+ .row .open-entry{opacity:1!important}
+ .preview-search-row{border-radius:12px!important}
+ .footnote{padding:14px 15px}
+ .footnote p{font-size:12.7px;line-height:1.6}
+ .editor-works{margin-top:27px}
+}
+@media(prefers-reduced-motion:reduce){
+ .preview-search-row,.row,.letter-jump,.preview-search-actions .pager-arrow,
+ .pager:not(.pager-top) .btn{transition:none!important}
+}
+
 </style>`;
 
 const COMMUNITY_ROUTES = new Set([
