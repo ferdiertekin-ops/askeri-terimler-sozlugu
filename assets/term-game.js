@@ -54,13 +54,13 @@ async function init(root) {
   const copy = en ? {
     loading:'Preparing a question…', unavailable:'A question could not be loaded. Please try again.',
     retry:'Try again', question:'Which period equivalent is given in this dictionary entry?',
-    correct:'Correct.', incorrect:'The answer in this entry is', next:'Next question',
+    correct:'Correct.', incorrect:'Incorrect. The answer in this entry is', next:'Next question',
     source:'Read the entry ↗', score:(right,total)=>`${right} / ${total} correct`,
     period:'Period equivalent'
   } : {
     loading:'Soru hazırlanıyor…', unavailable:'Soru yüklenemedi. Yeniden deneyebilirsiniz.',
     retry:'Yeniden dene', question:'Bu maddenin sözlükteki dönem karşılığı hangisidir?',
-    correct:'Doğru cevap.', incorrect:'Bu maddede verilen karşılık:', next:'Yeni soru',
+    correct:'Doğru cevap.', incorrect:'Yanlış cevap. Bu maddede verilen karşılık:', next:'Yeni soru',
     source:'Maddeyi incele ↗', score:(right,total)=>`${total} soruda ${right} doğru`,
     period:'Dönem karşılığı'
   };
@@ -109,7 +109,8 @@ async function init(root) {
           if (question.options[i].slug === question.term.slug) choice.classList.add('is-correct');
         });
         if (!correct) button.classList.add('is-incorrect');
-        feedback.textContent = correct ? `${copy.correct} ${copy.score(correctCount,totalCount)}.` : `${copy.incorrect} ${question.term.ottoman_period_term}. ${copy.score(correctCount,totalCount)}.`;
+        feedback.classList.add(correct ? 'is-correct' : 'is-incorrect');
+        feedback.textContent = correct ? `✓ ${copy.correct} ${copy.score(correctCount,totalCount)}.` : `✕ ${copy.incorrect} ${question.term.ottoman_period_term}. ${copy.score(correctCount,totalCount)}.`;
         footer.hidden = false;
       });
       choices.append(button);
