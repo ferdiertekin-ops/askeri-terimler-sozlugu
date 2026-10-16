@@ -300,13 +300,14 @@ body{background:#f3f1eb!important;background-image:linear-gradient(180deg,#faf8f
 
 /* Optional quiz: stays compact until the visitor opens it. */
 .term-game{margin:20px 0 0;border:1px solid #d9d6ce;border-radius:14px;background:var(--ed-paper);overflow:hidden}
-.term-game summary{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 20px;cursor:pointer;list-style:none}
+.term-game summary{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:16px;padding:13px 20px;cursor:pointer;list-style:none}
 .term-game summary::-webkit-details-marker{display:none}
 .term-game summary:focus-visible{outline:2px solid #a17d49;outline-offset:-3px}
-.term-game__intro{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
-.term-game__kicker{color:#836538;font:750 11px/1.4 system-ui,sans-serif;letter-spacing:.12em}
-.term-game__subtitle{color:#69757d;font:14px/1.4 Cambria,Georgia,serif}
-.term-game__cta{color:#25445b;font:650 12px/1.4 system-ui,sans-serif;white-space:nowrap}
+.term-game__intro{grid-column:2;display:grid;align-items:center;justify-items:center;gap:3px}
+.term-game__kicker{display:inline-flex;align-items:center;justify-content:center;gap:10px;color:#715329;font:800 14px/1.4 system-ui,sans-serif;letter-spacing:.09em}
+.term-game__icon{width:24px;height:24px;flex:0 0 24px;color:#9a793f}
+.term-game__subtitle{color:#69757d;font:12px/1.4 Cambria,Georgia,serif}
+.term-game__cta{grid-column:3;justify-self:end;color:#25445b;font:650 12px/1.4 system-ui,sans-serif;white-space:nowrap}
 .term-game[open] summary{border-bottom:1px solid #e5e0d5}
 .term-game__body{padding:20px}
 .term-game__prompt{margin:0;color:#5d6a72;font:13px/1.5 system-ui,sans-serif}
@@ -326,10 +327,12 @@ body{background:#f3f1eb!important;background-image:linear-gradient(180deg,#faf8f
 .term-game__next{min-height:40px;border:1px solid #1b3247;border-radius:8px;padding:9px 15px;background:#1b3247;color:#fffefa;font:600 12px/1.4 system-ui,sans-serif;cursor:pointer}
 .term-game button:focus-visible{outline:2px solid #a17d49;outline-offset:3px}
 @media(max-width:600px){
- .term-game summary{padding:14px;gap:10px}
- .term-game__intro{display:grid;gap:3px}
+ .term-game summary{grid-template-columns:minmax(0,1fr);padding:14px;gap:6px}
+ .term-game__intro{grid-column:1;display:grid;justify-items:center;gap:3px}
  .term-game__body{padding:16px 14px}
  .term-game__choices{grid-template-columns:minmax(0,1fr)}
  .term-game__term{font-size:25px}
- .term-game__cta{font-size:11px}
+ .term-game__cta{display:none}
 }
+
+@media(min-width:601px) and (max-width:900px){.term-game__intro{display:grid;justify-items:center;gap:3px}}
