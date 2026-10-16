@@ -1,4 +1,5 @@
 import { json, requestId } from '../_lib/http.js';
+import { hasEditorSession } from '../_lib/editor.js';
 
 export async function onRequestGet(context) {
   const id = requestId(context.request);
@@ -21,6 +22,10 @@ export async function onRequestGet(context) {
   }
 
   const ok = Object.values(checks).every(Boolean);
+  if (!(await hasEditorSession(context))) {
+    return json({ ok, status:ok?'healthy':'degraded', requestId:id, timestamp:new Date().toISOString() },
+      { status:ok?200:503 });
+  }
   return json({
     ok,
     service: 'Askerî Terimler Sözlüğü API',

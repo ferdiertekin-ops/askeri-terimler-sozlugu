@@ -1,4 +1,8 @@
 const SECURITY_HEADERS = {
+  'Strict-Transport-Security':'max-age=63072000; includeSubDomains; preload',
+  'Cross-Origin-Opener-Policy':'same-origin',
+  'Cross-Origin-Resource-Policy':'same-origin',
+  'Content-Security-Policy':"default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'",
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
   'X-Robots-Tag': 'noindex, nofollow, noarchive',

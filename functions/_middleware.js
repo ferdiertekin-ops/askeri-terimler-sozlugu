@@ -1,9 +1,23 @@
 import { handleEditorApi, hasEditorSession } from './_lib/editor.js';
 import { handleCommunityApi, sendCommunityNotification } from './_lib/community.js';
-import { json, methodNotAllowed } from './_lib/http.js';
+import { json, methodNotAllowed, previewOnly } from './_lib/http.js';
 import { renderEditablePage, renderEditablePageJson, renderRobots, renderSitemap, renderTermPage, renderTermsIndex } from './_lib/site.js';
 
 const CANONICAL_HOST = 'askeriterimlersozlugu.com';
+const PRIVATE_ROOT_FILES = new Set(['/default-content.json','/migration-import','/migration-import.html','/package.json','/package-lock.json','/netlify.toml','/_headers','/_redirects','/sitemap-template.xml']);
+function blockedRepositoryAsset(pathname) {
+  const path = pathname.toLowerCase();
+  return PRIVATE_ROOT_FILES.has(path) ||
+    path.startsWith('/netlify/') || path.startsWith('/migrations/') || path.startsWith('/cloudflare/') ||
+    (path.startsWith('/.') && !path.startsWith('/.well-known/')) ||
+    /\.(?:md|sql|toml|env|txt)$/.test(path) && path !== '/robots.txt';
+}
+function privateAssetNotFound() {
+  return new Response('Not Found', { status: 404, headers: {
+    'Content-Type':'text/plain; charset=utf-8', 'Cache-Control':'no-store, max-age=0',
+    'X-Content-Type-Options':'nosniff', 'X-Robots-Tag':'noindex, nofollow, noarchive'
+  }});
+}
 const SEARCH_NOINDEX = { 'X-Robots-Tag': 'noindex, follow' };
 
 const FULL_RELEASE_HOME_NOTICE_TR = `TERİMLER; 1876–1918 YILLARI ARASINDA RESMÎ İNGİLİZ BELGELERİNDE GEÇEN KURUM, RÜTBE VE YER ADLARININ KENARINA DÜŞÜLEN TÜRKÇE KARŞILIKLAR İLE MUHTELİF RAPORLARDA DAĞINIK HÂLDE BULUNAN İNGİLİZCE-TÜRKÇE KELİMELER ESAS ALINARAK, DÖNEMİN OSMANLI KURUM VE RÜTBE KARŞILIKLARIYLA EŞLEŞTİRİLEREK DERLENMEKTEDİR.
@@ -617,6 +631,14 @@ export async function onRequest(context) {
   const path = url.pathname;
   const getOrHead = context.request.method === 'GET' || context.request.method === 'HEAD';
   const communityOn = communityEnabled(context.env);
+
+  if (blockedRepositoryAsset(path)) return privateAssetNotFound();
+  if (path.startsWith('/api/migration/')) {
+    if (!previewOnly(context)) return json({ ok:false, error:'not_found' }, { status:404 });
+    if (path !== '/api/migration/import' && !(await hasEditorSession(context))) {
+      return json({ ok:false, error:'unauthorized' }, { status:401 });
+    }
+  }
 
   if (url.hostname === `www.${CANONICAL_HOST}`) { url.protocol='https:'; url.hostname=CANONICAL_HOST; return Response.redirect(url.toString(),301); }
   if (getOrHead && path.endsWith('/index.html')) return redirect(url, path.slice(0,-'index.html'.length)||'/',301);
