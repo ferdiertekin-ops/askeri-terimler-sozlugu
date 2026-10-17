@@ -16,24 +16,57 @@ function normalizeSearch(value) {
     .trim();
 }
 
-function fieldScore(value, needle, weight) {
+// Keep word boundaries in the main key. A second, lower-ranked key only joins
+// punctuation inside words, so C.O.S./COS and a’yan/ayan can also match.
+function joinedSearch(value) {
+  return normalizeSearch(String(value || '').replace(/[.'’‘ʼʻʾʿ\u2010-\u2015-]/g, ''));
+}
+
+function containsPhrase(text, phrase) {
+  return (` ${text} `).includes(` ${phrase} `);
+}
+
+function containsWords(text, tokens) {
+  const remaining = text.split(' ');
+  // Match longer prefixes first and consume each word once.
+  return [...tokens].sort((a, b) => b.length - a.length).every(token => {
+    const index = remaining.findIndex(word => word === token || (token.length >= 3 && word.startsWith(token)));
+    if (index < 0) return false;
+    remaining.splice(index, 1);
+    return true;
+  });
+}
+
+function fieldScore(value, query, weight) {
   const text = normalizeSearch(value);
+  const needle = query.text;
   if (!text || !needle) return 0;
   if (text === needle) return 1000 + weight;
-  const wholePhrase = text.startsWith(needle + ' ') || text.endsWith(' ' + needle) || text.includes(' ' + needle + ' ');
-  if (wholePhrase) return 800 + weight - Math.min(text.split(' ').length, 40);
+  if (containsPhrase(text, needle)) return 800 + weight - Math.min(text.split(' ').length, 40);
   if (text.startsWith(needle)) return 600 + weight;
+
+  const joined = joinedSearch(value);
+  if (query.joined.length >= 3 && (joined !== text || query.joined !== needle)) {
+    if (joined === query.joined) return 550 + weight;
+    if (containsPhrase(joined, query.joined)) return 450 + weight;
+    if (joined.startsWith(query.joined)) return 400 + weight;
+  }
+
   if (text.includes(needle)) return 300 + weight;
+  if (query.tokens.length > 1 && containsWords(text, query.tokens)) return 200 + weight;
   return 0;
 }
 
-function searchScore(row, needle) {
+function searchScore(row, query) {
+  // JSON preserves variant boundaries, including punctuation inside a variant.
+  // Score each variant independently; never form a phrase across two variants.
+  const variants = JSON.parse(row.variants_search || '[]');
   return Math.max(
-    fieldScore(row.headword_en, needle, 80),
-    fieldScore(row.ottoman_period_term, needle, 70),
-    fieldScore(row.modern_equivalent_tr, needle, 60),
-    fieldScore(row.variants_search, needle, 40),
-    fieldScore(row.category, needle, 10)
+    fieldScore(row.headword_en, query, 80),
+    fieldScore(row.ottoman_period_term, query, 70),
+    fieldScore(row.modern_equivalent_tr, query, 60),
+    variants.reduce((best, variant) => Math.max(best, fieldScore(variant, query, 40)), 0),
+    fieldScore(row.category, query, 10)
   );
 }
 
@@ -54,18 +87,17 @@ export async function onRequest(context) {
       const allRows = await context.env.DB.prepare(`
         SELECT t.id, t.slug, t.headword_en, t.ottoman_period_term, t.modern_equivalent_tr,
                t.category, t.explanation_tr, t.explanation_en, t.updated_at, t.version,
-               COALESCE(GROUP_CONCAT(v.variant, ' '), '') AS variants_search
+               (SELECT json_group_array(v.variant) FROM term_variants v WHERE v.term_id = t.id) AS variants_search
         FROM terms t
-        LEFT JOIN term_variants v ON v.term_id = t.id
         WHERE t.status = 'published'
-        GROUP BY t.id
         ORDER BY t.headword_en COLLATE NOCASE, t.id
       `).all();
 
       const needle = normalizeSearch(q);
+      const query = { text: needle, joined: joinedSearch(q), tokens: needle.split(' ').filter(Boolean) };
       const matches = (allRows.results || [])
         .filter(row => !letter || termLetter(row.headword_en) === letter)
-        .map(row => ({ ...row, search_score: searchScore(row, needle) }))
+        .map(row => ({ ...row, search_score: searchScore(row, query) }))
         .filter(row => row.search_score > 0)
         .sort((left, right) => right.search_score - left.search_score || Number(left.id) - Number(right.id));
 
