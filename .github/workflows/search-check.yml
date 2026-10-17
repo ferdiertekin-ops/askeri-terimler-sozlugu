@@ -8,6 +8,8 @@ on:
       - 'functions/_lib/term-letter.js'
       - 'migrations/0001_initial.sql'
       - 'scripts/check-search.mjs'
+      - 'assets/term-game.js'
+      - 'scripts/check-term-game.mjs'
       - 'package.json'
       - '.github/workflows/search-check.yml'
   push:
@@ -18,6 +20,8 @@ on:
       - 'functions/_lib/term-letter.js'
       - 'migrations/0001_initial.sql'
       - 'scripts/check-search.mjs'
+      - 'assets/term-game.js'
+      - 'scripts/check-term-game.mjs'
       - 'package.json'
       - '.github/workflows/search-check.yml'
 
