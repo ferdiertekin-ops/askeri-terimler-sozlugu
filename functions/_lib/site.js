@@ -191,11 +191,11 @@ body{background:radial-gradient(ellipse at 50% -210px,rgba(255,255,255,.98),rgba
 @media(max-width:700px){body{background-attachment:scroll}.nav{gap:8px 14px}.nav a{font-size:12px}.paper{border-radius:11px}}
 
 </style>
-<link rel="stylesheet" href="/assets/ats-edition-20261016.css?v=13">
+<link rel="stylesheet" href="/assets/ats-edition-20261016.css?v=14">
 </head>
 <body><div class="site">
 <header class="topbar">
-  <a class="brand" href="${tr ? '/' : '/en/'}"><span class="ats-emblem"><img class="ats-emblem__image" src="/assets/ats-emblem-20261017.webp" width="2048" height="1529" alt="${escapeHtml(dictionaryName)}" decoding="async"></span><span>${escapeHtml(dictionaryName)}</span></a>
+  <a class="brand" href="${tr ? '/' : '/en/'}"><span class="ats-emblem"><img class="ats-emblem__image" src="/assets/ats-emblem-round-20261017.webp" width="112" height="112" alt="${escapeHtml(dictionaryName)}" decoding="async"></span><span>${escapeHtml(dictionaryName)}</span></a>
   <nav class="langs" aria-label="${tr ? 'Dil seçimi' : 'Language'}"><a href="${escapeHtml(localPath(trUrl))}" lang="tr" ${tr ? 'aria-current="page"' : ''}>TR</a><a href="${escapeHtml(localPath(enUrl))}" lang="en" ${tr ? '' : 'aria-current="page"'}>ENG</a></nav>
 </header>
 <nav class="nav" aria-label="${tr ? 'Site bağlantıları' : 'Site navigation'}">${siteNav(lang)}</nav>
