@@ -599,7 +599,7 @@ function applyDictionaryVisualPolish(html, authenticated = false, lang = 'tr', f
   // The edition owns layout. Legacy CSS/JS moved the title and language picker
   // into fixed grid cells, which collided with the responsive header.
   if (!cleaned.includes('/assets/ats-edition-20261016.css')) {
-    cleaned = cleaned.replace('</head>', '<link rel="stylesheet" href="/assets/ats-edition-20261016.css?v=10">\n</head>');
+    cleaned = cleaned.replace('</head>', '<link rel="stylesheet" href="/assets/ats-edition-20261016.css?v=11">\n</head>');
   }
   return cleaned;
 }
