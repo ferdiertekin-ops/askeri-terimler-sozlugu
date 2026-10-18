@@ -716,7 +716,11 @@ export async function onRequest(context) {
 
   if (getOrHead && context.env.DB && (
       path==='/' || path==='/en/' || path==='/yayin-notu/' || path==='/en/publication-note/' || path.startsWith('/api/site-pages/'))) {
-    await ensureFullPublicationPages(context.env.DB);
+    // Legacy publication cleanup must never hold a public page response open.
+    // Pages Functions keeps this work alive after the response via waitUntil.
+    if (typeof context.waitUntil === 'function') {
+      context.waitUntil(ensureFullPublicationPages(context.env.DB));
+    }
   }
 
   if (path === '/api/account/config') {

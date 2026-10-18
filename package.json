@@ -12,6 +12,7 @@
     "check:preview": "node scripts/check-netlify-preview.mjs",
     "check:search": "node scripts/check-search.mjs",
     "check:game": "node scripts/check-term-game.mjs",
-    "check": "npm run check:syntax && npm run check:seo && npm run check:preview && npm run check:search && npm run check:game"
+    "check": "npm run check:syntax && npm run check:seo && npm run check:preview && npm run check:search && npm run check:game && npm run check:response",
+    "check:response": "node scripts/check-response-latency.mjs"
   }
 }

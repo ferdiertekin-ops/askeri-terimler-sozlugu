@@ -4,6 +4,10 @@ on:
   pull_request:
     paths:
       - 'functions/api/terms.js'
+      - 'functions/_middleware.js'
+      - 'dictionary-d1-preview.html'
+      - 'dictionary-d1-preview-en.html'
+      - 'scripts/check-response-latency.mjs'
       - 'functions/_lib/http.js'
       - 'functions/_lib/term-letter.js'
       - 'migrations/0001_initial.sql'
@@ -16,6 +20,10 @@ on:
     branches: [main]
     paths:
       - 'functions/api/terms.js'
+      - 'functions/_middleware.js'
+      - 'dictionary-d1-preview.html'
+      - 'dictionary-d1-preview-en.html'
+      - 'scripts/check-response-latency.mjs'
       - 'functions/_lib/http.js'
       - 'functions/_lib/term-letter.js'
       - 'migrations/0001_initial.sql'

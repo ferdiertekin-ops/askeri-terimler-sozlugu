@@ -773,6 +773,9 @@ body{
 <script>
 (()=>{'use strict';
 const LIMIT=30;let offset=0,total=0,currentQuery='',currentLetter='',loading=false,searchTimer=null,requestToken=0,activeSpeakButton=null;let editorAuthenticated=false,editorSessionPromise=null;
+let detailRequestToken=0;
+const detailCache=new Map(),detailPending=new Map();
+const DETAIL_CACHE_TTL=30000,DETAIL_CACHE_LIMIT=60;
 const el=id=>document.getElementById(id),queryInput=el('query'),results=el('results'),status=el('status'),meta=el('meta'),resultTitle=el('resultTitle'),page=el('page'),pageTop=el('pageTop'),prev=el('prev'),prevTop=el('prevTop'),next=el('next'),nextTop=el('nextTop'),letterJump=el('letterJump'),drawer=el('drawer');
 const speechSupported='speechSynthesis'in window&&'SpeechSynthesisUtterance'in window;if(!speechSupported)document.documentElement.classList.add('no-speech');
 const stickySearchTools=document.querySelector('.preview-search-tools');
@@ -805,16 +808,42 @@ async function loadHomeNotice(){try{const response=await fetch('/api/site-pages/
 function categoryClass(category){const c=String(category||'').toLocaleLowerCase('tr-TR').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ı/g,'i').replace(/ş/g,'s').replace(/ğ/g,'g').replace(/ü/g,'u').replace(/ö/g,'o').replace(/ç/g,'c');if(/deniz|bahri|gemi|naval/.test(c))return'cat-maritime';if(/diplom|hariciye|siyaset|elci|sefaret/.test(c))return'cat-diplomacy';if(/silah|muhimmat|cephane|tufek/.test(c))return'cat-weapon';if(/rutbe|unvan|zabit|subay|nisan|madalya/.test(c))return'cat-rank';if(/ordu|birlik|sinif|piyade|suvari|jandarma|tahkim|istihkam|asker|kara|topcu/.test(c))return'cat-land';if(/kurum|teskil|burokrasi|idare|saray|mulkiye|maliye|gumruk|egitim|britanya|ingiliz/.test(c))return'cat-institution';if(/hukuk|adliye|mahkeme/.test(c))return'cat-law';if(/dini|din|bayram|ilmiye|ulema/.test(c))return'cat-religion';return'cat-general'}
 function itemHtml(x){const explanation=x.explanation_en||x.explanation_tr;return `<article class="row ${categoryClass(x.category)}" tabindex="0" data-slug="${esc(x.slug)}"><div class="cell" aria-label="Headword"><div class="cell-mainline"><h2>${esc(x.headword_en)||'—'}</h2>${speakButton(x.headword_en,'en-GB','Read headword aloud')}</div>${categoryHtml(x.category)}</div><div class="cell cell-ottoman" aria-label="Ottoman / Period Equivalent"><div class="cell-mainline"><div class="value">${esc(x.ottoman_period_term)||'—'}</div>${speakButton(x.ottoman_period_term,'tr-TR','Read Ottoman or period equivalent aloud')}</div></div><div class="cell cell-modern" aria-label="Modern Turkish"><div class="cell-mainline"><div class="value">${esc(x.modern_equivalent_tr)||'—'}</div>${speakButton(x.modern_equivalent_tr,'tr-TR','Read modern Turkish aloud')}</div></div><div class="cell cell-explanation" aria-label="Explanation"><div class="value explanation">${esc(explanation)||'—'}</div></div><button type="button" class="open-entry" aria-label="Open entry">•••</button></article>`}
 function resultsHtml(items){if(!items.length)return'<div class="empty">No results found.</div>';return items.map(itemHtml).join('')}
-async function load(){const token=++requestToken;if(loading)setStatus('Updating entries…');else setStatus('Loading entries…');loading=true;prev.disabled=prevTop.disabled=next.disabled=nextTop.disabled=true;try{const u=new URL('/api/terms',location.origin);u.searchParams.set('limit',LIMIT);u.searchParams.set('offset',offset);if(currentQuery)u.searchParams.set('q',currentQuery);if(currentLetter)u.searchParams.set('letter',currentLetter);const r=await fetch(u,{headers:{Accept:'application/json'}});const d=await r.json();if(token!==requestToken)return;if(!r.ok||!d.ok)throw new Error(d.error||`HTTP ${r.status}`);total=d.total;results.innerHTML=resultsHtml(d.items);const current=Math.floor(offset/LIMIT)+1,pages=Math.max(1,Math.ceil(total/LIMIT));page.textContent=pageTop.textContent=`${current} / ${pages}`;resultTitle.textContent=currentQuery?`Results for “${currentQuery}”`:currentLetter?`Letter ${currentLetter}`:'Results';meta.textContent=currentQuery?`${total} results`:currentLetter?`${total} entries`:`${total} entries`;prev.disabled=prevTop.disabled=!d.hasPrevious;next.disabled=nextTop.disabled=!d.hasNext;setStatus(d.items.length?`Showing ${offset+1}–${Math.min(offset+d.items.length,total)}.`:'');}catch(e){if(token!==requestToken)return;results.innerHTML='';resultTitle.textContent='Results';meta.textContent='—';setStatus(`Loading failed: ${e.message}`,true)}finally{if(token===requestToken)loading=false}}
+async function load(){const token=++requestToken;if(loading)setStatus('Updating entries…');else setStatus('Loading entries…');loading=true;prev.disabled=prevTop.disabled=next.disabled=nextTop.disabled=true;try{const u=new URL('/api/terms',location.origin);u.searchParams.set('limit',LIMIT);u.searchParams.set('offset',offset);if(currentQuery)u.searchParams.set('q',currentQuery);if(currentLetter)u.searchParams.set('letter',currentLetter);const d=await requestJson(u);if(token!==requestToken)return;total=d.total;results.innerHTML=resultsHtml(d.items);const current=Math.floor(offset/LIMIT)+1,pages=Math.max(1,Math.ceil(total/LIMIT));page.textContent=pageTop.textContent=`${current} / ${pages}`;resultTitle.textContent=currentQuery?`Results for “${currentQuery}”`:currentLetter?`Letter ${currentLetter}`:'Results';meta.textContent=currentQuery?`${total} results`:currentLetter?`${total} entries`:`${total} entries`;prev.disabled=prevTop.disabled=!d.hasPrevious;next.disabled=nextTop.disabled=!d.hasNext;setStatus(d.items.length?`Showing ${offset+1}–${Math.min(offset+d.items.length,total)}.`:'');}catch(e){if(token!==requestToken)return;results.innerHTML='';resultTitle.textContent='Results';meta.textContent='—';setStatus(`Loading failed: ${e.message}`,true)}finally{if(token===requestToken)loading=false}}
+async function requestJson(url) {
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),12000);
+  try {
+    const response=await fetch(url,{headers:{Accept:'application/json'},signal:controller.signal});
+    if(!response.ok)throw new Error(`HTTP ${response.status}`);
+    const data=await response.json();
+    if(!data.ok)throw new Error(data.error||`HTTP ${response.status}`);
+    return data;
+  } catch(error) {
+    if(controller.signal.aborted)throw new Error('The server took too long to respond. Please try again.');
+    throw error;
+  } finally { clearTimeout(timeout); }
+}
+async function loadTermDetail(slug) {
+  const cached=detailCache.get(slug);
+  if(cached&&Date.now()-cached.savedAt<DETAIL_CACHE_TTL)return cached.term;
+  if(detailPending.has(slug))return detailPending.get(slug);
+  const pending=requestJson(`/api/terms/${encodeURIComponent(slug)}`).then(data=>{
+    if(!data.term)throw new Error('invalid_term_response');
+    detailCache.delete(slug);
+    detailCache.set(slug,{term:data.term,savedAt:Date.now()});
+    while(detailCache.size>DETAIL_CACHE_LIMIT)detailCache.delete(detailCache.keys().next().value);
+    return data.term;
+  }).finally(()=>detailPending.delete(slug));
+  detailPending.set(slug,pending);
+  return pending;
+}
 function sourceHtml(s){const citation=esc(s.citation||'');const url=String(s.url||'').trim();return url?`<li><a class="source-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${citation||esc(url)}</a></li>`:`<li>${citation||'—'}</li>`}
 async function detail(slug) {
+  const token=++detailRequestToken;
   setStatus('Loading entry details…');
   try {
-    await ensureEditorSession();
-    const r = await fetch(`/api/terms/${encodeURIComponent(slug)}`, { headers: { Accept: 'application/json' } });
-    const d = await r.json();
-    if (!r.ok || !d.ok) throw new Error(d.error || `HTTP ${r.status}`);
-    const t = d.term;
+    const t = await loadTermDetail(slug);
+    if(token!==detailRequestToken)return;
     const ottoman = typeof t.ottoman_period_term === 'string' && t.ottoman_period_term.trim();
     const modern = typeof t.modern_equivalent_tr === 'string' && t.modern_equivalent_tr.trim();
     const explanation = t.explanation_en || t.explanation_tr;
@@ -832,13 +861,21 @@ async function detail(slug) {
     drawer.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     setStatus('');
+    // Public entry content does not depend on the private editor session.
+    ensureEditorSession().then(()=>{
+      if(token!==detailRequestToken||!drawer.classList.contains('open'))return;
+      if(!el('detail').querySelector('.detail-editor-actions')) {
+        el('detail').insertAdjacentHTML('beforeend',editorActionHtml(t.slug));
+      }
+    });
   } catch (e) {
+    if(token!==detailRequestToken)return;
     setStatus(`Entry could not be loaded: ${e.message}`, true);
   }
 }
 function stopSpeech(){if(!speechSupported)return;window.speechSynthesis.cancel();if(activeSpeakButton){activeSpeakButton.setAttribute('aria-pressed','false');activeSpeakButton=null}}
 function speak(text,lang,button){if(!speechSupported||!text)return;stopSpeech();const utterance=new SpeechSynthesisUtterance(text);utterance.lang=lang;utterance.rate=lang==='en-GB'?.9:.92;utterance.pitch=1;if(lang==='en-GB'){const voice=pickMaleEnglishVoice();if(voice)utterance.voice=voice}utterance.onend=utterance.onerror=()=>{if(button)button.setAttribute('aria-pressed','false');if(activeSpeakButton===button)activeSpeakButton=null};activeSpeakButton=button;button.setAttribute('aria-pressed','true');window.speechSynthesis.speak(utterance)}
-function closeDrawer(){stopSpeech();drawer.classList.remove('open');drawer.setAttribute('aria-hidden','true');document.body.style.overflow=''}
+function closeDrawer(){++detailRequestToken;stopSpeech();drawer.classList.remove('open');drawer.setAttribute('aria-hidden','true');document.body.style.overflow=''}
 function syncQueryUrl(){const u=new URL(location.href);if(currentQuery)u.searchParams.set('q',currentQuery);else u.searchParams.delete('q');if(currentLetter)u.searchParams.set('letter',currentLetter);else u.searchParams.delete('letter');const currentPage=Math.floor(offset/LIMIT)+1;if(currentPage>1)u.searchParams.set('page',currentPage);else u.searchParams.delete('page');history.replaceState(null,'',u)}
 function runSearch(){clearTimeout(searchTimer);currentQuery=queryInput.value.trim();currentLetter='';letterJump.value='';offset=0;syncQueryUrl();load()}
 el('searchForm').addEventListener('submit',e=>{e.preventDefault();runSearch()});el('clearSearch').addEventListener('click',()=>{queryInput.value='';currentQuery='';currentLetter='';letterJump.value='';offset=0;syncQueryUrl();queryInput.focus();load()});letterJump.addEventListener('change',()=>{currentLetter=letterJump.value;currentQuery='';queryInput.value='';offset=0;syncQueryUrl();load()});queryInput.addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(runSearch,260)});function changePage(direction,scrollAfter=false){offset=Math.max(0,offset+(direction*LIMIT));syncQueryUrl();load();if(scrollAfter)scrollTo({top:0,behavior:'smooth'})}prevTop.addEventListener('click',()=>changePage(-1));nextTop.addEventListener('click',()=>changePage(1));prev.addEventListener('click',()=>changePage(-1,true));next.addEventListener('click',()=>changePage(1,true));document.addEventListener('click',e=>{const speakBtn=e.target.closest('.speak');if(speakBtn){e.preventDefault();e.stopPropagation();speak(speakBtn.dataset.speak,speakBtn.dataset.lang,speakBtn);return}const row=e.target.closest('[data-slug]');if(row)detail(row.dataset.slug)});results.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-slug]')){e.preventDefault();detail(e.target.dataset.slug)}});el('close').addEventListener('click',closeDrawer);drawer.addEventListener('click',e=>{if(e.target===drawer)closeDrawer()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(window.speechSynthesis?.speaking)stopSpeech();else if(drawer.classList.contains('open'))closeDrawer()}});window.addEventListener('beforeunload',stopSpeech);const initialParams=new URLSearchParams(location.search),initialQuery=initialParams.get('q'),initialLetter=String(initialParams.get('letter')||'').toUpperCase(),initialPage=Math.max(1,Number.parseInt(initialParams.get('page'),10)||1);offset=(initialPage-1)*LIMIT;if(initialQuery){queryInput.value=initialQuery.slice(0,120);currentQuery=queryInput.value.trim()}else if(/^[A-Z]$/.test(initialLetter)){currentLetter=initialLetter;letterJump.value=initialLetter}ensureEditorSession();loadHomeNotice();load();
