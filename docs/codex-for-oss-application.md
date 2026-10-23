@@ -18,6 +18,10 @@ The form requires the email associated with the applicant's ChatGPT account. Ver
 
 This actively maintained web application supports an English-Turkish dictionary of Ottoman military terminology (1876-1918). It serves digital humanities and historical-document research through bilingual interfaces, variant-aware search, stable entry URLs and editorial revision tools. Its MIT-licensed software can support other terminology projects; scholarly data has separate terms. We apply on the basis of specialist relevance, not claimed mass adoption.
 
+## Why does this project need Codex Security? (maximum 500 characters)
+
+The application combines public search with editor authentication, member accounts, content submissions and Cloudflare D1 storage. I would use Codex Security to review authorization boundaries, session and CSRF handling, input validation and accidental data exposure in this repository. Findings would be assessed by the maintainer before changes are merged or deployed. Access would be limited to systems I administer.
+
 ## How will you use API credits? (maximum 500 characters)
 
 I would use credits for maintainer-reviewed pull request analysis, regression-test development, issue triage and release documentation, focusing on bilingual search, response times and application security. Proposed automation would work on code and synthetic fixtures, exclude credentials and member records, and require human review before merging or deployment. Historical entries and citations would remain subject to editorial source verification.
