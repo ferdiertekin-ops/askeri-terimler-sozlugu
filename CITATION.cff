@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "Please cite this software when reusing the application. For dictionary content, cite the specific entry URL and access date; see README.md."
+type: software
+title: "Çevrimiçi Askerî Terimler Sözlüğü (1876–1918)"
+authors:
+  - family-names: "Ertekin"
+    given-names: "Ferdi"
+repository-code: "https://github.com/ferdiertekin-ops/askeri-terimler-sozlugu"
+url: "https://askeriterimlersozlugu.com/"
+license: MIT
+abstract: "Web application for an English–Turkish historical military dictionary, with Turkish and English interfaces. The software license excludes dictionary data and scholarly and visual content."
