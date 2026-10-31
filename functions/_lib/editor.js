@@ -242,6 +242,8 @@ function sourceList(value, existingSources = [], maxItems = 10) {
     const citationKey = citation.toLocaleLowerCase('tr-TR');
     const hasSourceId = Object.prototype.hasOwnProperty.call(object || {}, 'source_id');
     const sourceId = hasSourceId ? Number(object.source_id) : 0;
+    const replaceSource = object?.replace_source === true;
+    if (replaceSource && hasSourceId) return { error: 'invalid_source_identity' };
     if (hasSourceId && (!Number.isSafeInteger(sourceId) || sourceId < 1)) {
       return { error: 'invalid_source_id' };
     }
@@ -249,7 +251,7 @@ function sourceList(value, existingSources = [], maxItems = 10) {
       ? existing.find(candidate => !candidate.used && Number(candidate.id) === sourceId)
       : null;
     if (hasSourceId && !previous) return { error: 'invalid_source_id' };
-    if (!hasSourceId) {
+    if (!hasSourceId && !replaceSource) {
       const byCitation = existing.filter(candidate =>
         !candidate.used && String(candidate.citation || '').toLocaleLowerCase('tr-TR') === citationKey);
       if (Object.prototype.hasOwnProperty.call(object || {}, 'url')) {

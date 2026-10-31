@@ -14,6 +14,13 @@ const sourceParsers = new Function(
   'sourceSuggestionMap',
   `${editorHtml.slice(parserStart, parserEnd)}; return { parseSourceLine };`
 )(new Map([['synthetic citation', { url: 'https://suggested.example/item' }]]));
+const sourcePayloadStart = editorHtml.indexOf('function markSourceForReplacement(row)');
+const sourcePayloadEnd = editorHtml.indexOf('function payload()', sourcePayloadStart);
+assert.ok(sourcePayloadStart >= 0 && sourcePayloadEnd > sourcePayloadStart, 'Source replacement helpers must remain present');
+const sourceOperations = new Function(
+  'parseSourceLine',
+  `${editorHtml.slice(sourcePayloadStart, sourcePayloadEnd)}; return { markSourceForReplacement, sourcePayload };`
+)(sourceParsers.parseSourceLine);
 assert.deepEqual(sourceParsers.parseSourceLine('Synthetic citation', false), {
   citation: 'Synthetic citation',
   url: ''
@@ -25,6 +32,31 @@ assert.deepEqual(sourceParsers.parseSourceLine('Synthetic citation | ', false), 
 assert.deepEqual(sourceParsers.parseSourceLine('Synthetic citation', true), {
   citation: 'Synthetic citation',
   url: 'https://suggested.example/item'
+});
+const correctionRow = {
+  sourceId: 42,
+  replaceSource: false,
+  input: { value: 'Corrected citation' }
+};
+assert.deepEqual(sourceOperations.sourcePayload(correctionRow), {
+  source_id: 42,
+  citation: 'Corrected citation',
+  url: ''
+});
+const replacementRow = {
+  sourceId: 42,
+  replaceSource: false,
+  input: { value: 'Old source citation' }
+};
+sourceOperations.markSourceForReplacement(replacementRow);
+assert.equal(replacementRow.sourceId, null);
+assert.equal(replacementRow.replaceSource, true);
+assert.equal(replacementRow.input.value, '');
+replacementRow.input.value = 'Entirely new source';
+assert.deepEqual(sourceOperations.sourcePayload(replacementRow), {
+  replace_source: true,
+  citation: 'Entirely new source',
+  url: ''
 });
 
 const db = {
@@ -62,7 +94,7 @@ const env = {
 const origin = 'https://editor-metadata.test';
 let cookie = '';
 let csrfToken = '';
-let checks = 3;
+let checks = 5;
 
 async function request(path, { method = 'GET', body, expectStatus } = {}) {
   const headers = { Accept: 'application/json' };
@@ -246,21 +278,40 @@ try {
   assert.equal(changedCitation.term.sources[0].sort_order, 7);
   checks += 1;
 
+  const replacedSource = await request(`/api/editor/terms/${initial.slug}`, {
+    method: 'PUT',
+    body: {
+      ...legacyShape,
+      sources: [
+        { replace_source: true, citation: 'Synthetic entirely different source', url: 'https://new-source.example/item' },
+        { source_id: initial.sources[1].id, citation: 'Synthetic unclassified source', url: '' }
+      ],
+      expected_version: changedCitation.term.version
+    }
+  });
+  assert.equal(replacedSource.term.sources[0].citation, 'Synthetic entirely different source');
+  assert.notEqual(replacedSource.term.sources[0].id, initial.sources[0].id);
+  assert.equal(replacedSource.term.sources[0].source_type, null);
+  assert.equal(replacedSource.term.sources[0].page_reference, null);
+  assert.equal(replacedSource.term.sources[0].sort_order, 0);
+  assert.deepEqual(replacedSource.term.sources[1], initial.sources[1]);
+  checks += 1;
+
   const edited = await request(`/api/editor/terms/${initial.slug}`, {
     method: 'PUT',
     body: {
       ...legacyShape,
       category: 'Synthetic edited category',
       sources: [
-        { source_id: initial.sources[0].id, citation: 'Synthetic revised citation', url: '' },
+        { source_id: replacedSource.term.sources[0].id, citation: 'Synthetic entirely different source', url: 'https://new-source.example/item' },
         { source_id: initial.sources[1].id, citation: 'Synthetic unclassified source', url: '' }
       ],
-      expected_version: changedCitation.term.version
+      expected_version: replacedSource.term.version
     }
   });
   assert.equal(edited.term.category, 'Synthetic edited category');
   assert.deepEqual(edited.term.variants, initial.variants);
-  assert.equal(edited.term.sources[0].citation, 'Synthetic revised citation');
+  assert.equal(edited.term.sources[0].citation, 'Synthetic entirely different source');
   const revision = sqlite.prepare(`
     SELECT snapshot_json FROM term_revisions WHERE term_id = ?1 ORDER BY revision_no DESC LIMIT 1
   `).get(initial.id);
