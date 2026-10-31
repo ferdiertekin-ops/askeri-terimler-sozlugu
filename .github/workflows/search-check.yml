@@ -5,6 +5,7 @@ on:
     paths:
       - 'functions/api/terms.js'
       - 'functions/_middleware.js'
+      - 'functions/_lib/editor.js'
       - 'dictionary-d1-preview.html'
       - 'dictionary-d1-preview-en.html'
       - 'scripts/check-response-latency.mjs'
@@ -12,6 +13,7 @@ on:
       - 'functions/_lib/term-letter.js'
       - 'migrations/0001_initial.sql'
       - 'scripts/check-search.mjs'
+      - 'scripts/check-editor-metadata.mjs'
       - 'assets/term-game.js'
       - 'scripts/check-term-game.mjs'
       - 'package.json'
@@ -21,6 +23,7 @@ on:
     paths:
       - 'functions/api/terms.js'
       - 'functions/_middleware.js'
+      - 'functions/_lib/editor.js'
       - 'dictionary-d1-preview.html'
       - 'dictionary-d1-preview-en.html'
       - 'scripts/check-response-latency.mjs'
@@ -28,6 +31,7 @@ on:
       - 'functions/_lib/term-letter.js'
       - 'migrations/0001_initial.sql'
       - 'scripts/check-search.mjs'
+      - 'scripts/check-editor-metadata.mjs'
       - 'assets/term-game.js'
       - 'scripts/check-term-game.mjs'
       - 'package.json'

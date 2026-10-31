@@ -175,9 +175,36 @@ function slugify(value) {
     .slice(0, 150);
 }
 
-function stringList(value, maxItems = 50) {
+function optionalMetadata(value, field, maxLength, fallback) {
+  if (!Object.prototype.hasOwnProperty.call(value, field)) return fallback;
+  const fieldValue = value[field];
+  if (fieldValue === null) return null;
+  if (typeof fieldValue !== 'string' || fieldValue.length > maxLength) {
+    return { error: `invalid_${field}` };
+  }
+  return fieldValue;
+}
+
+function variantList(value, existingVariants = [], maxItems = 50) {
   const values = Array.isArray(value) ? value : String(value || '').split(/\r?\n/);
-  return [...new Set(values.map(item => clean(item, 1000)).filter(Boolean))].slice(0, maxItems);
+  const existing = existingVariants.map(item => ({ ...item, used: false }));
+  const variants = [];
+  const seen = new Set();
+  for (const item of values) {
+    const object = item && typeof item === 'object' ? item : null;
+    const variant = clean(object ? object.variant : item, 1000);
+    if (!variant || seen.has(variant)) continue;
+    seen.add(variant);
+    const previous = existing.find(candidate => !candidate.used && candidate.variant === variant);
+    if (previous) previous.used = true;
+    const variantType = optionalMetadata(object || {}, 'variant_type', 200, previous ? previous.variant_type : 'editor');
+    const language = optionalMetadata(object || {}, 'language', 100, previous ? previous.language : 'en');
+    if (variantType?.error) return { error: variantType.error };
+    if (language?.error) return { error: language.error };
+    variants.push({ variant, variant_type: variantType, language });
+    if (variants.length >= maxItems) break;
+  }
+  return { value: variants };
 }
 
 function normalizeSourceUrl(value) {
@@ -194,35 +221,67 @@ function normalizeSourceUrl(value) {
   }
 }
 
-function sourceList(value, maxItems = 10) {
+function sourceList(value, existingSources = [], maxItems = 10) {
   const values = Array.isArray(value) ? value : String(value || '').split(/\r?\n/);
+  const existing = existingSources.map(item => ({ ...item, used: false }));
   const sources = [];
   const seen = new Set();
-  for (const item of values) {
+  for (let index = 0; index < values.length; index += 1) {
+    const item = values[index];
     const object = item && typeof item === 'object' ? item : null;
     const citation = clean(object ? object.citation : item, 1000);
     const rawUrl = object ? object.url : '';
     if (!citation && !clean(rawUrl, 2048)) continue;
     if (!citation) return { error: 'source_citation_required' };
-    const normalized = normalizeSourceUrl(rawUrl);
+    const citationKey = citation.toLocaleLowerCase('tr-TR');
+    const exactExisting = existing.find(candidate => !candidate.used &&
+      String(candidate.citation || '').toLocaleLowerCase('tr-TR') === citationKey &&
+      String(candidate.url || '') === clean(rawUrl, 2048));
+    const normalized = exactExisting
+      ? { value: String(exactExisting.url || '') }
+      : normalizeSourceUrl(rawUrl);
     if (normalized.error) return normalized;
-    const key = citation.toLocaleLowerCase('tr-TR') + '\n' + normalized.value;
-    if (seen.has(key)) continue;
+    const previous = existing.find(candidate => !candidate.used &&
+      String(candidate.citation || '').toLocaleLowerCase('tr-TR') === citationKey &&
+      (!rawUrl || String(candidate.url || '') === normalized.value ||
+        normalizeSourceUrl(candidate.url).value === normalized.value));
+    if (previous) previous.used = true;
+    const sourceType = optionalMetadata(object || {}, 'source_type', 200, previous?.source_type ?? null);
+    const pageReference = optionalMetadata(object || {}, 'page_reference', 1000, previous?.page_reference ?? null);
+    const sortOrder = Object.prototype.hasOwnProperty.call(object || {}, 'sort_order')
+      ? object.sort_order
+      : previous?.sort_order ?? index;
+    if (sourceType?.error) return { error: sourceType.error };
+    if (pageReference?.error) return { error: pageReference.error };
+    if (!Number.isSafeInteger(Number(sortOrder)) || Number(sortOrder) < 0) {
+      return { error: 'invalid_source_sort_order' };
+    }
+    const source = {
+      citation,
+      url: previous ? previous.url : (normalized.value || null),
+      source_type: sourceType,
+      page_reference: pageReference,
+      sort_order: Number(sortOrder)
+    };
+    const key = citationKey + '\n' + String(source.url || '');
+    if (!previous && seen.has(key)) continue;
     seen.add(key);
-    sources.push({ citation, url: normalized.value });
+    sources.push(source);
     if (sources.length >= maxItems) break;
   }
   return { value: sources };
 }
 
-function validateTerm(input, existingSlug = '') {
+function validateTerm(input, existingSlug = '', existingTerm = {}) {
   const headword = clean(input?.headword_en, 300);
   if (!headword) return { error: 'headword_required' };
   const status = ['draft', 'review', 'published', 'suspended'].includes(input?.status) ? input.status : 'draft';
   const requestedSlug = clean(input?.slug, 180);
   const slug = slugify(requestedSlug || existingSlug || headword);
   if (!slug) return { error: 'invalid_slug' };
-  const sources = sourceList(input?.sources);
+  const variants = variantList(input?.variants, existingTerm.variants || []);
+  if (variants.error) return { error: variants.error };
+  const sources = sourceList(input?.sources, existingTerm.sources || []);
   if (sources.error) return { error: sources.error };
   return {
     value: {
@@ -234,7 +293,7 @@ function validateTerm(input, existingSlug = '') {
       explanation_tr: clean(input?.explanation_tr, 12000),
       explanation_en: clean(input?.explanation_en, 12000),
       status,
-      variants: stringList(input?.variants),
+      variants: variants.value,
       sources: sources.value
     }
   };
@@ -263,13 +322,23 @@ function savedTermMatches(saved, value, expectedVersion) {
       !same(saved.modern_equivalent_tr, value.modern_equivalent_tr) ||
       !same(saved.category, value.category) || !same(saved.explanation_tr, value.explanation_tr) ||
       !same(saved.explanation_en, value.explanation_en) || !same(saved.status, value.status)) return false;
-  const variants = (saved.variants || []).map(item => String(item.variant || ''));
+  const variants = (saved.variants || []).map(item => ({
+    variant: String(item.variant || ''),
+    variant_type: item.variant_type ?? null,
+    language: item.language ?? null
+  }));
   if (JSON.stringify(variants) !== JSON.stringify(value.variants)) return false;
   const sources = (saved.sources || []).map(item => ({
     citation: String(item.citation || ''),
-    url: String(item.url || '')
+    url: String(item.url || ''),
+    source_type: item.source_type ?? null,
+    page_reference: item.page_reference ?? null,
+    sort_order: Number(item.sort_order)
   }));
-  return JSON.stringify(sources) === JSON.stringify(value.sources);
+  const expectedSources = [...value.sources]
+    .sort((left, right) => left.sort_order - right.sort_order)
+    .map(item => ({ ...item, url: String(item.url || '') }));
+  return JSON.stringify(sources) === JSON.stringify(expectedSources);
 }
 
 async function termCounts(db) {
@@ -1093,8 +1162,8 @@ async function termsCollection(context) {
   `).bind(value.slug, value.headword_en, value.ottoman_period_term || null, value.modern_equivalent_tr || null, value.category || null, value.explanation_tr || null, value.explanation_en || null, value.status).run();
   const termId = Number(inserted.meta?.last_row_id || 0);
   const statements = [];
-  value.variants.forEach(variant => statements.push(context.env.DB.prepare('INSERT INTO term_variants (term_id, variant, variant_type, language) VALUES (?1, ?2, ?3, ?4)').bind(termId, variant, 'editor', 'en')));
-  value.sources.forEach((source, index) => statements.push(context.env.DB.prepare('INSERT INTO term_sources (term_id, citation, url, sort_order) VALUES (?1, ?2, ?3, ?4)').bind(termId, source.citation, source.url || null, index)));
+  value.variants.forEach(variant => statements.push(context.env.DB.prepare('INSERT INTO term_variants (term_id, variant, variant_type, language) VALUES (?1, ?2, ?3, ?4)').bind(termId, variant.variant, variant.variant_type, variant.language)));
+  value.sources.forEach(source => statements.push(context.env.DB.prepare('INSERT INTO term_sources (term_id, citation, url, source_type, page_reference, sort_order) VALUES (?1, ?2, ?3, ?4, ?5, ?6)').bind(termId, source.citation, source.url, source.source_type, source.page_reference, source.sort_order)));
   statements.push(context.env.DB.prepare("INSERT INTO term_revisions (term_id, revision_no, snapshot_json, change_note) VALUES (?1, 1, ?2, 'created')").bind(termId, JSON.stringify({ ...value, id: termId, version: 1 })));
   statements.push(context.env.DB.prepare(`
     INSERT INTO audit_log (action, entity_type, entity_id, request_id, metadata_json)
@@ -1134,7 +1203,7 @@ async function termItem(context, slug) {
         requestId: id
       }, { status: 409 });
     }
-    const checked = validateTerm(body, current.slug);
+    const checked = validateTerm(body, current.slug, current);
     if (checked.error) return json({ ok: false, error: checked.error, requestId: id }, { status: 400 });
     const value = checked.value;
     if (value.slug !== current.slug) {
@@ -1156,8 +1225,8 @@ async function termItem(context, slug) {
       context.env.DB.prepare('DELETE FROM term_variants WHERE term_id = ?1').bind(current.id),
       context.env.DB.prepare('DELETE FROM term_sources WHERE term_id = ?1').bind(current.id)
     ];
-    value.variants.forEach(variant => statements.push(context.env.DB.prepare('INSERT INTO term_variants (term_id, variant, variant_type, language) VALUES (?1, ?2, ?3, ?4)').bind(current.id, variant, 'editor', 'en')));
-    value.sources.forEach((source, index) => statements.push(context.env.DB.prepare('INSERT INTO term_sources (term_id, citation, url, sort_order) VALUES (?1, ?2, ?3, ?4)').bind(current.id, source.citation, source.url || null, index)));
+    value.variants.forEach(variant => statements.push(context.env.DB.prepare('INSERT INTO term_variants (term_id, variant, variant_type, language) VALUES (?1, ?2, ?3, ?4)').bind(current.id, variant.variant, variant.variant_type, variant.language)));
+    value.sources.forEach(source => statements.push(context.env.DB.prepare('INSERT INTO term_sources (term_id, citation, url, source_type, page_reference, sort_order) VALUES (?1, ?2, ?3, ?4, ?5, ?6)').bind(current.id, source.citation, source.url, source.source_type, source.page_reference, source.sort_order)));
     statements.push(context.env.DB.prepare('INSERT OR REPLACE INTO term_revisions (term_id, revision_no, snapshot_json, change_note) VALUES (?1, ?2, ?3, ?4)').bind(current.id, nextVersion, JSON.stringify(nextSnapshot), changeNote));
     statements.push(context.env.DB.prepare(`
       INSERT INTO audit_log (action, entity_type, entity_id, request_id, metadata_json)
