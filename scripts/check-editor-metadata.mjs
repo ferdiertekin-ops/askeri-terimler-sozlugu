@@ -1,11 +1,14 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { DatabaseSync } from 'node:sqlite';
 import { handleEditorApi } from '../functions/_lib/editor.js';
 
 const sqlite = new DatabaseSync(':memory:');
-sqlite.exec(await readFile(new URL('../migrations/0001_initial.sql', import.meta.url), 'utf8'));
+const migrationDirectory = new URL('../migrations/', import.meta.url);
+for (const file of (await readdir(migrationDirectory)).filter(name => name.endsWith('.sql')).sort()) {
+  sqlite.exec(await readFile(new URL(file, migrationDirectory), 'utf8'));
+}
 const editorHtml = await readFile(new URL('../editor-panel-private.html', import.meta.url), 'utf8');
 const parserStart = editorHtml.indexOf('function sourceUrl(value)');
 const parserEnd = editorHtml.indexOf('function readSourceMemory()', parserStart);

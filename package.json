@@ -10,10 +10,11 @@
     "check:syntax": "node --check functions/_middleware.js && node --check functions/_lib/http.js && node --check functions/_lib/site.js && node --check functions/_lib/editor.js && node --check functions/_lib/term-letter.js && node --check netlify/functions/_preview-public-api.js && node --check netlify/functions/preview-terms.js && node --check netlify/functions/preview-term.js && node --check netlify/functions/preview-site-page.js && node --check netlify/functions/preview-editor-session.js && node --check scripts/check-seo.mjs && node --check scripts/check-netlify-preview.mjs",
     "check:seo": "node scripts/check-seo.mjs",
     "check:preview": "node scripts/check-netlify-preview.mjs",
+    "check:migrations": "node scripts/check-migrations.mjs",
     "check:search": "node scripts/check-search.mjs",
     "check:editor-metadata": "node scripts/check-editor-metadata.mjs",
     "check:game": "node scripts/check-term-game.mjs",
-    "check": "npm run check:syntax && npm run check:seo && npm run check:preview && npm run check:search && npm run check:editor-metadata && npm run check:game && npm run check:response",
+    "check": "npm run check:syntax && npm run check:seo && npm run check:preview && npm run check:migrations && npm run check:search && npm run check:editor-metadata && npm run check:game && npm run check:response",
     "check:response": "node scripts/check-response-latency.mjs"
   },
   "license": "MIT"

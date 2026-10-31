@@ -1,12 +1,15 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { DatabaseSync } from 'node:sqlite';
 import { onRequest } from '../functions/api/terms.js';
 
 // Exercise the real endpoint and SQL against an isolated SQLite database.
 // These fixtures test spelling and ranking, not historical equivalences.
 const sqlite = new DatabaseSync(':memory:');
-sqlite.exec(await readFile(new URL('../migrations/0001_initial.sql', import.meta.url), 'utf8'));
+const migrationDirectory = new URL('../migrations/', import.meta.url);
+for (const file of (await readdir(migrationDirectory)).filter(name => name.endsWith('.sql')).sort()) {
+  sqlite.exec(await readFile(new URL(file, migrationDirectory), 'utf8'));
+}
 const insert = sqlite.prepare(`INSERT INTO terms
   (id, slug, headword_en, ottoman_period_term, modern_equivalent_tr, category, status)
   VALUES (?, ?, ?, ?, ?, ?, ?)`);

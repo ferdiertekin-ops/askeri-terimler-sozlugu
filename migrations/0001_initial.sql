@@ -5,11 +5,12 @@ CREATE TABLE IF NOT EXISTS terms (
   slug TEXT NOT NULL UNIQUE,
   headword_en TEXT NOT NULL,
   ottoman_period_term TEXT,
-  modern_equivalent_tr TEXT,
+  modern_tr TEXT,
   category TEXT,
   explanation_tr TEXT,
   explanation_en TEXT,
   status TEXT NOT NULL DEFAULT 'published' CHECK (status IN ('draft','review','published','suspended')),
+  confidence TEXT,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),
   updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),
   published_at TEXT,
@@ -65,7 +66,7 @@ CREATE TABLE IF NOT EXISTS audit_log (
 );
 
 CREATE INDEX IF NOT EXISTS idx_terms_headword_en ON terms(headword_en);
-CREATE INDEX IF NOT EXISTS idx_terms_modern_equivalent_tr ON terms(modern_equivalent_tr);
+CREATE INDEX IF NOT EXISTS idx_terms_modern_tr ON terms(modern_tr);
 CREATE INDEX IF NOT EXISTS idx_terms_status ON terms(status);
 CREATE INDEX IF NOT EXISTS idx_variants_variant ON term_variants(variant);
 CREATE INDEX IF NOT EXISTS idx_sources_term_sort ON term_sources(term_id, sort_order);
