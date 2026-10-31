@@ -271,17 +271,20 @@ function sourceLine(source){
   if(url&&citation!==url)return citation+' | '+url;
   return citation;
 }
-function parseSourceLine(value){
+function parseSourceLine(value,allowSuggestion=true){
   const raw=String(value||'').trim();
   if(!raw)return{citation:'',url:''};
+  if(raw.endsWith(' |'))return{citation:raw.slice(0,-2).trim(),url:''};
   const direct=sourceUrl(raw);
   if(direct)return{citation:raw,url:direct};
   const marker=' | ',index=raw.lastIndexOf(marker);
   if(index>0){
-    const citation=raw.slice(0,index).trim(),candidate=raw.slice(index+marker.length).trim(),url=sourceUrl(candidate);
+    const citation=raw.slice(0,index).trim(),candidate=raw.slice(index+marker.length).trim();
+    if(citation&&!candidate)return{citation,url:''};
+    const url=sourceUrl(candidate);
     if(url&&citation)return{citation,url};
   }
-  const remembered=sourceSuggestionMap.get(raw.toLocaleLowerCase('tr-TR'));
+  const remembered=allowSuggestion?sourceSuggestionMap.get(raw.toLocaleLowerCase('tr-TR')):null;
   return{citation:raw,url:remembered?.url||''};
 }
 function readSourceMemory(){
@@ -325,7 +328,7 @@ async function loadSourceSuggestions(value){
 function escapeHtml(value){return String(value||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function escapeAttr(value){return escapeHtml(value)}
 function syncSourceOpen(row){
-  const source=parseSourceLine(row.input.value),href=source.url;
+  const source=parseSourceLine(row.input.value,!row.sourceId),href=source.url;
   row.open.hidden=!href;row.open.href=href||'#';
 }
 function createSourceRows(){
@@ -336,7 +339,7 @@ function createSourceRows(){
     const input=document.createElement('input');input.className='input source-input';input.setAttribute('list','sourceSuggestions');input.maxLength=3100;input.placeholder='Kaynak / künye / bağlantı';input.setAttribute('aria-label','Kaynak '+(index+1));
     const open=document.createElement('a');open.className='source-open';open.href='#';open.target='_blank';open.rel='noopener noreferrer';open.textContent='↗';open.hidden=true;open.title='Kaynak bağlantısını aç';
     element.append(number,input,open);box.appendChild(element);
-    const row={element,input,open};sourceRows.push(row);
+    const row={element,input,open,sourceId:null};sourceRows.push(row);
     input.addEventListener('input',()=>{
       syncSourceOpen(row);markTermDirty();
       clearTimeout(sourceSuggestionTimer);sourceSuggestionTimer=setTimeout(()=>loadSourceSuggestions(input.value),160);
@@ -381,11 +384,18 @@ function applyTermValues(term){
   fields.explanationTr.value=term.explanation_tr||'';
   fields.explanationEn.value=term.explanation_en||'';
   fields.variants.value=(term.variants||[]).map(item=>typeof item==='string'?item:item.variant).filter(Boolean).join('\n');
-  sourceRows.forEach((row,index)=>{row.input.value=sourceLine((term.sources||[])[index]||{});syncSourceOpen(row)});
+  sourceRows.forEach((row,index)=>{
+    const source=(term.sources||[])[index]||{};
+    row.sourceId=source.id||source.source_id||null;
+    row.input.value=sourceLine(source);syncSourceOpen(row);
+  });
   visibleSourceCount=Math.max(1,Math.min(MAX_SOURCES,(term.sources||[]).length||1));syncSourceVisibility();
 }
 function payload(){
-  const sources=sourceRows.map(row=>parseSourceLine(row.input.value)).filter(source=>source.citation||source.url);
+  const sources=sourceRows.map(row=>({
+    ...(row.sourceId?{source_id:row.sourceId}:{}),
+    ...parseSourceLine(row.input.value,!row.sourceId)
+  })).filter(source=>source.citation||source.url);
   return{
     headword_en:fields.headword.value,slug:fields.slug.value,
     ottoman_period_term:fields.ottoman.value,modern_equivalent_tr:fields.modern.value,
@@ -396,7 +406,7 @@ function payload(){
 }
 function startNewForm({restoreDraft=true}={}){
   currentSlug='';currentTermVersion=0;currentServerVersion=0;currentTermUpdatedAt='';termDirty=false;
-  $('termForm').reset();sourceRows.forEach(row=>row.input.value='');visibleSourceCount=1;syncSourceVisibility();
+  $('termForm').reset();sourceRows.forEach(row=>{row.input.value='';row.sourceId=null});visibleSourceCount=1;syncSourceVisibility();
   $('formTitle').textContent='Yeni madde';$('deleteBtn').hidden=true;
   const draft=restoreDraft?readDraft('new'):null;
   if(draft?.payload){applyTermValues(draft.payload);currentTermVersion=Number(draft.baseVersion||0);termDirty=true}

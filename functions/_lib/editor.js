@@ -224,6 +224,12 @@ function normalizeSourceUrl(value) {
 function sourceList(value, existingSources = [], maxItems = 10) {
   const values = Array.isArray(value) ? value : String(value || '').split(/\r?\n/);
   const existing = existingSources.map(item => ({ ...item, used: false }));
+  const incomingCitations = new Map();
+  for (const item of values) {
+    const citation = clean(item && typeof item === 'object' ? item.citation : item, 1000)
+      .toLocaleLowerCase('tr-TR');
+    if (citation) incomingCitations.set(citation, (incomingCitations.get(citation) || 0) + 1);
+  }
   const sources = [];
   const seen = new Set();
   for (let index = 0; index < values.length; index += 1) {
@@ -234,17 +240,41 @@ function sourceList(value, existingSources = [], maxItems = 10) {
     if (!citation && !clean(rawUrl, 2048)) continue;
     if (!citation) return { error: 'source_citation_required' };
     const citationKey = citation.toLocaleLowerCase('tr-TR');
-    const exactExisting = existing.find(candidate => !candidate.used &&
-      String(candidate.citation || '').toLocaleLowerCase('tr-TR') === citationKey &&
-      String(candidate.url || '') === clean(rawUrl, 2048));
-    const normalized = exactExisting
-      ? { value: String(exactExisting.url || '') }
-      : normalizeSourceUrl(rawUrl);
+    const hasSourceId = Object.prototype.hasOwnProperty.call(object || {}, 'source_id');
+    const sourceId = hasSourceId ? Number(object.source_id) : 0;
+    if (hasSourceId && (!Number.isSafeInteger(sourceId) || sourceId < 1)) {
+      return { error: 'invalid_source_id' };
+    }
+    let previous = hasSourceId
+      ? existing.find(candidate => !candidate.used && Number(candidate.id) === sourceId)
+      : null;
+    if (hasSourceId && !previous) return { error: 'invalid_source_id' };
+    if (!hasSourceId) {
+      const byCitation = existing.filter(candidate =>
+        !candidate.used && String(candidate.citation || '').toLocaleLowerCase('tr-TR') === citationKey);
+      if (Object.prototype.hasOwnProperty.call(object || {}, 'url')) {
+        const normalizedInput = normalizeSourceUrl(rawUrl);
+        if (normalizedInput.error) return normalizedInput;
+        const exactMatches = byCitation.filter(candidate =>
+          normalizeSourceUrl(candidate.url).value === normalizedInput.value);
+        if (exactMatches.length === 1) previous = exactMatches[0];
+        else if (exactMatches.length > 1 || byCitation.length > 1 ||
+          (byCitation.length === 1 && incomingCitations.get(citationKey) !== 1)) {
+          return { error: 'ambiguous_source_identity' };
+        }
+      } else if (byCitation.length === 1) {
+        if (incomingCitations.get(citationKey) !== 1) return { error: 'ambiguous_source_identity' };
+        previous = byCitation[0];
+      } else if (byCitation.length > 1) {
+        return { error: 'ambiguous_source_identity' };
+      }
+      if (!previous && byCitation.length === 1 && incomingCitations.get(citationKey) === 1) {
+        previous = byCitation[0];
+      }
+    }
+    const hasUrl = Object.prototype.hasOwnProperty.call(object || {}, 'url');
+    const normalized = hasUrl ? normalizeSourceUrl(rawUrl) : { value: '' };
     if (normalized.error) return normalized;
-    const previous = existing.find(candidate => !candidate.used &&
-      String(candidate.citation || '').toLocaleLowerCase('tr-TR') === citationKey &&
-      (!rawUrl || String(candidate.url || '') === normalized.value ||
-        normalizeSourceUrl(candidate.url).value === normalized.value));
     if (previous) previous.used = true;
     const sourceType = optionalMetadata(object || {}, 'source_type', 200, previous?.source_type ?? null);
     const pageReference = optionalMetadata(object || {}, 'page_reference', 1000, previous?.page_reference ?? null);
@@ -257,8 +287,9 @@ function sourceList(value, existingSources = [], maxItems = 10) {
       return { error: 'invalid_source_sort_order' };
     }
     const source = {
+      ...(previous ? { source_id: Number(previous.id) } : {}),
       citation,
-      url: previous ? previous.url : (normalized.value || null),
+      url: hasUrl ? (normalized.value || null) : (previous?.url || null),
       source_type: sourceType,
       page_reference: pageReference,
       sort_order: Number(sortOrder)
@@ -309,7 +340,7 @@ async function fullTerm(db, slug, publishedOnly = false) {
   if (!term) return null;
   const [variants, sources] = await Promise.all([
     db.prepare('SELECT variant, variant_type, language FROM term_variants WHERE term_id = ?1 ORDER BY id').bind(term.id).all(),
-    db.prepare('SELECT citation, url, source_type, page_reference, sort_order FROM term_sources WHERE term_id = ?1 ORDER BY sort_order, id').bind(term.id).all()
+    db.prepare('SELECT id, citation, url, source_type, page_reference, sort_order FROM term_sources WHERE term_id = ?1 ORDER BY sort_order, id').bind(term.id).all()
   ]);
   return { ...term, letter: termLetter(term.headword_en), variants: variants.results || [], sources: sources.results || [] };
 }
@@ -337,7 +368,13 @@ function savedTermMatches(saved, value, expectedVersion) {
   }));
   const expectedSources = [...value.sources]
     .sort((left, right) => left.sort_order - right.sort_order)
-    .map(item => ({ ...item, url: String(item.url || '') }));
+    .map(item => ({
+      citation: String(item.citation || ''),
+      url: String(item.url || ''),
+      source_type: item.source_type ?? null,
+      page_reference: item.page_reference ?? null,
+      sort_order: Number(item.sort_order)
+    }));
   return JSON.stringify(sources) === JSON.stringify(expectedSources);
 }
 
@@ -1163,7 +1200,7 @@ async function termsCollection(context) {
   const termId = Number(inserted.meta?.last_row_id || 0);
   const statements = [];
   value.variants.forEach(variant => statements.push(context.env.DB.prepare('INSERT INTO term_variants (term_id, variant, variant_type, language) VALUES (?1, ?2, ?3, ?4)').bind(termId, variant.variant, variant.variant_type, variant.language)));
-  value.sources.forEach(source => statements.push(context.env.DB.prepare('INSERT INTO term_sources (term_id, citation, url, source_type, page_reference, sort_order) VALUES (?1, ?2, ?3, ?4, ?5, ?6)').bind(termId, source.citation, source.url, source.source_type, source.page_reference, source.sort_order)));
+  value.sources.forEach(source => statements.push(context.env.DB.prepare('INSERT INTO term_sources (id, term_id, citation, url, source_type, page_reference, sort_order) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)').bind(null, termId, source.citation, source.url, source.source_type, source.page_reference, source.sort_order)));
   statements.push(context.env.DB.prepare("INSERT INTO term_revisions (term_id, revision_no, snapshot_json, change_note) VALUES (?1, 1, ?2, 'created')").bind(termId, JSON.stringify({ ...value, id: termId, version: 1 })));
   statements.push(context.env.DB.prepare(`
     INSERT INTO audit_log (action, entity_type, entity_id, request_id, metadata_json)
@@ -1226,7 +1263,7 @@ async function termItem(context, slug) {
       context.env.DB.prepare('DELETE FROM term_sources WHERE term_id = ?1').bind(current.id)
     ];
     value.variants.forEach(variant => statements.push(context.env.DB.prepare('INSERT INTO term_variants (term_id, variant, variant_type, language) VALUES (?1, ?2, ?3, ?4)').bind(current.id, variant.variant, variant.variant_type, variant.language)));
-    value.sources.forEach(source => statements.push(context.env.DB.prepare('INSERT INTO term_sources (term_id, citation, url, source_type, page_reference, sort_order) VALUES (?1, ?2, ?3, ?4, ?5, ?6)').bind(current.id, source.citation, source.url, source.source_type, source.page_reference, source.sort_order)));
+    value.sources.forEach(source => statements.push(context.env.DB.prepare('INSERT INTO term_sources (id, term_id, citation, url, source_type, page_reference, sort_order) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)').bind(source.source_id || null, current.id, source.citation, source.url, source.source_type, source.page_reference, source.sort_order)));
     statements.push(context.env.DB.prepare('INSERT OR REPLACE INTO term_revisions (term_id, revision_no, snapshot_json, change_note) VALUES (?1, ?2, ?3, ?4)').bind(current.id, nextVersion, JSON.stringify(nextSnapshot), changeNote));
     statements.push(context.env.DB.prepare(`
       INSERT INTO audit_log (action, entity_type, entity_id, request_id, metadata_json)
