@@ -64,7 +64,7 @@ textarea{min-height:78px;resize:vertical}.explanation{min-height:112px}.variants
 .source-field{margin:3px 0 0;padding:13px 0 0;border:0;border-top:1px solid var(--line)}
 .source-field legend{padding:0 8px 0 0}
 .source-list{display:grid;gap:7px;margin-top:8px}
-.source-row{display:grid;grid-template-columns:28px minmax(0,1fr) 32px;gap:7px;align-items:center}
+.source-row{display:grid;grid-template-columns:28px minmax(0,1fr) 32px auto;gap:7px;align-items:center}
 .source-number{display:grid;place-items:center;width:25px;height:25px;border:1px solid var(--line);border-radius:50%;color:var(--muted);font:700 10px Calibri,sans-serif}
 .source-row .input{margin:0}
 .source-open{display:grid;place-items:center;width:30px;height:30px;border:1px solid var(--line);border-radius:8px;color:var(--navy);text-decoration:none}
@@ -96,7 +96,7 @@ textarea{min-height:78px;resize:vertical}.explanation{min-height:112px}.variants
   header .brand span{font-size:13px}.brand img{width:36px;height:36px}
   .card{padding:14px}.form-head h1{font-size:22px}
   .savebar .actions{width:100%}.savebar button{flex:1}
-  .source-row{grid-template-columns:24px minmax(0,1fr) 30px}
+  .source-row{grid-template-columns:24px minmax(0,1fr) 30px auto}
   .audit-stats{grid-template-columns:1fr}
 }
 /* ATS EDITOR GREY-MUSTARD THEME */:root{--bg:#E9E6DE!important;--paper:#F4F1E9!important;--paper-soft:#ECE8DE!important;--ink:#1E1E1B!important;--muted:#68635A!important;--navy:#2B2B29!important;--navy-deep:#1F1F1D!important;--red:#7A2231!important;--green:#3F6C57!important;--line:#CFC8B9!important;--mustard:#C9A227!important;--mustard-dark:#8F741E!important}body{background:#E9E6DE!important;color:#1E1E1B!important}header{border-bottom-color:#C9A227!important}.brand{color:#1E1E1B!important}.back{color:#2B2B29!important}.back:hover,.back:focus-visible{color:#8F741E!important}button,.button-link{background:#F4F1E9!important;border-color:#CFC8B9!important;color:#1E1E1B!important}button:hover,.button-link:hover{border-color:#C9A227!important;background:#ECE8DE!important}button.primary{background:#2B2B29!important;border-color:#2B2B29!important;color:#C9A227!important}button.primary:hover{background:#1F1F1D!important;border-color:#C9A227!important;color:#D6B43A!important}button.danger{background:#7A2231!important;border-color:#7A2231!important;color:#F4F1E9!important}button.danger:hover{background:#5E1926!important;border-color:#5E1926!important}.card{background:#F4F1E9!important;border-color:#CFC8B9!important;box-shadow:0 18px 42px -36px rgba(30,30,27,.45)!important}.form-head h1{color:#2B2B29!important}.meta{color:#68635A!important}.status{background:#E3EBE5!important;color:#3F6C57!important}.status::before{background:#3F6C57!important}.savebar{border-color:#CFC8B9!important;background:rgba(244,241,233,.96)!important;box-shadow:0 10px 24px -21px rgba(30,30,27,.55)!important}.save-hint,.safety,.source-help{color:#68635A!important}label,.field-label,legend{color:#8F741E!important}.input,textarea,select{background:#F8F5EE!important;border-color:#C7C0B2!important;color:#1E1E1B!important}.input:focus,textarea:focus,select:focus{border-color:#C9A227!important;box-shadow:0 0 0 3px rgba(201,162,39,.14)!important}.input[readonly]{background:#E7E3D8!important;color:#2B2B29!important}.source-field{border-top-color:#CFC8B9!important}.source-number{border-color:#CFC8B9!important;color:#68635A!important;background:#ECE8DE!important}.source-open{border-color:#CFC8B9!important;color:#2B2B29!important;background:#F4F1E9!important}.source-open:hover{border-color:#C9A227!important;background:#E8E2D4!important;color:#8F741E!important}.form-actions{border-top-color:#CFC8B9!important}.notice{background:#2B2B29!important;color:#F4F1E9!important}.notice.error{background:#7A2231!important}.audit{border-left-color:#C9A227!important}.audit-stat{background:#ECE8DE!important;border-color:#CFC8B9!important}.audit-stat strong{color:#2B2B29!important}::selection{background:#E4D6A2!important;color:#1E1E1B!important}
@@ -167,7 +167,7 @@ textarea{min-height:78px;resize:vertical}.explanation{min-height:112px}.variants
           <datalist id="sourceSuggestions"></datalist>
           <div class="source-controls">
             <button id="addSourceBtn" type="button">＋ Kaynak ekle</button>
-            <small class="source-help">Her kaynak tek uzun alandadır. Künye ve bağlantıyı birlikte kullanmak için <strong>Künye | https://…</strong> yazabilirsiniz. Yeni kaynaklar editör hafızasına alınır ve ilk harften itibaren önerilir.</small>
+            <small class="source-help">Her kaynak tek uzun alandadır. Künye ve bağlantıyı birlikte kullanmak için <strong>Künye | https://…</strong> yazabilirsiniz. Künye/URL düzeltmelerinde satırı düzenleyin; tamamen farklı kaynak için satırdaki değiştirme düğmesini kullanın. Yeni kaynaklar editör hafızasına alınır ve ilk harften itibaren önerilir.</small>
           </div>
         </fieldset>
       </div>
@@ -271,17 +271,20 @@ function sourceLine(source){
   if(url&&citation!==url)return citation+' | '+url;
   return citation;
 }
-function parseSourceLine(value){
+function parseSourceLine(value,allowSuggestion=true){
   const raw=String(value||'').trim();
   if(!raw)return{citation:'',url:''};
+  if(raw.endsWith(' |'))return{citation:raw.slice(0,-2).trim(),url:''};
   const direct=sourceUrl(raw);
   if(direct)return{citation:raw,url:direct};
   const marker=' | ',index=raw.lastIndexOf(marker);
   if(index>0){
-    const citation=raw.slice(0,index).trim(),candidate=raw.slice(index+marker.length).trim(),url=sourceUrl(candidate);
+    const citation=raw.slice(0,index).trim(),candidate=raw.slice(index+marker.length).trim();
+    if(citation&&!candidate)return{citation,url:''};
+    const url=sourceUrl(candidate);
     if(url&&citation)return{citation,url};
   }
-  const remembered=sourceSuggestionMap.get(raw.toLocaleLowerCase('tr-TR'));
+  const remembered=allowSuggestion?sourceSuggestionMap.get(raw.toLocaleLowerCase('tr-TR')):null;
   return{citation:raw,url:remembered?.url||''};
 }
 function readSourceMemory(){
@@ -325,8 +328,13 @@ async function loadSourceSuggestions(value){
 function escapeHtml(value){return String(value||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function escapeAttr(value){return escapeHtml(value)}
 function syncSourceOpen(row){
-  const source=parseSourceLine(row.input.value),href=source.url;
+  const source=parseSourceLine(row.input.value,!row.sourceId),href=source.url;
   row.open.hidden=!href;row.open.href=href||'#';
+}
+function syncSourceReplacement(row){
+  row.replaceButton.hidden=!row.sourceId&&!row.replaceSource;
+  row.replaceButton.disabled=row.replaceSource;
+  row.replaceButton.textContent=row.replaceSource?'Yeni kaynak (eski metaveri aktarılmaz)':'Farklı kaynakla değiştir';
 }
 function createSourceRows(){
   const box=$('sourceRows');
@@ -335,8 +343,14 @@ function createSourceRows(){
     const number=document.createElement('span');number.className='source-number';number.textContent=String(index+1);
     const input=document.createElement('input');input.className='input source-input';input.setAttribute('list','sourceSuggestions');input.maxLength=3100;input.placeholder='Kaynak / künye / bağlantı';input.setAttribute('aria-label','Kaynak '+(index+1));
     const open=document.createElement('a');open.className='source-open';open.href='#';open.target='_blank';open.rel='noopener noreferrer';open.textContent='↗';open.hidden=true;open.title='Kaynak bağlantısını aç';
-    element.append(number,input,open);box.appendChild(element);
-    const row={element,input,open};sourceRows.push(row);
+    const replaceButton=document.createElement('button');replaceButton.type='button';replaceButton.textContent='Farklı kaynakla değiştir';replaceButton.setAttribute('aria-label','Farklı kaynakla değiştir; mevcut kaynağın metaverisi aktarılmaz');
+    element.append(number,input,open,replaceButton);box.appendChild(element);
+    const row={element,input,open,replaceButton,sourceId:null,replaceSource:false};sourceRows.push(row);
+    replaceButton.addEventListener('click',()=>{
+      if(!row.sourceId||!confirm('Bu satır yeni bir kaynak olarak kaydedilecek. Eski kaynağın metaverisi aktarılmayacak. Devam edilsin mi?'))return;
+      markSourceForReplacement(row);
+      syncSourceReplacement(row);syncSourceOpen(row);markTermDirty();row.input.focus();
+    });
     input.addEventListener('input',()=>{
       syncSourceOpen(row);markTermDirty();
       clearTimeout(sourceSuggestionTimer);sourceSuggestionTimer=setTimeout(()=>loadSourceSuggestions(input.value),160);
@@ -348,7 +362,7 @@ function createSourceRows(){
 function syncSourceVisibility(){
   const lastFilled=sourceRows.reduce((last,row,index)=>row.input.value.trim()?index:last,-1);
   visibleSourceCount=Math.min(MAX_SOURCES,Math.max(1,visibleSourceCount,lastFilled+1));
-  sourceRows.forEach((row,index)=>{row.element.hidden=index>=visibleSourceCount;syncSourceOpen(row)});
+  sourceRows.forEach((row,index)=>{row.element.hidden=index>=visibleSourceCount;syncSourceOpen(row);syncSourceReplacement(row)});
   $('addSourceBtn').hidden=visibleSourceCount>=MAX_SOURCES;
 }
 function revealSourceRow(){
@@ -381,11 +395,26 @@ function applyTermValues(term){
   fields.explanationTr.value=term.explanation_tr||'';
   fields.explanationEn.value=term.explanation_en||'';
   fields.variants.value=(term.variants||[]).map(item=>typeof item==='string'?item:item.variant).filter(Boolean).join('\n');
-  sourceRows.forEach((row,index)=>{row.input.value=sourceLine((term.sources||[])[index]||{});syncSourceOpen(row)});
+  sourceRows.forEach((row,index)=>{
+    const source=(term.sources||[])[index]||{};
+    row.sourceId=source.id||source.source_id||null;
+    row.replaceSource=source.replace_source===true;
+    row.input.value=sourceLine(source);syncSourceOpen(row);syncSourceReplacement(row);
+  });
   visibleSourceCount=Math.max(1,Math.min(MAX_SOURCES,(term.sources||[]).length||1));syncSourceVisibility();
 }
+function markSourceForReplacement(row){
+  row.sourceId=null;row.replaceSource=true;row.input.value='';
+}
+function sourcePayload(row){
+  return{
+    ...(row.sourceId?{source_id:row.sourceId}:{}),
+    ...(row.replaceSource?{replace_source:true}:{}),
+    ...parseSourceLine(row.input.value,!row.sourceId)
+  };
+}
 function payload(){
-  const sources=sourceRows.map(row=>parseSourceLine(row.input.value)).filter(source=>source.citation||source.url);
+  const sources=sourceRows.map(sourcePayload).filter(source=>source.citation||source.url);
   return{
     headword_en:fields.headword.value,slug:fields.slug.value,
     ottoman_period_term:fields.ottoman.value,modern_equivalent_tr:fields.modern.value,
@@ -396,7 +425,7 @@ function payload(){
 }
 function startNewForm({restoreDraft=true}={}){
   currentSlug='';currentTermVersion=0;currentServerVersion=0;currentTermUpdatedAt='';termDirty=false;
-  $('termForm').reset();sourceRows.forEach(row=>row.input.value='');visibleSourceCount=1;syncSourceVisibility();
+  $('termForm').reset();sourceRows.forEach(row=>{row.input.value='';row.sourceId=null;row.replaceSource=false});visibleSourceCount=1;syncSourceVisibility();
   $('formTitle').textContent='Yeni madde';$('deleteBtn').hidden=true;
   const draft=restoreDraft?readDraft('new'):null;
   if(draft?.payload){applyTermValues(draft.payload);currentTermVersion=Number(draft.baseVersion||0);termDirty=true}
